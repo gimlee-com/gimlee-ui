@@ -40,7 +40,7 @@ export const Lightbox = forwardRef<HTMLDivElement, LightboxProps>(
     },
     ref
   ) => {
-    const { ref: uikitRef } = useUIKit<any, HTMLDivElement>('lightbox', {
+    const { ref: uikitRef } = useUIKit<unknown, HTMLDivElement>('lightbox', {
       animation,
       autoplay,
       autoplayInterval,

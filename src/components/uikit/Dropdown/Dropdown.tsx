@@ -50,7 +50,7 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
     if (customClassName) classNames.push(customClassName)
 
     const dropdownOptions = useMemo(() => {
-      const options: any = {
+      const options: Record<string, unknown> = {
         mode,
         pos,
         offset,
@@ -73,7 +73,7 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
       return options
     }, [mode, pos, offset, flip, shift, toggle, boundary, container, props])
 
-    const { ref: dropdownRef } = useUIKit<any, HTMLDivElement>(
+    const { ref: dropdownRef } = useUIKit<unknown, HTMLDivElement>(
       'dropdown',
       dropdownOptions
     )
@@ -86,7 +86,7 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
         acc[key] = otherProps[key as keyof typeof otherProps]
       }
       return acc
-    }, {} as any)
+    }, {} as Record<string, unknown>)
 
     return (
       <div ref={mergedRef} className={classNames.join(' ')} {...filteredProps}>

@@ -51,7 +51,7 @@ export const Nav = forwardRef<HTMLUListElement, NavProps>(
     const mergedRef = useMergeRefs(uikitRef, ref)
 
     const navProps: React.HTMLAttributes<HTMLUListElement> & {
-      [key: string]: any
+      [key: string]: unknown
     } = {
       className: classNames.join(' '),
       ...props,

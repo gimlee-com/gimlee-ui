@@ -9,6 +9,12 @@ export { motion, AnimatePresence } from 'motion/react'
 // eslint-disable-next-line react-refresh/only-export-components
 export * from './NumberInput'
 
+/**
+ * Strips React HTML drag/animation event props that conflict
+ * with Framer Motion's own prop types on motion components.
+ */
+type MotionSafe<T> = Omit<T, 'onDrag' | 'onDragStart' | 'onDragEnd' | 'onAnimationStart'>
+
 export type FormLayout = 'stacked' | 'horizontal'
 
 export interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
@@ -22,14 +28,14 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(
     if (layout === 'horizontal') classNames.push('uk-form-horizontal')
     if (customClassName) classNames.push(customClassName)
 
-    const { onDrag: _onDrag, ...rest } = props as any
+    const { onDrag: _onDrag, ...rest } = props
 
     return (
       <motion.form
-        ref={ref as any}
+        ref={ref}
         layout
         className={classNames.join(' ')}
-        {...rest}
+        {...(rest as MotionSafe<typeof rest>)}
       >
         {children}
       </motion.form>
@@ -44,14 +50,14 @@ export const Fieldset = forwardRef<HTMLFieldSetElement, FieldsetProps>(
     const classNames = ['uk-fieldset']
     if (customClassName) classNames.push(customClassName)
 
-    const { onDrag: _onDrag, ...rest } = props as any
+    const { onDrag: _onDrag, ...rest } = props
 
     return (
       <motion.fieldset
-        ref={ref as any}
+        ref={ref}
         layout
         className={classNames.join(' ')}
-        {...rest}
+        {...(rest as MotionSafe<typeof rest>)}
       >
         {children}
       </motion.fieldset>
@@ -66,14 +72,14 @@ export const Legend = forwardRef<HTMLLegendElement, LegendProps>(
     const classNames = ['uk-legend']
     if (customClassName) classNames.push(customClassName)
 
-    const { onDrag: _onDrag, ...rest } = props as any
+    const { onDrag: _onDrag, ...rest } = props
 
     return (
       <motion.legend
-        ref={ref as any}
+        ref={ref}
         layout
         className={classNames.join(' ')}
-        {...rest}
+        {...(rest as MotionSafe<typeof rest>)}
       >
         {children}
       </motion.legend>
@@ -137,15 +143,15 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     if (formWidth) classNames.push(`uk-form-width-${formWidth}`)
     if (customClassName) classNames.push(customClassName)
 
-    const { onDrag: _onDrag, ...rest } = props as any
+    const { onDrag: _onDrag, ...rest } = props
 
     return (
       <motion.input
-        ref={ref as any}
+        ref={ref}
         layout={layout}
         className={classNames.join(' ') || undefined}
         type={type}
-        {...rest}
+        {...(rest as MotionSafe<typeof rest>)}
       />
     )
   }
@@ -182,14 +188,14 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     if (formWidth) classNames.push(`uk-form-width-${formWidth}`)
     if (customClassName) classNames.push(customClassName)
 
-    const { onDrag: _onDrag, ...rest } = props as any
+    const { onDrag: _onDrag, ...rest } = props
 
     return (
       <motion.select
-        ref={ref as any}
+        ref={ref}
         layout={layout}
         className={classNames.join(' ')}
-        {...rest}
+        {...(rest as MotionSafe<typeof rest>)}
       >
         {children}
       </motion.select>
@@ -213,14 +219,14 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
     if (formWidth) classNames.push(`uk-form-width-${formWidth}`)
     if (customClassName) classNames.push(customClassName)
 
-    const { onDrag: _onDrag, ...rest } = props as any
+    const { onDrag: _onDrag, ...rest } = props
 
     return (
       <motion.textarea
-        ref={ref as any}
+        ref={ref}
         layout={layout}
         className={classNames.join(' ')}
-        {...rest}
+        {...(rest as MotionSafe<typeof rest>)}
       />
     )
   }
@@ -233,14 +239,14 @@ export const FormLabel = forwardRef<HTMLLabelElement, FormLabelProps>(
     const classNames = ['uk-form-label']
     if (customClassName) classNames.push(customClassName)
 
-    const { onDrag: _onDrag, ...rest } = props as any
+    const { onDrag: _onDrag, ...rest } = props
 
     return (
       <motion.label
-        ref={ref as any}
+        ref={ref}
         layout
         className={classNames.join(' ')}
-        {...rest}
+        {...(rest as MotionSafe<typeof rest>)}
       >
         {children}
       </motion.label>
@@ -255,14 +261,14 @@ export const FormControls = forwardRef<HTMLDivElement, FormControlsProps>(
     const classNames = ['uk-form-controls']
     if (customClassName) classNames.push(customClassName)
 
-    const { onDrag: _onDrag, ...rest } = props as any
+    const { onDrag: _onDrag, ...rest } = props
 
     return (
       <motion.div
-        ref={ref as any}
+        ref={ref}
         layout
         className={classNames.join(' ')}
-        {...rest}
+        {...(rest as MotionSafe<typeof rest>)}
       >
         {children}
       </motion.div>
@@ -284,11 +290,11 @@ export const FormMessage = forwardRef<HTMLDivElement, FormMessageProps>(
     if (type === 'info') classNames.push('uk-text-primary')
     if (customClassName) classNames.push(customClassName)
 
-    const { onDrag: _onDrag, ...rest } = props as any
+    const { onDrag: _onDrag, ...rest } = props
 
     return (
       <motion.div
-        ref={ref as any}
+        ref={ref}
         layout
         initial={{ opacity: 0, height: 0 }}
         animate={{ opacity: 1, height: 'auto' }}
@@ -296,7 +302,7 @@ export const FormMessage = forwardRef<HTMLDivElement, FormMessageProps>(
         transition={{ type: 'spring', stiffness: 600, damping: 30 }}
         className={classNames.join(' ')}
         style={{ overflow: 'hidden' }}
-        {...rest}
+        {...(rest as MotionSafe<typeof rest>)}
       >
         <small>{children}</small>
       </motion.div>
@@ -341,8 +347,8 @@ export const FormCustom = forwardRef<HTMLDivElement, FormCustomProps>(
 export interface FormIconProps extends React.HTMLAttributes<HTMLElement> {
   flip?: boolean
   icon?: string
-  tag?: any
-  [key: string]: any
+  tag?: React.ElementType
+  [key: string]: unknown
 }
 
 export const FormIcon = forwardRef<HTMLElement, FormIconProps>(
@@ -361,7 +367,7 @@ export const FormIcon = forwardRef<HTMLElement, FormIconProps>(
         ...props,
         ref,
         className: classNames.join(' '),
-      } as any,
+      } as Record<string, unknown>,
       icon ? <span uk-icon={`icon: ${icon}`}></span> : props.children
     )
     /* eslint-enable react-hooks/refs */

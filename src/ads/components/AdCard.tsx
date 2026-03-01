@@ -78,14 +78,9 @@ export const AdCard: React.FC<AdCardProps> = ({ ad, onWatchToggle }) => {
 
           <div className={styles.priceWrapper}>
             {ad.preferredPrice ? (
-              <>
-                <span className={styles.primaryPrice}>
-                  {formatPrice(ad.preferredPrice.amount, ad.preferredPrice.currency)}
-                </span>
-                <span className="uk-text-meta uk-margin-xsmall-left">
-                  ({ad.pricingMode === 'PEGGED' ? t('pricing.peggedPrice') : t('pricing.fixedPrice')})
-                </span>
-              </>
+              <span className={styles.primaryPrice}>
+                {formatPrice(ad.preferredPrice.amount, ad.preferredPrice.currency)}
+              </span>
             ) : (
               <span className="uk-text-muted">-</span>
             )}

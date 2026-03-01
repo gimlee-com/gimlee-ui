@@ -8,7 +8,7 @@ import { adService } from '../services/adService';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { setActivePurchase, setModalOpen } from '../../store/purchaseSlice';
 import { purchaseService } from '../../purchases/services/purchaseService';
-import type { AdDiscoveryDetailsDto, CurrencyAmountDto } from '../../types/api';
+import type { AdDiscoveryDetailsDto, CurrencyAmountDto, StatusResponseDto } from '../../types/api';
 import { Heading } from '../../components/uikit/Heading/Heading';
 import { Spinner } from '../../components/uikit/Spinner/Spinner';
 import { Grid } from '../../components/uikit/Grid/Grid';
@@ -191,11 +191,12 @@ const AdDetailsPage: React.FC = () => {
         ...response,
         currency: response.currency || selectedCurrency
       }));
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const err = error as StatusResponseDto;
       console.error('Failed to create purchase', error);
-      if (error.status === 'PURCHASE_CURRENCY_FROZEN') {
+      if (err.status === 'PURCHASE_CURRENCY_FROZEN') {
         UIkit.modal.alert(t('purchases.currencyFrozen', { currency: selectedCurrency }), { stack: true, i18n: { ok: t('common.ok'), cancel: t('common.cancel') } });
-      } else if (error.status === 'PURCHASE_PRICE_MISMATCH') {
+      } else if (err.status === 'PURCHASE_PRICE_MISMATCH') {
         UIkit.modal.alert(t('purchases.priceMismatch'), { stack: true, i18n: { ok: t('common.ok'), cancel: t('common.cancel') } });
         // Refresh ad data to get updated prices
         if (id) {
@@ -205,7 +206,7 @@ const AdDetailsPage: React.FC = () => {
           }).catch(() => {});
         }
       } else {
-        UIkit.modal.alert(error.message || t('auth.errors.generic'));
+        UIkit.modal.alert(err.message || t('auth.errors.generic'));
       }
     } finally {
       setIsPurchasing(false);
@@ -454,12 +455,7 @@ const AdDetailsPage: React.FC = () => {
           <motion.div variants={itemVariants}>
             <Card className="uk-border-rounded uk-box-shadow-medium">
               <CardBody>
-                <div className="uk-flex uk-flex-between uk-flex-middle uk-margin-small-bottom">
-                  {ad.pricingMode && (
-                    <Label variant={ad.pricingMode === 'PEGGED' ? 'success' : 'default'}>
-                      {ad.pricingMode === 'PEGGED' ? t('pricing.peggedPrice') : t('pricing.fixedPrice')}
-                    </Label>
-                  )}
+                <div className="uk-flex uk-flex-right uk-flex-middle uk-margin-small-bottom">
                   <div className={styles.actionButtons}>
                     <WatchButton
                       adId={ad.id}
@@ -484,9 +480,24 @@ const AdDetailsPage: React.FC = () => {
                 {/* Reference price */}
                 <div className="uk-margin-small-bottom">
                   {ad.preferredPrice && (
-                    <span className="uk-text-large uk-text-primary uk-text-bold">
-                      {formatPrice(ad.preferredPrice.amount, ad.preferredPrice.currency)}
-                    </span>
+                    <>
+                      <span className="uk-text-large uk-text-primary uk-text-bold">
+                        {formatPrice(ad.preferredPrice.amount, ad.preferredPrice.currency)}
+                      </span>
+                      {ad.pricingMode === 'PEGGED' && (
+                        <span className="uk-flex uk-flex-middle uk-text-small uk-text-muted">
+                          {t('pricing.tracksCurrency', { currency: ad.preferredPrice.currency })}
+                          <span
+                            className={`uk-margin-xsmall-left ${styles.pricingInfo}`}
+                            uk-tooltip={`title: ${t('pricing.peggedExplainer', { currency: ad.preferredPrice.currency })}; pos: right`}
+                            role="button"
+                            tabIndex={0}
+                          >
+                            <Icon icon="info" ratio={0.75} />
+                          </span>
+                        </span>
+                      )}
+                    </>
                   )}
                 </div>
 

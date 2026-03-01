@@ -273,8 +273,8 @@ export const FormCustom = forwardRef<HTMLDivElement, FormCustomProps>(
 export interface FormIconProps extends React.HTMLAttributes<HTMLElement> {
   flip?: boolean
   icon?: string
-  tag?: any
-  [key: string]: any
+  tag?: React.ElementType
+  [key: string]: unknown
 }
 
 export const FormIcon = forwardRef<HTMLElement, FormIconProps>(
@@ -293,7 +293,7 @@ export const FormIcon = forwardRef<HTMLElement, FormIconProps>(
         ...props,
         ref,
         className: classNames.join(' '),
-      } as any,
+      } as Record<string, unknown>,
       icon ? <span uk-icon={`icon: ${icon}`}></span> : props.children
     )
     /* eslint-enable react-hooks/refs */

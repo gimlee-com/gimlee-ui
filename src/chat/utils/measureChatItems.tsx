@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
@@ -57,7 +57,7 @@ export function measureChatItems(items: ChatListItem[], width: number, username?
       }, []);
 
       return (
-        <AuthContext.Provider value={dummyAuthValue as any}>
+        <AuthContext.Provider value={dummyAuthValue as React.ContextType<typeof AuthContext>}>
           <Provider store={store}>
             <MemoryRouter>
               {items.map((item) => (

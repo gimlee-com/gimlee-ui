@@ -77,8 +77,8 @@ const ProfilePage: React.FC = () => {
     try {
       await updatePresence(status, customStatus);
       setSuccess(t('presence.statusUpdated'));
-    } catch (err: any) {
-      setError(err.message || t('presence.failedToUpdate'));
+    } catch (err: unknown) {
+      setError((err as Error).message || t('presence.failedToUpdate'));
     } finally {
       setSavingPresence(false);
     }
@@ -131,7 +131,7 @@ const ProfilePage: React.FC = () => {
       try {
         await userService.updateUserPreferences({ language: lang });
         setSuccess(t('profile.preferencesUpdated'));
-      } catch (err) {
+      } catch {
         setError(t('profile.failedToSaveLanguage'));
       }
     }
@@ -154,8 +154,8 @@ const ProfilePage: React.FC = () => {
       setPreferredCurrency(currencyCode);
       setSuccess(t('profile.preferencesUpdated'));
       setCurrencySearch('');
-    } catch (err: any) {
-      setError(err.message || t('profile.failedToSaveCurrency'));
+    } catch (err: unknown) {
+      setError((err as Error).message || t('profile.failedToSaveCurrency'));
     } finally {
       setSavingCurrency(false);
     }
@@ -174,8 +174,8 @@ const ProfilePage: React.FC = () => {
       // Refresh transactions
       const txs = await paymentService.getPirateChainTransactions();
       setArrrTransactions(txs);
-    } catch (err: any) {
-      setArrrError(err.message || t('auth.errors.generic'));
+    } catch (err: unknown) {
+      setArrrError((err as Error).message || t('auth.errors.generic'));
       setArrrFocused(false);
     } finally {
       setSavingArrr(false);
@@ -195,8 +195,8 @@ const ProfilePage: React.FC = () => {
       // Refresh transactions
       const txs = await paymentService.getYCashTransactions();
       setYecTransactions(txs);
-    } catch (err: any) {
-      setYecError(err.message || t('auth.errors.generic'));
+    } catch (err: unknown) {
+      setYecError((err as Error).message || t('auth.errors.generic'));
       setYecFocused(false);
     } finally {
       setSavingYec(false);

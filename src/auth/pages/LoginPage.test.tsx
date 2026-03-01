@@ -36,7 +36,7 @@ describe('LoginPage', () => {
   });
 
   it('should navigate to home page after login if no redirect param is present', async () => {
-    (authService.login as any).mockResolvedValue({
+    vi.mocked(authService.login).mockResolvedValue({
       success: true,
       accessToken: 'fake.e30.signature',
     });
@@ -67,7 +67,7 @@ describe('LoginPage', () => {
   });
 
   it('should navigate to redirect path after login if redirect param is present', async () => {
-    (authService.login as any).mockResolvedValue({
+    vi.mocked(authService.login).mockResolvedValue({
       success: true,
       accessToken: 'fake.e30.signature',
     });
@@ -104,7 +104,7 @@ describe('LoginPage', () => {
 
   it('should navigate to verify page if user has UNVERIFIED role', async () => {
     const unverifiedToken = 'fake.eyJyb2xlcyI6WyJVTlZFUklGSUVEIl19.fake';
-    (authService.login as any).mockResolvedValue({
+    vi.mocked(authService.login).mockResolvedValue({
       success: true,
       accessToken: unverifiedToken,
     });

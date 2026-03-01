@@ -47,8 +47,8 @@ const CreateAdPage: React.FC = () => {
     try {
       const newAd = await salesService.createAd(data);
       navigate(`/sales/ads/edit/${newAd.id}`);
-    } catch (err: any) {
-      setError(err.message || t('ads.failedToCreate'));
+    } catch (err: unknown) {
+      setError((err as Error).message || t('ads.failedToCreate'));
     } finally {
       setLoading(false);
     }

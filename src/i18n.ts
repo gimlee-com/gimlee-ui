@@ -320,6 +320,9 @@ const resources = {
         "partiallyFrozen": "Some payment methods are temporarily unavailable.",
         "fixedPrice": "Fixed price",
         "peggedPrice": "Pegged price",
+        "fixedExplainer": "This is a fixed cryptocurrency price. You'll pay exactly this amount.",
+        "peggedExplainer": "The seller set this price in {{currency}}. You'll pay the equivalent in your chosen cryptocurrency at the current market rate.",
+        "tracksCurrency": "Price tracks {{currency}}",
         "frozenStatus": {
           "active": "Active",
           "partiallyFrozen": "Partially frozen",
@@ -650,6 +653,9 @@ const resources = {
         "partiallyFrozen": "Niektóre metody płatności są tymczasowo niedostępne.",
         "fixedPrice": "Cena stała",
         "peggedPrice": "Cena powiązana",
+        "fixedExplainer": "To jest stała cena w kryptowalucie. Zapłacisz dokładnie tę kwotę.",
+        "peggedExplainer": "Sprzedawca ustalił cenę w {{currency}}. Zapłacisz równowartość w wybranej kryptowalucie po aktualnym kursie rynkowym.",
+        "tracksCurrency": "Cena śledzi {{currency}}",
         "frozenStatus": {
           "active": "Aktywny",
           "partiallyFrozen": "Częściowo zamrożony",

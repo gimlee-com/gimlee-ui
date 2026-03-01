@@ -33,7 +33,7 @@ export const CategorySelector = forwardRef<HTMLDivElement, CategorySelectorProps
   });
   const mergedRef = useMergeRefs(modalRef, ref);
 
-  const searchTimeout = useRef<any>(null);
+  const searchTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 960);

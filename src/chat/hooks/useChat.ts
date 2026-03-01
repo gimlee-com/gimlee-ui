@@ -5,6 +5,7 @@ import { fetchChatHistory, addMessage, setTyping } from '../store/chatSlice';
 import { chatService } from '../services/chatService';
 import { apiClient } from '../../services/apiClient';
 import { useAuth } from '../../context/AuthContext';
+import type { InternalChatEvent } from '../types';
 
 export const useChat = (chatId: string) => {
   const dispatch = useAppDispatch();
@@ -47,7 +48,7 @@ export const useChat = (chatId: string) => {
           try {
             const events = JSON.parse(event.data);
             if (Array.isArray(events)) {
-              events.forEach((data: any) => {
+              events.forEach((data: InternalChatEvent) => {
                 if (data.type === 'MESSAGE') {
                   // Map InternalChatEvent to ChatMessageDto
                   const message = {

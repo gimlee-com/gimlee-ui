@@ -16,7 +16,7 @@ describe('userService', () => {
 
   it('should fetch user preferences', async () => {
     const mockPrefs = { language: 'pl-PL' };
-    (apiClient.get as any).mockResolvedValue(mockPrefs);
+    vi.mocked(apiClient.get).mockResolvedValue(mockPrefs);
 
     const result = await userService.getUserPreferences();
 
@@ -26,7 +26,7 @@ describe('userService', () => {
 
   it('should update user preferences', async () => {
     const mockPrefs = { language: 'en-US' };
-    (apiClient.patch as any).mockResolvedValue(mockPrefs);
+    vi.mocked(apiClient.patch).mockResolvedValue(mockPrefs);
 
     const result = await userService.updateUserPreferences({ language: 'en-US' });
 

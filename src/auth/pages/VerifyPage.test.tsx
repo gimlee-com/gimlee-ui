@@ -34,7 +34,7 @@ describe('VerifyPage', () => {
   });
 
   it('should navigate to home page after successful verification', async () => {
-    (authService.verifyUser as any).mockResolvedValue({
+    vi.mocked(authService.verifyUser).mockResolvedValue({
       success: true,
       accessToken: 'new-valid-token',
     });
@@ -59,7 +59,7 @@ describe('VerifyPage', () => {
   });
 
   it('should display error message on verification failure', async () => {
-    (authService.verifyUser as any).mockRejectedValue({
+    vi.mocked(authService.verifyUser).mockRejectedValue({
       message: 'Invalid code',
     });
 

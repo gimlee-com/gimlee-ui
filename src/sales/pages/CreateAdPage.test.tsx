@@ -33,7 +33,7 @@ const renderCreateAdPage = () => {
 describe('CreateAdPage Validation', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    (salesService.getAllowedCurrencies as any).mockResolvedValue({
+    vi.mocked(salesService.getAllowedCurrencies).mockResolvedValue({
       settlementCurrencies: [
         { code: 'ARRR', name: 'Pirate Chain' }
       ],

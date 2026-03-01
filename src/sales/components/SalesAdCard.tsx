@@ -88,12 +88,7 @@ export const SalesAdCard: React.FC<SalesAdCardProps> = ({ ad, onToggleStatus }) 
           
           <div className={styles.price}>
             {ad.price ? (
-              <>
-                {formatPrice(ad.price.amount, ad.price.currency)}
-                <span className="uk-text-meta uk-margin-xsmall-left">
-                  ({ad.pricingMode === 'PEGGED' ? t('pricing.peggedPrice') : t('pricing.fixedPrice')})
-                </span>
-              </>
+              formatPrice(ad.price.amount, ad.price.currency)
             ) : (
               <span className="uk-text-muted">-</span>
             )}

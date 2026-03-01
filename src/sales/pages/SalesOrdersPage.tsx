@@ -50,8 +50,8 @@ const SalesOrdersPage: React.FC = () => {
     try {
       const response = await salesService.getSalesOrders(page);
       setOrdersPage(response);
-    } catch (err: any) {
-      setError(err.message || t('auth.errors.generic'));
+    } catch (err: unknown) {
+      setError((err as Error).message || t('auth.errors.generic'));
     } finally {
       setLoading(false);
     }

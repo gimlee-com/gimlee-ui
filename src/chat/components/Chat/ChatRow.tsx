@@ -56,4 +56,4 @@ const MemoizedChatRow = memo(ChatRow, (prevProps, nextProps) => {
   );
 });
 
-export default MemoizedChatRow as any;
+export default MemoizedChatRow as typeof ChatRow;

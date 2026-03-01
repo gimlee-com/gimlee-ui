@@ -30,8 +30,8 @@ const renderRegisterPage = () => {
 describe('RegisterPage Validation', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    (authService.checkUsername as any).mockResolvedValue({ available: true });
-    (authService.checkEmail as any).mockResolvedValue({ available: true });
+    vi.mocked(authService.checkUsername).mockResolvedValue({ available: true });
+    vi.mocked(authService.checkEmail).mockResolvedValue({ available: true });
   });
 
   it('should not show email invalid error while typing (focused)', async () => {

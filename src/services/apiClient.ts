@@ -60,7 +60,7 @@ class ApiClient {
     return this.request<T>(path, { ...options, method: 'GET' });
   }
 
-  post<T>(path: string, body?: any, options: RequestInit = {}) {
+  post<T>(path: string, body?: unknown, options: RequestInit = {}) {
     return this.request<T>(path, {
       ...options,
       method: 'POST',
@@ -68,7 +68,7 @@ class ApiClient {
     });
   }
 
-  put<T>(path: string, body?: any, options: RequestInit = {}) {
+  put<T>(path: string, body?: unknown, options: RequestInit = {}) {
     return this.request<T>(path, {
       ...options,
       method: 'PUT',
@@ -76,7 +76,7 @@ class ApiClient {
     });
   }
 
-  patch<T>(path: string, body?: any, options: RequestInit = {}) {
+  patch<T>(path: string, body?: unknown, options: RequestInit = {}) {
     return this.request<T>(path, {
       ...options,
       method: 'PATCH',

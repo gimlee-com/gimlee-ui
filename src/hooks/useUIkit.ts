@@ -7,10 +7,10 @@ type UIkitComponent = keyof typeof UIkit
 // A mapping to assign stable, unique IDs to DOM nodes for stringification.
 // This allows us to detect when a DOM node in the options object has changed
 // while avoiding cyclic reference errors during JSON.stringify.
-const nodeIds = new WeakMap<any, string>()
+const nodeIds = new WeakMap<object, string>()
 let nextNodeId = 1
 
-const getStableNodeId = (node: any): string => {
+const getStableNodeId = (node: Node): string => {
   let id = nodeIds.get(node)
   if (!id) {
     id = `uikit-node-${nextNodeId++}`

@@ -14,7 +14,7 @@ export const Close = forwardRef<HTMLElement, CloseProps>(
 
     return (
       <Tag
-        ref={ref as any}
+        ref={ref as React.Ref<HTMLElement>}
         className={classNames.length > 0 ? classNames.join(' ') : undefined}
         uk-close=""
         href={href}

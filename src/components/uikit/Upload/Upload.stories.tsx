@@ -46,7 +46,8 @@ export const ManualUpload: Story = {
   render: () => (
     <Upload 
       url="" 
-      beforeAll={(_comp: any, files: FileList) => {
+      beforeAll={(...args: unknown[]) => {
+        const files = args[1] as FileList;
         alert(`Selected ${files.length} files. Prevented default upload.`);
         return false;
       }}

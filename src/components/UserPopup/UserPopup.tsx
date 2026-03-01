@@ -57,7 +57,6 @@ export const UserPopup: React.FC<UserPopupProps> = ({
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- syncing prop to local state for modal display
     setCurrentStatus(status);
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- syncing prop to local state for modal display
     setCurrentCustomStatus(customStatus);
   }, [status, customStatus]);
 

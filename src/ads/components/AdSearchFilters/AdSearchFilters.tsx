@@ -200,7 +200,7 @@ export const AdSearchFilters: React.FC = () => {
                         <div className="uk-flex-1">
                             <Select 
                                 value={sortBy} 
-                                onChange={(e) => setSortBy(e.target.value as any)}
+                                onChange={(e) => setSortBy(e.target.value as 'CREATED_DATE' | 'PRICE')}
                                 className="uk-width-1-1"
                             >
                                 <option value="CREATED_DATE">{t('ads.sort.date')}</option>
@@ -210,7 +210,7 @@ export const AdSearchFilters: React.FC = () => {
                         <div className="uk-margin-small-left" style={{ minWidth: '100px' }}>
                             <Select 
                                 value={sortDir} 
-                                onChange={(e) => setSortDir(e.target.value as any)}
+                                onChange={(e) => setSortDir(e.target.value as 'ASC' | 'DESC')}
                                 className="uk-width-1-1"
                             >
                                 <option value="DESC">{t('ads.sort.desc')}</option>

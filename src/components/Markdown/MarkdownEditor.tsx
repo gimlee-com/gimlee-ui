@@ -1,6 +1,7 @@
 import React, { forwardRef, useEffect, useRef } from 'react';
 import { Milkdown, MilkdownProvider, useEditor, useInstance } from '@milkdown/react';
 import { Editor, rootCtx, defaultValueCtx, editorViewCtx, parserCtx, commandsCtx } from '@milkdown/core';
+import type { CmdKey } from '@milkdown/core';
 import { Ctx } from '@milkdown/ctx';
 import { gfm } from '@milkdown/preset-gfm';
 import { 
@@ -41,7 +42,7 @@ const Toolbar: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [editorLoading, getEditor] = useInstance();
 
-  const call = (command: any, payload?: any) => {
+  const call = <T,>(command: { key: CmdKey<T> }, payload?: T) => {
     if (editorLoading) return;
     const editor = getEditor();
     if (editor) {

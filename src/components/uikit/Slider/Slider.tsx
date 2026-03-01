@@ -42,7 +42,7 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>(
     },
     ref
   ) => {
-    const { ref: uikitRef } = useUIKit<any, HTMLDivElement>('slider', {
+    const { ref: uikitRef } = useUIKit<unknown, HTMLDivElement>('slider', {
       autoplay,
       autoplayInterval,
       center,

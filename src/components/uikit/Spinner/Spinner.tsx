@@ -8,9 +8,11 @@ type SpinnerProps = {
 
 export const Spinner = forwardRef<HTMLDivElement, SpinnerProps>(
   ({ ratio, ...props }, ref) => {
-    const { ref: uikitRef } = useUIKit<any, HTMLDivElement>('spinner' as any, {
-      ratio,
-    })
+    const { ref: uikitRef } = useUIKit<unknown, HTMLDivElement>(
+      // @ts-expect-error -- 'spinner' is a valid UIkit component but not included in its type definitions
+      'spinner',
+      { ratio }
+    )
 
     const mergedRef = useMergeRefs(uikitRef, ref)
 

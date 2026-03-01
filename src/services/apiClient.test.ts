@@ -9,7 +9,7 @@ vi.hoisted(() => {
     clear: vi.fn(() => { Object.keys(storage).forEach(key => delete storage[key]); }),
     length: 0,
     key: vi.fn(),
-  } as any;
+  } as unknown as Storage;
 });
 
 vi.unmock('./apiClient');
@@ -23,7 +23,7 @@ describe('ApiClient', () => {
   beforeEach(() => {
     // @ts-expect-error -- Deleting window.location for test mock
     delete window.location;
-    window.location = { ...originalLocation, href: '', pathname: '/current-page', search: '?q=test' } as any;
+    window.location = { ...originalLocation, href: '', pathname: '/current-page', search: '?q=test' } as unknown as Location;
     vi.stubGlobal('fetch', vi.fn());
   });
 
@@ -34,11 +34,11 @@ describe('ApiClient', () => {
   });
 
   it('should include Accept-Language header matching i18n language', async () => {
-    (fetch as any).mockResolvedValue({
+    vi.mocked(fetch).mockResolvedValue({
       status: 200,
       ok: true,
       json: () => Promise.resolve({}),
-    });
+    } as unknown as Response);
 
     // Mock i18n language
     const originalLanguage = i18n.language;
@@ -46,7 +46,7 @@ describe('ApiClient', () => {
 
     await apiClient.get('/test');
 
-    const fetchCall = (fetch as any).mock.calls[0];
+    const fetchCall = vi.mocked(fetch).mock.calls[0];
     const headers = fetchCall[1].headers;
     expect(headers.get('Accept-Language')).toBe('pl-PL');
 
@@ -55,15 +55,15 @@ describe('ApiClient', () => {
   });
 
   it('should redirect to login on 401 error', async () => {
-    (fetch as any).mockResolvedValue({
+    vi.mocked(fetch).mockResolvedValue({
       status: 401,
       ok: false,
       json: () => Promise.resolve({ message: 'Unauthorized' }),
-    });
+    } as unknown as Response);
 
     try {
       await apiClient.get('/test');
-    } catch (e) {
+    } catch {
       // expected error
     }
 
@@ -73,13 +73,13 @@ describe('ApiClient', () => {
   });
 
   it('should not redirect and throw error from body on 403 error', async () => {
-    (fetch as any).mockResolvedValue({
+    vi.mocked(fetch).mockResolvedValue({
       status: 403,
       ok: false,
       json: () => Promise.resolve({ message: 'Forbidden localized message' }),
-    });
+    } as unknown as Response);
 
-    let error: any;
+    let error: unknown;
     try {
       await apiClient.get('/test');
     } catch (e) {
@@ -87,20 +87,20 @@ describe('ApiClient', () => {
     }
 
     expect(window.location.href).not.toContain('/login');
-    expect(error.message).toBe('Forbidden localized message');
+    expect((error as Record<string, unknown>).message).toBe('Forbidden localized message');
   });
 
   it('should not clear token on 403 error', async () => {
     apiClient.setToken('existing-token');
-    (fetch as any).mockResolvedValue({
+    vi.mocked(fetch).mockResolvedValue({
       status: 403,
       ok: false,
       json: () => Promise.resolve({ message: 'Forbidden' }),
-    });
+    } as unknown as Response);
 
     try {
       await apiClient.get('/test');
-    } catch (e) { /* Expected error */ }
+    } catch { /* Expected error */ }
 
     expect(apiClient.getToken()).toBe('existing-token');
   });

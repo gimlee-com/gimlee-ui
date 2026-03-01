@@ -77,7 +77,7 @@ export const CommentAvatar = forwardRef<HTMLImageElement, React.ImgHTMLAttribute
     if (customClassName) classNames.push(customClassName)
 
     return (
-      <Image ref={ref as any} className={classNames.join(' ')} alt="" {...props} />
+      <Image ref={ref as React.Ref<HTMLElement>} className={classNames.join(' ')} alt="" {...props} />
     )
   }
 )

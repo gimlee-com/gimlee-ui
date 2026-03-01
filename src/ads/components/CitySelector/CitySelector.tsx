@@ -23,7 +23,7 @@ export const CitySelector: React.FC<CitySelectorProps> = ({
   const [citySearch, setCitySearch] = useState('');
   const [citySuggestions, setCitySuggestions] = useState<CitySuggestion[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const searchTimeout = useRef<any>(null);
+  const searchTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

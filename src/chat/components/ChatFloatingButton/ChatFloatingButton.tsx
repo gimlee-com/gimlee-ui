@@ -16,7 +16,7 @@ interface ChatFloatingButtonProps {
 export const ChatFloatingButton: React.FC<ChatFloatingButtonProps> = ({ chatId, visible }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
-  const { ref, instance } = useUIKit<any, HTMLDivElement>('modal', { stack: true, container: false });
+  const { ref, instance } = useUIKit<UIkit.UIkitModalElement, HTMLDivElement>('modal', { stack: true, container: false });
 
   const toggleModal = () => {
     if (!instance) return;

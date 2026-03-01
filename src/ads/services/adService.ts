@@ -12,7 +12,7 @@ export const adService = {
   getFeaturedAds: (options?: RequestInit) => 
     apiClient.get<PageAdDiscoveryPreviewDto>('/ads/featured/', options),
 
-  searchAds: (params: any, options?: RequestInit) => {
+  searchAds: (params: Record<string, string>, options?: RequestInit) => {
     const query = new URLSearchParams(params).toString();
     return apiClient.get<PageAdDiscoveryPreviewDto>(`/ads/?${query}`, options);
   },

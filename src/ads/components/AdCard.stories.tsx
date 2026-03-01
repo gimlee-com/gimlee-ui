@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { AdCard } from './AdCard';
+import type { AdDiscoveryPreviewDto } from '../../types/api';
 
 const meta: Meta<typeof AdCard> = {
   title: 'Ads/AdCard',
@@ -40,7 +41,7 @@ export const New: Story = {
       ...Default.args?.ad,
       id: '2',
       title: 'New Listing: Mechanical Keyboard',
-    } as any,
+    } as AdDiscoveryPreviewDto,
   },
 };
 
@@ -50,7 +51,7 @@ export const Sold: Story = {
       ...Default.args?.ad,
       id: '3',
       isBuyable: false,
-    } as any,
+    } as AdDiscoveryPreviewDto,
   },
 };
 
@@ -59,7 +60,7 @@ export const LowStock: Story = {
     ad: {
       ...Default.args?.ad,
       id: '4',
-    } as any,
+    } as AdDiscoveryPreviewDto,
   },
 };
 
@@ -69,7 +70,7 @@ export const OutOfStock: Story = {
       ...Default.args?.ad,
       id: '5',
       isBuyable: false,
-    } as any,
+    } as AdDiscoveryPreviewDto,
   },
 };
 
@@ -79,6 +80,6 @@ export const LongTitle: Story = {
       ...Default.args?.ad,
       id: '6',
       title: 'This is a very long title that should definitely be truncated after two lines of text to ensure the card remains mature and tidy even with long user input',
-    } as any,
+    } as AdDiscoveryPreviewDto,
   },
 };

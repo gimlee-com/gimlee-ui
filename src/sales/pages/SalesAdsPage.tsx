@@ -51,8 +51,8 @@ const SalesAdsPage: React.FC = () => {
       };
       const response = await salesService.getMyAds(params);
       setAdsPage(response);
-    } catch (err: any) {
-      setError(err.message || t('auth.errors.generic'));
+    } catch (err: unknown) {
+      setError((err as Error).message || t('auth.errors.generic'));
     } finally {
       setLoading(false);
     }
@@ -70,8 +70,8 @@ const SalesAdsPage: React.FC = () => {
         await salesService.activateAd(ad.id);
       }
       fetchAds(adsPage?.page.number || 0);
-    } catch (err: any) {
-      UIkit.modal.alert(err.message || t('auth.errors.generic'));
+    } catch (err: unknown) {
+      UIkit.modal.alert((err as Error).message || t('auth.errors.generic'));
     }
   };
 

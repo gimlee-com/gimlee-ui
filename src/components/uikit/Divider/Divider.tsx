@@ -12,7 +12,7 @@ export const Divider = forwardRef<HTMLElement, DividerProps>(
 
     return (
       <hr
-        ref={ref as any}
+        ref={ref as React.Ref<HTMLHRElement>}
         className={classNames.join(' ') || undefined}
         {...props}
       />

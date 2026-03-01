@@ -36,11 +36,11 @@ describe('AuthContext', () => {
   });
 
   it('should fetch and apply language preference when authenticated', async () => {
-    (apiClient.get as any).mockResolvedValue({
+    vi.mocked(apiClient.get).mockResolvedValue({
       accessToken: 'fake-token',
       userProfile: { userId: '1', avatarUrl: '', updatedAt: 0 }
     });
-    (userService.getUserPreferences as any).mockResolvedValue({ language: 'pl-PL' });
+    vi.mocked(userService.getUserPreferences).mockResolvedValue({ language: 'pl-PL' });
 
     render(
       <AuthProvider>
@@ -56,7 +56,7 @@ describe('AuthContext', () => {
   });
 
   it('should NOT fetch language preference when NOT authenticated', async () => {
-    (apiClient.get as any).mockResolvedValue({
+    vi.mocked(apiClient.get).mockResolvedValue({
       accessToken: '',
       userProfile: null
     });
@@ -77,18 +77,18 @@ describe('AuthContext', () => {
 
   it('should fetch language preference after calling login', async () => {
     // Initial session check returns empty
-    (apiClient.get as any).mockResolvedValueOnce({
+    vi.mocked(apiClient.get).mockResolvedValueOnce({
       accessToken: '',
       userProfile: null
     });
     
     // Second call (after login) returns authenticated session
-    (apiClient.get as any).mockResolvedValueOnce({
+    vi.mocked(apiClient.get).mockResolvedValueOnce({
       accessToken: 'new-token',
       userProfile: { userId: '1', avatarUrl: '', updatedAt: 0 }
     });
 
-    (userService.getUserPreferences as any).mockResolvedValue({ language: 'en-US' });
+    vi.mocked(userService.getUserPreferences).mockResolvedValue({ language: 'en-US' });
 
     let loginFn: (token: string) => Promise<void> = async () => {};
     const TestLoginComponent = () => {

@@ -62,7 +62,7 @@ export const Upload = forwardRef<HTMLDivElement, UploadProps>(
     },
     ref
   ) => {
-    const { ref: uikitRef } = useUIKit<any, HTMLDivElement>('upload', {
+    const { ref: uikitRef } = useUIKit<unknown, HTMLDivElement>('upload', {
       url,
       multiple,
       name,

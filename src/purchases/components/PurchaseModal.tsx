@@ -173,9 +173,9 @@ export const PurchaseModal = forwardRef<HTMLDivElement, PurchaseModalProps>(
           } else {
             dispatch(updateActivePurchaseStatus('CANCELLED'));
           }
-        } catch (error: any) {
+        } catch (error: unknown) {
           console.error('Failed to cancel purchase', error);
-          UIkit.modal.alert(error.message || t('auth.errors.generic'), { 
+          UIkit.modal.alert((error as Error).message || t('auth.errors.generic'), { 
             stack: true,
             i18n: {
               ok: t('common.ok'),

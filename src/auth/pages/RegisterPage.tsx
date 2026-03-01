@@ -28,11 +28,11 @@ const RegisterPage: React.FC = () => {
 
   const password = watch('password');
   
-  const timeoutRefs = React.useRef<Record<string, any>>({});
-  const resolveRefs = React.useRef<Record<string, any>>({});
+  const timeoutRefs = React.useRef<Record<string, ReturnType<typeof setTimeout>>>({});
+  const resolveRefs = React.useRef<Record<string, (value: string | boolean | undefined) => void>>({});
 
-  const debouncedValidate = (fieldName: string, fn: (value: any, values: RegisterFormValues) => Promise<string | boolean | undefined>) => {
-    return (value: any, values: RegisterFormValues): Promise<string | boolean | undefined> => {
+  const debouncedValidate = (fieldName: string, fn: (value: string, values: RegisterFormValues) => Promise<string | boolean | undefined>) => {
+    return (value: string, values: RegisterFormValues): Promise<string | boolean | undefined> => {
       if (timeoutRefs.current[fieldName]) {
         clearTimeout(timeoutRefs.current[fieldName]);
       }
@@ -116,14 +116,14 @@ const RegisterPage: React.FC = () => {
   }, [password, trigger]);
 
   const onRegisterSubmit = async (data: RegisterFormValues) => {
-    const { confirmPassword, ...registerData } = data;
+    const { confirmPassword: _confirmPassword, ...registerData } = data;
     setLoading(true);
     setError(null);
     try {
       await authService.register(registerData);
       navigate(`/login?registered=true&email=${encodeURIComponent(data.email)}`);
-    } catch (err: any) {
-      setError(err.message || t('auth.errors.generic'));
+    } catch (err: unknown) {
+      setError((err as Error).message || t('auth.errors.generic'));
     } finally {
       setLoading(false);
     }

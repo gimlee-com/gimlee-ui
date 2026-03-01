@@ -7,7 +7,7 @@ import i18n from '../../../i18n';
 // Mock react-easy-crop
 vi.mock('react-easy-crop', () => {
   return {
-    default: ({ onCropChange, onZoomChange, onRotationChange, onInteractionEnd }: any) => (
+    default: ({ onCropChange, onZoomChange, onRotationChange, onInteractionEnd }: { onCropChange: (val: { x: number; y: number }) => void; onZoomChange: (val: number) => void; onRotationChange: (val: number) => void; onInteractionEnd: () => void }) => (
       <div data-testid="mock-cropper">
         <button onClick={() => onCropChange({ x: 10, y: 10 })}>Change Crop</button>
         <button onClick={() => onZoomChange(2)}>Change Zoom</button>

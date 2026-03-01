@@ -112,8 +112,8 @@ const EditAdPage: React.FC = () => {
             stock: data.stock
           });
         }
-      } catch (err: any) {
-        setError(err.message || t('auth.errors.generic'));
+      } catch (err: unknown) {
+        setError((err as Error).message || t('auth.errors.generic'));
       } finally {
         setLoading(false);
       }
@@ -174,8 +174,8 @@ const EditAdPage: React.FC = () => {
         timeout: 3000
       });
       navigate('/sales/ads');
-    } catch (err: any) {
-      const message = err.message || t('auth.errors.generic');
+    } catch (err: unknown) {
+      const message = (err as Error).message || t('auth.errors.generic');
       UIkit.notification({
         message,
         status: 'danger',
@@ -211,8 +211,8 @@ const EditAdPage: React.FC = () => {
           }
           return updated;
         });
-    } catch (err: any) {
-        setError(err.message || t('auth.errors.generic'));
+    } catch (err: unknown) {
+        setError((err as Error).message || t('auth.errors.generic'));
     }
   };
 
@@ -244,8 +244,8 @@ const EditAdPage: React.FC = () => {
       }
       
       setEditingImagePath(null);
-    } catch (err: any) {
-      setError(err.message || t('auth.errors.generic'));
+    } catch (err: unknown) {
+      setError((err as Error).message || t('auth.errors.generic'));
     } finally {
       setSaving(false);
     }
@@ -614,7 +614,7 @@ const EditAdPage: React.FC = () => {
                   url=""
                   multiple={true}
                   className={`uk-placeholder uk-text-center uk-padding-large uk-border-rounded ${styles.uploadArea}`}
-                  beforeAll={(_: any, files: FileList) => {
+                  beforeAll={(_: unknown, files: FileList) => {
                     handleUpload(files);
                     return false;
                   }}

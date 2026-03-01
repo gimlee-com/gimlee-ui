@@ -45,7 +45,7 @@ export const Markdown: React.FC<MarkdownProps> = React.memo(({ content, classNam
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
-          a: ({ node, ...props }) => {
+          a: ({ node: _node, ...props }) => {
             const href = props.href || '';
             const isExternal = href.startsWith('http') && 
                              !href.startsWith(window.location.origin) && 
@@ -64,13 +64,13 @@ export const Markdown: React.FC<MarkdownProps> = React.memo(({ content, classNam
               </a>
             );
           },
-          img: ({ node, ...props }) => {
+          img: ({ node: _node, ...props }) => {
             // Only allow images from our API or relative paths
             const src = props.src || '';
             const isSafe = src.startsWith('/') || src.startsWith('blob:') || (API_URL && src.startsWith(API_URL));
             
             if (isSafe) {
-              return <Image {...(props as any)} className="uk-responsive-width" alt={props.alt || ''} />;
+              return <Image {...(props as React.ImgHTMLAttributes<HTMLImageElement>)} className="uk-responsive-width" alt={props.alt || ''} />;
             }
             return (
               <span className="uk-text-muted uk-text-italic uk-text-small">
@@ -79,20 +79,20 @@ export const Markdown: React.FC<MarkdownProps> = React.memo(({ content, classNam
             );
           },
           // Ensure tables have UIkit classes
-          table: ({ node, ...props }) => (
+          table: ({ node: _node, ...props }) => (
             <div className="uk-overflow-auto uk-margin">
               <table {...props} className="uk-table uk-table-divider uk-table-small" />
             </div>
           ),
           // Ensure lists have UIkit margins
-          ul: ({ node, ...props }) => <ul {...props} className="uk-list uk-list-bullet" />,
-          ol: ({ node, ...props }) => <ol {...props} className="uk-list uk-list-decimal" />,
+          ul: ({ node: _node, ...props }) => <ul {...props} className="uk-list uk-list-bullet" />,
+          ol: ({ node: _node, ...props }) => <ol {...props} className="uk-list uk-list-decimal" />,
           // Headers
-          h1: ({ node, ...props }) => <h1 {...props} className="uk-h3" />,
-          h2: ({ node, ...props }) => <h2 {...props} className="uk-h4" />,
-          h3: ({ node, ...props }) => <h3 {...props} className="uk-h5" />,
+          h1: ({ node: _node, ...props }) => <h1 {...props} className="uk-h3" />,
+          h2: ({ node: _node, ...props }) => <h2 {...props} className="uk-h4" />,
+          h3: ({ node: _node, ...props }) => <h3 {...props} className="uk-h5" />,
           // Blockquote
-          blockquote: ({ node, ...props }) => (
+          blockquote: ({ node: _node, ...props }) => (
             <blockquote {...props} className="uk-text-muted uk-margin-left" style={{ borderLeft: '3px solid #e5e5e5', paddingLeft: '1em' }} />
           )
         }}

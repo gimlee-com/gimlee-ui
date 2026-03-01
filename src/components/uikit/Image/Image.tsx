@@ -29,7 +29,7 @@ export const Image = forwardRef<HTMLElement, ImageProps>(
     },
     ref
   ) => {
-    const { ref: uikitRef } = useUIKit<any, HTMLElement>('img', {
+    const { ref: uikitRef } = useUIKit<unknown, HTMLElement>('img', {
       dataSrc: dataSrc || src,
       sources,
       loading,
@@ -40,7 +40,7 @@ export const Image = forwardRef<HTMLElement, ImageProps>(
     const mergedRef = useMergeRefs(uikitRef, ref)
 
     // For non-img components (like div for background), we don't want to pass src/srcSet attributes
-    const extraProps: any = {}
+    const extraProps: Record<string, unknown> = {}
     if (Component === 'img') {
       extraProps.src = src
       extraProps.srcSet = srcSet

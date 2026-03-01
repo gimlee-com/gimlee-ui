@@ -24,7 +24,7 @@ vi.mock('../../ads/services/cityService', () => ({
 }));
 
 vi.mock('../../components/Markdown/MarkdownEditor', () => ({
-  MarkdownEditor: ({ value, onChange }: any) => (
+  MarkdownEditor: ({ value, onChange }: { value: string; onChange: (val: string) => void }) => (
     <textarea value={value} onChange={(e) => onChange(e.target.value)} data-testid="markdown-editor" />
   ),
 }));
@@ -75,8 +75,8 @@ const renderEditAdPage = () => {
 describe('EditAdPage City Suggester', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    (salesService.getAdById as any).mockResolvedValue(mockAd);
-    (salesService.getAllowedCurrencies as any).mockResolvedValue({
+    vi.mocked(salesService.getAdById).mockResolvedValue(mockAd);
+    vi.mocked(salesService.getAllowedCurrencies).mockResolvedValue({
       settlementCurrencies: [
         { code: 'ARRR', name: 'Pirate Chain' },
         { code: 'YEC', name: 'YCash' }
@@ -118,7 +118,7 @@ describe('EditAdPage City Suggester', () => {
         score: 0.9
       }
     ];
-    (cityService.getSuggestions as any).mockResolvedValue(mockSuggestions);
+    vi.mocked(cityService.getSuggestions).mockResolvedValue(mockSuggestions);
 
     renderEditAdPage();
 
@@ -143,7 +143,7 @@ describe('EditAdPage City Suggester', () => {
         score: 1
       }
     ];
-    (cityService.getSuggestions as any).mockResolvedValue(mockSuggestions);
+    vi.mocked(cityService.getSuggestions).mockResolvedValue(mockSuggestions);
 
     renderEditAdPage();
 

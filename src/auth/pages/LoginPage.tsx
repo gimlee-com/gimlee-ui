@@ -54,8 +54,8 @@ const LoginPage: React.FC = () => {
       } else {
         setError(response.message || t('auth.errors.loginFailed'));
       }
-    } catch (err: any) {
-      setError(err.message || t('auth.errors.generic'));
+    } catch (err: unknown) {
+      setError((err as Error).message || t('auth.errors.generic'));
     } finally {
       setLoading(false);
     }

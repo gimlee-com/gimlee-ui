@@ -141,7 +141,7 @@ export const OrderItemCard: React.FC<OrderItemCardProps> = ({ order, type }) => 
             >
               <hr className="uk-margin-small" />
               <div className="uk-padding-small uk-background-muted uk-border-rounded">
-                <Heading as="h5" className="uk-margin-small-bottom">{t('purchases.items' as any, 'Items')}</Heading>
+                <Heading as="h5" className="uk-margin-small-bottom">{t('purchases.items', 'Items')}</Heading>
                 <ul className="uk-list uk-list-divider uk-margin-remove">
                   {order.items.map((item, index) => (
                     <li key={index}>

@@ -1,6 +1,24 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit';
 import { chatService } from '../services/chatService';
-import type { ChatMessageDto } from '../types';
+import type { ChatMessageDto, ChatAuthorDto } from '../types';
+
+interface RawChatMessage {
+  id?: string;
+  chatId?: string;
+  author: string | ChatAuthorDto;
+  text?: string;
+  message?: string;
+  data?: string;
+  timestamp: string;
+}
+
+interface RawChatHistoryResponse {
+  messages?: RawChatMessage[];
+  content?: RawChatMessage[];
+  data?: RawChatMessage[];
+  items?: RawChatMessage[];
+  hasMore?: boolean;
+}
 
 export interface SingleChatState {
   messages: ChatMessageDto[];
@@ -91,7 +109,7 @@ export const chatSlice = createSlice({
         let hasMore = false;
 
         if (Array.isArray(rawData)) {
-          messages = rawData.map((m: any) => {
+          messages = (rawData as RawChatMessage[]).map((m) => {
             const author = typeof m.author === 'string' ? { username: m.author, userId: m.author } : m.author;
             const authorId = typeof m.author === 'string' ? m.author : (author?.username || author?.userId || 'anon');
             return {
@@ -104,8 +122,9 @@ export const chatSlice = createSlice({
           });
           hasMore = messages.length > 0;
         } else if (rawData && typeof rawData === 'object') {
-          const rawMessages = (rawData as any).messages || (rawData as any).content || (rawData as any).data || (rawData as any).items || [];
-          messages = rawMessages.map((m: any) => {
+          const rawObj = rawData as RawChatHistoryResponse;
+          const rawMessages = rawObj.messages || rawObj.content || rawObj.data || rawObj.items || [];
+          messages = rawMessages.map((m) => {
             const author = typeof m.author === 'string' ? { username: m.author, userId: m.author } : m.author;
             const authorId = typeof m.author === 'string' ? m.author : (author?.username || author?.userId || 'anon');
             return {
@@ -116,7 +135,7 @@ export const chatSlice = createSlice({
               timestamp: m.timestamp
             };
           });
-          hasMore = (rawData as any).hasMore ?? (messages.length > 0);
+          hasMore = rawObj.hasMore ?? (messages.length > 0);
         }
 
         if (isInitial) {

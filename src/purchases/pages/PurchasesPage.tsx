@@ -49,8 +49,8 @@ const PurchasesPage: React.FC = () => {
     try {
       const response = await purchaseService.getPurchases(page);
       setPurchasesPage(response);
-    } catch (err: any) {
-      setError(err.message || t('auth.errors.generic'));
+    } catch (err: unknown) {
+      setError((err as Error).message || t('auth.errors.generic'));
     } finally {
       setLoading(false);
     }

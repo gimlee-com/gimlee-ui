@@ -1,3 +1,4 @@
+import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import ProfilePage from './ProfilePage';
@@ -22,16 +23,16 @@ vi.mock('../services/presenceService', () => ({
 
 vi.mock('motion/react', () => ({
   motion: {
-    div: ({ children, layout, initial, animate, exit, transition, variants, ...props }: any) => <div {...props}>{children}</div>,
-    input: ({ children, layout, initial, animate, exit, transition, variants, ...props }: any) => <input {...props}>{children}</input>,
-    form: ({ children, layout, initial, animate, exit, transition, variants, ...props }: any) => <form {...props}>{children}</form>,
-    label: ({ children, layout, initial, animate, exit, transition, variants, ...props }: any) => <label {...props}>{children}</label>,
-    fieldset: ({ children, layout, initial, animate, exit, transition, variants, ...props }: any) => <fieldset {...props}>{children}</fieldset>,
-    legend: ({ children, layout, initial, animate, exit, transition, variants, ...props }: any) => <legend {...props}>{children}</legend>,
-    textarea: ({ children, layout, initial, animate, exit, transition, variants, ...props }: any) => <textarea {...props}>{children}</textarea>,
-    select: ({ children, layout, initial, animate, exit, transition, variants, ...props }: any) => <select {...props}>{children}</select>,
+    div: ({ children, layout: _layout, initial: _initial, animate: _animate, exit: _exit, transition: _transition, variants: _variants, ...props }: Record<string, unknown>) => <div {...props}>{children as React.ReactNode}</div>,
+    input: ({ children, layout: _layout, initial: _initial, animate: _animate, exit: _exit, transition: _transition, variants: _variants, ...props }: Record<string, unknown>) => <input {...props}>{children as React.ReactNode}</input>,
+    form: ({ children, layout: _layout, initial: _initial, animate: _animate, exit: _exit, transition: _transition, variants: _variants, ...props }: Record<string, unknown>) => <form {...props}>{children as React.ReactNode}</form>,
+    label: ({ children, layout: _layout, initial: _initial, animate: _animate, exit: _exit, transition: _transition, variants: _variants, ...props }: Record<string, unknown>) => <label {...props}>{children as React.ReactNode}</label>,
+    fieldset: ({ children, layout: _layout, initial: _initial, animate: _animate, exit: _exit, transition: _transition, variants: _variants, ...props }: Record<string, unknown>) => <fieldset {...props}>{children as React.ReactNode}</fieldset>,
+    legend: ({ children, layout: _layout, initial: _initial, animate: _animate, exit: _exit, transition: _transition, variants: _variants, ...props }: Record<string, unknown>) => <legend {...props}>{children as React.ReactNode}</legend>,
+    textarea: ({ children, layout: _layout, initial: _initial, animate: _animate, exit: _exit, transition: _transition, variants: _variants, ...props }: Record<string, unknown>) => <textarea {...props}>{children as React.ReactNode}</textarea>,
+    select: ({ children, layout: _layout, initial: _initial, animate: _animate, exit: _exit, transition: _transition, variants: _variants, ...props }: Record<string, unknown>) => <select {...props}>{children as React.ReactNode}</select>,
   },
-  AnimatePresence: ({ children }: any) => <>{children}</>,
+  AnimatePresence: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 
 vi.mock('../services/userService', () => ({
@@ -62,7 +63,7 @@ vi.mock('../../payments/services/paymentService', () => ({
 describe('ProfilePage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    (userService.getUserPreferences as any).mockResolvedValue({ language: 'en-US' });
+    vi.mocked(userService.getUserPreferences).mockResolvedValue({ language: 'en-US' });
   });
 
   const renderProfilePage = () => {
@@ -82,11 +83,11 @@ describe('ProfilePage', () => {
   };
 
   it('should call updateUserPreferences when language is changed and user is authenticated', async () => {
-    (apiClient.get as any).mockResolvedValue({
+    vi.mocked(apiClient.get).mockResolvedValue({
       accessToken: 'fake-token',
       userProfile: { userId: '1', avatarUrl: '', updatedAt: 0 }
     });
-    (userService.getUserPreferences as any).mockResolvedValue({ language: 'en-US' });
+    vi.mocked(userService.getUserPreferences).mockResolvedValue({ language: 'en-US' });
 
     renderProfilePage();
 
@@ -101,7 +102,7 @@ describe('ProfilePage', () => {
   });
 
   it('should NOT call updateUserPreferences when language is changed and user is NOT authenticated', async () => {
-    (apiClient.get as any).mockResolvedValue({
+    vi.mocked(apiClient.get).mockResolvedValue({
       accessToken: '',
       userProfile: null
     });
@@ -116,13 +117,13 @@ describe('ProfilePage', () => {
   });
 
   it('should hide transaction lists by default and toggle them on button click', async () => {
-    (apiClient.get as any).mockResolvedValue({
+    vi.mocked(apiClient.get).mockResolvedValue({
       accessToken: 'fake-token',
       userProfile: { userId: '1', avatarUrl: '', updatedAt: 0 }
     });
     
     const mockTxs = [{ txid: 'test-transaction-id', amount: 10, confirmations: 1, zAddress: 'addr1' }];
-    (paymentService.getPirateChainTransactions as any).mockResolvedValue(mockTxs);
+    vi.mocked(paymentService.getPirateChainTransactions).mockResolvedValue(mockTxs);
 
     renderProfilePage();
 
@@ -147,12 +148,12 @@ describe('ProfilePage', () => {
   });
 
   it('should display error message below input when viewing key update fails', async () => {
-    (apiClient.get as any).mockResolvedValue({
+    vi.mocked(apiClient.get).mockResolvedValue({
       accessToken: 'fake-token',
       userProfile: { userId: '1', avatarUrl: '', updatedAt: 0 }
     });
     
-    (paymentService.addPirateChainViewKey as any).mockRejectedValue(new Error('Invalid key format'));
+    vi.mocked(paymentService.addPirateChainViewKey).mockRejectedValue(new Error('Invalid key format'));
 
     renderProfilePage();
 
@@ -179,12 +180,12 @@ describe('ProfilePage', () => {
   });
 
   it('should show error message immediately when submitting with ENTER even if input is focused', async () => {
-    (apiClient.get as any).mockResolvedValue({
+    vi.mocked(apiClient.get).mockResolvedValue({
       accessToken: 'fake-token',
       userProfile: { userId: '1', avatarUrl: '', updatedAt: 0 }
     });
     
-    (paymentService.addPirateChainViewKey as any).mockRejectedValue(new Error('Invalid key format'));
+    vi.mocked(paymentService.addPirateChainViewKey).mockRejectedValue(new Error('Invalid key format'));
 
     renderProfilePage();
 
@@ -205,7 +206,7 @@ describe('ProfilePage', () => {
   });
 
   it('should have a 100-character limit on the custom status input', async () => {
-    (apiClient.get as any).mockResolvedValue({
+    vi.mocked(apiClient.get).mockResolvedValue({
       accessToken: 'fake-token',
       userProfile: { userId: '1', avatarUrl: '', updatedAt: 0 }
     });

@@ -1,15 +1,15 @@
 import { apiClient } from '../../services/apiClient';
-import type { NewMessageRequestDto } from '../types';
+import type { NewMessageRequestDto, ChatMessageDto } from '../types';
 
 export const chatService = {
   getHistory: (chatId: string, limit = 20, beforeId?: string) => {
     const params = new URLSearchParams({ limit: limit.toString() });
     if (beforeId) params.append('beforeId', beforeId);
-    return apiClient.get<any>(`/chat/${chatId}/messages?${params.toString()}`);
+    return apiClient.get<unknown>(`/chat/${chatId}/messages?${params.toString()}`);
   },
 
   sendMessage: (chatId: string, data: NewMessageRequestDto) => {
-    return apiClient.post<any>(`/chat/${chatId}/messages`, data);
+    return apiClient.post<ChatMessageDto>(`/chat/${chatId}/messages`, data);
   },
 
   notifyTyping: (chatId: string) => {

@@ -7,6 +7,7 @@ import UserSpacePage from './UserSpacePage';
 import { spacesService } from '../services/spacesService';
 import { AuthProvider } from '../../context/AuthContext';
 import { PresenceProvider } from '../../context/PresenceContext';
+import type { UserSpaceDto } from '../../types/api';
 
 vi.mock('../services/spacesService', () => ({
   spacesService: {
@@ -71,7 +72,7 @@ describe('UserSpacePage', () => {
   });
 
   it('renders user data and ads after successful fetch', async () => {
-    vi.mocked(spacesService.fetchUserSpace).mockResolvedValue(mockData as any);
+    vi.mocked(spacesService.fetchUserSpace).mockResolvedValue(mockData as unknown as UserSpaceDto);
 
     render(
       <Provider store={createMockStore()}>
