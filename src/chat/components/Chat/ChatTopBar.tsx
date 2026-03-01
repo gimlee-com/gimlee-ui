@@ -33,6 +33,7 @@ export const ChatTopBarPortal: React.FC<{ children: React.ReactNode }> = ({ chil
 
     observer.observe(document.body, { childList: true, subtree: true });
     return () => observer.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- container is state set by this effect; including it would cause unnecessary observer re-creation
   }, []);
 
   if (!container) return null;

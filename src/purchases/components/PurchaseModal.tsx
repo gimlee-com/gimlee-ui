@@ -75,7 +75,7 @@ export const PurchaseModal = forwardRef<HTMLDivElement, PurchaseModalProps>(
       };
 
       UIkit.util.on(element, 'hidden', handleHidden);
-    }, [onClose, dispatch, status]);
+    }, [onClose, dispatch, status, modalRef]);
 
     useEffect(() => {
       if (status === 'AWAITING_PAYMENT') {

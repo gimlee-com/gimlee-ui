@@ -62,7 +62,7 @@ export const MediaEditor: React.FC<MediaEditorProps> = ({ id = 'media-editor', i
         UIkit.util.off(modalEl, 'hidden', onCancel);
       };
     }
-  }, [modalInstance, onCancel]);
+  }, [modalInstance, onCancel, modalRef]);
 
   const onCropComplete = useCallback((_croppedArea: Area, croppedAreaPixels: Area) => {
     setCroppedAreaPixels(croppedAreaPixels);

@@ -54,7 +54,7 @@ const PurchasesPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     fetchPurchases();

@@ -55,7 +55,7 @@ const SalesOrdersPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     fetchOrders();

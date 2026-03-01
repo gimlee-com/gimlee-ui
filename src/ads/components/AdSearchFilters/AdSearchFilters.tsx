@@ -56,6 +56,7 @@ export const AdSearchFilters: React.FC = () => {
     }
     // Note: Category name fetching is missing as there's no easy endpoint for it by ID alone without tree.
     // For now, if catId is present but selectedCategory is null, we just know it's filtered by some category.
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- selectedCity is state set by this effect; including it would cause unnecessary re-execution
   }, [searchParams]);
 
   const applyFilters = useCallback((overrides: Record<string, string | null> = {}) => {

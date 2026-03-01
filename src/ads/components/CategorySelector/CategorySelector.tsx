@@ -74,7 +74,7 @@ export const CategorySelector = forwardRef<HTMLDivElement, CategorySelectorProps
         UIkit.util.off(modalElement, 'beforeshow', reset);
       };
     }
-  }, [modalInstance, reset]);
+  }, [modalInstance, reset, modalRef]);
 
   const handleCategoryClick = async (category: CategoryTreeDto, columnIndex: number) => {
     const newPath = [...selectedPath.slice(0, columnIndex), category];
