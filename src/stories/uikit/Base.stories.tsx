@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Panel } from '../../components/uikit/Panel/Panel'
 
 const meta: Meta = {
@@ -51,7 +51,6 @@ export const TextSemantics: Story = {
 }
 
 export const Headings: Story = {
-  name: 'Headings',
   render: () => (
     <Panel className="uk-padding">
       <h1>h1 Heading 1</h1>
@@ -70,7 +69,6 @@ export const Headings: Story = {
 }
 
 export const Lists: Story = {
-  name: 'Lists',
   render: () => (
     <Panel className="uk-padding uk-child-width-1-2@s" uk-grid="">
       <div>

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import {
   Accordion,
   AccordionItem,
@@ -53,7 +53,6 @@ export const Basic: Story = {
 }
 
 export const WithIcon: Story = {
-  name: 'With Icon',
   render: (args) => (
     <Accordion className="uk-accordion-default" {...args}>
       <AccordionItem open>

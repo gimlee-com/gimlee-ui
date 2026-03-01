@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Panel } from '../../components/uikit/Panel/Panel'
 
 const meta: Meta = {
@@ -24,7 +24,6 @@ export const Usage: Story = {
 }
 
 export const ResponsiveHidden: Story = {
-  name: 'Responsive Hidden',
   render: () => (
     <Panel className="uk-padding">
       <p>The green elements are hidden on screens that are larger than the defined breakpoint. Resize your browser window to see the effect.</p>
@@ -59,7 +58,6 @@ export const ResponsiveHidden: Story = {
 }
 
 export const ResponsiveVisible: Story = {
-  name: 'Responsive Visible',
   render: () => (
     <Panel className="uk-padding">
       <p>The green elements are displayed on screens that are larger than the defined breakpoint. Resize your browser window to see the effect.</p>

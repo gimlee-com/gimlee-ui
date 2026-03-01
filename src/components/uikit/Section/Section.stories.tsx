@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Section } from './Section'
 import { Container } from '../Container/Container'
 import { Grid } from '../Grid/Grid'
@@ -85,7 +85,6 @@ export const Secondary: Story = {
 }
 
 export const PreserveColor: Story = {
-  name: 'Preserve Color',
   args: {
     variant: 'primary',
     preserveColor: true,

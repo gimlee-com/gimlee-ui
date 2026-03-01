@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Grid } from '../uikit/Grid/Grid.tsx'
 import { Button } from '../uikit/Button/Button.tsx'
 import {
@@ -148,7 +148,6 @@ export const Messages: Story = {
 }
 
 export const LayoutStacked: Story = {
-  name: 'Layout Stacked',
   render: () => (
     <Form layout="stacked">
       <div className="uk-margin">
@@ -171,7 +170,6 @@ export const LayoutStacked: Story = {
 }
 
 export const LayoutHorizontal: Story = {
-  name: 'Layout Horizontal',
   render: () => (
     <Form layout="horizontal" className="uk-margin-large">
       <div className="uk-margin">
@@ -217,7 +215,6 @@ export const Icons: Story = {
 }
 
 export const CustomControls: Story = {
-  name: 'Custom Controls',
   render: () => (
     <Form>
       <div className="uk-margin">

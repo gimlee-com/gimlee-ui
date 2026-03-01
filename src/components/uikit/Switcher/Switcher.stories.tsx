@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Switcher, SwitcherContainer } from './Switcher'
 import { Grid } from '../Grid/Grid'
 
@@ -36,7 +36,6 @@ export const Basic: Story = {
 }
 
 export const NavigationControls: Story = {
-  name: 'Navigation Controls',
   render: (args) => (
     <div>
       <Switcher {...args} className="uk-subnav uk-subnav-pill">
@@ -94,7 +93,6 @@ export const Animations: Story = {
 }
 
 export const VerticalTabs: Story = {
-  name: 'Vertical Tabs',
   render: () => (
     <Grid className="uk-child-width-1-2@s">
       <div>

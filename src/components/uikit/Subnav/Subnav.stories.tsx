@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Subnav } from './Subnav'
 import { Icon } from '../Icon/Icon'
 import { Dropdown } from '../Dropdown/Dropdown'
@@ -77,5 +77,4 @@ export const WithDropdown: Story = {
   args: {
     variant: 'pill',
   },
-  name: 'With Dropdown',
 }

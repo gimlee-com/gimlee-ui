@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Grid } from '../../components/uikit/Grid/Grid'
 import { Panel } from '../../components/uikit/Panel/Panel'
 
@@ -62,7 +62,6 @@ export const StylesTransformsDecoration: Story = {
 }
 
 export const Colors: Story = {
-  name: 'Colors',
   render: () => (
     <Panel className="uk-padding">
       <Grid gap="small" className="uk-child-width-1-2@m">

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Card, CardBody } from '../../components/uikit/Card/Card'
 
 const meta: Meta = {
@@ -27,7 +27,6 @@ export const Usage: Story = {
 }
 
 export const HorizontalAlignment: Story = {
-  name: 'Horizontal Alignment',
   render: () => (
     <div className="uk-padding" uk-margin="">
       <h4>Center</h4>
@@ -59,7 +58,6 @@ export const HorizontalAlignment: Story = {
 }
 
 export const VerticalAlignment: Story = {
-  name: 'Vertical Alignment',
   render: () => (
     <div className="uk-flex uk-flex-middle uk-text-center uk-padding">
       <Card>

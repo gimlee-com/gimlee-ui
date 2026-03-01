@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Grid } from './Grid'
 import { Card, CardBody, CardTitle } from '../Card/Card'
 import { Section } from '../Section/Section'
@@ -72,7 +72,6 @@ export const WithGap: Story = {
 }
 
 export const WithMatchHeight: Story = {
-  name: 'With Match Height',
   render: renderGridWithCards,
   args: {
     match: true,
@@ -82,7 +81,6 @@ export const WithMatchHeight: Story = {
 }
 
 export const WithMasonry: Story = {
-  name: 'With Masonry',
   render: (args) => (
     <Grid {...args} className="uk-child-width-1-3@m">
       <div>
@@ -146,7 +144,6 @@ export const WithMasonry: Story = {
 }
 
 export const WithParallax: Story = {
-  name: 'With Parallax',
   render: (args) => (
     <div>
       <Section size="large">

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import {
   Navbar,
   NavbarContainer,
@@ -79,7 +79,6 @@ export const Basic: Story = {
 }
 
 export const WithDropbar: Story = {
-  name: 'With Dropbar',
   render: (args) => (
     <div className="uk-position-relative">
       <NavbarContainer>
@@ -140,8 +139,6 @@ export const CenteredLogo: Story = {
     delayShow: 444,
     animation: "fade"
   },
-
-  name: 'Centered Logo',
 
   render: (args) => (
     <NavbarContainer>
@@ -242,7 +239,6 @@ export const ToggleOnMobile: Story = {
 }
 
 export const StickyNavbar: Story = {
-  name: 'Sticky Navbar',
   render: (args) => (
     <div className="uk-height-large uk-background-muted">
       <Sticky clsActive="uk-navbar-sticky" offset={60}>

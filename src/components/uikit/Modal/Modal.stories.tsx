@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import {
   Modal,
   ModalDialog,
@@ -56,7 +56,6 @@ export const Basic: Story = {
 }
 
 export const CloseButtons: Story = {
-  name: 'Close Buttons',
   render: (args) => (
     <div uk-margin="">
       <Button uk-toggle="target: #modal-close-default">Default</Button>

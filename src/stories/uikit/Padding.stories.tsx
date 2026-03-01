@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Panel } from '../../components/uikit/Panel/Panel'
 
 const meta: Meta = {
@@ -28,7 +28,6 @@ export const Usage: Story = {
 }
 
 export const RemovePadding: Story = {
-  name: 'Remove Padding',
   render: () => (
     <Panel className="uk-padding">
        <div className="uk-background-muted uk-padding-remove uk-margin">
