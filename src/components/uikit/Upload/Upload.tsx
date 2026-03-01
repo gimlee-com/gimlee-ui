@@ -16,17 +16,17 @@ type UploadProps = React.HTMLAttributes<HTMLDivElement> & {
   msgInvalidMime?: string
   msgInvalidName?: string
   clsDragover?: string
-  abort?: Function
-  beforeAll?: Function
-  beforeSend?: Function
-  complete?: Function
-  completeAll?: Function
-  error?: Function
-  load?: Function
-  loadEnd?: Function
-  loadStart?: Function
-  progress?: Function
-  fail?: Function
+  abort?: (e: ProgressEvent) => void
+  beforeAll?: (...args: unknown[]) => void
+  beforeSend?: (env: unknown) => void
+  complete?: (xhr: XMLHttpRequest) => void
+  completeAll?: (xhr: XMLHttpRequest) => void
+  error?: (e: unknown) => void
+  load?: (e: ProgressEvent) => void
+  loadEnd?: (e: ProgressEvent) => void
+  loadStart?: (e: ProgressEvent) => void
+  progress?: (e: ProgressEvent) => void
+  fail?: (message: string) => void
 }
 
 export const Upload = forwardRef<HTMLDivElement, UploadProps>(
