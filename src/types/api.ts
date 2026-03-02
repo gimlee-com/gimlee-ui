@@ -301,11 +301,17 @@ export interface PageAdDto {
   page: PageMetadata;
 }
 
+export interface FieldErrorDto {
+  field: string;
+  message: string;
+}
+
 export interface StatusResponseDto {
   success: boolean;
   status: string;
   message?: string;
   data?: unknown;
+  fieldErrors?: FieldErrorDto[];
 }
 
 export interface IdentityVerificationResponse {

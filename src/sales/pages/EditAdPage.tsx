@@ -7,13 +7,13 @@ import UIkit from 'uikit';
 import { salesService } from '../services/salesService';
 import { cityService } from '../../ads/services/cityService';
 import { apiClient } from '../../services/apiClient';
-import type { AdDto, UpdateAdRequestDto, CitySuggestion, CityDetailsDto, MediaUploadResponseDto, AllowedCurrenciesDto, CategoryPathElementDto, PricingMode } from '../../types/api';
+import type { AdDto, UpdateAdRequestDto, CitySuggestion, CityDetailsDto, MediaUploadResponseDto, AllowedCurrenciesDto, CategoryPathElementDto, PricingMode, StatusResponseDto } from '../../types/api';
 import { Heading } from '../../components/uikit/Heading/Heading';
 import { Spinner } from '../../components/uikit/Spinner/Spinner';
 import { Button } from '../../components/uikit/Button/Button';
 import { Alert } from '../../components/uikit/Alert/Alert';
 import { Label } from '../../components/uikit/Label/Label';
-import { Form, Input, Select, NumberInput } from '../../components/Form/Form';
+import { Form, Input, Select, NumberInput, FormMessage } from '../../components/Form/Form';
 import { Grid } from '../../components/uikit/Grid/Grid';
 import { Card, CardBody } from '../../components/uikit/Card/Card';
 import { Upload } from '../../components/uikit/Upload/Upload';
@@ -52,13 +52,13 @@ const EditAdPage: React.FC = () => {
   const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { register, handleSubmit, reset, control, watch, setValue, formState: { errors } } = useForm<UpdateAdRequestDto>({
+  const { register, handleSubmit, reset, control, watch, setValue, setError: setFieldError, formState: { errors } } = useForm<UpdateAdRequestDto>({
     mode: 'onBlur'
   });
   const [ad, setAd] = useState<AdDto | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [pageError, setPageError] = useState<string | null>(null);
   const [mediaPaths, setMediaPaths] = useState<string[]>([]);
   const [mainPhotoPath, setMainPhotoPath] = useState<string | null>(null);
   const [citySearch, setCitySearch] = useState('');
@@ -113,7 +113,7 @@ const EditAdPage: React.FC = () => {
           });
         }
       } catch (err: unknown) {
-        setError((err as Error).message || t('auth.errors.generic'));
+        setPageError((err as Error).message || t('auth.errors.generic'));
       } finally {
         setLoading(false);
       }
@@ -157,7 +157,7 @@ const EditAdPage: React.FC = () => {
   const onSubmit = async (data: UpdateAdRequestDto) => {
     if (!id) return;
     setSaving(true);
-    setError(null);
+    setPageError(null);
     try {
       const updateData: UpdateAdRequestDto = {
           ...data,
@@ -175,15 +175,29 @@ const EditAdPage: React.FC = () => {
       });
       navigate('/sales/ads');
     } catch (err: unknown) {
-      const message = (err as Error).message || t('auth.errors.generic');
-      UIkit.notification({
-        message,
-        status: 'danger',
-        pos: 'top-center',
-        timeout: 5000
-      });
-      // Remove local error state since we show toast
-      // setError(message); 
+      const errorBody = err as StatusResponseDto;
+      const fieldErrors = errorBody?.fieldErrors;
+
+      if (fieldErrors && fieldErrors.length > 0) {
+        const formFields: Array<keyof UpdateAdRequestDto> = [
+          'title', 'description', 'pricingMode', 'price', 'priceCurrency',
+          'settlementCurrencies', 'volatilityProtection', 'location',
+          'mediaPaths', 'mainPhotoPath', 'stock', 'categoryId'
+        ];
+        for (const fe of fieldErrors) {
+          if (formFields.includes(fe.field as keyof UpdateAdRequestDto)) {
+            setFieldError(fe.field as keyof UpdateAdRequestDto, { type: 'server', message: fe.message });
+          }
+        }
+      } else {
+        const message = errorBody?.message || (err as Error).message || t('auth.errors.generic');
+        UIkit.notification({
+          message,
+          status: 'danger',
+          pos: 'top-center',
+          timeout: 5000
+        });
+      }
     } finally {
       setSaving(false);
     }
@@ -212,7 +226,7 @@ const EditAdPage: React.FC = () => {
           return updated;
         });
     } catch (err: unknown) {
-        setError((err as Error).message || t('auth.errors.generic'));
+        setPageError((err as Error).message || t('auth.errors.generic'));
     }
   };
 
@@ -245,14 +259,14 @@ const EditAdPage: React.FC = () => {
       
       setEditingImagePath(null);
     } catch (err: unknown) {
-      setError((err as Error).message || t('auth.errors.generic'));
+      setPageError((err as Error).message || t('auth.errors.generic'));
     } finally {
       setSaving(false);
     }
   };
 
   if (loading) return <div className="uk-flex uk-flex-center uk-margin-large-top"><Spinner ratio={2} /></div>;
-  if (!ad) return <Alert variant="danger">{error || t('ads.notFound')}</Alert>;
+  if (!ad) return <Alert variant="danger">{pageError || t('ads.notFound')}</Alert>;
 
   return (
     <motion.div
@@ -271,7 +285,7 @@ const EditAdPage: React.FC = () => {
 
       <Heading as="h2" className="uk-margin-medium-bottom">{t('ads.editTitle')}: {ad.title}</Heading>
       
-      {error && <Alert variant="danger" onClose={() => setError(null)}>{error}</Alert>}
+      {pageError && <Alert variant="danger" onClose={() => setPageError(null)}>{pageError}</Alert>}
   
       {allowedCurrencies.settlementCurrencies.length === 0 && (
         <Alert variant="warning" className="uk-margin-medium-bottom">
@@ -309,6 +323,11 @@ const EditAdPage: React.FC = () => {
                     {t('ads.titleGuidance')}
                   </div>
                 )}
+                <AnimatePresence>
+                  {errors.title?.message && !titleFocused && (
+                    <FormMessage>{errors.title.message}</FormMessage>
+                  )}
+                </AnimatePresence>
               </div>
 
               <div className="uk-margin">
@@ -330,6 +349,11 @@ const EditAdPage: React.FC = () => {
                     {t('ads.descriptionGuidance')}
                   </div>
                 )}
+                <AnimatePresence>
+                  {errors.description?.message && !descriptionFocused && (
+                    <FormMessage>{errors.description.message}</FormMessage>
+                  )}
+                </AnimatePresence>
               </div>
             </CardBody>
           </Card>
@@ -434,9 +458,12 @@ const EditAdPage: React.FC = () => {
                     </div>
                   )}
                 />
+                <AnimatePresence>
+                  {errors.settlementCurrencies?.message && (
+                    <FormMessage>{errors.settlementCurrencies.message}</FormMessage>
+                  )}
+                </AnimatePresence>
               </div>
-
-              {/* Pricing Mode */}
               <div className="uk-margin">
                 <label className="uk-form-label">{t('pricing.mode')}</label>
                 <Controller
@@ -488,9 +515,12 @@ const EditAdPage: React.FC = () => {
                     </div>
                   )}
                 />
+                <AnimatePresence>
+                  {errors.pricingMode?.message && (
+                    <FormMessage>{errors.pricingMode.message}</FormMessage>
+                  )}
+                </AnimatePresence>
               </div>
-
-              {/* Price + Currency */}
               <Grid gap="small">
                 <div className="uk-width-1-2@m">
                   <label className="uk-form-label">{t('ads.price')}</label>
@@ -503,6 +533,7 @@ const EditAdPage: React.FC = () => {
                         type="number"
                         step="0.00000001"
                         value={field.value ?? ''}
+                        status={errors.price && !priceFocused ? 'danger' : undefined}
                         onChange={(e) => {
                           const val = e.target.value;
                           const numVal = parseFloat(val);
@@ -521,6 +552,11 @@ const EditAdPage: React.FC = () => {
                       {t('ads.priceGuidance')}
                     </div>
                   )}
+                  <AnimatePresence>
+                    {errors.price?.message && !priceFocused && (
+                      <FormMessage>{errors.price.message}</FormMessage>
+                    )}
+                  </AnimatePresence>
                 </div>
                 <div className="uk-width-1-2@m">
                   <label className="uk-form-label">{t('pricing.referenceCurrency')}</label>
@@ -532,6 +568,11 @@ const EditAdPage: React.FC = () => {
                       <option key={c.code} value={c.code}>{c.code} ({c.name})</option>
                     ))}
                   </Select>
+                  <AnimatePresence>
+                    {errors.priceCurrency?.message && (
+                      <FormMessage>{errors.priceCurrency.message}</FormMessage>
+                    )}
+                  </AnimatePresence>
                 </div>
               </Grid>
 
@@ -585,6 +626,7 @@ const EditAdPage: React.FC = () => {
                       {...field}
                       min={0}
                       formWidth="small"
+                      status={errors.stock && !stockFocused ? 'danger' : undefined}
                       onFocus={() => setStockFocused(true)}
                       onBlur={() => {
                         field.onBlur();
@@ -598,6 +640,11 @@ const EditAdPage: React.FC = () => {
                     {t('ads.stockGuidance')}
                   </div>
                 )}
+                <AnimatePresence>
+                  {errors.stock?.message && !stockFocused && (
+                    <FormMessage>{errors.stock.message}</FormMessage>
+                  )}
+                </AnimatePresence>
               </div>
             </CardBody>
           </Card>
