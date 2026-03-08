@@ -23,7 +23,7 @@ describe('ApiClient', () => {
   beforeEach(() => {
     // @ts-expect-error -- Deleting window.location for test mock
     delete window.location;
-    window.location = { ...originalLocation, href: '', pathname: '/current-page', search: '?q=test' } as unknown as Location;
+    window.location = { ...originalLocation, href: '', pathname: '/current-page', search: '?q=test' } as unknown as string & Location;
     vi.stubGlobal('fetch', vi.fn());
   });
 
@@ -47,7 +47,7 @@ describe('ApiClient', () => {
     await apiClient.get('/test');
 
     const fetchCall = vi.mocked(fetch).mock.calls[0];
-    const headers = fetchCall[1].headers;
+    const headers = fetchCall![1]!.headers as Headers;
     expect(headers.get('Accept-Language')).toBe('pl-PL');
 
     // Restore i18n language

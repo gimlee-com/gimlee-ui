@@ -40,7 +40,7 @@ describe('AuthContext', () => {
       accessToken: 'fake-token',
       userProfile: { userId: '1', avatarUrl: '', updatedAt: 0 }
     });
-    vi.mocked(userService.getUserPreferences).mockResolvedValue({ language: 'pl-PL' });
+    vi.mocked(userService.getUserPreferences).mockResolvedValue({ language: 'pl-PL', preferredCurrency: 'USD' });
 
     render(
       <AuthProvider>
@@ -88,7 +88,7 @@ describe('AuthContext', () => {
       userProfile: { userId: '1', avatarUrl: '', updatedAt: 0 }
     });
 
-    vi.mocked(userService.getUserPreferences).mockResolvedValue({ language: 'en-US' });
+    vi.mocked(userService.getUserPreferences).mockResolvedValue({ language: 'en-US', preferredCurrency: 'USD' });
 
     let loginFn: (token: string) => Promise<void> = async () => {};
     const TestLoginComponent = () => {

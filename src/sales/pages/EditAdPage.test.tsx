@@ -35,10 +35,11 @@ vi.mock('../../ads/components/CategorySelector/CategorySelector', () => ({
 
 const mockAd = {
   id: '1',
+  userId: 'user-1',
   title: 'Test Ad',
   description: 'Test Description',
   price: { amount: 10, currency: 'ARRR' },
-  pricingMode: 'FIXED_CRYPTO',
+  pricingMode: 'FIXED_CRYPTO' as const,
   settlementCurrencies: ['ARRR'],
   frozenCurrencies: [],
   isBuyable: true,
@@ -52,10 +53,13 @@ const mockAd = {
     }
   },
   mediaPaths: [],
-  mainPhotoPath: null,
-  status: 'ACTIVE',
+  mainPhotoPath: undefined,
+  status: 'ACTIVE' as const,
   stock: 1,
-  availableStock: 1
+  lockedStock: 0,
+  availableStock: 1,
+  createdAt: '2025-01-01T00:00:00Z',
+  updatedAt: '2025-01-01T00:00:00Z'
 };
 
 const renderEditAdPage = () => {

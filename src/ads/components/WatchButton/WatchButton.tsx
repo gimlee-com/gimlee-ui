@@ -22,11 +22,11 @@ const heartVariants = {
   initial: { scale: 1 },
   watched: { 
     scale: [1, 1.3, 1],
-    transition: { duration: 0.25, ease: 'easeInOut' }
+    transition: { duration: 0.25, ease: 'easeInOut' as const }
   },
   unwatched: { 
     scale: 1,
-    transition: { type: 'spring', stiffness: 400, damping: 40 }
+    transition: { type: 'spring' as const, stiffness: 400, damping: 40 }
   }
 };
 

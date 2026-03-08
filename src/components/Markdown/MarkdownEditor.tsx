@@ -148,7 +148,6 @@ const EditorComponent: React.FC<MarkdownEditorProps> = ({ value, onChange, onBlu
           uploadWidgetFactory: (pos, spec) => {
             const widgetDOM = document.createElement('span');
             widgetDOM.textContent = 'Upload in progress...';
-            // @ts-expect-error -- Decoration.widget typing mismatch with prosemirror-upload
             return Decoration.widget(pos, widgetDOM, spec);
           },
           uploader: async (files, schema) => {

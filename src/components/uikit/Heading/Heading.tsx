@@ -40,7 +40,7 @@ export const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(
 
     return (
       <Tag
-        ref={ref as React.Ref<HTMLElement>}
+        ref={ref}
         className={classNames.join(' ') || undefined}
         {...props}
       >

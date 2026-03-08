@@ -5,6 +5,7 @@ import { Chat } from '../Chat/Chat';
 import { Modal, ModalDialog, ModalBody, ModalHeader, ModalTitle, ModalCloseDefault } from '../../../components/uikit/Modal/Modal';
 import { useUIKit } from '../../../hooks/useUIkit';
 import { Icon } from '../../../components/uikit/Icon/Icon';
+import UIkit from 'uikit';
 import styles from '../../../components/FloatingButton/FloatingButton.module.scss';
 import classNames from 'classnames';
 

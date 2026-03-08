@@ -14,7 +14,8 @@ export const Close = forwardRef<HTMLElement, CloseProps>(
 
     return (
       <Tag
-        ref={ref as React.Ref<HTMLElement>}
+        // @ts-expect-error -- Polymorphic component: ref type varies with dynamic tag
+        ref={ref}
         className={classNames.length > 0 ? classNames.join(' ') : undefined}
         uk-close=""
         href={href}

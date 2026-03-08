@@ -17,7 +17,7 @@ type UploadProps = React.HTMLAttributes<HTMLDivElement> & {
   msgInvalidName?: string
   clsDragover?: string
   abort?: (e: ProgressEvent) => void
-  beforeAll?: (...args: unknown[]) => void
+  beforeAll?: (event: unknown, files: FileList) => void | boolean
   beforeSend?: (env: unknown) => void
   complete?: (xhr: XMLHttpRequest) => void
   completeAll?: (xhr: XMLHttpRequest) => void

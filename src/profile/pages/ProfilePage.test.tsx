@@ -63,7 +63,7 @@ vi.mock('../../payments/services/paymentService', () => ({
 describe('ProfilePage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(userService.getUserPreferences).mockResolvedValue({ language: 'en-US' });
+    vi.mocked(userService.getUserPreferences).mockResolvedValue({ language: 'en-US', preferredCurrency: 'USD' });
   });
 
   const renderProfilePage = () => {
@@ -87,7 +87,7 @@ describe('ProfilePage', () => {
       accessToken: 'fake-token',
       userProfile: { userId: '1', avatarUrl: '', updatedAt: 0 }
     });
-    vi.mocked(userService.getUserPreferences).mockResolvedValue({ language: 'en-US' });
+    vi.mocked(userService.getUserPreferences).mockResolvedValue({ language: 'en-US', preferredCurrency: 'USD' });
 
     renderProfilePage();
 
