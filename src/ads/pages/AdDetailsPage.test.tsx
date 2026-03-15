@@ -17,6 +17,15 @@ vi.mock('../services/adService', () => ({
   },
 }));
 
+vi.mock('../services/qaService', () => ({
+  qaService: {
+    getQuestions: vi.fn().mockResolvedValue({ content: [], page: { size: 10, number: 0, totalElements: 0, totalPages: 0 } }),
+    getMyUnanswered: vi.fn().mockResolvedValue([]),
+    getSellerUnanswered: vi.fn().mockResolvedValue({ content: [], page: { size: 10, number: 0, totalElements: 0, totalPages: 0 } }),
+    getStats: vi.fn().mockResolvedValue({ totalAnswered: 0, totalUnanswered: 0 }),
+  },
+}));
+
 const mockAd: AdDiscoveryDetailsDto = {
   id: '1',
   title: 'Test Ad',

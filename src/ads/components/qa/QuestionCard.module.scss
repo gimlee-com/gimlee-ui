@@ -1,0 +1,56 @@
+@import '../../../styles/uikit-imports';
+
+.questionCard {
+  border-radius: $card-border-radius;
+  margin-bottom: $global-small-margin;
+}
+
+.pinnedCard {
+  border-left: 3px solid $global-primary-background;
+}
+
+.upvoteButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 4px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: $global-muted-color;
+  transition: color 0.15s ease;
+
+  &:hover {
+    color: $global-primary-background;
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.5;
+  }
+}
+
+.upvoteActive {
+  color: $global-primary-background;
+}
+
+.upvoteCount {
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+.actionBar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: $global-small-margin;
+}
+
+.answers {
+  margin-top: $global-small-margin;
+  padding: $global-small-gutter;
+  background: color-mix(in srgb, $global-muted-background, transparent 40%);
+  border-radius: $card-border-radius;
+}

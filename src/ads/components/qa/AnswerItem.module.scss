@@ -1,0 +1,21 @@
+@import '../../../styles/uikit-imports';
+
+.answerContainer {
+  padding: $global-small-gutter;
+  border-left: 3px solid $global-border;
+  margin-top: $global-small-margin;
+
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+.sellerBadge {
+  background-color: $global-primary-background;
+  color: $global-inverse-color;
+}
+
+.communityBadge {
+  background-color: $global-muted-background;
+  color: $global-muted-color;
+}

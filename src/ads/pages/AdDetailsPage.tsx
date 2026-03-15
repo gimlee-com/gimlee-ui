@@ -32,6 +32,7 @@ import { Image } from '../../components/Image/Image';
 import { AvatarWithPresence } from '../../components/AvatarWithPresence';
 import { AdCard } from '../components/AdCard';
 import { WatchButton } from '../components/WatchButton/WatchButton';
+import { QuestionsSection } from '../components/qa/QuestionsSection';
 import styles from './AdDetailsPage.module.scss';
 
 const API_URL = import.meta.env.VITE_API_URL || '';
@@ -440,15 +441,8 @@ const AdDetailsPage: React.FC = () => {
             </motion.div>
           )}
 
-          <motion.div variants={itemVariants} className="uk-margin-large-top">
-            <Heading as="h4" divider>{t('adDetails.questions')}</Heading>
-            <div className="uk-text-center uk-padding-large uk-background-muted uk-border-rounded">
-              <Icon icon="question" ratio={2} className="uk-text-muted uk-margin-small-bottom" />
-              <p className="uk-text-muted">{t('adDetails.noQuestions')}</p>
-              <Button variant="default" className="uk-margin-small-top">
-                {t('adDetails.askQuestion')}
-              </Button>
-            </div>
+          <motion.div variants={itemVariants}>
+            <QuestionsSection adId={ad.id} sellerId={ad.user?.userId} />
           </motion.div>
         </div>
         <div className="uk-width-1-3@m">

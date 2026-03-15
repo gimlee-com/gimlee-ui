@@ -19,3 +19,18 @@ export const formatRelativeTime = (microseconds: number): string => {
     locale 
   });
 };
+
+/**
+ * Formats an ISO 8601 date-time string as a relative time string.
+ * Used by Q&A and other features that return ISO timestamps.
+ */
+export const formatRelativeTimeFromIso = (isoString: string): string => {
+  const date = new Date(isoString);
+
+  const locale = i18n.language === 'pl-PL' ? pl : enUS;
+
+  return formatDistanceToNow(date, {
+    addSuffix: true,
+    locale
+  });
+};

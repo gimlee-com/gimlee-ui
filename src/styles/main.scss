@@ -105,6 +105,13 @@
   border-radius: var(--global-border-radius) !important;
 }
 
+@mixin hook-form-misc() {
+  // Prevent extreme border-radius on multi-line inputs (e.g. dark-unicorn's 500px pill radius)
+  .uk-textarea {
+    border-radius: var(--card-border-radius, 8px) !important;
+  }
+}
+
 // 4. Import the full UIkit theme.
 @import 'uikit/src/scss/uikit-theme.scss';
 
