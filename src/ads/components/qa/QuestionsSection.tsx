@@ -38,9 +38,9 @@ const itemVariants = {
 
 export const QuestionsSection: React.FC<QuestionsSectionProps> = ({ adId, sellerId }) => {
   const { t } = useTranslation();
-  const { isAuthenticated, userProfile } = useAuth();
+  const { isAuthenticated, userId } = useAuth();
 
-  const isSeller = Boolean(sellerId && userProfile?.userId === sellerId);
+  const isSeller = Boolean(sellerId && userId === sellerId);
 
   // Public answered questions
   const [questions, setQuestions] = useState<QuestionDto[]>([]);
@@ -107,23 +107,27 @@ export const QuestionsSection: React.FC<QuestionsSectionProps> = ({ adId, seller
   }, []);
 
   const handleQuestionUpdated = useCallback((updated: QuestionDto) => {
-    setQuestions((prev) => prev.map((q) => (q.id === updated.id ? updated : q)));
     setPendingQuestions((prev) => {
-      const idx = prev.findIndex((q) => q.id === updated.id);
-      if (idx === -1) return prev;
+      const inPending = prev.some((q) => q.id === updated.id);
+      if (!inPending) return prev;
 
-      // If it moved to ANSWERED, remove from pending and prepend to main list
-      if (updated.status === 'ANSWERED') {
-        setQuestions((qs) => [updated, ...qs]);
-        return prev.filter((q) => q.id !== updated.id);
-      }
-
-      // If hidden/removed, just remove from pending
-      if (updated.status === 'HIDDEN' || updated.status === 'REMOVED') {
+      if (updated.status === 'ANSWERED' || updated.status === 'HIDDEN' || updated.status === 'REMOVED') {
         return prev.filter((q) => q.id !== updated.id);
       }
 
       return prev.map((q) => (q.id === updated.id ? updated : q));
+    });
+
+    setQuestions((prev) => {
+      const exists = prev.some((q) => q.id === updated.id);
+      if (exists) {
+        return prev.map((q) => (q.id === updated.id ? updated : q));
+      }
+      // Add to the main list when transitioning to ANSWERED
+      if (updated.status === 'ANSWERED') {
+        return [updated, ...prev];
+      }
+      return prev;
     });
   }, []);
 
@@ -147,7 +151,7 @@ export const QuestionsSection: React.FC<QuestionsSectionProps> = ({ adId, seller
           </h5>
           <motion.div variants={containerVariants} initial="hidden" animate="visible">
             {pendingQuestions.map((q) => (
-              <motion.div key={q.id} variants={itemVariants}>
+              <motion.div key={q.id} variants={itemVariants} initial="hidden" animate="visible">
                 <QuestionCard
                   question={q}
                   isSeller={isSeller}
@@ -200,7 +204,7 @@ export const QuestionsSection: React.FC<QuestionsSectionProps> = ({ adId, seller
         <div style={{ opacity: fetching ? 0.5 : 1, transition: 'opacity 0.2s ease' }}>
           <motion.div variants={containerVariants} initial="hidden" animate="visible">
             {questions.map((q) => (
-              <motion.div key={q.id} variants={itemVariants}>
+              <motion.div key={q.id} variants={itemVariants} initial="hidden" animate="visible">
                 <QuestionCard
                   question={q}
                   isSeller={isSeller}

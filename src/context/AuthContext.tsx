@@ -7,6 +7,7 @@ import { decodeJwt } from '../auth/utils/jwt';
 
 interface AuthContextType {
   isAuthenticated: boolean;
+  userId: string | null;
   userProfile: UserProfileDto | null;
   preferredCurrency: string | null;
   setPreferredCurrency: (currency: string | null) => void;
@@ -24,6 +25,7 @@ export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 interface AuthState {
   isAuthenticated: boolean;
+  userId: string | null;
   userProfile: UserProfileDto | null;
   preferredCurrency: string | null;
   username: string | null;
@@ -35,6 +37,7 @@ interface AuthState {
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [state, setState] = useState<AuthState>({
     isAuthenticated: false,
+    userId: null,
     userProfile: null,
     preferredCurrency: null,
     username: null,
@@ -53,6 +56,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       const session = await apiClient.get<SessionInitResponseDto>('/session/init?decorators=accessToken,userProfile,preferredCurrency,publicChatId');
       
       let username: string | null = null;
+      let userId: string | null = null;
       let roles: string[] = [];
       let isAuthenticated = false;
       let preferredCurrency = session.preferredCurrency || null;
@@ -62,6 +66,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         apiClient.setToken(session.accessToken);
         const decoded = decodeJwt(session.accessToken);
         username = decoded?.username || null;
+        userId = decoded?.sub || null;
         roles = decoded?.roles || [];
         isAuthenticated = true;
 
@@ -83,6 +88,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
       setState({
         isAuthenticated,
+        userId,
         userProfile: session.userProfile,
         preferredCurrency,
         username,
@@ -111,6 +117,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     apiClient.setToken(null);
     setState({
       isAuthenticated: false,
+      userId: null,
       userProfile: null,
       preferredCurrency: null,
       username: null,

@@ -9,6 +9,14 @@ import type {
 } from '../types/qa';
 import type { StatusResponseDto } from '../../types/api';
 
+/** Backend wraps mutation responses in this envelope */
+interface DataEnvelope<T> {
+  success: boolean;
+  status: string;
+  message?: string;
+  data: T;
+}
+
 export const qaService = {
   /** Public: paginated answered questions (pinned first) */
   getQuestions: (adId: string, page = 0, size = 10, sort: QuestionSort = 'UPVOTES') => {
@@ -17,8 +25,10 @@ export const qaService = {
   },
 
   /** Auth: submit a question on an ad */
-  askQuestion: (adId: string, text: string) =>
-    apiClient.post<QuestionDto>(`/qa/ads/${adId}/questions`, { text }),
+  askQuestion: async (adId: string, text: string) => {
+    const envelope = await apiClient.post<DataEnvelope<QuestionDto>>(`/qa/ads/${adId}/questions`, { text });
+    return envelope.data;
+  },
 
   /** Auth: caller's own unanswered questions */
   getMyUnanswered: (adId: string) =>
@@ -35,12 +45,16 @@ export const qaService = {
     apiClient.get<QaStatsDto>(`/qa/ads/${adId}/questions/stats`),
 
   /** Auth: submit an answer to a question */
-  submitAnswer: (questionId: string, text: string) =>
-    apiClient.post<AnswerDto>(`/qa/questions/${questionId}/answers`, { text }),
+  submitAnswer: async (questionId: string, text: string) => {
+    const envelope = await apiClient.post<DataEnvelope<AnswerDto>>(`/qa/questions/${questionId}/answers`, { text });
+    return envelope.data;
+  },
 
   /** Auth: edit own answer */
-  editAnswer: (answerId: string, text: string) =>
-    apiClient.put<AnswerDto>(`/qa/answers/${answerId}`, { text }),
+  editAnswer: async (answerId: string, text: string) => {
+    const envelope = await apiClient.put<DataEnvelope<AnswerDto>>(`/qa/answers/${answerId}`, { text });
+    return envelope.data;
+  },
 
   /** Auth: toggle upvote on a question */
   toggleUpvote: (questionId: string) =>
