@@ -23,6 +23,7 @@ export function measureChatItems(items: ChatListItem[], width: number, username?
 
   const dummyAuthValue = {
     isAuthenticated: false,
+    userId: null,
     userProfile: null,
     preferredCurrency: null,
     username: username || 'measure-user',

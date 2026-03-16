@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { motion } from 'motion/react';
 import UIkit from 'uikit';
 import type { QuestionDto, AnswerDto, ReportTargetType } from '../../types/qa';
 import { formatRelativeTimeFromIso } from '../../../utils/dateUtils';
