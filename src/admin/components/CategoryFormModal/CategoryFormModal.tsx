@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import UIkit from 'uikit';
@@ -52,32 +52,19 @@ const CategoryFormModal = React.forwardRef<HTMLDivElement, CategoryFormModalProp
       },
     });
 
-    // Keep refs to latest props so the beforeshow listener always sees current values
-    const modeRef = useRef(mode);
-    const categoryRef = useRef(category);
-    useEffect(() => { modeRef.current = mode; }, [mode]);
-    useEffect(() => { categoryRef.current = category; }, [category]);
-
+    // Reset form values whenever mode or category changes
     useEffect(() => {
-      const el = modalRef.current;
-      if (!el || !modalInstance) return;
-
-      const handleShow = () => {
-        if (modeRef.current === 'edit' && categoryRef.current) {
-          reset({
-            nameEnUs: categoryRef.current.name['en-US']?.name || '',
-            namePlPl: categoryRef.current.name['pl-PL']?.name || '',
-            slugEnUs: categoryRef.current.name['en-US']?.slug || '',
-            slugPlPl: categoryRef.current.name['pl-PL']?.slug || '',
-          });
-        } else {
-          reset({ nameEnUs: '', namePlPl: '', slugEnUs: '', slugPlPl: '' });
-        }
-      };
-
-      UIkit.util.on(el, 'beforeshow', handleShow);
-      return () => { UIkit.util.off(el, 'beforeshow', handleShow); };
-    }, [modalInstance, modalRef, reset]);
+      if (mode === 'edit' && category) {
+        reset({
+          nameEnUs: category.name['en-US']?.name || '',
+          namePlPl: category.name['pl-PL']?.name || '',
+          slugEnUs: category.name['en-US']?.slug || '',
+          slugPlPl: category.name['pl-PL']?.slug || '',
+        });
+      } else {
+        reset({ nameEnUs: '', namePlPl: '', slugEnUs: '', slugPlPl: '' });
+      }
+    }, [mode, category, reset]);
 
     const onSubmit = async (data: FormValues) => {
       try {
