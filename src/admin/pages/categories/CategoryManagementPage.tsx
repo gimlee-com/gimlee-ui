@@ -312,6 +312,7 @@ const CategoryManagementPage: React.FC = () => {
           <div className={`${styles.detailPanel} uk-visible@m`}>
             <CategoryDetailPanel
               categoryId={selectedNodeId}
+              refreshKey={refreshTrigger}
               onEdit={handleEdit}
               onDelete={handleDelete}
               onToggleHidden={toggleHidden}

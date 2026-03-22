@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { Spinner } from '../../../components/uikit/Spinner/Spinner';
@@ -11,6 +11,7 @@ import styles from './CategoryDetailPanel.module.scss';
 
 interface CategoryDetailPanelProps {
   categoryId: number | null;
+  refreshKey?: number;
   onEdit: (category: AdminCategoryTreeDto) => void;
   onDelete: (category: AdminCategoryTreeDto) => void;
   onToggleHidden: (category: AdminCategoryTreeDto) => void;
@@ -19,6 +20,7 @@ interface CategoryDetailPanelProps {
 
 const CategoryDetailPanel: React.FC<CategoryDetailPanelProps> = ({
   categoryId,
+  refreshKey,
   onEdit,
   onDelete,
   onToggleHidden,
@@ -28,7 +30,6 @@ const CategoryDetailPanel: React.FC<CategoryDetailPanelProps> = ({
   const [detail, setDetail] = useState<AdminCategoryDetailDto | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [loadedId, setLoadedId] = useState<number | null>(null);
 
   const fetchDetail = useCallback(async (id: number) => {
     setLoading(true);
@@ -36,7 +37,6 @@ const CategoryDetailPanel: React.FC<CategoryDetailPanelProps> = ({
     try {
       const res = await adminCategoryService.getDetail(id);
       setDetail(res.data);
-      setLoadedId(id);
     } catch (err: unknown) {
       const errorObj = err as { message?: string };
       setError(errorObj.message || t('auth.errors.generic'));
@@ -45,10 +45,14 @@ const CategoryDetailPanel: React.FC<CategoryDetailPanelProps> = ({
     }
   }, [t]);
 
-  // Fetch detail when categoryId changes (driven by render, not useEffect)
-  if (categoryId && categoryId !== loadedId && !loading) {
-    fetchDetail(categoryId);
-  }
+  // Fetch detail when categoryId or refreshKey changes
+  useEffect(() => {
+    if (categoryId) {
+      fetchDetail(categoryId);
+    } else {
+      setDetail(null);
+    }
+  }, [categoryId, refreshKey, fetchDetail]);
 
   if (!categoryId) {
     return (
