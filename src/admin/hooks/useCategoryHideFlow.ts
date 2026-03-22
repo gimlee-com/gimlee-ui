@@ -65,7 +65,7 @@ export function useCategoryHideFlow(onSuccess: () => void) {
           await UIkit.modal.confirm(
             `<p>${t('admin.categories.hideWarning', { count })}</p>
              <p class="uk-text-bold">${getName(category)}</p>`,
-            { stack: true, container: false, i18n: { ok: t('admin.categories.hideConfirm'), cancel: t('common.cancel') } }
+            { stack: true, i18n: { ok: t('admin.categories.hideConfirm'), cancel: t('common.cancel') } }
           );
           // User confirmed
           try {
@@ -86,8 +86,11 @@ export function useCategoryHideFlow(onSuccess: () => void) {
               timeout: 5000,
             });
           }
-        } catch {
-          // User cancelled — do nothing
+        } catch (dialogErr) {
+          // User cancelled the confirmation — or dialog failed to open
+          if (dialogErr instanceof Error) {
+            console.error('[useCategoryHideFlow] Dialog error:', dialogErr);
+          }
         }
       } else {
         // Other error

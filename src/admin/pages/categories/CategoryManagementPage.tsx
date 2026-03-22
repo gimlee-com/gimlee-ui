@@ -152,7 +152,7 @@ const CategoryManagementPage: React.FC = () => {
     try {
       await UIkit.modal.confirm(
         t('admin.categories.confirmDelete', { name }),
-        { stack: true, container: false, i18n: { ok: t('common.ok'), cancel: t('common.cancel') } }
+        { stack: true, i18n: { ok: t('common.ok'), cancel: t('common.cancel') } }
       );
 
       await adminCategoryService.delete(category.id);
