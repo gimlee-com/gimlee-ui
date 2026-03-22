@@ -294,20 +294,21 @@ const CategoryManagementPage: React.FC = () => {
           </motion.div>
         )}
 
-        {/* Main layout */}
-        <motion.div variants={itemVariants} className={styles.pageLayout}>
-          <div className={styles.treePanel}>
-            <CategoryTreeManager
-              selectedNodeId={selectedNodeId}
-              onSelect={setSelectedNodeId}
-              onEdit={handleEdit}
-              onAddChild={handleAddChild}
-              onDelete={handleDelete}
-              onToggleHidden={toggleHidden}
-              onMove={handleMove}
-              refreshTrigger={refreshTrigger}
-            />
-          </div>
+        {/* Main layout — hidden while searching */}
+        {!searchQuery.trim() && (
+          <motion.div variants={itemVariants} className={styles.pageLayout}>
+            <div className={styles.treePanel}>
+              <CategoryTreeManager
+                selectedNodeId={selectedNodeId}
+                onSelect={setSelectedNodeId}
+                onEdit={handleEdit}
+                onAddChild={handleAddChild}
+                onDelete={handleDelete}
+                onToggleHidden={toggleHidden}
+                onMove={handleMove}
+                refreshTrigger={refreshTrigger}
+              />
+            </div>
           <div className={`${styles.detailPanel} uk-visible@m`}>
             <CategoryDetailPanel
               categoryId={selectedNodeId}
@@ -318,9 +319,8 @@ const CategoryManagementPage: React.FC = () => {
             />
           </div>
         </motion.div>
+        )}
       </motion.div>
-
-      {/* Modals */}
       <CategoryFormModal
         ref={formModalRef}
         mode={formMode}
