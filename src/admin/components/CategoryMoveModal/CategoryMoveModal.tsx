@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+import UIkit from 'uikit';
 import { Modal, ModalDialog, ModalHeader, ModalBody, ModalFooter, ModalTitle, ModalCloseDefault } from '../../../components/uikit/Modal/Modal';
 import { Button } from '../../../components/uikit/Button/Button';
 import { Icon } from '../../../components/uikit/Icon/Icon';

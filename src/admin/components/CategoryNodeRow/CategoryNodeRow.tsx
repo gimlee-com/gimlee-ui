@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Icon } from '../../components/uikit/Icon/Icon';
-import type { AdminCategoryTreeDto } from '../types/admin';
+import { Icon } from '../../../components/uikit/Icon/Icon';
+import type { AdminCategoryTreeDto } from '../../types/admin';
 import styles from './CategoryNodeRow.module.scss';
 
 interface CategoryNodeRowProps {

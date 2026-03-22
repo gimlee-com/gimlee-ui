@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import UIkit from 'uikit';
 import { useNavbarMode } from '../../../hooks/useNavbarMode';
-import { NavbarPortal } from '../../../components/Navbar/NavbarPortal';
+import NavbarPortal from '../../../components/Navbar/NavbarPortal';
 import { Button } from '../../../components/uikit/Button/Button';
 import { Input } from '../../../components/uikit/Form/Form';
 import { Icon } from '../../../components/uikit/Icon/Icon';
@@ -23,7 +23,7 @@ const containerVariants = {
     opacity: 1,
     transition: { staggerChildren: 0.06 },
   },
-};
+} as const;
 
 const itemVariants = {
   hidden: { opacity: 0, y: 15 },
@@ -32,7 +32,7 @@ const itemVariants = {
     y: 0,
     transition: { type: 'spring', stiffness: 400, damping: 40 },
   },
-};
+} as const;
 
 const CategoryManagementPage: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -152,7 +152,7 @@ const CategoryManagementPage: React.FC = () => {
     try {
       await UIkit.modal.confirm(
         t('admin.categories.confirmDelete', { name }),
-        { stack: true, container: false }
+        { stack: true, container: false, i18n: { ok: t('common.ok'), cancel: t('common.cancel') } }
       );
 
       await adminCategoryService.delete(category.id);

@@ -65,7 +65,7 @@ export function useCategoryHideFlow(onSuccess: () => void) {
           await UIkit.modal.confirm(
             `<p>${t('admin.categories.hideWarning', { count })}</p>
              <p class="uk-text-bold">${getName(category)}</p>`,
-            { stack: true, container: false, labels: { ok: t('admin.categories.hideConfirm'), cancel: t('common.cancel') } }
+            { stack: true, container: false, i18n: { ok: t('admin.categories.hideConfirm'), cancel: t('common.cancel') } }
           );
           // User confirmed
           try {

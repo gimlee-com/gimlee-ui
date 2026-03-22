@@ -3,7 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import UIkit from 'uikit';
 import { Modal, ModalDialog, ModalHeader, ModalBody, ModalFooter, ModalTitle, ModalCloseDefault } from '../../../components/uikit/Modal/Modal';
-import { Input, FormMessage } from '../../../components/uikit/Form/Form';
+import { Input } from '../../../components/uikit/Form/Form';
+import { FormMessage } from '../../../components/Form/Form';
 import { Button } from '../../../components/uikit/Button/Button';
 import { useUIKit } from '../../../hooks/useUIkit';
 import { useMergeRefs } from '../../../hooks/useMergeRefs';
@@ -150,7 +151,7 @@ const CategoryFormModal = React.forwardRef<HTMLDivElement, CategoryFormModalProp
                     placeholder={t('admin.categories.form.namePlaceholder')}
                     status={errors.nameEnUs ? 'danger' : undefined}
                   />
-                  {errors.nameEnUs && <FormMessage status="danger">{errors.nameEnUs.message}</FormMessage>}
+                  {errors.nameEnUs && <FormMessage type="error">{errors.nameEnUs.message}</FormMessage>}
                 </div>
               </div>
 
@@ -168,7 +169,7 @@ const CategoryFormModal = React.forwardRef<HTMLDivElement, CategoryFormModalProp
                     placeholder={t('admin.categories.form.namePlaceholder')}
                     status={errors.namePlPl ? 'danger' : undefined}
                   />
-                  {errors.namePlPl && <FormMessage status="danger">{errors.namePlPl.message}</FormMessage>}
+                  {errors.namePlPl && <FormMessage type="error">{errors.namePlPl.message}</FormMessage>}
                 </div>
               </div>
 
@@ -185,7 +186,7 @@ const CategoryFormModal = React.forwardRef<HTMLDivElement, CategoryFormModalProp
                         placeholder={t('admin.categories.form.slugPlaceholder')}
                         status={errors.slugEnUs ? 'danger' : undefined}
                       />
-                      {errors.slugEnUs && <FormMessage status="danger">{errors.slugEnUs.message}</FormMessage>}
+                      {errors.slugEnUs && <FormMessage type="error">{errors.slugEnUs.message}</FormMessage>}
                     </div>
                   </div>
 
@@ -199,7 +200,7 @@ const CategoryFormModal = React.forwardRef<HTMLDivElement, CategoryFormModalProp
                         placeholder={t('admin.categories.form.slugPlaceholder')}
                         status={errors.slugPlPl ? 'danger' : undefined}
                       />
-                      {errors.slugPlPl && <FormMessage status="danger">{errors.slugPlPl.message}</FormMessage>}
+                      {errors.slugPlPl && <FormMessage type="error">{errors.slugPlPl.message}</FormMessage>}
                     </div>
                   </div>
                 </>

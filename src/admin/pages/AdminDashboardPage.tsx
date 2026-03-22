@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { useNavbarMode } from '../../hooks/useNavbarMode';
-import { NavbarPortal } from '../../components/Navbar/NavbarPortal';
+import NavbarPortal from '../../components/Navbar/NavbarPortal';
 import { Icon } from '../../components/uikit/Icon/Icon';
 import AdminSubNav from '../components/AdminSubNav';
 
@@ -13,7 +13,7 @@ const containerVariants = {
     opacity: 1,
     transition: { staggerChildren: 0.08 },
   },
-};
+} as const;
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -22,7 +22,7 @@ const itemVariants = {
     y: 0,
     transition: { type: 'spring', stiffness: 400, damping: 40 },
   },
-};
+} as const;
 
 const AdminDashboardPage: React.FC = () => {
   const { t } = useTranslation();
