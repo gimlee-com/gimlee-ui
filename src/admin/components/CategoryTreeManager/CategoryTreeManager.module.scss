@@ -1,0 +1,17 @@
+@import '../../../styles/uikit-imports';
+
+.tree {
+  border: 1px solid $global-border;
+  border-radius: $card-border-radius;
+  overflow: hidden;
+}
+
+.loading,
+.empty,
+.error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  padding: 20px;
+}

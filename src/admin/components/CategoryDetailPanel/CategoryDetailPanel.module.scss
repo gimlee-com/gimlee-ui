@@ -1,0 +1,53 @@
+@import '../../../styles/uikit-imports';
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  color: $global-muted-color;
+}
+
+.panel {
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.headerBadges {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.metadataGrid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 16px;
+  margin: 8px 0;
+  font-size: 0.9rem;
+
+  dt {
+    color: $global-muted-color;
+    font-weight: normal;
+  }
+
+  dd {
+    margin: 0;
+  }
+}
+
+.actionButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}

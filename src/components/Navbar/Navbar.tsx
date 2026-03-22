@@ -167,6 +167,17 @@ const Navbar: React.FC = () => {
                       {t('navbar.terms')}
                     </Link>
                   </NavItem>
+                  {roles.includes('ADMIN') && (
+                    <>
+                      <NavDivider />
+                      <NavItem>
+                        <Link to="/admin">
+                          <Icon icon="cog" className="uk-margin-small-right" />
+                          {t('navbar.admin')}
+                        </Link>
+                      </NavItem>
+                    </>
+                  )}
                   <NavDivider />
                   <NavHeader>{t('navbar.theme')}</NavHeader>
                   <NavItem active={theme === 'light'}>
@@ -323,6 +334,20 @@ const Navbar: React.FC = () => {
             >
               <Link to="/terms" uk-toggle="target: #mobile-menu">{t('navbar.terms')}</Link>
             </MotionNavItem>
+            {roles.includes('ADMIN') && (
+              <MotionNavItem
+                key="admin-off"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2, delay: 0.29 }}
+              >
+                <Link to="/admin" uk-toggle="target: #mobile-menu">
+                  <Icon icon="cog" className="uk-margin-small-right" />
+                  {t('navbar.admin')}
+                </Link>
+              </MotionNavItem>
+            )}
             <li className="uk-nav-divider"></li>
             <MotionNavItem
               key="theme-off"

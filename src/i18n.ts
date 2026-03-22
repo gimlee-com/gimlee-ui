@@ -37,7 +37,8 @@ const resources = {
         "register": "Register",
         "theme": "Theme",
         "terms": "Terms of Service",
-        "watchlist": "Watchlist"
+        "watchlist": "Watchlist",
+        "admin": "Admin Panel"
       },
       "home": {
         "featuredAds": "Featured Ads",
@@ -381,6 +382,88 @@ const resources = {
       "terms": {
         "title": "Terms of Service",
         "lastUpdated": "Last updated: February 2026"
+      },
+      "admin": {
+        "title": "Admin Panel",
+        "dashboard": "Dashboard",
+        "forbidden": {
+          "title": "Access Denied",
+          "message": "You do not have the required permissions to access this section."
+        },
+        "categories": {
+          "title": "Category Management",
+          "name": "Name",
+          "slug": "Slug",
+          "parent": "Parent Category",
+          "childCount": "Children",
+          "popularity": "Active Ads",
+          "displayOrder": "Display Order",
+          "sourceType": "Source",
+          "hidden": "Hidden",
+          "deprecated": "Deprecated",
+          "adminOverride": "Admin Override",
+          "noCategories": "No categories found.",
+          "rootLevel": "Root Level",
+          "sourceGpt": "GPT",
+          "sourceGml": "GML",
+          "create": "Create Category",
+          "createRoot": "Create Root Category",
+          "edit": "Edit Category",
+          "delete": "Delete Category",
+          "move": "Move Category",
+          "moveUp": "Move Up",
+          "moveDown": "Move Down",
+          "hide": "Hide",
+          "show": "Show",
+          "addChild": "Add Child",
+          "search": "Search Categories",
+          "searchPlaceholder": "Search categories...",
+          "refresh": "Refresh",
+          "confirmDelete": "Are you sure you want to delete \"{{name}}\"? This action cannot be undone.",
+          "deleteWarning": "This category will be permanently deleted.",
+          "hideWarning": "Hiding this category will deactivate {{count}} active ad(s) and notify affected sellers. This action cascades to all subcategories.",
+          "hideConfirm": "Hide and Deactivate Ads",
+          "showConfirm": "Show Category",
+          "cannotDeleteGpt": "GPT-synced categories cannot be deleted. You can hide them instead.",
+          "cannotDeleteHasChildren": "This category has child categories. Remove or move them first.",
+          "cannotDeleteHasAds": "This category has ads assigned. Remove or reassign them first.",
+          "slugDuplicate": "This slug is already used by a sibling category.",
+          "created": "Category created successfully.",
+          "updated": "Category updated successfully.",
+          "deleted": "Category deleted successfully.",
+          "moved": "Category moved successfully.",
+          "reordered": "Category reordered successfully.",
+          "visibilityChanged": "Category visibility updated.",
+          "selectNewParent": "Select New Parent",
+          "moveToRoot": "Move to Root",
+          "circularParent": "Cannot move a category into its own subtree.",
+          "alreadyAtBoundary": "Category is already at this position.",
+          "form": {
+            "createTitle": "Create Category",
+            "editTitle": "Edit Category",
+            "moveTitle": "Move Category",
+            "nameLabel": "Name ({{lang}})",
+            "namePlaceholder": "Enter category name",
+            "slugLabel": "Slug ({{lang}})",
+            "slugPlaceholder": "Enter slug override",
+            "parentLabel": "Parent Category",
+            "nameRequired": "Name is required",
+            "nameMinLength": "Name must be at least {{count}} characters",
+            "nameMaxLength": "Name must be at most {{count}} characters"
+          },
+          "detail": {
+            "title": "Category Details",
+            "translations": "Translations",
+            "metadata": "Metadata",
+            "language": "Language",
+            "sourceId": "Source ID",
+            "createdAt": "Created",
+            "updatedAt": "Last Updated",
+            "actions": "Actions",
+            "noSelection": "Select a category to view its details.",
+            "path": "Path"
+          }
+        }
       }
     }
   },
@@ -418,7 +501,8 @@ const resources = {
         "register": "Zarejestruj",
         "theme": "Motyw",
         "terms": "Regulamin",
-        "watchlist": "Obserwowane"
+        "watchlist": "Obserwowane",
+        "admin": "Panel Admina"
       },
       "home": {
         "featuredAds": "Wyróżnione ogłoszenia",
@@ -763,6 +847,88 @@ const resources = {
       "terms": {
         "title": "Regulamin",
         "lastUpdated": "Ostatnia aktualizacja: luty 2026"
+      },
+      "admin": {
+        "title": "Panel Administracyjny",
+        "dashboard": "Pulpit",
+        "forbidden": {
+          "title": "Brak Dostępu",
+          "message": "Nie masz wymaganych uprawnień, aby uzyskać dostęp do tej sekcji."
+        },
+        "categories": {
+          "title": "Zarządzanie Kategoriami",
+          "name": "Nazwa",
+          "slug": "Slug",
+          "parent": "Kategoria nadrzędna",
+          "childCount": "Podkategorie",
+          "popularity": "Aktywne ogłoszenia",
+          "displayOrder": "Kolejność wyświetlania",
+          "sourceType": "Źródło",
+          "hidden": "Ukryta",
+          "deprecated": "Przestarzała",
+          "adminOverride": "Nadpisane przez admina",
+          "noCategories": "Nie znaleziono kategorii.",
+          "rootLevel": "Poziom główny",
+          "sourceGpt": "GPT",
+          "sourceGml": "GML",
+          "create": "Utwórz kategorię",
+          "createRoot": "Utwórz kategorię główną",
+          "edit": "Edytuj kategorię",
+          "delete": "Usuń kategorię",
+          "move": "Przenieś kategorię",
+          "moveUp": "Przesuń w górę",
+          "moveDown": "Przesuń w dół",
+          "hide": "Ukryj",
+          "show": "Pokaż",
+          "addChild": "Dodaj podkategorię",
+          "search": "Szukaj kategorii",
+          "searchPlaceholder": "Szukaj kategorii...",
+          "refresh": "Odśwież",
+          "confirmDelete": "Czy na pewno chcesz usunąć \"{{name}}\"? Tej operacji nie można cofnąć.",
+          "deleteWarning": "Ta kategoria zostanie trwale usunięta.",
+          "hideWarning": "Ukrycie tej kategorii spowoduje dezaktywację {{count}} aktywnych ogłoszeń i powiadomienie sprzedawców. Operacja obejmuje wszystkie podkategorie.",
+          "hideConfirm": "Ukryj i dezaktywuj ogłoszenia",
+          "showConfirm": "Pokaż kategorię",
+          "cannotDeleteGpt": "Kategorie zsynchronizowane z GPT nie mogą być usunięte. Możesz je ukryć.",
+          "cannotDeleteHasChildren": "Ta kategoria ma podkategorie. Najpierw je usuń lub przenieś.",
+          "cannotDeleteHasAds": "Ta kategoria ma przypisane ogłoszenia. Najpierw je usuń lub przenieś.",
+          "slugDuplicate": "Ten slug jest już używany przez kategorię na tym samym poziomie.",
+          "created": "Kategoria została utworzona.",
+          "updated": "Kategoria została zaktualizowana.",
+          "deleted": "Kategoria została usunięta.",
+          "moved": "Kategoria została przeniesiona.",
+          "reordered": "Kolejność kategorii została zmieniona.",
+          "visibilityChanged": "Widoczność kategorii została zmieniona.",
+          "selectNewParent": "Wybierz nową kategorię nadrzędną",
+          "moveToRoot": "Przenieś na poziom główny",
+          "circularParent": "Nie można przenieść kategorii do jej własnego poddrzewa.",
+          "alreadyAtBoundary": "Kategoria jest już na tej pozycji.",
+          "form": {
+            "createTitle": "Utwórz kategorię",
+            "editTitle": "Edytuj kategorię",
+            "moveTitle": "Przenieś kategorię",
+            "nameLabel": "Nazwa ({{lang}})",
+            "namePlaceholder": "Wprowadź nazwę kategorii",
+            "slugLabel": "Slug ({{lang}})",
+            "slugPlaceholder": "Wprowadź nadpisanie sluga",
+            "parentLabel": "Kategoria nadrzędna",
+            "nameRequired": "Nazwa jest wymagana",
+            "nameMinLength": "Nazwa musi mieć co najmniej {{count}} znaków",
+            "nameMaxLength": "Nazwa może mieć maksymalnie {{count}} znaków"
+          },
+          "detail": {
+            "title": "Szczegóły kategorii",
+            "translations": "Tłumaczenia",
+            "metadata": "Metadane",
+            "language": "Język",
+            "sourceId": "ID źródła",
+            "createdAt": "Utworzono",
+            "updatedAt": "Ostatnia aktualizacja",
+            "actions": "Akcje",
+            "noSelection": "Wybierz kategorię, aby zobaczyć jej szczegóły.",
+            "path": "Ścieżka"
+          }
+        }
       }
     }
   }

@@ -1,0 +1,77 @@
+@import '../../../styles/uikit-imports';
+
+.pageLayout {
+  display: flex;
+  gap: 20px;
+  min-height: 60vh;
+
+  @media (max-width: $breakpoint-medium-max) {
+    flex-direction: column;
+  }
+}
+
+.treePanel {
+  flex: 3;
+  min-width: 0;
+}
+
+.detailPanel {
+  flex: 2;
+  border: 1px solid $global-border;
+  border-radius: $card-border-radius;
+  min-width: 0;
+  align-self: flex-start;
+  position: sticky;
+  top: 100px;
+
+  @media (max-width: $breakpoint-medium-max) {
+    position: static;
+  }
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.searchInput {
+  flex: 1;
+  min-width: 200px;
+  max-width: 400px;
+}
+
+.searchResults {
+  border: 1px solid $global-border;
+  border-radius: $card-border-radius;
+  margin-bottom: 16px;
+}
+
+.searchResultItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid color-mix(in srgb, $global-border, transparent 50%);
+  transition: background-color 0.15s ease;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background-color: color-mix(in srgb, $global-primary-background, transparent 92%);
+  }
+}
+
+.searchResultName {
+  font-weight: bold;
+}
+
+.searchResultPath {
+  font-size: 0.8rem;
+  color: $global-muted-color;
+}

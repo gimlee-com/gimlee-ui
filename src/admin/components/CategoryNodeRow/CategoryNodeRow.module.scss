@@ -1,0 +1,104 @@
+@import '../../../styles/uikit-imports';
+
+.nodeRow {
+  display: flex;
+  align-items: center;
+  padding: 6px 8px;
+  border-bottom: 1px solid $global-border;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  min-height: 44px;
+
+  &:hover {
+    background-color: color-mix(in srgb, $global-primary-background, transparent 92%);
+  }
+
+  &.selected {
+    background-color: color-mix(in srgb, $global-primary-background, transparent 85%);
+  }
+
+  &.hidden {
+    opacity: 0.55;
+  }
+}
+
+.mainContent {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 8px;
+  min-width: 0;
+}
+
+.expandToggle {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+
+  &:disabled {
+    visibility: hidden;
+  }
+}
+
+.nameSection {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.slug {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.8rem;
+
+  @media (max-width: $breakpoint-small-max) {
+    display: none;
+  }
+}
+
+.badges {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+
+  @media (max-width: $breakpoint-small-max) {
+    display: none;
+  }
+}
+
+.label {
+  font-size: 0.7rem;
+  padding: 0 6px;
+  line-height: 1.6;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+
+  .nodeRow:hover &,
+  .nodeRow.selected & {
+    opacity: 1;
+  }
+}

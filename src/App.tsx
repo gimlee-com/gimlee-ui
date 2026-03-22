@@ -27,6 +27,9 @@ import ProfilePage from './profile/pages/ProfilePage';
 import UserSpacePage from './spaces/pages/UserSpacePage';
 import AdWatchlistPage from './ads/pages/AdWatchlistPage';
 const TermsOfServicePage = lazy(() => import('./pages/TermsOfServicePage'));
+const AdminDashboardPage = lazy(() => import('./admin/pages/AdminDashboardPage'));
+const CategoryManagementPage = lazy(() => import('./admin/pages/categories/CategoryManagementPage'));
+import { ProtectedRoute } from './components/ProtectedRoute';
 
 function App() {
   const { activePurchase, isModalOpen } = useAppSelector(state => state.purchase);
@@ -85,6 +88,10 @@ function App() {
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/u/:userName" element={<UserSpacePage />} />
             <Route path="/terms" element={<Suspense><TermsOfServicePage /></Suspense>} />
+            <Route element={<ProtectedRoute requiredRole="ADMIN" />}>
+              <Route path="/admin" element={<Suspense><AdminDashboardPage /></Suspense>} />
+              <Route path="/admin/categories" element={<Suspense><CategoryManagementPage /></Suspense>} />
+            </Route>
           </Routes>
         </div>
       </main>
