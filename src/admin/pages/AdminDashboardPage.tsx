@@ -35,6 +35,12 @@ const AdminDashboardPage: React.FC = () => {
       icon: 'folder',
       link: '/admin/categories',
     },
+    {
+      title: t('admin.users.title'),
+      description: t('admin.users.description'),
+      icon: 'users',
+      link: '/admin/users',
+    },
   ];
 
   return (

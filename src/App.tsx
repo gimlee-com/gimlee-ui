@@ -8,6 +8,7 @@ import { useAuth } from './context/AuthContext';
 import { PurchaseModal } from './purchases/components/PurchaseModal';
 import { rehydrateForUser, clearForLogout } from './store/purchaseSlice';
 import { VolatilityBanner } from './payments/components/VolatilityBanner/VolatilityBanner';
+import { BanNotificationBanner } from './components/BanNotificationBanner/BanNotificationBanner';
 import './i18n';
 import Navbar from './components/Navbar/Navbar';
 import { FLOATING_BUTTON_CONTAINER_ID } from './components/FloatingButton/FloatingButtonPortal';
@@ -29,6 +30,8 @@ import AdWatchlistPage from './ads/pages/AdWatchlistPage';
 const TermsOfServicePage = lazy(() => import('./pages/TermsOfServicePage'));
 const AdminDashboardPage = lazy(() => import('./admin/pages/AdminDashboardPage'));
 const CategoryManagementPage = lazy(() => import('./admin/pages/categories/CategoryManagementPage'));
+const AdminUserListPage = lazy(() => import('./admin/pages/users/AdminUserListPage'));
+const AdminUserDetailPage = lazy(() => import('./admin/pages/users/AdminUserDetailPage'));
 import { ProtectedRoute } from './components/ProtectedRoute';
 
 function App() {
@@ -72,6 +75,7 @@ function App() {
       <main className="uk-section uk-section-default">
         <div className="uk-container">
           <VolatilityBanner />
+          <BanNotificationBanner />
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
@@ -91,6 +95,8 @@ function App() {
             <Route element={<ProtectedRoute requiredRole="ADMIN" />}>
               <Route path="/admin" element={<Suspense><AdminDashboardPage /></Suspense>} />
               <Route path="/admin/categories" element={<Suspense><CategoryManagementPage /></Suspense>} />
+              <Route path="/admin/users" element={<Suspense><AdminUserListPage /></Suspense>} />
+              <Route path="/admin/users/:userId" element={<Suspense><AdminUserDetailPage /></Suspense>} />
             </Route>
           </Routes>
         </div>

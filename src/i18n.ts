@@ -463,6 +463,93 @@ const resources = {
             "noSelection": "Select a category to view its details.",
             "path": "Path"
           }
+        },
+        "users": {
+          "title": "User Management",
+          "description": "Manage users, view profiles, and handle bans",
+          "search": "Search users...",
+          "noUsers": "No users found.",
+          "memberSince": "Member since",
+          "lastLogin": "Last login",
+          "never": "Never",
+          "roles": "Roles",
+          "email": "Email",
+          "phone": "Phone",
+          "language": "Language",
+          "currency": "Preferred Currency",
+          "presence": "Presence",
+          "lastSeen": "Last Seen",
+          "filters": {
+            "status": "Status",
+            "allStatuses": "All Statuses",
+            "sort": "Sort by",
+            "direction": "Direction",
+            "ascending": "Ascending",
+            "descending": "Descending",
+            "sortFields": {
+              "registeredAt": "Registration Date",
+              "lastLogin": "Last Login",
+              "username": "Username"
+            }
+          },
+          "status": {
+            "ACTIVE": "Active",
+            "PENDING_VERIFICATION": "Pending Verification",
+            "BANNED": "Banned",
+            "SUSPENDED": "Suspended"
+          },
+          "detail": {
+            "title": "User Details",
+            "profile": "Profile",
+            "statistics": "Statistics",
+            "activeBan": "Active Ban",
+            "banHistory": "Ban History",
+            "noBanHistory": "No ban history for this user."
+          },
+          "stats": {
+            "activeAds": "Active Ads",
+            "totalAds": "Total Ads",
+            "purchasesAsBuyer": "Purchases (Buyer)",
+            "completedAsBuyer": "Completed (Buyer)",
+            "purchasesAsSeller": "Sales (Seller)",
+            "completedAsSeller": "Completed (Seller)"
+          },
+          "ban": {
+            "banUser": "Ban User",
+            "unbanUser": "Unban User",
+            "reason": "Reason",
+            "reasonPlaceholder": "Describe the reason for banning this user...",
+            "reasonMinLength": "Reason must be at least {{count}} characters",
+            "reasonMaxLength": "Reason must be at most {{count}} characters",
+            "permanent": "Permanent",
+            "temporary": "Temporary",
+            "until": "Ban until",
+            "bannedBy": "Banned by",
+            "bannedAt": "Banned at",
+            "bannedUntil": "Banned until",
+            "unbannedBy": "Unbanned by",
+            "unbannedAt": "Unbanned at",
+            "active": "Active",
+            "expired": "Expired",
+            "lifted": "Lifted",
+            "confirmBan": "Are you sure you want to ban {{username}}?",
+            "confirmUnban": "Are you sure you want to unban {{username}}?",
+            "banSuccess": "User has been banned successfully.",
+            "unbanSuccess": "User has been unbanned successfully.",
+            "cannotBanAdmin": "Cannot ban an administrator."
+          }
+        }
+      },
+      "ban": {
+        "banner": {
+          "message": "Your account has been restricted.",
+          "reason": "Reason: {{reason}}",
+          "permanent": "This restriction is permanent.",
+          "temporary": "Time remaining:",
+          "contactSupport": "If you believe this is an error, please contact support."
+        },
+        "restricted": {
+          "message": "This action is not available while your account is restricted."
         }
       }
     }
@@ -928,6 +1015,93 @@ const resources = {
             "noSelection": "Wybierz kategorię, aby zobaczyć jej szczegóły.",
             "path": "Ścieżka"
           }
+        },
+        "users": {
+          "title": "Zarządzanie Użytkownikami",
+          "description": "Zarządzaj użytkownikami, przeglądaj profile i obsługuj blokady",
+          "search": "Szukaj użytkowników...",
+          "noUsers": "Nie znaleziono użytkowników.",
+          "memberSince": "Członek od",
+          "lastLogin": "Ostatnie logowanie",
+          "never": "Nigdy",
+          "roles": "Role",
+          "email": "Email",
+          "phone": "Telefon",
+          "language": "Język",
+          "currency": "Preferowana waluta",
+          "presence": "Obecność",
+          "lastSeen": "Ostatnio widziany",
+          "filters": {
+            "status": "Status",
+            "allStatuses": "Wszystkie statusy",
+            "sort": "Sortuj według",
+            "direction": "Kierunek",
+            "ascending": "Rosnąco",
+            "descending": "Malejąco",
+            "sortFields": {
+              "registeredAt": "Data rejestracji",
+              "lastLogin": "Ostatnie logowanie",
+              "username": "Nazwa użytkownika"
+            }
+          },
+          "status": {
+            "ACTIVE": "Aktywny",
+            "PENDING_VERIFICATION": "Oczekuje na weryfikację",
+            "BANNED": "Zablokowany",
+            "SUSPENDED": "Zawieszony"
+          },
+          "detail": {
+            "title": "Szczegóły użytkownika",
+            "profile": "Profil",
+            "statistics": "Statystyki",
+            "activeBan": "Aktywna blokada",
+            "banHistory": "Historia blokad",
+            "noBanHistory": "Brak historii blokad dla tego użytkownika."
+          },
+          "stats": {
+            "activeAds": "Aktywne ogłoszenia",
+            "totalAds": "Wszystkie ogłoszenia",
+            "purchasesAsBuyer": "Zakupy (kupujący)",
+            "completedAsBuyer": "Zrealizowane (kupujący)",
+            "purchasesAsSeller": "Sprzedaże (sprzedawca)",
+            "completedAsSeller": "Zrealizowane (sprzedawca)"
+          },
+          "ban": {
+            "banUser": "Zablokuj użytkownika",
+            "unbanUser": "Odblokuj użytkownika",
+            "reason": "Powód",
+            "reasonPlaceholder": "Opisz powód zablokowania tego użytkownika...",
+            "reasonMinLength": "Powód musi mieć co najmniej {{count}} znaków",
+            "reasonMaxLength": "Powód może mieć maksymalnie {{count}} znaków",
+            "permanent": "Permanentna",
+            "temporary": "Tymczasowa",
+            "until": "Zablokowany do",
+            "bannedBy": "Zablokowany przez",
+            "bannedAt": "Zablokowany dnia",
+            "bannedUntil": "Zablokowany do",
+            "unbannedBy": "Odblokowany przez",
+            "unbannedAt": "Odblokowany dnia",
+            "active": "Aktywna",
+            "expired": "Wygasła",
+            "lifted": "Zniesiona",
+            "confirmBan": "Czy na pewno chcesz zablokować użytkownika {{username}}?",
+            "confirmUnban": "Czy na pewno chcesz odblokować użytkownika {{username}}?",
+            "banSuccess": "Użytkownik został zablokowany.",
+            "unbanSuccess": "Użytkownik został odblokowany.",
+            "cannotBanAdmin": "Nie można zablokować administratora."
+          }
+        }
+      },
+      "ban": {
+        "banner": {
+          "message": "Twoje konto zostało ograniczone.",
+          "reason": "Powód: {{reason}}",
+          "permanent": "To ograniczenie jest permanentne.",
+          "temporary": "Pozostały czas:",
+          "contactSupport": "Jeśli uważasz, że to błąd, skontaktuj się z pomocą techniczną."
+        },
+        "restricted": {
+          "message": "Ta akcja jest niedostępna, gdy Twoje konto jest ograniczone."
         }
       }
     }

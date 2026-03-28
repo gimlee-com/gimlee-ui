@@ -471,6 +471,14 @@ export interface SessionInitResponseDto {
   userProfile: UserProfileDto | null;
   preferredCurrency?: string;
   publicChatId?: string;
+  /** Whether the user is currently banned (from banStatus decorator) */
+  banned?: boolean;
+  /** Admin-provided ban reason (epoch micros timestamps) */
+  banReason?: string;
+  /** When the ban was applied — epoch microseconds */
+  bannedAt?: number;
+  /** When the ban expires — epoch microseconds (null/undefined = permanent) */
+  bannedUntil?: number | null;
 }
 
 export interface ExchangeRateDto {

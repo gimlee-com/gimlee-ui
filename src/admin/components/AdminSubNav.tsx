@@ -8,6 +8,7 @@ const AdminSubNav: React.FC = () => {
 
   const isDashboardActive = location.pathname === '/admin';
   const isCategoriesActive = location.pathname.startsWith('/admin/categories');
+  const isUsersActive = location.pathname.startsWith('/admin/users');
 
   return (
     <div className="uk-margin-medium-bottom">
@@ -17,6 +18,9 @@ const AdminSubNav: React.FC = () => {
         </li>
         <li className={isCategoriesActive ? 'uk-active' : ''}>
           <Link to="/admin/categories">{t('admin.categories.title')}</Link>
+        </li>
+        <li className={isUsersActive ? 'uk-active' : ''}>
+          <Link to="/admin/users">{t('admin.users.title')}</Link>
         </li>
       </ul>
     </div>

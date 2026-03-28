@@ -46,6 +46,18 @@ class ApiClient {
 
     if (!response.ok) {
       const error = await response.json().catch(() => ({ message: 'An error occurred' }));
+
+      // Global notification for banned users attempting restricted actions
+      if (response.status === 403 && error.status === 'AUTH_USER_BANNED') {
+        const UIkit = await import('uikit');
+        UIkit.default.notification({
+          message: error.message || i18n.t('ban.restricted.message'),
+          status: 'danger',
+          pos: 'top-center',
+          timeout: 5000,
+        });
+      }
+
       throw error;
     }
 

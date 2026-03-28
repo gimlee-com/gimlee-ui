@@ -14,6 +14,10 @@ interface AuthContextType {
   username: string | null;
   roles: string[];
   publicChatId: string | null;
+  isBanned: boolean;
+  banReason: string | null;
+  bannedAt: number | null;
+  bannedUntil: number | null;
   login: (token: string) => Promise<void>;
   logout: () => void;
   loading: boolean;
@@ -31,6 +35,10 @@ interface AuthState {
   username: string | null;
   roles: string[];
   publicChatId: string | null;
+  isBanned: boolean;
+  banReason: string | null;
+  bannedAt: number | null;
+  bannedUntil: number | null;
   loading: boolean;
 }
 
@@ -43,6 +51,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     username: null,
     roles: [],
     publicChatId: null,
+    isBanned: false,
+    banReason: null,
+    bannedAt: null,
+    bannedUntil: null,
     loading: true,
   });
 
@@ -53,7 +65,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     initStarted.current = true;
 
     try {
-      const session = await apiClient.get<SessionInitResponseDto>('/session/init?decorators=accessToken,userProfile,preferredCurrency,publicChatId');
+      const session = await apiClient.get<SessionInitResponseDto>('/session/init?decorators=accessToken,userProfile,preferredCurrency,publicChatId,banStatus');
       
       let username: string | null = null;
       let userId: string | null = null;
@@ -94,6 +106,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         username,
         roles,
         publicChatId,
+        isBanned: session.banned ?? false,
+        banReason: session.banReason ?? null,
+        bannedAt: session.bannedAt ?? null,
+        bannedUntil: session.bannedUntil ?? null,
         loading: false,
       });
     } catch (error) {
@@ -123,6 +139,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       username: null,
       roles: [],
       publicChatId: null,
+      isBanned: false,
+      banReason: null,
+      bannedAt: null,
+      bannedUntil: null,
       loading: false,
     });
   };
