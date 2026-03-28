@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useUIKit } from '../../../hooks/useUIkit';
@@ -20,8 +20,7 @@ interface BanUserModalProps {
 
 const BanUserModal: React.FC<BanUserModalProps> = ({ username, isOpen, onConfirm, onClose }) => {
   const { t } = useTranslation();
-  const modalRef = useRef<HTMLDivElement>(null);
-  const { instance } = useUIKit(modalRef, 'modal', { container: false, stack: true });
+  const { ref: modalRef, instance } = useUIKit<{ show: () => void; hide: () => void }, HTMLDivElement>('modal', { container: false, stack: true });
 
   const {
     register,
