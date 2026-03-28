@@ -149,7 +149,7 @@ const AdminUserDetailPage: React.FC = () => {
     try {
       await UIkit.modal.confirm(
         t('admin.users.ban.confirmUnban', { username: user.username }),
-        { stack: true, container: false },
+        { stack: true, container: false, i18n: { ok: t('common.ok'), cancel: t('common.cancel') } },
       );
     } catch {
       return; // User cancelled

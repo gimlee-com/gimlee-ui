@@ -44,7 +44,7 @@ const AdminUserListPage: React.FC = () => {
 
   // Local filter state synced from URL
   const [searchInput, setSearchInput] = useState(searchParams.get('search') || '');
-  const debounceRef = useRef<ReturnType<typeof setTimeout>>();
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   // Fetch data whenever URL params change
   useEffect(() => {
