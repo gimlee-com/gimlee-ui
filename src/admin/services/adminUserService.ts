@@ -23,8 +23,10 @@ export const adminUserService = {
   listUsers: (params: AdminUserListFilterParams) =>
     apiClient.get<PageAdminUserListItemDto>(`/admin/users?${buildUserListQuery(params)}`),
 
-  getUserDetail: (userId: string) =>
-    apiClient.get<AdminUserDetailDto>(`/admin/users/${userId}`),
+  getUserDetail: async (userId: string) => {
+    const res = await apiClient.get<StatusResponseDto & { data: AdminUserDetailDto }>(`/admin/users/${userId}`);
+    return res.data;
+  },
 
   banUser: (userId: string, dto: BanUserRequestDto) =>
     apiClient.post<StatusResponseDto>(`/admin/users/${userId}/ban`, dto),
@@ -32,6 +34,8 @@ export const adminUserService = {
   unbanUser: (userId: string) =>
     apiClient.post<StatusResponseDto>(`/admin/users/${userId}/unban`),
 
-  getBanHistory: (userId: string) =>
-    apiClient.get<AdminBanDto[]>(`/admin/users/${userId}/bans`),
+  getBanHistory: async (userId: string) => {
+    const res = await apiClient.get<StatusResponseDto & { data: AdminBanDto[] }>(`/admin/users/${userId}/bans`);
+    return res.data ?? [];
+  },
 };
