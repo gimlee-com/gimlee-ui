@@ -35,6 +35,17 @@ This file serves as a comprehensive guide for AI agents and developers working o
 Instead of using raw HTML and UIkit classes, we use specialized React wrappers located in `src/components/uikit/`.
 - **`forwardRef`**: Every component must use `forwardRef` to allow integration with libraries like `react-hook-form`.
 - **`useUIKit` Hook**: Components that require UIkit's JavaScript logic (e.g., `Grid`, `Navbar`, `Sticky`) must use the custom `useUIKit` hook to manage the lifecycle (initialization and `$destroy`) of the UIkit instance.
+    - **Ref Ownership**: `useUIKit` creates and returns its own `ref`. You **must** attach this returned `ref` to the DOM element — do **not** create a separate `useRef` and pass it as an argument. The hook's signature is `useUIKit(componentName, options)`, and it returns `{ ref, instance }`. A common mistake (especially with modals) is creating `const myRef = useRef(); useUIKit(myRef, 'modal', opts)` — this will silently fail because the hook never connects to the DOM element.
+      ```tsx
+      // ✅ Correct — use the ref returned by the hook
+      const { ref, instance } = useUIKit<ModalType, HTMLDivElement>('modal', { container: false });
+      return <div ref={ref}>...</div>;
+
+      // ❌ Wrong — separate ref is never seen by useUIKit
+      const myRef = useRef<HTMLDivElement>(null);
+      const { instance } = useUIKit(myRef, 'modal', { container: false });
+      return <div ref={myRef}>...</div>;
+      ```
     - **Event Handling**: When listening for UIkit events (e.g., `show`, `hide`), use `useEffect` with the `instance` or `ref` provided by `useUIKit` to ensure proper cleanup and React-state synchronization.
 - **Prop Logic**: Components should map UIkit's class-based options (like `uk-button-primary` or `uk-form-width-medium`) to clean React props (`variant="primary"`, `formWidth="medium"`).
 - **State Synchronization**: When syncing React state with complex UIkit instances (e.g., `Slider`), avoid re-initializing the component (which happens if the `index` prop changes frequently). Instead, use `useEffect` to call programmatic methods like `instance.show(index)` only when the internal UIkit index differs from the React state.
