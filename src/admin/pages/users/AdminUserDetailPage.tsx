@@ -210,7 +210,7 @@ const AdminUserDetailPage: React.FC = () => {
               <div className="uk-text-meta">@{user.username}</div>
               <div className="uk-margin-small-top uk-flex uk-flex-middle" style={{ gap: '8px' }}>
                 <UserStatusBadge status={user.status} />
-                {user.roles.map(role => (
+                {(user.roles ?? []).map(role => (
                   <span key={role} className="uk-label">{role}</span>
                 ))}
               </div>
@@ -222,7 +222,7 @@ const AdminUserDetailPage: React.FC = () => {
               <button
                 className="uk-button uk-button-danger uk-button-small uk-border-rounded"
                 onClick={() => setIsBanModalOpen(true)}
-                disabled={actionLoading || user.roles.includes('ADMIN')}
+                disabled={actionLoading || (user.roles ?? []).includes('ADMIN')}
               >
                 <Icon icon="ban" className="uk-margin-small-right" ratio={0.8} />
                 {t('admin.users.ban.banUser')}

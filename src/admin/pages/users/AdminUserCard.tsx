@@ -58,9 +58,9 @@ const AdminUserCard: React.FC<AdminUserCardProps> = ({ user }) => {
               </div>
               <div className="uk-text-meta uk-margin-small-top">
                 {t('admin.users.memberSince')} {registeredDate}
-                {user.roles.length > 0 && (
+                {(user.roles ?? []).length > 0 && (
                   <span className="uk-margin-small-left">
-                    · {user.roles.join(', ')}
+                    · {(user.roles ?? []).join(', ')}
                   </span>
                 )}
               </div>
