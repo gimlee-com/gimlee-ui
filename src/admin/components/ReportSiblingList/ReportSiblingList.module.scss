@@ -1,0 +1,15 @@
+@import "../../../styles/uikit-imports";
+
+.container {
+  border-top: 1px solid $global-border;
+  padding-top: $global-small-margin;
+}
+
+.siblingEntry {
+  padding: $global-small-gutter;
+  border-bottom: 1px solid $global-border;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
