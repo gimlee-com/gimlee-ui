@@ -18,6 +18,7 @@ export type SortDirection = 'ASC' | 'DESC';
 export interface AdminUserListFilterParams {
   search?: string;
   status?: UserStatus;
+  role?: string;
   sort?: AdminUserSortField;
   direction?: SortDirection;
   page: number;

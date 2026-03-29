@@ -1,0 +1,15 @@
+@import '../../../styles/uikit-imports';
+
+.message {
+  max-width: 80%;
+}
+
+.userMessage {
+  align-self: flex-start;
+}
+
+.supportMessage {
+  align-self: flex-end;
+  background-color: color-mix(in srgb, $global-primary-background, transparent 90%);
+  border-left: 3px solid $global-primary-background;
+}

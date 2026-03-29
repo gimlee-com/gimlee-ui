@@ -14,6 +14,7 @@ function buildUserListQuery(params: AdminUserListFilterParams): string {
   qs.set('size', params.size.toString());
   if (params.search) qs.set('search', params.search);
   if (params.status) qs.set('status', params.status);
+  if (params.role) qs.set('role', params.role);
   if (params.sort) qs.set('sort', params.sort);
   if (params.direction) qs.set('direction', params.direction);
   return qs.toString();

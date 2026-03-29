@@ -1,0 +1,41 @@
+@import '../../../styles/uikit-imports';
+
+.timeline {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.entry {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 0;
+
+  & + & {
+    border-top: 1px solid $global-border;
+  }
+}
+
+.icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: color-mix(in srgb, $global-primary-background, transparent 90%);
+  color: $global-primary-background;
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+}
+
+.meta {
+  color: $global-muted-color;
+  font-size: 0.85rem;
+  margin-top: 2px;
+}

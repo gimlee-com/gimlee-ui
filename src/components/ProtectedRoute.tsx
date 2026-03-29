@@ -5,7 +5,7 @@ import { Spinner } from './uikit/Spinner/Spinner';
 import { Alert } from './uikit/Alert/Alert';
 
 interface ProtectedRouteProps {
-  requiredRole?: string;
+  requiredRole?: string | string[];
 }
 
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ requiredRole }) => {
@@ -25,7 +25,11 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ requiredRole }) 
     return <Navigate to="/login" state={{ from: location.pathname + location.search }} replace />;
   }
 
-  if (requiredRole && !roles.includes(requiredRole)) {
+  const requiredRoles = requiredRole
+    ? Array.isArray(requiredRole) ? requiredRole : [requiredRole]
+    : [];
+
+  if (requiredRoles.length > 0 && !requiredRoles.some((r) => roles.includes(r))) {
     return (
       <div className="uk-flex uk-flex-center uk-flex-middle uk-height-large">
         <div className="uk-text-center">

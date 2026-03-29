@@ -167,7 +167,7 @@ const Navbar: React.FC = () => {
                       {t('navbar.terms')}
                     </Link>
                   </NavItem>
-                  {roles.includes('ADMIN') && (
+                  {(roles.includes('ADMIN') || roles.includes('SUPPORT')) && (
                     <>
                       <NavDivider />
                       <NavItem>
@@ -334,7 +334,7 @@ const Navbar: React.FC = () => {
             >
               <Link to="/terms" uk-toggle="target: #mobile-menu">{t('navbar.terms')}</Link>
             </MotionNavItem>
-            {roles.includes('ADMIN') && (
+            {(roles.includes('ADMIN') || roles.includes('SUPPORT')) && (
               <MotionNavItem
                 key="admin-off"
                 initial={{ opacity: 0 }}
