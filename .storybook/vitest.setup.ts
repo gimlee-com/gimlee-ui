@@ -11,6 +11,9 @@ vi.mock('../src/services/apiClient', () => ({
       if (url.startsWith('/session/init')) {
         return Promise.resolve({ accessToken: '', userProfile: null });
       }
+      if (url.startsWith('/reports/reasons')) {
+        return Promise.resolve([]);
+      }
       return Promise.resolve({});
     }),
     post: vi.fn().mockResolvedValue({}),

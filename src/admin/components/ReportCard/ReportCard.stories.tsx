@@ -69,7 +69,7 @@ export const AllStates: Story = {
       <div><ReportCard report={baseReport} /></div>
       <div><ReportCard report={{ ...baseReport, id: 'rpt-r2', status: 'IN_REVIEW', reason: 'SPAM' }} /></div>
       <div><ReportCard report={{ ...baseReport, id: 'rpt-r3', status: 'RESOLVED', targetType: 'MESSAGE', targetTitle: 'Offensive Message' }} /></div>
-      <div><ReportCard report={{ ...baseReport, id: 'rpt-r4', status: 'DISMISSED', reason: 'DUPLICATE', siblingCount: 3 }} /></div>
+      <div><ReportCard report={{ ...baseReport, id: 'rpt-r4', status: 'DISMISSED', reason: 'OTHER', siblingCount: 3 }} /></div>
     </div>
   ),
 };

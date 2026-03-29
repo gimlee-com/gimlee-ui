@@ -23,17 +23,19 @@ const TICKET_CATEGORIES: TicketCategory[] = [
 const CreateTicketForm: React.FC<CreateTicketFormProps> = ({ onSuccess }) => {
   const { t } = useTranslation();
 
+  type CreateTicketFormValues = Omit<CreateTicketDto, 'category'> & { category: TicketCategory | '' };
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors, isValid, isSubmitting },
-  } = useForm<CreateTicketDto & { category: TicketCategory | '' }>({
+  } = useForm<CreateTicketFormValues>({
     mode: 'onBlur',
     defaultValues: { subject: '', category: '', body: '' },
   });
 
-  const onSubmit = async (data: CreateTicketDto & { category: TicketCategory | '' }) => {
+  const onSubmit = async (data: CreateTicketFormValues) => {
     try {
       const dto: CreateTicketDto = {
         subject: data.subject,

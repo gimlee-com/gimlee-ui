@@ -71,8 +71,10 @@ export default defineConfig(({ mode }) => ({
       },
     },
   },
-  css: {
-    modules: {
+  optimizeDeps: {
+    include: ['@milkdown/react', '@milkdown/core', '@milkdown/ctx', '@milkdown/prose'],
+  },
+  css: {    modules: {
       generateScopedName: mode === 'production' ? '[hash:base64:5]' : '[name]__[local]___[hash:base64:5]',
     },
     preprocessorOptions: {
