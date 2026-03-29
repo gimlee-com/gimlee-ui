@@ -1,11 +1,11 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import UIkit from 'uikit';
 import { useUIKit } from '../../hooks/useUIkit';
 import { Select } from '../uikit/Form/Form';
 import { reportService } from '../../services/reportService';
-import type { ReportTargetType, ReportReason, SubmitReportDto } from '../../admin/types/adminReport';
+import type { ReportTargetType, ReportReason, ReportReasonDto, SubmitReportDto } from '../../admin/types/adminReport';
 
 interface ReportFormModalProps {
   targetType: ReportTargetType;
@@ -19,19 +19,10 @@ interface ReportFormValues {
   description: string;
 }
 
-const REPORT_REASONS: ReportReason[] = [
-  'SPAM',
-  'FRAUD',
-  'INAPPROPRIATE_CONTENT',
-  'COUNTERFEIT',
-  'HARASSMENT',
-  'COPYRIGHT',
-  'WRONG_CATEGORY',
-  'OTHER',
-];
-
 const ReportFormModal: React.FC<ReportFormModalProps> = ({ targetType, targetId, isOpen, onClose }) => {
   const { t } = useTranslation();
+  const [reasons, setReasons] = useState<ReportReasonDto[]>([]);
+  const [loadingReasons, setLoadingReasons] = useState(false);
   const { ref: modalRef, instance } = useUIKit<{ show: () => void; hide: () => void }, HTMLDivElement>('modal', {
     container: false,
     stack: true,
@@ -46,6 +37,18 @@ const ReportFormModal: React.FC<ReportFormModalProps> = ({ targetType, targetId,
     mode: 'onBlur',
     defaultValues: { reason: '', description: '' },
   });
+
+  // Fetch applicable reasons when the modal opens or targetType changes
+  useEffect(() => {
+    if (!isOpen) return;
+    let cancelled = false;
+    setLoadingReasons(true);
+    reportService.getReasons(targetType)
+      .then((data) => { if (!cancelled) setReasons(data); })
+      .catch(() => { if (!cancelled) setReasons([]); })
+      .finally(() => { if (!cancelled) setLoadingReasons(false); });
+    return () => { cancelled = true; };
+  }, [isOpen, targetType]);
 
   const handleHide = useCallback(() => {
     reset();
@@ -112,15 +115,18 @@ const ReportFormModal: React.FC<ReportFormModalProps> = ({ targetType, targetId,
               <div className="uk-form-controls">
                 <Select
                   status={errors.reason ? 'danger' : undefined}
+                  disabled={loadingReasons}
                   {...register('reason', {
                     required: t('report.reasonRequired'),
                     validate: (v) => v !== '' || t('report.reasonRequired'),
                   })}
                 >
-                  <option value="">{t('report.reasonPlaceholder')}</option>
-                  {REPORT_REASONS.map((r) => (
-                    <option key={r} value={r}>
-                      {t(`report.reasons.${r}`)}
+                  <option value="">
+                    {loadingReasons ? t('common.loading') : t('report.reasonPlaceholder')}
+                  </option>
+                  {reasons.map((r) => (
+                    <option key={r.reason} value={r.reason}>
+                      {t(`report.reasons.${r.reason}`)}
                     </option>
                   ))}
                 </Select>
@@ -159,7 +165,7 @@ const ReportFormModal: React.FC<ReportFormModalProps> = ({ targetType, targetId,
             <button className="uk-button uk-button-default uk-modal-close uk-margin-small-right" type="button">
               {t('common.cancel')}
             </button>
-            <button className="uk-button uk-button-primary" type="submit" disabled={!isValid || isSubmitting}>
+            <button className="uk-button uk-button-primary" type="submit" disabled={!isValid || isSubmitting || loadingReasons}>
               {isSubmitting ? t('common.loading') : t('report.submit')}
             </button>
           </div>

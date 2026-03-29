@@ -1,10 +1,17 @@
 import { apiClient } from './apiClient';
 import type { StatusResponseDto } from '../types/api';
-import type { SubmitReportDto, PageReportListItemDto } from '../admin/types/adminReport';
+import type { SubmitReportDto, PageReportListItemDto, ReportReasonDto, ReportTargetType } from '../admin/types/adminReport';
 
 export const reportService = {
   submitReport: (dto: SubmitReportDto) =>
     apiClient.post<StatusResponseDto>('/reports', dto),
+
+  getReasons: (targetType?: ReportTargetType) => {
+    const qs = new URLSearchParams();
+    if (targetType) qs.set('targetType', targetType);
+    const query = qs.toString();
+    return apiClient.get<ReportReasonDto[]>(`/reports/reasons${query ? `?${query}` : ''}`);
+  },
 
   getMyReports: (params: { page?: number; size?: number }) => {
     const qs = new URLSearchParams();

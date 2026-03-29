@@ -100,6 +100,12 @@ export interface AddReportNoteDto {
   note: string;
 }
 
+/** Single entry from GET /reports/reasons */
+export interface ReportReasonDto {
+  reason: ReportReason;
+  supportedTargets: ReportTargetType[];
+}
+
 /** Request body for POST /reports (user-facing report submission) */
 export interface SubmitReportDto {
   targetType: ReportTargetType;
