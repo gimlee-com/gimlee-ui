@@ -32,6 +32,12 @@ const AdminDashboardPage = lazy(() => import('./admin/pages/AdminDashboardPage')
 const CategoryManagementPage = lazy(() => import('./admin/pages/categories/CategoryManagementPage'));
 const AdminUserListPage = lazy(() => import('./admin/pages/users/AdminUserListPage'));
 const AdminUserDetailPage = lazy(() => import('./admin/pages/users/AdminUserDetailPage'));
+const ReportListPage = lazy(() => import('./admin/pages/reports/ReportListPage'));
+const ReportDetailPage = lazy(() => import('./admin/pages/reports/ReportDetailPage'));
+const TicketListPage = lazy(() => import('./admin/pages/helpdesk/TicketListPage'));
+const TicketDetailPage = lazy(() => import('./admin/pages/helpdesk/TicketDetailPage'));
+const MyTicketsPage = lazy(() => import('./profile/pages/MyTicketsPage'));
+const UserTicketDetailPage = lazy(() => import('./profile/pages/UserTicketDetailPage'));
 import { ProtectedRoute } from './components/ProtectedRoute';
 
 function App() {
@@ -91,12 +97,20 @@ function App() {
             <Route path="/purchases" element={<PurchasesPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/u/:userName" element={<UserSpacePage />} />
+            <Route path="/tickets" element={<Suspense><MyTicketsPage /></Suspense>} />
+            <Route path="/tickets/:ticketId" element={<Suspense><UserTicketDetailPage /></Suspense>} />
             <Route path="/terms" element={<Suspense><TermsOfServicePage /></Suspense>} />
             <Route element={<ProtectedRoute requiredRole="ADMIN" />}>
               <Route path="/admin" element={<Suspense><AdminDashboardPage /></Suspense>} />
               <Route path="/admin/categories" element={<Suspense><CategoryManagementPage /></Suspense>} />
               <Route path="/admin/users" element={<Suspense><AdminUserListPage /></Suspense>} />
               <Route path="/admin/users/:userId" element={<Suspense><AdminUserDetailPage /></Suspense>} />
+            </Route>
+            <Route element={<ProtectedRoute requiredRole={['ADMIN', 'SUPPORT']} />}>
+              <Route path="/admin/reports" element={<Suspense><ReportListPage /></Suspense>} />
+              <Route path="/admin/reports/:reportId" element={<Suspense><ReportDetailPage /></Suspense>} />
+              <Route path="/admin/tickets" element={<Suspense><TicketListPage /></Suspense>} />
+              <Route path="/admin/tickets/:ticketId" element={<Suspense><TicketDetailPage /></Suspense>} />
             </Route>
           </Routes>
         </div>

@@ -383,6 +383,52 @@ const resources = {
         "title": "Terms of Service",
         "lastUpdated": "Last updated: February 2026"
       },
+      "report": {
+        "title": "Submit a Report",
+        "submit": "Report",
+        "reason": "Reason",
+        "reasonPlaceholder": "Select a reason…",
+        "reasonRequired": "Please select a reason.",
+        "description": "Description",
+        "descriptionPlaceholder": "Describe the issue in detail…",
+        "descriptionRequired": "Description is required.",
+        "descriptionMinLength": "Description must be at least {{count}} characters.",
+        "success": "Report submitted successfully. Thank you!",
+        "error": "Failed to submit report. Please try again.",
+        "reasons": {
+          "SPAM": "Spam",
+          "FRAUD": "Fraud / Scam",
+          "INAPPROPRIATE_CONTENT": "Inappropriate Content",
+          "COUNTERFEIT": "Counterfeit Product",
+          "HARASSMENT": "Harassment",
+          "COPYRIGHT": "Copyright Violation",
+          "WRONG_CATEGORY": "Wrong Category",
+          "OTHER": "Other"
+        }
+      },
+      "tickets": {
+        "myTickets": "My Tickets",
+        "createTicket": "New Ticket",
+        "subject": "Subject",
+        "subjectPlaceholder": "Brief summary of your issue…",
+        "subjectRequired": "Subject is required.",
+        "category": "Category",
+        "categoryPlaceholder": "Select a category…",
+        "categoryRequired": "Please select a category.",
+        "body": "Message",
+        "bodyPlaceholder": "Describe your issue in detail…",
+        "bodyRequired": "Message is required.",
+        "bodyMinLength": "Message must be at least {{count}} characters.",
+        "submitTicket": "Submit Ticket",
+        "success": "Ticket created successfully.",
+        "error": "Something went wrong. Please try again.",
+        "noTickets": "You have no tickets yet.",
+        "notFound": "Ticket not found.",
+        "replySent": "Reply sent.",
+        "messageCount_one": "{{count}} message",
+        "messageCount_other": "{{count}} messages",
+        "messageCount": "{{count}} messages"
+      },
       "admin": {
         "title": "Admin Panel",
         "dashboard": "Dashboard",
@@ -537,6 +583,125 @@ const resources = {
             "banSuccess": "User has been banned successfully.",
             "unbanSuccess": "User has been unbanned successfully.",
             "cannotBanAdmin": "Cannot ban an administrator."
+          }
+        },
+        "helpdesk": {
+          "title": "Help Desk",
+          "description": "Manage support tickets, respond to users, and resolve issues",
+          "noTickets": "No tickets found.",
+          "createdBy": "Created by",
+          "assignee": "Assignee",
+          "unassigned": "Unassigned",
+          "lastMessage": "Last message",
+          "messageCount": "{{count}} messages",
+          "status": {
+            "OPEN": "Open",
+            "IN_PROGRESS": "In Progress",
+            "AWAITING_USER": "Awaiting User",
+            "RESOLVED": "Resolved",
+            "CLOSED": "Closed"
+          },
+          "priority": {
+            "LOW": "Low",
+            "MEDIUM": "Medium",
+            "HIGH": "High",
+            "URGENT": "Urgent"
+          },
+          "category": {
+            "ACCOUNT_ISSUE": "Account Issue",
+            "PAYMENT_PROBLEM": "Payment Problem",
+            "ORDER_DISPUTE": "Order Dispute",
+            "TECHNICAL_BUG": "Technical Bug",
+            "FEATURE_REQUEST": "Feature Request",
+            "SAFETY_CONCERN": "Safety Concern",
+            "OTHER": "Other"
+          },
+          "conversation": {
+            "empty": "No messages in this ticket yet.",
+            "role": {
+              "USER": "User",
+              "SUPPORT": "Support"
+            }
+          },
+          "reply": {
+            "label": "Reply",
+            "placeholder": "Type your reply...",
+            "required": "Reply body is required.",
+            "submit": "Send Reply"
+          },
+          "assign": {
+            "title": "Assign Ticket",
+            "description": "Select a staff member to assign this ticket to.",
+            "selectStaff": "Staff Member",
+            "placeholder": "— Select —",
+            "submit": "Assign"
+          }
+        },
+        "reports": {
+          "title": "Report Management",
+          "description": "Review and resolve reports submitted by users",
+          "noReports": "No reports found.",
+          "siblingCount": "{{count}} reports for this item",
+          "reportedBy": "Reported by",
+          "filters": {
+            "search": "Search reports...",
+            "status": "Status",
+            "allStatuses": "All Statuses",
+            "targetType": "Target Type",
+            "allTargetTypes": "All Types",
+            "reason": "Reason",
+            "allReasons": "All Reasons"
+          },
+          "status": {
+            "OPEN": "Open",
+            "IN_REVIEW": "In Review",
+            "RESOLVED": "Resolved",
+            "DISMISSED": "Dismissed"
+          },
+          "targetType": {
+            "AD": "Ad",
+            "USER": "User",
+            "MESSAGE": "Message",
+            "QUESTION": "Question",
+            "ANSWER": "Answer"
+          },
+          "reason": {
+            "SPAM": "Spam",
+            "FRAUD": "Fraud",
+            "INAPPROPRIATE_CONTENT": "Inappropriate Content",
+            "COUNTERFEIT": "Counterfeit",
+            "HARASSMENT": "Harassment",
+            "COPYRIGHT": "Copyright",
+            "WRONG_CATEGORY": "Wrong Category",
+            "OTHER": "Other"
+          },
+          "resolution": {
+            "CONTENT_REMOVED": "Content Removed",
+            "USER_WARNED": "User Warned",
+            "USER_BANNED": "User Banned",
+            "NO_VIOLATION": "No Violation",
+            "DUPLICATE": "Duplicate",
+            "OTHER": "Other"
+          },
+          "timeline": {
+            "title": "Timeline",
+            "action": {
+              "CREATED": "Report created",
+              "ASSIGNED": "Assigned",
+              "STATUS_CHANGED": "Status changed",
+              "NOTE_ADDED": "Note added",
+              "RESOLVED": "Resolved"
+            }
+          },
+          "actionModal": {
+            "title": "Resolve Report",
+            "resolve": "Resolve",
+            "dismiss": "Dismiss",
+            "resolutionLabel": "Resolution",
+            "internalNotes": "Internal Notes",
+            "internalNotesPlaceholder": "Add optional internal notes...",
+            "submit": "Confirm Resolution",
+            "resolutionRequired": "Please select a resolution."
           }
         }
       },
@@ -935,6 +1100,54 @@ const resources = {
         "title": "Regulamin",
         "lastUpdated": "Ostatnia aktualizacja: luty 2026"
       },
+      "report": {
+        "title": "Zgłoś naruszenie",
+        "submit": "Zgłoś",
+        "reason": "Powód",
+        "reasonPlaceholder": "Wybierz powód…",
+        "reasonRequired": "Proszę wybrać powód.",
+        "description": "Opis",
+        "descriptionPlaceholder": "Opisz szczegółowo problem…",
+        "descriptionRequired": "Opis jest wymagany.",
+        "descriptionMinLength": "Opis musi mieć co najmniej {{count}} znaków.",
+        "success": "Zgłoszenie zostało wysłane. Dziękujemy!",
+        "error": "Nie udało się wysłać zgłoszenia. Spróbuj ponownie.",
+        "reasons": {
+          "SPAM": "Spam",
+          "FRAUD": "Oszustwo",
+          "INAPPROPRIATE_CONTENT": "Nieodpowiednia treść",
+          "COUNTERFEIT": "Podróbka",
+          "HARASSMENT": "Nękanie",
+          "COPYRIGHT": "Naruszenie praw autorskich",
+          "WRONG_CATEGORY": "Błędna kategoria",
+          "OTHER": "Inne"
+        }
+      },
+      "tickets": {
+        "myTickets": "Moje zgłoszenia",
+        "createTicket": "Nowe zgłoszenie",
+        "subject": "Temat",
+        "subjectPlaceholder": "Krótki opis problemu…",
+        "subjectRequired": "Temat jest wymagany.",
+        "category": "Kategoria",
+        "categoryPlaceholder": "Wybierz kategorię…",
+        "categoryRequired": "Proszę wybrać kategorię.",
+        "body": "Wiadomość",
+        "bodyPlaceholder": "Opisz szczegółowo swój problem…",
+        "bodyRequired": "Wiadomość jest wymagana.",
+        "bodyMinLength": "Wiadomość musi mieć co najmniej {{count}} znaków.",
+        "submitTicket": "Wyślij zgłoszenie",
+        "success": "Zgłoszenie zostało utworzone.",
+        "error": "Coś poszło nie tak. Spróbuj ponownie.",
+        "noTickets": "Nie masz jeszcze żadnych zgłoszeń.",
+        "notFound": "Nie znaleziono zgłoszenia.",
+        "replySent": "Odpowiedź wysłana.",
+        "messageCount_one": "{{count}} wiadomość",
+        "messageCount_few": "{{count}} wiadomości",
+        "messageCount_many": "{{count}} wiadomości",
+        "messageCount_other": "{{count}} wiadomości",
+        "messageCount": "{{count}} wiadomości"
+      },
       "admin": {
         "title": "Panel Administracyjny",
         "dashboard": "Pulpit",
@@ -1089,6 +1302,125 @@ const resources = {
             "banSuccess": "Użytkownik został zablokowany.",
             "unbanSuccess": "Użytkownik został odblokowany.",
             "cannotBanAdmin": "Nie można zablokować administratora."
+          }
+        },
+        "helpdesk": {
+          "title": "Pomoc Techniczna",
+          "description": "Zarządzaj zgłoszeniami wsparcia, odpowiadaj użytkownikom i rozwiązuj problemy",
+          "noTickets": "Nie znaleziono zgłoszeń.",
+          "createdBy": "Utworzone przez",
+          "assignee": "Przypisany",
+          "unassigned": "Nieprzypisany",
+          "lastMessage": "Ostatnia wiadomość",
+          "messageCount": "{{count}} wiadomości",
+          "status": {
+            "OPEN": "Otwarte",
+            "IN_PROGRESS": "W toku",
+            "AWAITING_USER": "Oczekuje na użytkownika",
+            "RESOLVED": "Rozwiązane",
+            "CLOSED": "Zamknięte"
+          },
+          "priority": {
+            "LOW": "Niski",
+            "MEDIUM": "Średni",
+            "HIGH": "Wysoki",
+            "URGENT": "Pilny"
+          },
+          "category": {
+            "ACCOUNT_ISSUE": "Problem z kontem",
+            "PAYMENT_PROBLEM": "Problem z płatnością",
+            "ORDER_DISPUTE": "Spór o zamówienie",
+            "TECHNICAL_BUG": "Błąd techniczny",
+            "FEATURE_REQUEST": "Propozycja funkcji",
+            "SAFETY_CONCERN": "Kwestia bezpieczeństwa",
+            "OTHER": "Inne"
+          },
+          "conversation": {
+            "empty": "Brak wiadomości w tym zgłoszeniu.",
+            "role": {
+              "USER": "Użytkownik",
+              "SUPPORT": "Wsparcie"
+            }
+          },
+          "reply": {
+            "label": "Odpowiedź",
+            "placeholder": "Wpisz odpowiedź...",
+            "required": "Treść odpowiedzi jest wymagana.",
+            "submit": "Wyślij odpowiedź"
+          },
+          "assign": {
+            "title": "Przypisz zgłoszenie",
+            "description": "Wybierz członka zespołu, do którego chcesz przypisać to zgłoszenie.",
+            "selectStaff": "Członek zespołu",
+            "placeholder": "— Wybierz —",
+            "submit": "Przypisz"
+          }
+        },
+        "reports": {
+          "title": "Zarządzanie Zgłoszeniami",
+          "description": "Przeglądaj i rozwiązuj zgłoszenia przesłane przez użytkowników",
+          "noReports": "Nie znaleziono zgłoszeń.",
+          "siblingCount": "{{count}} zgłoszeń dla tego elementu",
+          "reportedBy": "Zgłoszone przez",
+          "filters": {
+            "search": "Szukaj zgłoszeń...",
+            "status": "Status",
+            "allStatuses": "Wszystkie statusy",
+            "targetType": "Typ obiektu",
+            "allTargetTypes": "Wszystkie typy",
+            "reason": "Powód",
+            "allReasons": "Wszystkie powody"
+          },
+          "status": {
+            "OPEN": "Otwarte",
+            "IN_REVIEW": "W trakcie przeglądu",
+            "RESOLVED": "Rozwiązane",
+            "DISMISSED": "Odrzucone"
+          },
+          "targetType": {
+            "AD": "Ogłoszenie",
+            "USER": "Użytkownik",
+            "MESSAGE": "Wiadomość",
+            "QUESTION": "Pytanie",
+            "ANSWER": "Odpowiedź"
+          },
+          "reason": {
+            "SPAM": "Spam",
+            "FRAUD": "Oszustwo",
+            "INAPPROPRIATE_CONTENT": "Nieodpowiednia treść",
+            "COUNTERFEIT": "Podróbka",
+            "HARASSMENT": "Nękanie",
+            "COPYRIGHT": "Prawa autorskie",
+            "WRONG_CATEGORY": "Zła kategoria",
+            "OTHER": "Inne"
+          },
+          "resolution": {
+            "CONTENT_REMOVED": "Treść usunięta",
+            "USER_WARNED": "Użytkownik ostrzeżony",
+            "USER_BANNED": "Użytkownik zablokowany",
+            "NO_VIOLATION": "Brak naruszenia",
+            "DUPLICATE": "Duplikat",
+            "OTHER": "Inne"
+          },
+          "timeline": {
+            "title": "Oś czasu",
+            "action": {
+              "CREATED": "Zgłoszenie utworzone",
+              "ASSIGNED": "Przypisane",
+              "STATUS_CHANGED": "Zmiana statusu",
+              "NOTE_ADDED": "Dodano notatkę",
+              "RESOLVED": "Rozwiązane"
+            }
+          },
+          "actionModal": {
+            "title": "Rozwiąż zgłoszenie",
+            "resolve": "Rozwiąż",
+            "dismiss": "Odrzuć",
+            "resolutionLabel": "Rozwiązanie",
+            "internalNotes": "Notatki wewnętrzne",
+            "internalNotesPlaceholder": "Dodaj opcjonalne notatki wewnętrzne...",
+            "submit": "Potwierdź rozwiązanie",
+            "resolutionRequired": "Proszę wybrać rozwiązanie."
           }
         }
       },
