@@ -1,13 +1,15 @@
 import React, { useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import UIkit from 'uikit';
-import type { QuestionDto, AnswerDto, ReportTargetType } from '../../types/qa';
+import type { QuestionDto, AnswerDto } from '../../types/qa';
+import type { ReportTargetType } from '../../../admin/types/adminReport';
 import { formatRelativeTimeFromIso } from '../../../utils/dateUtils';
 import { qaService } from '../../services/qaService';
 import { GeometricAvatar } from '../../../components/GeometricAvatar/GeometricAvatar';
 import { Icon } from '../../../components/uikit/Icon/Icon';
 import { Label } from '../../../components/uikit/Label/Label';
 import { Button } from '../../../components/uikit/Button/Button';
+import ReportFormModal from '../../../components/ReportFormModal/ReportFormModal';
 import { AnswerItem } from './AnswerItem';
 import { AnswerForm } from './AnswerForm';
 import styles from './QuestionCard.module.scss';
@@ -27,6 +29,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
 }) => {
   const { t } = useTranslation();
   const [loadingAction, setLoadingAction] = useState<string | null>(null);
+  const [reportTarget, setReportTarget] = useState<{ targetType: ReportTargetType; targetId: string } | null>(null);
 
   const handleUpvote = useCallback(async () => {
     if (!isLoggedIn) return;
@@ -83,29 +86,9 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
     }
   }, [question, onQuestionUpdated, t]);
 
-  const handleReport = useCallback(async (targetType: ReportTargetType, targetId: string) => {
-    const reason = await new Promise<string | null>((resolve) => {
-      UIkit.modal.prompt(t('questions.reportPlaceholder'), '', {
-        stack: true,
-        i18n: { ok: t('questions.reportSubmit'), cancel: t('common.cancel') },
-      }).then(
-        (value: string | null) => resolve(value),
-        () => resolve(null)
-      );
-    });
-    if (!reason) return;
-    try {
-      await qaService.report(targetType, targetId, reason);
-      UIkit.notification({ message: t('questions.reportSuccess'), status: 'success' });
-    } catch (error: unknown) {
-      const err = error as { status?: string };
-      if (err.status === 'ALREADY_REPORTED') {
-        UIkit.notification({ message: t('questions.reportAlreadyReported'), status: 'warning' });
-      } else {
-        UIkit.notification({ message: t('questions.errors.reportFailed'), status: 'danger' });
-      }
-    }
-  }, [t]);
+  const handleReport = useCallback((targetType: ReportTargetType, targetId: string) => {
+    setReportTarget({ targetType, targetId });
+  }, []);
 
   const handleAnswerSubmitted = useCallback((answer: AnswerDto) => {
     onQuestionUpdated({
@@ -236,6 +219,15 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
           </div>
         </div>
       </div>
+
+      {reportTarget && (
+        <ReportFormModal
+          targetType={reportTarget.targetType}
+          targetId={reportTarget.targetId}
+          isOpen={true}
+          onClose={() => setReportTarget(null)}
+        />
+      )}
     </div>
   );
 };
