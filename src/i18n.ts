@@ -76,6 +76,15 @@ const resources = {
           "passwordsDoNotMatch": "Passwords do not match",
           "usernameTaken": "Username is already taken",
           "emailTaken": "Email is already taken"
+        },
+        "changePassword": {
+          "title": "Change Password",
+          "oldPassword": "Current Password",
+          "newPassword": "New Password",
+          "confirmPassword": "Confirm New Password",
+          "submit": "Change Password",
+          "success": "Password changed successfully.",
+          "error": "Failed to change password. Please try again."
         }
       },
       "ads": {
@@ -174,7 +183,14 @@ const resources = {
         "orderId": "Order ID",
         "buyer": "Buyer",
         "total": "Total",
-        "date": "Date"
+        "date": "Date",
+        "adStats": {
+          "title": "Visit Statistics",
+          "daily": "Today",
+          "monthly": "This Month",
+          "yearly": "This Year",
+          "total": "All Time"
+        }
       },
       "purchases": {
         "title": "Purchases",
@@ -237,6 +253,32 @@ const resources = {
           "dark": "Dark",
           "dark-unicorn": "Dark Unicorn",
           "iron-age": "Iron Age"
+        },
+        "avatar": {
+          "title": "Profile Photo",
+          "change": "Change Avatar",
+          "upload": "Upload",
+          "uploadSuccess": "Avatar updated successfully.",
+          "uploadError": "Failed to update avatar."
+        },
+        "deliveryAddresses": {
+          "title": "Delivery Addresses",
+          "addAddress": "Add Address",
+          "name": "Address Label",
+          "namePlaceholder": "e.g. Home, Office…",
+          "fullName": "Full Name",
+          "street": "Street Address",
+          "city": "City",
+          "postalCode": "Postal Code",
+          "country": "Country",
+          "phoneNumber": "Phone Number",
+          "setAsDefault": "Set as default address",
+          "save": "Save Address",
+          "addSuccess": "Address added successfully.",
+          "addError": "Failed to add address.",
+          "noAddresses": "No delivery addresses yet.",
+          "default": "Default",
+          "maxReached": "Maximum number of addresses reached."
         }
       },
       "spaces": {
@@ -404,6 +446,21 @@ const resources = {
           "COPYRIGHT": "Copyright Violation",
           "WRONG_CATEGORY": "Wrong Category",
           "OTHER": "Other"
+        },
+        "myReports": "My Reports",
+        "noReports": "You have no reports yet.",
+        "status": {
+          "OPEN": "Open",
+          "IN_REVIEW": "In Review",
+          "RESOLVED": "Resolved",
+          "DISMISSED": "Dismissed"
+        },
+        "targetType": {
+          "AD": "Ad",
+          "USER": "User",
+          "MESSAGE": "Message",
+          "QUESTION": "Question",
+          "ANSWER": "Answer"
         }
       },
       "tickets": {
@@ -792,6 +849,15 @@ const resources = {
           "passwordsDoNotMatch": "Hasła nie zgadzają się",
           "usernameTaken": "Nazwa użytkownika jest już zajęta",
           "emailTaken": "Email jest już zajęty"
+        },
+        "changePassword": {
+          "title": "Zmień hasło",
+          "oldPassword": "Obecne hasło",
+          "newPassword": "Nowe hasło",
+          "confirmPassword": "Potwierdź nowe hasło",
+          "submit": "Zmień hasło",
+          "success": "Hasło zostało zmienione.",
+          "error": "Nie udało się zmienić hasła. Spróbuj ponownie."
         }
       },
       "ads": {
@@ -890,7 +956,14 @@ const resources = {
         "orderId": "ID zamówienia",
         "buyer": "Kupujący",
         "total": "Suma",
-        "date": "Data"
+        "date": "Data",
+        "adStats": {
+          "title": "Statystyki odwiedzin",
+          "daily": "Dzisiaj",
+          "monthly": "Ten miesiąc",
+          "yearly": "Ten rok",
+          "total": "Ogółem"
+        }
       },
       "purchases": {
         "title": "Zakupy",
@@ -953,6 +1026,32 @@ const resources = {
           "dark": "Ciemny",
           "dark-unicorn": "Mroczny Jednorożec",
           "iron-age": "Epoka żelaza"
+        },
+        "avatar": {
+          "title": "Zdjęcie profilowe",
+          "change": "Zmień awatar",
+          "upload": "Prześlij",
+          "uploadSuccess": "Awatar został zaktualizowany.",
+          "uploadError": "Nie udało się zaktualizować awatara."
+        },
+        "deliveryAddresses": {
+          "title": "Adresy dostawy",
+          "addAddress": "Dodaj adres",
+          "name": "Etykieta adresu",
+          "namePlaceholder": "np. Dom, Biuro…",
+          "fullName": "Imię i nazwisko",
+          "street": "Ulica",
+          "city": "Miasto",
+          "postalCode": "Kod pocztowy",
+          "country": "Kraj",
+          "phoneNumber": "Numer telefonu",
+          "setAsDefault": "Ustaw jako domyślny adres",
+          "save": "Zapisz adres",
+          "addSuccess": "Adres został dodany.",
+          "addError": "Nie udało się dodać adresu.",
+          "noAddresses": "Brak adresów dostawy.",
+          "default": "Domyślny",
+          "maxReached": "Osiągnięto maksymalną liczbę adresów."
         }
       },
       "spaces": {
@@ -1121,6 +1220,21 @@ const resources = {
           "COPYRIGHT": "Naruszenie praw autorskich",
           "WRONG_CATEGORY": "Błędna kategoria",
           "OTHER": "Inne"
+        },
+        "myReports": "Moje zgłoszenia",
+        "noReports": "Nie masz jeszcze żadnych zgłoszeń.",
+        "status": {
+          "OPEN": "Otwarte",
+          "IN_REVIEW": "W trakcie przeglądu",
+          "RESOLVED": "Rozwiązane",
+          "DISMISSED": "Odrzucone"
+        },
+        "targetType": {
+          "AD": "Ogłoszenie",
+          "USER": "Użytkownik",
+          "MESSAGE": "Wiadomość",
+          "QUESTION": "Pytanie",
+          "ANSWER": "Odpowiedź"
         }
       },
       "tickets": {

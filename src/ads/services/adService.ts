@@ -6,6 +6,7 @@ import type {
   PageAdPreviewDto,
   CreateAdRequestDto, 
   UpdateAdRequestDto,
+  AdVisitStatsDto,
 } from '../../types/api';
 
 export const adService = {
@@ -31,4 +32,7 @@ export const adService = {
 
   activateAd: (id: string) =>
     apiClient.post<AdDetailsDto>(`/ads/${id}/activate`),
+
+  getAdStats: (adId: string) =>
+    apiClient.get<AdVisitStatsDto>(`/ads/${adId}/stats`),
 };

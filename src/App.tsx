@@ -38,6 +38,7 @@ const TicketListPage = lazy(() => import('./admin/pages/helpdesk/TicketListPage'
 const TicketDetailPage = lazy(() => import('./admin/pages/helpdesk/TicketDetailPage'));
 const MyTicketsPage = lazy(() => import('./profile/pages/MyTicketsPage'));
 const UserTicketDetailPage = lazy(() => import('./profile/pages/UserTicketDetailPage'));
+const MyReportsPage = lazy(() => import('./profile/pages/MyReportsPage'));
 import { ProtectedRoute } from './components/ProtectedRoute';
 
 function App() {
@@ -99,6 +100,7 @@ function App() {
             <Route path="/u/:userName" element={<UserSpacePage />} />
             <Route path="/tickets" element={<Suspense><MyTicketsPage /></Suspense>} />
             <Route path="/tickets/:ticketId" element={<Suspense><UserTicketDetailPage /></Suspense>} />
+            <Route path="/reports/mine" element={<Suspense><MyReportsPage /></Suspense>} />
             <Route path="/terms" element={<Suspense><TermsOfServicePage /></Suspense>} />
             <Route element={<ProtectedRoute requiredRole="ADMIN" />}>
               <Route path="/admin" element={<Suspense><AdminDashboardPage /></Suspense>} />

@@ -55,7 +55,7 @@ const AdVisitStatsCard: React.FC<AdVisitStatsCardProps> = ({ adId }) => {
   if (!stats) return null;
 
   const today = new Date().toISOString().slice(0, 10);
-  const todayCount = stats.daily[today] || 0;
+  const todayCount = stats.daily?.[today] || 0;
 
   return (
     <motion.div
@@ -65,24 +65,24 @@ const AdVisitStatsCard: React.FC<AdVisitStatsCardProps> = ({ adId }) => {
     >
       <Card className="uk-margin-bottom">
         <CardBody>
-          <Heading as="h4">{t('ads.stats.title')}</Heading>
+          <Heading as="h4">{t('sales.adStats.title')}</Heading>
 
           <div className="uk-grid-small uk-child-width-1-2@s uk-child-width-1-4@m" uk-grid="">
             <div className="uk-text-center">
               <div className="uk-text-bold uk-text-large">{todayCount}</div>
-              <div className="uk-text-meta">{t('ads.stats.today')}</div>
+              <div className="uk-text-meta">{t('sales.adStats.daily')}</div>
             </div>
             <div className="uk-text-center">
               <div className="uk-text-bold uk-text-large">{stats.monthly}</div>
-              <div className="uk-text-meta">{t('ads.stats.thisMonth')}</div>
+              <div className="uk-text-meta">{t('sales.adStats.monthly')}</div>
             </div>
             <div className="uk-text-center">
               <div className="uk-text-bold uk-text-large">{stats.yearly}</div>
-              <div className="uk-text-meta">{t('ads.stats.thisYear')}</div>
+              <div className="uk-text-meta">{t('sales.adStats.yearly')}</div>
             </div>
             <div className="uk-text-center">
               <div className="uk-text-bold uk-text-large">{stats.total}</div>
-              <div className="uk-text-meta">{t('ads.stats.allTime')}</div>
+              <div className="uk-text-meta">{t('sales.adStats.total')}</div>
             </div>
           </div>
         </CardBody>

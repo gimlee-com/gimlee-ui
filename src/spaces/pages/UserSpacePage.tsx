@@ -16,6 +16,7 @@ import { GeometricAvatar } from '../../components/GeometricAvatar/GeometricAvata
 import { PresenceBadge } from '../../profile/components/PresenceBadge';
 import { useNavbarMode } from '../../hooks/useNavbarMode';
 import NavbarPortal from '../../components/Navbar/NavbarPortal';
+import ReportButton from '../../components/ReportButton/ReportButton';
 import styles from './UserSpacePage.module.scss';
 
 const containerVariants = {
@@ -139,6 +140,7 @@ const UserSpacePage: React.FC = () => {
               customStatus={presence?.customStatus} 
               className="uk-margin-small-top"
             />
+            <ReportButton targetType="USER" targetId={data.user.userId} className="uk-margin-small-top" />
          </motion.div>
       </div>
 

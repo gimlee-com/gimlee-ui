@@ -25,6 +25,7 @@ import NavbarPortal from '../../components/Navbar/NavbarPortal';
 import { MediaEditor } from '../components/MediaEditor/MediaEditor';
 import { Image } from '../../components/Image/Image';
 import { MarkdownEditor } from '../../components/Markdown/MarkdownEditor';
+import AdVisitStatsCard from '../../profile/components/AdVisitStatsCard/AdVisitStatsCard';
 import styles from './EditAdPage.module.scss';
 
 const API_URL = import.meta.env.VITE_API_URL || '';
@@ -286,6 +287,8 @@ const EditAdPage: React.FC = () => {
       <Heading as="h2" className="uk-margin-medium-bottom">{t('ads.editTitle')}: {ad.title}</Heading>
       
       {pageError && <Alert variant="danger" onClose={() => setPageError(null)}>{pageError}</Alert>}
+
+      <AdVisitStatsCard adId={ad.id} />
   
       {allowedCurrencies.settlementCurrencies.length === 0 && (
         <Alert variant="warning" className="uk-margin-medium-bottom">

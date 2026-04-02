@@ -6,6 +6,7 @@ import { MessageCard } from './MessageCard';
 import { MessageContent } from './MessageContent';
 import { Avatar } from '../../../components/Avatar/Avatar';
 import { UserPopup } from '../../../components/UserPopup/UserPopup';
+import ReportButton from '../../../components/ReportButton/ReportButton';
 import styles from './Message.module.scss';
 
 interface MessageProps extends ChatMessageDto {
@@ -15,6 +16,7 @@ interface MessageProps extends ChatMessageDto {
 }
 
 export const Message: React.FC<MessageProps> = React.memo(({ 
+  id,
   author, 
   message, 
   timestamp, 
@@ -72,6 +74,9 @@ export const Message: React.FC<MessageProps> = React.memo(({
               <span className={styles.timestamp}>{formattedTime}</span>
               {sending && <span uk-spinner="ratio: 0.4" className="uk-margin-small-left"></span>}
               {error && <span className="uk-text-danger uk-margin-small-left">!</span>}
+              {!isOwn && !sending && !error && (
+                <ReportButton targetType="MESSAGE" targetId={id} className="uk-margin-small-left" />
+              )}
             </div>
           </MessageCard>
         </div>

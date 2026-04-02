@@ -33,6 +33,7 @@ import { AvatarWithPresence } from '../../components/AvatarWithPresence';
 import { AdCard } from '../components/AdCard';
 import { WatchButton } from '../components/WatchButton/WatchButton';
 import { QuestionsSection } from '../components/qa/QuestionsSection';
+import ReportButton from '../../components/ReportButton/ReportButton';
 import styles from './AdDetailsPage.module.scss';
 
 const API_URL = import.meta.env.VITE_API_URL || '';
@@ -460,7 +461,7 @@ const AdDetailsPage: React.FC = () => {
                         setWatchersCount(prev => watched ? prev + 1 : Math.max(0, prev - 1));
                       }}
                     />
-
+                    <ReportButton targetType="AD" targetId={ad.id} />
                   </div>
                 </div>
 

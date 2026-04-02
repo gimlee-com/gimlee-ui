@@ -20,6 +20,9 @@ import { Grid } from '../../components/uikit/Grid/Grid';
 import { Tab, TabItem } from '../../components/uikit/Tab/Tab';
 import { SwitcherContainer } from '../../components/uikit/Switcher/Switcher';
 import { TransactionCard } from '../components/TransactionCard';
+import ChangePasswordCard from '../components/ChangePasswordCard/ChangePasswordCard';
+import AvatarUploadCard from '../components/AvatarUploadCard/AvatarUploadCard';
+import DeliveryAddressCard from '../components/DeliveryAddressCard/DeliveryAddressCard';
 
 const springConfig = { type: 'spring', stiffness: 400, damping: 40 } as const;
 
@@ -399,6 +402,18 @@ const ProfilePage: React.FC = () => {
             </div>
           </CardBody>
         </Card>
+      </motion.div>
+
+      <motion.div variants={cardVariants} layout transition={springConfig}>
+        <AvatarUploadCard />
+      </motion.div>
+
+      <motion.div variants={cardVariants} layout transition={springConfig}>
+        <ChangePasswordCard />
+      </motion.div>
+
+      <motion.div variants={cardVariants} layout transition={springConfig}>
+        <DeliveryAddressCard />
       </motion.div>
 
       <motion.div variants={cardVariants} layout transition={springConfig}>

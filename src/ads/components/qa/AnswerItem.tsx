@@ -4,6 +4,7 @@ import type { AnswerDto } from '../../types/qa';
 import { formatRelativeTimeFromIso } from '../../../utils/dateUtils';
 import { GeometricAvatar } from '../../../components/GeometricAvatar/GeometricAvatar';
 import { Label } from '../../../components/uikit/Label/Label';
+import ReportButton from '../../../components/ReportButton/ReportButton';
 import styles from './AnswerItem.module.scss';
 
 interface AnswerItemProps {
@@ -38,6 +39,9 @@ export const AnswerItem: React.FC<AnswerItemProps> = ({ answer }) => {
       <p className="uk-margin-small-top uk-margin-remove-bottom uk-text-break">
         {answer.text}
       </p>
+      <div className="uk-margin-small-top">
+        <ReportButton targetType="ANSWER" targetId={answer.id} />
+      </div>
     </div>
   );
 };

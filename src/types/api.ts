@@ -505,3 +505,46 @@ export interface ConversionResultDto {
   updatedAt: string;
   isVolatile: boolean;
 }
+
+// Change Password
+export interface ChangePasswordRequestDto {
+  oldPassword: string;
+  newPassword: string;
+}
+
+// Delivery Addresses
+export interface DeliveryAddressDto {
+  id: string;
+  name: string;
+  fullName: string;
+  street: string;
+  city: string;
+  postalCode: string;
+  country: string;
+  phoneNumber: string;
+  isDefault: boolean;
+}
+
+export interface AddDeliveryAddressRequestDto {
+  name: string;
+  fullName: string;
+  street: string;
+  city: string;
+  postalCode: string;
+  country: string;
+  phoneNumber: string;
+  isDefault: boolean;
+}
+
+// Avatar
+export interface UpdateAvatarRequestDto {
+  avatarUrl: string;
+}
+
+// Ad Visit Stats
+export interface AdVisitStatsDto {
+  daily: Record<string, number>;
+  monthly: number;
+  yearly: number;
+  total: number;
+}

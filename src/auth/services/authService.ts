@@ -4,7 +4,9 @@ import type {
   RegisterRequestDto, 
   IdentityVerificationResponse, 
   AvailabilityStatusResponseDto, 
-  VerifyUserRequestDto 
+  VerifyUserRequestDto,
+  ChangePasswordRequestDto,
+  StatusResponseDto,
 } from '../../types/api';
 
 export const authService = {
@@ -25,4 +27,7 @@ export const authService = {
 
   logout: () =>
     apiClient.post<void>('/auth/logout'),
+
+  changePassword: (data: ChangePasswordRequestDto) =>
+    apiClient.post<StatusResponseDto>('/auth/changePassword', data),
 };
