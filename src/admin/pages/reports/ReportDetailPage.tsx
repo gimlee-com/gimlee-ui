@@ -76,7 +76,7 @@ const ReportDetailPage: React.FC = () => {
       userId = await UIkit.modal.prompt(
         t('admin.reports.detail.assignPrompt', 'Enter assignee User ID:'),
         '',
-        { stack: true, container: false, i18n: { ok: t('common.ok'), cancel: t('common.cancel') } },
+        { stack: true, i18n: { ok: t('common.ok'), cancel: t('common.cancel') } },
       );
     } catch {
       return;
@@ -106,7 +106,7 @@ const ReportDetailPage: React.FC = () => {
       note = await UIkit.modal.prompt(
         t('admin.reports.actionModal.internalNotes'),
         '',
-        { stack: true, container: false, i18n: { ok: t('common.ok'), cancel: t('common.cancel') } },
+        { stack: true, i18n: { ok: t('common.ok'), cancel: t('common.cancel') } },
       );
     } catch {
       return;
