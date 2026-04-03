@@ -64,7 +64,25 @@
   margin: $global-small-margin 0;
 }
 
+.bottom {
+  p {
+    margin: 0;
+  }
+}
+
+.openSource {
+  margin-bottom: $global-small-margin;
+
+  a {
+    color: $global-primary-background;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
 .copyright {
-  margin: 0;
   padding-bottom: $global-small-margin;
 }

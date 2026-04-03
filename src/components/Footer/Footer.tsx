@@ -55,9 +55,21 @@ const Footer: React.FC = () => {
 
         <hr className={styles.divider} />
 
-        <p className={`uk-text-small uk-text-center uk-text-muted ${styles.copyright}`}>
-          {t('footer.copyright', { year })}
-        </p>
+        <div className={`uk-text-small uk-text-center uk-text-muted ${styles.bottom}`}>
+          <p className={styles.openSource}>
+            {t('footer.openSource')}{' '}
+            <a
+              href="https://github.com/gimlee-com/gimlee-ui"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              GitHub
+            </a>
+          </p>
+          <p className={styles.copyright}>
+            {t('footer.copyright', { year })}
+          </p>
+        </div>
       </div>
     </footer>
   );

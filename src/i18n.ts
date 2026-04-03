@@ -508,6 +508,7 @@ const resources = {
         "platform": "Platform",
         "legal": "Legal",
         "contact": "Contact",
+        "openSource": "Gimlee is open source under the MIT license. Fork it, modify it, run your own instance.",
         "copyright": "© {{year}} Gimlee. All rights reserved."
       },
       "report": {
@@ -1367,6 +1368,7 @@ const resources = {
         "platform": "Platforma",
         "legal": "Prawne",
         "contact": "Kontakt",
+        "openSource": "Gimlee jest open source na licencji MIT. Forkuj, modyfikuj, uruchom własną instancję.",
         "copyright": "© {{year}} Gimlee. Wszelkie prawa zastrzeżone."
       },
       "report": {
