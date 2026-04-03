@@ -1,0 +1,70 @@
+@import "../../styles/uikit-imports.scss";
+
+.footer {
+  border-top: 1px solid $global-border;
+  background: $global-muted-background;
+  padding: $global-medium-margin 0 $global-small-margin;
+  margin-top: auto;
+}
+
+.grid {
+  padding-bottom: $global-small-margin;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: $global-small-margin;
+}
+
+.brandName {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: $global-color;
+}
+
+.logo {
+  color: $global-primary-background;
+  flex-shrink: 0;
+}
+
+.tagline {
+  max-width: 250px;
+}
+
+.heading {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: $global-color;
+  margin-bottom: $global-small-margin;
+}
+
+.linkList {
+  li {
+    margin-top: 0;
+  }
+
+  a {
+    color: $global-muted-color;
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $global-primary-background;
+    }
+  }
+}
+
+.divider {
+  border-color: $global-border;
+  margin: $global-small-margin 0;
+}
+
+.copyright {
+  margin: 0;
+  padding-bottom: $global-small-margin;
+}

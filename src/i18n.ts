@@ -38,7 +38,10 @@ const resources = {
         "theme": "Theme",
         "terms": "Terms of Service",
         "watchlist": "Watchlist",
-        "admin": "Admin Panel"
+        "admin": "Admin Panel",
+        "about": "About",
+        "contact": "Contact",
+        "faq": "FAQ"
       },
       "home": {
         "featuredAds": "Featured Ads",
@@ -424,6 +427,88 @@ const resources = {
       "terms": {
         "title": "Terms of Service",
         "lastUpdated": "Last updated: February 2026"
+      },
+      "about": {
+        "title": "About Gimlee",
+        "subtitle": "A peer-to-peer marketplace that uses cryptocurrency for payments.",
+        "mission": {
+          "heading": "What Gimlee Is",
+          "text": "Gimlee is an online marketplace where people buy and sell goods and services, paying with cryptocurrency. Transactions happen directly between users. Gimlee does not hold anyone's funds — payment verification is done using read-only viewing keys provided by sellers."
+        },
+        "features": {
+          "heading": "How It Works",
+          "p2p": {
+            "title": "Direct Trading",
+            "description": "Buyers and sellers transact directly. There is no intermediary holding funds or processing payments on their behalf."
+          },
+          "nonCustodial": {
+            "title": "Non-Custodial Verification",
+            "description": "Sellers share a read-only viewing key. This lets the platform confirm that a payment was received on the blockchain, without having access to the funds."
+          },
+          "privacy": {
+            "title": "Privacy-Focused Payments",
+            "description": "Payments use privacy-centric cryptocurrencies. Transaction details are visible only to the parties involved."
+          }
+        },
+        "cryptos": {
+          "heading": "Supported Cryptocurrencies",
+          "text": "Gimlee currently supports PirateChain (ARRR). Support for Monero (XMR) and Firo (FIRO) is planned."
+        }
+      },
+      "contact": {
+        "title": "Contact Us",
+        "subtitle": "Have a question, feedback, or need help? We'd love to hear from you.",
+        "email": {
+          "heading": "Email Us",
+          "text": "For all inquiries, reach out to us at:",
+          "address": "contact@gimlee.com",
+          "responseTime": "We typically respond within 24–48 hours."
+        }
+      },
+      "faq": {
+        "title": "Frequently Asked Questions",
+        "subtitle": "Find answers to the most common questions about Gimlee.",
+        "questions": {
+          "whatIsGimlee": {
+            "q": "What is Gimlee?",
+            "a": "Gimlee is a decentralized, peer-to-peer cryptocurrency marketplace. It connects buyers and sellers directly, allowing them to exchange goods and services using privacy-centric cryptocurrencies — without intermediaries."
+          },
+          "howPaymentsWork": {
+            "q": "How do payments work?",
+            "a": "Payments are made directly between buyer and seller on the blockchain. Gimlee never holds your funds. Instead, sellers provide a read-only viewing key that allows the platform to verify that the payment has been made."
+          },
+          "whatIsViewingKey": {
+            "q": "What is a viewing key?",
+            "a": "A viewing key is a read-only cryptographic key that allows Gimlee to monitor incoming transactions on the blockchain. It cannot be used to spend or move funds — it only proves that a payment was received."
+          },
+          "supportedCoins": {
+            "q": "Which cryptocurrencies are supported?",
+            "a": "Gimlee currently supports PirateChain (ARRR). We are actively working on adding support for Monero (XMR) and Firo (FIRO)."
+          },
+          "fees": {
+            "q": "Are there any fees?",
+            "a": "Gimlee does not charge transaction fees. The only costs involved are the standard blockchain network fees for the cryptocurrency you are using."
+          },
+          "accountSecurity": {
+            "q": "How is my account secured?",
+            "a": "Accounts are protected with industry-standard authentication. We recommend using a strong, unique password. Since Gimlee is non-custodial, your funds are always under your control in your own wallet."
+          },
+          "disputes": {
+            "q": "What happens in case of a dispute?",
+            "a": "Gimlee provides a reporting and help desk system. If you encounter an issue with a transaction, you can submit a report or open a support ticket, and our team will review the case."
+          },
+          "createSpace": {
+            "q": "What are User Spaces?",
+            "a": "User Spaces are personalized public profile pages where sellers can showcase their ads, build reputation, and establish a unique identity within the marketplace."
+          }
+        }
+      },
+      "footer": {
+        "tagline": "Decentralized P2P marketplace.",
+        "platform": "Platform",
+        "legal": "Legal",
+        "contact": "Contact",
+        "copyright": "© {{year}} Gimlee. All rights reserved."
       },
       "report": {
         "title": "Submit a Report",
@@ -811,7 +896,10 @@ const resources = {
         "theme": "Motyw",
         "terms": "Regulamin",
         "watchlist": "Obserwowane",
-        "admin": "Panel Admina"
+        "admin": "Panel Admina",
+        "about": "O nas",
+        "contact": "Kontakt",
+        "faq": "FAQ"
       },
       "home": {
         "featuredAds": "Wyróżnione ogłoszenia",
@@ -1198,6 +1286,88 @@ const resources = {
       "terms": {
         "title": "Regulamin",
         "lastUpdated": "Ostatnia aktualizacja: luty 2026"
+      },
+      "about": {
+        "title": "O Gimlee",
+        "subtitle": "Rynek peer-to-peer wykorzystujący kryptowaluty do płatności.",
+        "mission": {
+          "heading": "Czym jest Gimlee",
+          "text": "Gimlee to internetowy rynek, na którym ludzie kupują i sprzedają towary oraz usługi, płacąc kryptowalutami. Transakcje odbywają się bezpośrednio między użytkownikami. Gimlee nie przechowuje niczyich środków — weryfikacja płatności odbywa się za pomocą kluczy widoku udostępnianych przez sprzedających."
+        },
+        "features": {
+          "heading": "Jak to działa",
+          "p2p": {
+            "title": "Bezpośredni handel",
+            "description": "Kupujący i sprzedający dokonują transakcji bezpośrednio. Nie ma pośrednika, który przechowuje środki lub przetwarza płatności w ich imieniu."
+          },
+          "nonCustodial": {
+            "title": "Weryfikacja bez powiernictwa",
+            "description": "Sprzedający udostępniają klucz widoku (tylko do odczytu). Pozwala to platformie potwierdzić, że płatność została odebrana na blockchainie, bez dostępu do środków."
+          },
+          "privacy": {
+            "title": "Płatności z naciskiem na prywatność",
+            "description": "Płatności wykorzystują kryptowaluty nastawione na prywatność. Szczegóły transakcji są widoczne tylko dla zaangażowanych stron."
+          }
+        },
+        "cryptos": {
+          "heading": "Obsługiwane kryptowaluty",
+          "text": "Gimlee obecnie obsługuje PirateChain (ARRR). Planowane jest wsparcie dla Monero (XMR) i Firo (FIRO)."
+        }
+      },
+      "contact": {
+        "title": "Kontakt",
+        "subtitle": "Masz pytanie, opinię lub potrzebujesz pomocy? Chętnie Ci pomożemy.",
+        "email": {
+          "heading": "Napisz do nas",
+          "text": "W przypadku wszelkich pytań skontaktuj się z nami pod adresem:",
+          "address": "contact@gimlee.com",
+          "responseTime": "Zazwyczaj odpowiadamy w ciągu 24–48 godzin."
+        }
+      },
+      "faq": {
+        "title": "Najczęściej zadawane pytania",
+        "subtitle": "Znajdź odpowiedzi na najczęstsze pytania dotyczące Gimlee.",
+        "questions": {
+          "whatIsGimlee": {
+            "q": "Czym jest Gimlee?",
+            "a": "Gimlee to zdecentralizowany rynek kryptowalutowy typu peer-to-peer. Łączy kupujących i sprzedających bezpośrednio, umożliwiając wymianę towarów i usług za pomocą kryptowalut nastawionych na prywatność — bez pośredników."
+          },
+          "howPaymentsWork": {
+            "q": "Jak działają płatności?",
+            "a": "Płatności realizowane są bezpośrednio między kupującym a sprzedającym na blockchainie. Gimlee nigdy nie trzyma Twoich środków. Zamiast tego sprzedający udostępniają klucz widoku, który pozwala platformie zweryfikować, że płatność została dokonana."
+          },
+          "whatIsViewingKey": {
+            "q": "Czym jest klucz widoku?",
+            "a": "Klucz widoku to kryptograficzny klucz tylko do odczytu, który pozwala Gimlee monitorować przychodzące transakcje na blockchainie. Nie może być użyty do wydawania lub przenoszenia środków — jedynie potwierdza, że płatność została odebrana."
+          },
+          "supportedCoins": {
+            "q": "Jakie kryptowaluty są obsługiwane?",
+            "a": "Gimlee obecnie obsługuje PirateChain (ARRR). Aktywnie pracujemy nad dodaniem wsparcia dla Monero (XMR) i Firo (FIRO)."
+          },
+          "fees": {
+            "q": "Czy pobierane są jakieś opłaty?",
+            "a": "Gimlee nie pobiera opłat transakcyjnych. Jedyne koszty to standardowe opłaty sieciowe blockchaina dla używanej kryptowaluty."
+          },
+          "accountSecurity": {
+            "q": "Jak zabezpieczone jest moje konto?",
+            "a": "Konta są chronione standardowym uwierzytelnianiem branżowym. Zalecamy używanie silnego, unikalnego hasła. Ponieważ Gimlee jest non-custodial, Twoje środki zawsze pozostają pod Twoją kontrolą w Twoim własnym portfelu."
+          },
+          "disputes": {
+            "q": "Co się dzieje w przypadku sporu?",
+            "a": "Gimlee zapewnia system zgłoszeń i pomoc techniczną. Jeśli napotkasz problem z transakcją, możesz złożyć zgłoszenie lub otworzyć zgłoszenie pomocy, a nasz zespół rozpatrzy sprawę."
+          },
+          "createSpace": {
+            "q": "Czym są Przestrzenie Użytkownika?",
+            "a": "Przestrzenie Użytkownika to spersonalizowane publiczne strony profilowe, na których sprzedający mogą prezentować swoje ogłoszenia, budować reputację i tworzyć unikalną tożsamość na rynku."
+          }
+        }
+      },
+      "footer": {
+        "tagline": "Zdecentralizowany rynek P2P.",
+        "platform": "Platforma",
+        "legal": "Prawne",
+        "contact": "Kontakt",
+        "copyright": "© {{year}} Gimlee. Wszelkie prawa zastrzeżone."
       },
       "report": {
         "title": "Zgłoś naruszenie",

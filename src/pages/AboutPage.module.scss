@@ -1,0 +1,41 @@
+@import "../styles/uikit-imports.scss";
+
+.hero {
+  padding-top: $global-large-margin;
+  padding-bottom: $global-medium-margin;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.subtitle {
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.section {
+  max-width: 800px;
+  margin: 0 auto;
+
+  &:last-child {
+    padding-bottom: $global-large-margin;
+  }
+}
+
+.featureCard {
+  text-align: center;
+  border: 1px solid $global-border;
+  border-radius: $card-border-radius;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--global-medium-shadow);
+  }
+}
+
+.featureIcon {
+  display: block;
+  margin: 0 auto $global-small-margin;
+  color: $global-primary-background;
+}

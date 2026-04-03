@@ -13,6 +13,7 @@ import './i18n';
 import Navbar from './components/Navbar/Navbar';
 import { FLOATING_BUTTON_CONTAINER_ID } from './components/FloatingButton/FloatingButtonPortal';
 import styles from './components/FloatingButton/FloatingButton.module.scss';
+import Footer from './components/Footer/Footer';
 import HomePage from './pages/HomePage';
 import LoginPage from './auth/pages/LoginPage';
 import RegisterPage from './auth/pages/RegisterPage';
@@ -25,6 +26,9 @@ import UserSpacePage from './spaces/pages/UserSpacePage';
 import AdWatchlistPage from './ads/pages/AdWatchlistPage';
 const ProfilePages = lazy(() => import('./profile/pages/ProfilePages'));
 const TermsOfServicePage = lazy(() => import('./pages/TermsOfServicePage'));
+const AboutPage = lazy(() => import('./pages/AboutPage'));
+const ContactPage = lazy(() => import('./pages/ContactPage'));
+const FAQPage = lazy(() => import('./pages/FAQPage'));
 const AdminPages = lazy(() => import('./admin/pages/AdminPages'));
 
 
@@ -83,10 +87,14 @@ function App() {
             <Route path="/profile/*" element={<Suspense><ProfilePages /></Suspense>} />
             <Route path="/u/:userName" element={<UserSpacePage />} />
             <Route path="/terms" element={<Suspense><TermsOfServicePage /></Suspense>} />
+            <Route path="/about" element={<Suspense><AboutPage /></Suspense>} />
+            <Route path="/contact" element={<Suspense><ContactPage /></Suspense>} />
+            <Route path="/faq" element={<Suspense><FAQPage /></Suspense>} />
             <Route path="/admin/*" element={<Suspense><AdminPages /></Suspense>} />
           </Routes>
         </div>
       </main>
+      <Footer />
       {isAuthenticated && activePurchase && isModalOpen && (
         <PurchaseModal 
           purchase={activePurchase} 
