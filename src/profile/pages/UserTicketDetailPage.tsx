@@ -12,7 +12,7 @@ import TicketReplyForm from '../../admin/components/TicketReplyForm/TicketReplyF
 import type { TicketDetailDto, ReplyToTicketDto } from '../../admin/types/adminTicket';
 
 const UserTicketDetailPage: React.FC = () => {
-  useNavbarMode('focused', '/tickets');
+  useNavbarMode('focused', '/profile/tickets');
   const { t } = useTranslation();
   const { isAuthenticated } = useAuth();
   const { ticketId } = useParams<{ ticketId: string }>();

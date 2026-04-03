@@ -1,3 +1,4 @@
+import UIkit from 'uikit';
 import i18n from '../i18n';
 
 const API_URL = import.meta.env.VITE_API_URL || '';
@@ -49,8 +50,7 @@ class ApiClient {
 
       // Global notification for banned users attempting restricted actions
       if (response.status === 403 && error.status === 'AUTH_USER_BANNED') {
-        const UIkit = await import('uikit');
-        UIkit.default.notification({
+        UIkit.notification({
           message: error.message || i18n.t('ban.restricted.message'),
           status: 'danger',
           pos: 'top-center',

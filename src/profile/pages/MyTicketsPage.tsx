@@ -146,7 +146,7 @@ const MyTicketsPage: React.FC = () => {
             return (
               <motion.div key={ticket.id} variants={itemVariants} layout>
                 <Link
-                  to={`/tickets/${ticket.id}`}
+                  to={`/profile/tickets/${ticket.id}`}
                   state={{ from: location.pathname + location.search }}
                   className="uk-link-reset"
                 >

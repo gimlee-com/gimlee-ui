@@ -19,27 +19,14 @@ import RegisterPage from './auth/pages/RegisterPage';
 import VerifyPage from './auth/pages/VerifyPage';
 import AdListingPage from './ads/pages/AdListingPage';
 import AdDetailsPage from './ads/pages/AdDetailsPage';
-import SalesAdsPage from './sales/pages/SalesAdsPage';
-import CreateAdPage from './sales/pages/CreateAdPage';
-import EditAdPage from './sales/pages/EditAdPage';
-import SalesOrdersPage from './sales/pages/SalesOrdersPage';
+const SalesPages = lazy(() => import('./sales/pages/SalesPages'));
 import PurchasesPage from './purchases/pages/PurchasesPage';
-import ProfilePage from './profile/pages/ProfilePage';
 import UserSpacePage from './spaces/pages/UserSpacePage';
 import AdWatchlistPage from './ads/pages/AdWatchlistPage';
+const ProfilePages = lazy(() => import('./profile/pages/ProfilePages'));
 const TermsOfServicePage = lazy(() => import('./pages/TermsOfServicePage'));
-const AdminDashboardPage = lazy(() => import('./admin/pages/AdminDashboardPage'));
-const CategoryManagementPage = lazy(() => import('./admin/pages/categories/CategoryManagementPage'));
-const AdminUserListPage = lazy(() => import('./admin/pages/users/AdminUserListPage'));
-const AdminUserDetailPage = lazy(() => import('./admin/pages/users/AdminUserDetailPage'));
-const ReportListPage = lazy(() => import('./admin/pages/reports/ReportListPage'));
-const ReportDetailPage = lazy(() => import('./admin/pages/reports/ReportDetailPage'));
-const TicketListPage = lazy(() => import('./admin/pages/helpdesk/TicketListPage'));
-const TicketDetailPage = lazy(() => import('./admin/pages/helpdesk/TicketDetailPage'));
-const MyTicketsPage = lazy(() => import('./profile/pages/MyTicketsPage'));
-const UserTicketDetailPage = lazy(() => import('./profile/pages/UserTicketDetailPage'));
-const MyReportsPage = lazy(() => import('./profile/pages/MyReportsPage'));
-import { ProtectedRoute } from './components/ProtectedRoute';
+const AdminPages = lazy(() => import('./admin/pages/AdminPages'));
+
 
 function App() {
   const { activePurchase, isModalOpen } = useAppSelector(state => state.purchase);
@@ -91,29 +78,12 @@ function App() {
             <Route path="/ads" element={<AdListingPage />} />
             <Route path="/ads/:id" element={<AdDetailsPage />} />
             <Route path="/watchlist" element={<AdWatchlistPage />} />
-            <Route path="/sales/ads" element={<SalesAdsPage />} />
-            <Route path="/sales/ads/create" element={<CreateAdPage />} />
-            <Route path="/sales/ads/edit/:id" element={<EditAdPage />} />
-            <Route path="/sales/orders" element={<SalesOrdersPage />} />
+            <Route path="/sales/*" element={<Suspense><SalesPages /></Suspense>} />
             <Route path="/purchases" element={<PurchasesPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/profile/*" element={<Suspense><ProfilePages /></Suspense>} />
             <Route path="/u/:userName" element={<UserSpacePage />} />
-            <Route path="/tickets" element={<Suspense><MyTicketsPage /></Suspense>} />
-            <Route path="/tickets/:ticketId" element={<Suspense><UserTicketDetailPage /></Suspense>} />
-            <Route path="/reports/mine" element={<Suspense><MyReportsPage /></Suspense>} />
             <Route path="/terms" element={<Suspense><TermsOfServicePage /></Suspense>} />
-            <Route element={<ProtectedRoute requiredRole="ADMIN" />}>
-              <Route path="/admin" element={<Suspense><AdminDashboardPage /></Suspense>} />
-              <Route path="/admin/categories" element={<Suspense><CategoryManagementPage /></Suspense>} />
-              <Route path="/admin/users" element={<Suspense><AdminUserListPage /></Suspense>} />
-              <Route path="/admin/users/:userId" element={<Suspense><AdminUserDetailPage /></Suspense>} />
-            </Route>
-            <Route element={<ProtectedRoute requiredRole={['ADMIN', 'SUPPORT']} />}>
-              <Route path="/admin/reports" element={<Suspense><ReportListPage /></Suspense>} />
-              <Route path="/admin/reports/:reportId" element={<Suspense><ReportDetailPage /></Suspense>} />
-              <Route path="/admin/tickets" element={<Suspense><TicketListPage /></Suspense>} />
-              <Route path="/admin/tickets/:ticketId" element={<Suspense><TicketDetailPage /></Suspense>} />
-            </Route>
+            <Route path="/admin/*" element={<Suspense><AdminPages /></Suspense>} />
           </Routes>
         </div>
       </main>
