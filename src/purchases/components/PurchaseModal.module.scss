@@ -12,7 +12,7 @@
 .addressCard {
   cursor: pointer;
   border: 2px solid $global-border;
-  border-radius: $global-border-radius;
+  border-radius: $card-border-radius;
   transition: border-color 0.2s, background-color 0.2s;
 
   &:hover {
