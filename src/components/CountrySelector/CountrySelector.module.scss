@@ -64,6 +64,13 @@
   padding: 0 8px;
   height: $global-control-small-height;
   font-size: $global-small-font-size;
+  color: $global-color;
+}
+
+.compactWrapper {
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
 
 .placeholder {

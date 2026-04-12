@@ -61,7 +61,7 @@ export const CountrySelector = forwardRef<HTMLDivElement, CountrySelectorProps>(
     }
 
     return (
-      <div ref={mergedRef} className={`${styles.countrySelector} ${className ?? ''}`}>
+      <div ref={mergedRef} className={`${styles.countrySelector} ${compact ? styles.compactWrapper : ''} ${className ?? ''}`}>
         <div className="uk-inline uk-width-1-1">
           {compact ? (
             <button
