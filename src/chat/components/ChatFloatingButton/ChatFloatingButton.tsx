@@ -59,7 +59,7 @@ export const ChatFloatingButton: React.FC<ChatFloatingButtonProps> = ({ chatId, 
         )}
       </FloatingButtonPortal>
 
-      <Modal ref={ref} stack={true} container={false}>
+      <Modal ref={ref} stack={true} container="#root">
         <ModalDialog className="uk-width-large">
           <ModalHeader>
             <ModalTitle>{t('chat.title')}</ModalTitle>

@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, forwardRef } from 'react';
+import { useEffect, useState, useCallback, useRef, forwardRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import type { Transition } from 'motion/react';
@@ -95,6 +95,12 @@ export const PurchaseModal = forwardRef<HTMLDivElement>(
       }
     }, [modalInstance]);
 
+    // Use refs to avoid stale closures in the UIkit event handler
+    const activePurchaseRef = useRef(activePurchase);
+    const statusRef = useRef(status);
+    useEffect(() => { activePurchaseRef.current = activePurchase; }, [activePurchase]);
+    useEffect(() => { statusRef.current = status; }, [status]);
+
     useEffect(() => {
       const element = modalRef.current;
       if (!element) return;
@@ -102,15 +108,18 @@ export const PurchaseModal = forwardRef<HTMLDivElement>(
       const handleHidden = () => {
         dispatch(setModalOpen(false));
         // If still on address step (no purchase created), clear the intent
-        if (!activePurchase) {
+        if (!activePurchaseRef.current) {
           dispatch(clearActivePurchase());
-        } else if (status !== 'AWAITING_PAYMENT') {
+        } else if (statusRef.current !== 'AWAITING_PAYMENT') {
           dispatch(clearActivePurchase());
         }
       };
 
       UIkit.util.on(element, 'hidden', handleHidden);
-    }, [dispatch, status, modalRef]);
+      return () => {
+        UIkit.util.off(element, 'hidden', handleHidden);
+      };
+    }, [dispatch, modalRef]);
 
     // Fetch delivery addresses for step 1
     const fetchAddresses = useCallback(async () => {
@@ -610,7 +619,7 @@ export const PurchaseModal = forwardRef<HTMLDivElement>(
     };
 
     return (
-      <Modal ref={mergedRef} container={false} escClose={false} bgClose={false}>
+      <Modal ref={mergedRef} container="#root" escClose={false} bgClose={false}>
         <ModalDialog>
           <ModalHeader>
             <ModalTitle>

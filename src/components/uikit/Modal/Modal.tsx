@@ -1,4 +1,5 @@
 import React, { forwardRef, useMemo } from 'react'
+import { createPortal } from 'react-dom'
 
 type UkBoolean = boolean | 'true' | 'false'
 
@@ -6,10 +7,25 @@ export type ModalProps = React.HTMLAttributes<HTMLDivElement> & {
   escClose?: boolean
   bgClose?: boolean
   stack?: boolean
+  /** Where to render the modal. A CSS selector (e.g. '#root') renders via React Portal.
+   *  `false` keeps the modal in-place. Defaults to '#root'. */
   container?: string | UkBoolean
   clsPage?: string
   clsPanel?: string
   selClose?: string
+}
+
+/**
+ * Resolve the portal target element from the `container` prop.
+ * Returns null when the modal should render in-place (container is false-ish).
+ */
+function resolvePortalTarget(container: ModalProps['container']): Element | null {
+  if (container === false || container === 'false' || container === undefined) return null
+  if (container === true || container === 'true') return document.body
+  if (typeof container === 'string') {
+    return document.querySelector(container)
+  }
+  return null
 }
 
 export const Modal = forwardRef<HTMLDivElement, ModalProps>(
@@ -20,7 +36,7 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
       escClose,
       bgClose,
       stack,
-      container = false,
+      container = '#root',
       clsPage,
       clsPanel,
       selClose,
@@ -31,19 +47,21 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
     const classNames = ['uk-modal']
     if (customClassName) classNames.push(customClassName)
 
+    // Always tell UIkit container: false so it never moves the DOM node.
+    // Positioning is handled by React Portal instead.
     const ukModalOptions = useMemo(() => {
       const opts: string[] = []
       if (escClose !== undefined) opts.push(`esc-close: ${escClose}`)
       if (bgClose !== undefined) opts.push(`bg-close: ${bgClose}`)
       if (stack !== undefined) opts.push(`stack: ${stack}`)
-      if (container !== undefined) opts.push(`container: ${container}`)
+      opts.push('container: false')
       if (clsPage) opts.push(`cls-page: ${clsPage}`)
       if (clsPanel) opts.push(`cls-panel: ${clsPanel}`)
       if (selClose) opts.push(`sel-close: ${selClose}`)
       return opts.join('; ')
-    }, [escClose, bgClose, stack, container, clsPage, clsPanel, selClose])
+    }, [escClose, bgClose, stack, clsPage, clsPanel, selClose])
 
-    return (
+    const modal = (
       <div
         ref={ref}
         className={classNames.join(' ')}
@@ -53,6 +71,13 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
         {children}
       </div>
     )
+
+    const portalTarget = resolvePortalTarget(container)
+    if (portalTarget) {
+      return createPortal(modal, portalTarget)
+    }
+
+    return modal
   }
 )
 

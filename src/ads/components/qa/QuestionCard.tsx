@@ -1,5 +1,4 @@
 import React, { useState, useCallback } from 'react';
-import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import UIkit from 'uikit';
 import type { QuestionDto, AnswerDto } from '../../types/qa';
@@ -221,14 +220,13 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
         </div>
       </div>
 
-      {reportTarget && createPortal(
+      {reportTarget && (
         <ReportFormModal
           targetType={reportTarget.targetType}
           targetId={reportTarget.targetId}
           isOpen={true}
           onClose={() => setReportTarget(null)}
-        />,
-        document.getElementById('root') || document.body,
+        />
       )}
     </div>
   );

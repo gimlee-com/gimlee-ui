@@ -1,4 +1,5 @@
 import React, { useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useUIKit } from '../../../hooks/useUIkit';
@@ -68,7 +69,7 @@ const TicketAssignModal: React.FC<TicketAssignModalProps> = ({
     reset();
   };
 
-  return (
+  return createPortal(
     <div ref={modalRef} className="uk-modal-container">
       <div className="uk-modal-dialog">
         <button className="uk-modal-close-default" type="button" uk-close="" />
@@ -108,7 +109,8 @@ const TicketAssignModal: React.FC<TicketAssignModalProps> = ({
           </div>
         </form>
       </div>
-    </div>
+    </div>,
+    document.getElementById('root') || document.body
   );
 };
 

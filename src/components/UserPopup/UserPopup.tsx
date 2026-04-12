@@ -156,7 +156,7 @@ export const UserPopup: React.FC<UserPopupProps> = ({
   );
 
   const modalContent = (
-    <Modal ref={modalRef} className="uk-hidden@m" container={false}>
+    <Modal ref={modalRef} className="uk-hidden@m" container="#root">
       <ModalDialog className="uk-margin-auto-vertical uk-width-medium">
         <ModalCloseDefault />
         <ModalBody>
@@ -194,7 +194,7 @@ export const UserPopup: React.FC<UserPopupProps> = ({
       </div>
 
       {dropdownContainer && createPortal(dropdown, dropdownContainer)}
-      {createPortal(modalContent, document.getElementById('root') || document.body)}
+      {modalContent}
     </>
   );
 };
