@@ -49,7 +49,7 @@ describe('AuthContext', () => {
     );
 
     await waitFor(() => {
-      expect(apiClient.get).toHaveBeenCalledWith('/session/init?decorators=accessToken,userProfile,preferredCurrency,publicChatId,banStatus');
+      expect(apiClient.get).toHaveBeenCalledWith('/session/init?decorators=accessToken,userProfile,preferredCurrency,countryOfResidence,publicChatId,banStatus');
       expect(userService.getUserPreferences).toHaveBeenCalled();
       expect(i18n.changeLanguage).toHaveBeenCalledWith('pl-PL');
     });
@@ -68,7 +68,7 @@ describe('AuthContext', () => {
     );
 
     await waitFor(() => {
-      expect(apiClient.get).toHaveBeenCalledWith('/session/init?decorators=accessToken,userProfile,preferredCurrency,publicChatId,banStatus');
+      expect(apiClient.get).toHaveBeenCalledWith('/session/init?decorators=accessToken,userProfile,preferredCurrency,countryOfResidence,publicChatId,banStatus');
     });
     
     expect(userService.getUserPreferences).not.toHaveBeenCalled();

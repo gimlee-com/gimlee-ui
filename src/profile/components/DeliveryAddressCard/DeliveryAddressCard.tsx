@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import UIkit from 'uikit';
 import { motion, AnimatePresence } from 'motion/react';
@@ -14,6 +14,8 @@ import {
   FormMessage,
   Checkbox,
 } from '../../../components/Form/Form';
+import { CountrySelector } from '../../../components/CountrySelector/CountrySelector';
+import { useCountries } from '../../../hooks/useCountries';
 import type { DeliveryAddressDto, AddDeliveryAddressRequestDto } from '../../../types/api';
 
 const DeliveryAddressCard: React.FC = () => {
@@ -23,9 +25,12 @@ const DeliveryAddressCard: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
 
+  const { getCountryName } = useCountries();
+
   const {
     register,
     handleSubmit,
+    control,
     reset,
     formState: { errors, isValid, isSubmitting },
   } = useForm<AddDeliveryAddressRequestDto>({
@@ -220,13 +225,21 @@ const DeliveryAddressCard: React.FC = () => {
                 <div className="uk-margin">
                   <FormLabel>{t('profile.deliveryAddresses.country')}</FormLabel>
                   <FormControls>
-                    <Input
-                      status={errors.country ? 'danger' : undefined}
-                      {...register('country', {
+                    <Controller
+                      name="country"
+                      control={control}
+                      rules={{
                         required: t('auth.errors.required', {
                           field: t('profile.deliveryAddresses.country'),
                         }),
-                      })}
+                      }}
+                      render={({ field }) => (
+                        <CountrySelector
+                          value={field.value || null}
+                          onChange={(code) => field.onChange(code ?? '')}
+                          status={errors.country ? 'danger' : undefined}
+                        />
+                      )}
                     />
                   </FormControls>
                   <AnimatePresence>
@@ -310,7 +323,7 @@ const DeliveryAddressCard: React.FC = () => {
                 <div className="uk-text-small">
                   {addr.city}, {addr.postalCode}
                 </div>
-                <div className="uk-text-small">{addr.country}</div>
+                <div className="uk-text-small">{getCountryName(addr.country)}</div>
                 {addr.phoneNumber && (
                   <div className="uk-text-small uk-text-muted">{addr.phoneNumber}</div>
                 )}

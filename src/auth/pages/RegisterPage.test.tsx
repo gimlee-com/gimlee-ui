@@ -15,6 +15,21 @@ vi.mock('../services/authService', () => ({
   },
 }));
 
+vi.mock('../../services/locationService', () => ({
+  locationService: {
+    detectCountry: vi.fn().mockResolvedValue(null),
+    listCountries: vi.fn().mockResolvedValue([]),
+  },
+}));
+
+vi.mock('../../services/apiClient', () => ({
+  apiClient: {
+    getToken: vi.fn(),
+    setToken: vi.fn(),
+    get: vi.fn(),
+  },
+}));
+
 const renderRegisterPage = () => {
   return render(
     <I18nextProvider i18n={i18n}>

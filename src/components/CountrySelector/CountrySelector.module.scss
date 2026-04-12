@@ -1,0 +1,71 @@
+@use '../../styles/uikit-imports' as *;
+
+.countrySelector {
+  position: relative;
+}
+
+.searchWrapper {
+  position: relative;
+}
+
+.searchIcon {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: $global-muted-color;
+}
+
+.dropdownNav {
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.countryItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.countryFlag {
+  font-size: 1.2em;
+  line-height: 1;
+}
+
+.countryName {
+  flex: 1;
+}
+
+.countryCode {
+  color: $global-muted-color;
+  font-size: $global-small-font-size;
+}
+
+.selectedDisplay {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 0 10px;
+  height: $global-control-height;
+  border: 1px solid $global-border;
+  border-radius: $global-border-radius;
+  background: $global-background;
+  transition: border-color 0.2s;
+
+  &:hover {
+    border-color: $global-primary-background;
+  }
+}
+
+.compactDisplay {
+  composes: selectedDisplay;
+  padding: 0 8px;
+  height: $global-control-small-height;
+  font-size: $global-small-font-size;
+}
+
+.placeholder {
+  color: $global-muted-color;
+}

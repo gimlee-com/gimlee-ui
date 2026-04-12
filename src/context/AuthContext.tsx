@@ -11,6 +11,8 @@ interface AuthContextType {
   userProfile: UserProfileDto | null;
   preferredCurrency: string | null;
   setPreferredCurrency: (currency: string | null) => void;
+  countryOfResidence: string | null;
+  setCountryOfResidence: (code: string | null) => void;
   username: string | null;
   roles: string[];
   publicChatId: string | null;
@@ -32,6 +34,7 @@ interface AuthState {
   userId: string | null;
   userProfile: UserProfileDto | null;
   preferredCurrency: string | null;
+  countryOfResidence: string | null;
   username: string | null;
   roles: string[];
   publicChatId: string | null;
@@ -48,6 +51,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     userId: null,
     userProfile: null,
     preferredCurrency: null,
+    countryOfResidence: null,
     username: null,
     roles: [],
     publicChatId: null,
@@ -65,13 +69,14 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     initStarted.current = true;
 
     try {
-      const session = await apiClient.get<SessionInitResponseDto>('/session/init?decorators=accessToken,userProfile,preferredCurrency,publicChatId,banStatus');
+      const session = await apiClient.get<SessionInitResponseDto>('/session/init?decorators=accessToken,userProfile,preferredCurrency,countryOfResidence,publicChatId,banStatus');
       
       let username: string | null = null;
       let userId: string | null = null;
       let roles: string[] = [];
       let isAuthenticated = false;
       let preferredCurrency = session.preferredCurrency || null;
+      let countryOfResidence = session.countryOfResidence || null;
       const publicChatId = session.publicChatId || null;
 
       if (session.accessToken) {
@@ -88,6 +93,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           if (prefs.preferredCurrency) {
             preferredCurrency = prefs.preferredCurrency;
           }
+          if (prefs.countryOfResidence) {
+            countryOfResidence = prefs.countryOfResidence;
+          }
           if (prefs.language && prefs.language !== i18n.language) {
             await i18n.changeLanguage(prefs.language);
           }
@@ -103,6 +111,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         userId,
         userProfile: session.userProfile,
         preferredCurrency,
+        countryOfResidence,
         username,
         roles,
         publicChatId,
@@ -136,6 +145,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       userId: null,
       userProfile: null,
       preferredCurrency: null,
+      countryOfResidence: null,
       username: null,
       roles: [],
       publicChatId: null,
@@ -151,10 +161,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setState(prev => ({ ...prev, preferredCurrency: currency }));
   };
 
+  const setCountryOfResidence = (code: string | null) => {
+    setState(prev => ({ ...prev, countryOfResidence: code }));
+  };
+
   return (
     <AuthContext.Provider value={{
       ...state,
       setPreferredCurrency,
+      setCountryOfResidence,
       login,
       logout,
       refreshSession

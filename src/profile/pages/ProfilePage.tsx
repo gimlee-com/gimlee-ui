@@ -23,6 +23,7 @@ import { TransactionCard } from '../components/TransactionCard';
 import ChangePasswordCard from '../components/ChangePasswordCard/ChangePasswordCard';
 import AvatarUploadCard from '../components/AvatarUploadCard/AvatarUploadCard';
 import DeliveryAddressCard from '../components/DeliveryAddressCard/DeliveryAddressCard';
+import { CountrySelector } from '../../components/CountrySelector/CountrySelector';
 
 const springConfig = { type: 'spring', stiffness: 400, damping: 40 } as const;
 
@@ -47,7 +48,7 @@ const cardVariants = {
 
 const ProfilePage: React.FC = () => {
   const { t, i18n } = useTranslation();
-  const { isAuthenticated, preferredCurrency, setPreferredCurrency } = useAuth();
+  const { isAuthenticated, preferredCurrency, setPreferredCurrency, countryOfResidence, setCountryOfResidence } = useAuth();
   const { theme, setTheme } = useTheme();
   const { presence, updatePresence } = usePresence();
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -63,6 +64,7 @@ const ProfilePage: React.FC = () => {
   const [savingArrr, setSavingArrr] = useState(false);
   const [savingYec, setSavingYec] = useState(false);
   const [savingCurrency, setSavingCurrency] = useState(false);
+  const [savingCountry, setSavingCountry] = useState(false);
   const [savingPresence, setSavingPresence] = useState(false);
   const [customStatus, setCustomStatus] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -161,6 +163,22 @@ const ProfilePage: React.FC = () => {
       setError((err as Error).message || t('profile.failedToSaveCurrency'));
     } finally {
       setSavingCurrency(false);
+    }
+  };
+
+  const handleCountrySelect = async (code: string | null) => {
+    if (!isAuthenticated || !code) return;
+    setSavingCountry(true);
+    setError(null);
+    setSuccess(null);
+    try {
+      await userService.updateUserPreferences({ countryOfResidence: code });
+      setCountryOfResidence(code);
+      setSuccess(t('profile.preferencesUpdated'));
+    } catch (err: unknown) {
+      setError((err as Error).message || t('profile.failedToSaveCountry'));
+    } finally {
+      setSavingCountry(false);
     }
   };
 
@@ -338,6 +356,17 @@ const ProfilePage: React.FC = () => {
                     {t('profile.preferredCurrency')}: <strong>{preferredCurrency}</strong>
                   </div>
                 )}
+              </div>
+            </div>
+
+            <div className="uk-margin">
+              <FormLabel>{t('profile.countryOfResidence')}</FormLabel>
+              <div className="uk-margin-small-top">
+                <CountrySelector
+                  value={countryOfResidence ?? null}
+                  onChange={handleCountrySelect}
+                  disabled={savingCountry}
+                />
               </div>
             </div>
 

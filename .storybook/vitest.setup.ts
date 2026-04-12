@@ -3,6 +3,18 @@ import * as a11yAddonAnnotations from "@storybook/addon-a11y/preview";
 import { setProjectAnnotations } from '@storybook/react-vite';
 import * as projectAnnotations from './preview';
 
+vi.mock('../src/services/locationService', () => ({
+  locationService: {
+    detectCountry: vi.fn().mockResolvedValue(null),
+    listCountries: vi.fn().mockResolvedValue([
+      { code: 'US', name: 'United States' },
+      { code: 'PL', name: 'Poland' },
+      { code: 'DE', name: 'Germany' },
+      { code: 'GB', name: 'United Kingdom' },
+    ]),
+  },
+}));
+
 vi.mock('../src/services/apiClient', () => ({
   apiClient: {
     getToken: vi.fn().mockReturnValue(null),

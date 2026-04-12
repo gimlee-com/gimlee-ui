@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation, Trans } from 'react-i18next';
 import { authService } from '../services/authService';
@@ -8,6 +8,8 @@ import { Button } from '../../components/uikit/Button/Button';
 import { Alert } from '../../components/uikit/Alert/Alert';
 import { Heading } from '../../components/uikit/Heading/Heading';
 import { Form, FormLabel, FormControls, Input, FormMessage, AnimatePresence, motion } from '../../components/Form/Form';
+import { CountrySelector } from '../../components/CountrySelector/CountrySelector';
+import { useGuestCountry } from '../../hooks/useGuestCountry';
 
 interface RegisterFormValues extends RegisterRequestDto {
   confirmPassword?: string;
@@ -15,8 +17,12 @@ interface RegisterFormValues extends RegisterRequestDto {
 
 const RegisterPage: React.FC = () => {
   const { t } = useTranslation();
-  const { register, handleSubmit, formState: { errors, isValid, touchedFields }, watch, trigger } = useForm<RegisterFormValues>({
-    mode: 'onChange'
+  const { guestCountryCode, setGuestCountryCode } = useGuestCountry();
+  const { register, handleSubmit, control, formState: { errors, isValid, touchedFields }, watch, trigger } = useForm<RegisterFormValues>({
+    mode: 'onChange',
+    defaultValues: {
+      countryOfResidence: guestCountryCode ?? undefined,
+    },
   });
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -121,6 +127,7 @@ const RegisterPage: React.FC = () => {
     setError(null);
     try {
       await authService.register(registerData);
+      setGuestCountryCode(null);
       navigate(`/login?registered=true&email=${encodeURIComponent(data.email)}`);
     } catch (err: unknown) {
       setError((err as Error).message || t('auth.errors.generic'));
@@ -180,6 +187,24 @@ const RegisterPage: React.FC = () => {
                   <FormMessage>{errors.email.message}</FormMessage>
                 )}
               </AnimatePresence>
+            </FormControls>
+          </motion.div>
+          <motion.div layout className="uk-margin">
+            <FormLabel>{t('auth.countryOfResidence')}</FormLabel>
+            <FormControls>
+              <Controller
+                name="countryOfResidence"
+                control={control}
+                render={({ field }) => (
+                  <CountrySelector
+                    value={field.value ?? null}
+                    onChange={(code) => field.onChange(code ?? undefined)}
+                  />
+                )}
+              />
+              <div className="uk-text-meta uk-margin-small-top">
+                {t('auth.countryHint')}
+              </div>
             </FormControls>
           </motion.div>
           <motion.div layout className="uk-margin">

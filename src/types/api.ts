@@ -38,6 +38,11 @@ export interface LocationWithCityDetailsDto {
   point?: Point;
 }
 
+export interface CountryDto {
+  code: string;
+  name: string;
+}
+
 export type PricingMode = 'FIXED_CRYPTO' | 'PEGGED';
 
 // Seller view — returned by /sales/ads endpoints
@@ -218,6 +223,7 @@ export interface RegisterRequestDto {
   username: string;
   password?: string;
   email: string;
+  countryOfResidence?: string;
 }
 
 export interface LoginRequestDto {
@@ -324,11 +330,13 @@ export interface IdentityVerificationResponse {
 export interface UserPreferencesDto {
   language: string;
   preferredCurrency: string;
+  countryOfResidence?: string;
 }
 
 export interface UpdateUserPreferencesRequestDto {
   language?: string;
   preferredCurrency?: string;
+  countryOfResidence?: string;
 }
 
 export interface FetchAdsRequestDto {
@@ -470,6 +478,7 @@ export interface SessionInitResponseDto {
   accessToken: string;
   userProfile: UserProfileDto | null;
   preferredCurrency?: string;
+  countryOfResidence?: string;
   publicChatId?: string;
   /** Whether the user is currently banned (from banStatus decorator) */
   banned?: boolean;

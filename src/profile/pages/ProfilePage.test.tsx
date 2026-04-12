@@ -50,6 +50,13 @@ vi.mock('../../services/apiClient', () => ({
   },
 }));
 
+vi.mock('../../services/locationService', () => ({
+  locationService: {
+    detectCountry: vi.fn().mockResolvedValue(null),
+    listCountries: vi.fn().mockResolvedValue([]),
+  },
+}));
+
 vi.mock('../../payments/services/paymentService', () => ({
   paymentService: {
     getCurrencies: vi.fn().mockResolvedValue([]),

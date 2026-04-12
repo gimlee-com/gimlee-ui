@@ -41,7 +41,9 @@ const resources = {
         "admin": "Admin Panel",
         "about": "About",
         "contact": "Contact",
-        "faq": "FAQ"
+        "faq": "FAQ",
+        "country": "Country",
+        "selectCountry": "Select country"
       },
       "home": {
         "featuredAds": "Featured Ads",
@@ -80,6 +82,8 @@ const resources = {
           "usernameTaken": "Username is already taken",
           "emailTaken": "Email is already taken"
         },
+        "countryOfResidence": "Country of Residence",
+        "countryHint": "Detected from your location. You can change it.",
         "changePassword": {
           "title": "Change Password",
           "oldPassword": "Current Password",
@@ -250,6 +254,9 @@ const resources = {
         "preferredCurrency": "Preferred Currency",
         "searchCurrency": "Search for a currency...",
         "failedToSaveCurrency": "Failed to save preferred currency.",
+        "countryOfResidence": "Country of Residence",
+        "searchCountry": "Search for a country...",
+        "failedToSaveCountry": "Failed to save country of residence.",
         "theme": "Theme",
         "themes": {
           "light": "Light",
@@ -900,7 +907,9 @@ const resources = {
         "admin": "Panel Admina",
         "about": "O nas",
         "contact": "Kontakt",
-        "faq": "FAQ"
+        "faq": "FAQ",
+        "country": "Kraj",
+        "selectCountry": "Wybierz kraj"
       },
       "home": {
         "featuredAds": "Wyróżnione ogłoszenia",
@@ -939,6 +948,8 @@ const resources = {
           "usernameTaken": "Nazwa użytkownika jest już zajęta",
           "emailTaken": "Email jest już zajęty"
         },
+        "countryOfResidence": "Kraj zamieszkania",
+        "countryHint": "Wykryty na podstawie Twojej lokalizacji. Możesz zmienić.",
         "changePassword": {
           "title": "Zmień hasło",
           "oldPassword": "Obecne hasło",
@@ -1109,6 +1120,9 @@ const resources = {
         "preferredCurrency": "Preferowana waluta",
         "searchCurrency": "Szukaj waluty...",
         "failedToSaveCurrency": "Nie udało się zapisać preferowanej waluty.",
+        "countryOfResidence": "Kraj zamieszkania",
+        "searchCountry": "Szukaj kraju...",
+        "failedToSaveCountry": "Nie udało się zapisać kraju zamieszkania.",
         "theme": "Motyw",
         "themes": {
           "light": "Jasny",

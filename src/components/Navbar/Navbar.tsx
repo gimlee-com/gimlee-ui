@@ -23,6 +23,8 @@ import { Nav, NavItem, NavHeader, NavDivider, SubNav } from '../uikit/Nav/Nav';
 import { AvatarWithPresence } from '../AvatarWithPresence';
 import { usePresence } from '../../context/PresenceContext';
 import { useTheme } from '../../context/ThemeContext';
+import { useGuestCountry } from '../../hooks/useGuestCountry';
+import { CountrySelector } from '../CountrySelector/CountrySelector';
 import styles from './Navbar.module.scss';
 
 const MotionNavbarItem = motion.create(NavbarItem);
@@ -40,6 +42,7 @@ const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { scrollY } = useScroll();
   const [isScrolled, setIsScrolled] = useState(scrollY.get() > 60);
+  const { guestCountryCode, setGuestCountryCode } = useGuestCountry();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setIsScrolled(latest > 60);
@@ -219,6 +222,22 @@ const Navbar: React.FC = () => {
       ) : (
         <React.Fragment key="guest">
           <AnimatePresence>
+            {mode === 'default' && (
+              <MotionNavbarItem
+                key="guest-country"
+                className="uk-visible@m"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                <CountrySelector
+                  value={guestCountryCode}
+                  onChange={(code) => setGuestCountryCode(code)}
+                  compact
+                />
+              </MotionNavbarItem>
+            )}
             {mode === 'default' && (
               <MotionNavbarItem
                 key="login"
@@ -435,6 +454,24 @@ const Navbar: React.FC = () => {
                 <NavItem active={theme === 'dark-unicorn'}><Link to="#" onClick={(e) => { e.preventDefault(); setTheme('dark-unicorn'); }} uk-toggle="target: #mobile-menu">{t('profile.themes.dark-unicorn')}</Link></NavItem>
                 <NavItem active={theme === 'iron-age'}><Link to="#" onClick={(e) => { e.preventDefault(); setTheme('iron-age'); }} uk-toggle="target: #mobile-menu">{t('profile.themes.iron-age')}</Link></NavItem>
               </SubNav>
+            </MotionNavItem>
+            <MotionNavItem
+              key="country-off-guest"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2, delay: 0.25 }}
+            >
+              <div className="uk-margin-small">
+                <div className="uk-text-small uk-text-muted uk-margin-small-bottom">
+                  <Icon icon="world" className="uk-margin-small-right" />
+                  {t('navbar.country')}
+                </div>
+                <CountrySelector
+                  value={guestCountryCode}
+                  onChange={(code) => setGuestCountryCode(code)}
+                />
+              </div>
             </MotionNavItem>
           </React.Fragment>
         )
