@@ -101,7 +101,10 @@ export const PurchaseModal = forwardRef<HTMLDivElement>(
 
       const handleHidden = () => {
         dispatch(setModalOpen(false));
-        if (status !== 'AWAITING_PAYMENT') {
+        // If still on address step (no purchase created), clear the intent
+        if (!activePurchase) {
+          dispatch(clearActivePurchase());
+        } else if (status !== 'AWAITING_PAYMENT') {
           dispatch(clearActivePurchase());
         }
       };
