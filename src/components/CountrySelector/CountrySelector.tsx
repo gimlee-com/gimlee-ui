@@ -1,4 +1,4 @@
-import React, { forwardRef, useState, useMemo, useCallback, useEffect, useRef } from 'react';
+import { forwardRef, useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useCountries } from '../../hooks/useCountries';
 import { getCountryFlag } from '../../utils/countryUtils';

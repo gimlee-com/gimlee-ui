@@ -38,6 +38,8 @@ export function measureChatItems(items: ChatListItem[], width: number, username?
     logout: () => {},
     refreshSession: async () => {},
     setPreferredCurrency: () => {},
+    countryOfResidence: null,
+    setCountryOfResidence: () => {},
   };
 
   return new Promise((resolve) => {

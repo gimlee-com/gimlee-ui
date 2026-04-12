@@ -8,6 +8,8 @@ const mockAuthValue = (overrides: Record<string, unknown>) => ({
   userProfile: null,
   preferredCurrency: 'USD',
   setPreferredCurrency: () => {},
+  countryOfResidence: null,
+  setCountryOfResidence: () => {},
   username: 'testuser',
   roles: ['USER'],
   publicChatId: null,
