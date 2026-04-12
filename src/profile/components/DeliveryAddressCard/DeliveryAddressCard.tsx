@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useForm, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import UIkit from 'uikit';
 import { motion, AnimatePresence } from 'motion/react';
@@ -7,15 +6,8 @@ import { userService } from '../../services/userService';
 import { Card, CardBody } from '../../../components/uikit/Card/Card';
 import { Heading } from '../../../components/uikit/Heading/Heading';
 import { Button } from '../../../components/uikit/Button/Button';
-import {
-  Input,
-  FormLabel,
-  FormControls,
-  FormMessage,
-  Checkbox,
-} from '../../../components/Form/Form';
-import { CountrySelector } from '../../../components/CountrySelector/CountrySelector';
 import { useCountries } from '../../../hooks/useCountries';
+import { AddressForm } from '../AddressForm/AddressForm';
 import type { DeliveryAddressDto, AddDeliveryAddressRequestDto } from '../../../types/api';
 
 const DeliveryAddressCard: React.FC = () => {
@@ -24,28 +16,9 @@ const DeliveryAddressCard: React.FC = () => {
   const [addresses, setAddresses] = useState<DeliveryAddressDto[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { getCountryName } = useCountries();
-
-  const {
-    register,
-    handleSubmit,
-    control,
-    reset,
-    formState: { errors, isValid, isSubmitting },
-  } = useForm<AddDeliveryAddressRequestDto>({
-    mode: 'onBlur',
-    defaultValues: {
-      name: '',
-      fullName: '',
-      street: '',
-      city: '',
-      postalCode: '',
-      country: '',
-      phoneNumber: '',
-      isDefault: false,
-    },
-  });
 
   const fetchAddresses = useCallback(async () => {
     setLoading(true);
@@ -64,6 +37,7 @@ const DeliveryAddressCard: React.FC = () => {
   }, [fetchAddresses]);
 
   const onSubmit = async (data: AddDeliveryAddressRequestDto) => {
+    setIsSubmitting(true);
     try {
       await userService.addDeliveryAddress(data);
       UIkit.notification({
@@ -72,7 +46,6 @@ const DeliveryAddressCard: React.FC = () => {
         pos: 'top-center',
         timeout: 3000,
       });
-      reset();
       setShowForm(false);
       void fetchAddresses();
     } catch (err: unknown) {
@@ -95,6 +68,8 @@ const DeliveryAddressCard: React.FC = () => {
         pos: 'top-center',
         timeout: 5000,
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -125,165 +100,11 @@ const DeliveryAddressCard: React.FC = () => {
               style={{ overflow: 'hidden' }}
               className="uk-margin-bottom"
             >
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <div className="uk-margin">
-                  <FormLabel>{t('profile.deliveryAddresses.name')}</FormLabel>
-                  <FormControls>
-                    <Input
-                      status={errors.name ? 'danger' : undefined}
-                      {...register('name', {
-                        required: t('auth.errors.required', {
-                          field: t('profile.deliveryAddresses.name'),
-                        }),
-                      })}
-                    />
-                  </FormControls>
-                  <AnimatePresence>
-                    {errors.name && (
-                      <FormMessage type="error">{errors.name.message}</FormMessage>
-                    )}
-                  </AnimatePresence>
-                </div>
-
-                <div className="uk-margin">
-                  <FormLabel>{t('profile.deliveryAddresses.fullName')}</FormLabel>
-                  <FormControls>
-                    <Input
-                      status={errors.fullName ? 'danger' : undefined}
-                      {...register('fullName', {
-                        required: t('auth.errors.required', {
-                          field: t('profile.deliveryAddresses.fullName'),
-                        }),
-                      })}
-                    />
-                  </FormControls>
-                  <AnimatePresence>
-                    {errors.fullName && (
-                      <FormMessage type="error">{errors.fullName.message}</FormMessage>
-                    )}
-                  </AnimatePresence>
-                </div>
-
-                <div className="uk-margin">
-                  <FormLabel>{t('profile.deliveryAddresses.street')}</FormLabel>
-                  <FormControls>
-                    <Input
-                      status={errors.street ? 'danger' : undefined}
-                      {...register('street', {
-                        required: t('auth.errors.required', {
-                          field: t('profile.deliveryAddresses.street'),
-                        }),
-                      })}
-                    />
-                  </FormControls>
-                  <AnimatePresence>
-                    {errors.street && (
-                      <FormMessage type="error">{errors.street.message}</FormMessage>
-                    )}
-                  </AnimatePresence>
-                </div>
-
-                <div className="uk-grid-small uk-child-width-1-2@s" uk-grid="">
-                  <div>
-                    <FormLabel>{t('profile.deliveryAddresses.city')}</FormLabel>
-                    <FormControls>
-                      <Input
-                        status={errors.city ? 'danger' : undefined}
-                        {...register('city', {
-                          required: t('auth.errors.required', {
-                            field: t('profile.deliveryAddresses.city'),
-                          }),
-                        })}
-                      />
-                    </FormControls>
-                    <AnimatePresence>
-                      {errors.city && (
-                        <FormMessage type="error">{errors.city.message}</FormMessage>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                  <div>
-                    <FormLabel>{t('profile.deliveryAddresses.postalCode')}</FormLabel>
-                    <FormControls>
-                      <Input
-                        status={errors.postalCode ? 'danger' : undefined}
-                        {...register('postalCode', {
-                          required: t('auth.errors.required', {
-                            field: t('profile.deliveryAddresses.postalCode'),
-                          }),
-                        })}
-                      />
-                    </FormControls>
-                    <AnimatePresence>
-                      {errors.postalCode && (
-                        <FormMessage type="error">{errors.postalCode.message}</FormMessage>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                </div>
-
-                <div className="uk-margin">
-                  <FormLabel>{t('profile.deliveryAddresses.country')}</FormLabel>
-                  <FormControls>
-                    <Controller
-                      name="country"
-                      control={control}
-                      rules={{
-                        required: t('auth.errors.required', {
-                          field: t('profile.deliveryAddresses.country'),
-                        }),
-                      }}
-                      render={({ field }) => (
-                        <CountrySelector
-                          value={field.value || null}
-                          onChange={(code) => field.onChange(code ?? '')}
-                          status={errors.country ? 'danger' : undefined}
-                        />
-                      )}
-                    />
-                  </FormControls>
-                  <AnimatePresence>
-                    {errors.country && (
-                      <FormMessage type="error">{errors.country.message}</FormMessage>
-                    )}
-                  </AnimatePresence>
-                </div>
-
-                <div className="uk-margin">
-                  <FormLabel>{t('profile.deliveryAddresses.phoneNumber')}</FormLabel>
-                  <FormControls>
-                    <Input
-                      type="tel"
-                      status={errors.phoneNumber ? 'danger' : undefined}
-                      {...register('phoneNumber', {
-                        required: t('auth.errors.required', {
-                          field: t('profile.deliveryAddresses.phoneNumber'),
-                        }),
-                      })}
-                    />
-                  </FormControls>
-                  <AnimatePresence>
-                    {errors.phoneNumber && (
-                      <FormMessage type="error">{errors.phoneNumber.message}</FormMessage>
-                    )}
-                  </AnimatePresence>
-                </div>
-
-                <div className="uk-margin">
-                  <label>
-                    <Checkbox {...register('isDefault')} />{' '}
-                    {t('profile.deliveryAddresses.setAsDefault')}
-                  </label>
-                </div>
-
-                <Button
-                  type="submit"
-                  variant="primary"
-                  disabled={!isValid || isSubmitting}
-                >
-                  {t('profile.deliveryAddresses.save')}
-                </Button>
-              </form>
+              <AddressForm
+                onSubmit={onSubmit}
+                onCancel={() => setShowForm(false)}
+                isSubmitting={isSubmitting}
+              />
             </motion.div>
           )}
         </AnimatePresence>

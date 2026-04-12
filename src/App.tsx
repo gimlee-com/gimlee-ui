@@ -33,7 +33,7 @@ const AdminPages = lazy(() => import('./admin/pages/AdminPages'));
 
 
 function App() {
-  const { activePurchase, isModalOpen } = useAppSelector(state => state.purchase);
+  const { activePurchase, purchaseIntent, isModalOpen } = useAppSelector(state => state.purchase);
   const { isAuthenticated, username } = useAuth();
   const dispatch = useAppDispatch();
   const { theme } = useTheme();
@@ -95,10 +95,8 @@ function App() {
         </div>
       </main>
       <Footer />
-      {isAuthenticated && activePurchase && isModalOpen && (
-        <PurchaseModal 
-          purchase={activePurchase} 
-        />
+      {isAuthenticated && (activePurchase || purchaseIntent) && isModalOpen && (
+        <PurchaseModal />
       )}
       <div id={FLOATING_BUTTON_CONTAINER_ID} className={styles.floatingButtonContainer} />
     </div>

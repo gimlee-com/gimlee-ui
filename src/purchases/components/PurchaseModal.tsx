@@ -1,4 +1,4 @@
-import { useEffect, useState, forwardRef } from 'react';
+import { useEffect, useState, useCallback, forwardRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import type { Transition } from 'motion/react';
@@ -16,31 +16,59 @@ import { Button } from '../../components/uikit/Button/Button';
 import { Icon } from '../../components/uikit/Icon/Icon';
 import { Spinner } from '../../components/uikit/Spinner/Spinner';
 import { Progress } from '../../components/uikit/Progress/Progress';
-import { useAppDispatch } from '../../store';
-import { updateActivePurchaseStatus, setModalOpen, clearActivePurchase } from '../../store/purchaseSlice';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { 
+  updateActivePurchaseStatus, 
+  setModalOpen, 
+  clearActivePurchase,
+  setActivePurchase,
+  setSelectedAddress,
+} from '../../store/purchaseSlice';
 import { formatPrice } from '../../utils/currencyUtils';
 import { Image } from '../../components/Image/Image';
 import { purchaseService } from '../services/purchaseService';
 import { currencyService } from '../../payments/services/currencyService';
+import { userService } from '../../profile/services/userService';
 import { useAuth } from '../../context/AuthContext';
-import type { PurchaseResponseDto, PurchaseStatus, ConversionResultDto } from '../../types/api';
+import { useCountries } from '../../hooks/useCountries';
+import { getCountryFlag } from '../../utils/countryUtils';
+import { AddressForm } from '../../profile/components/AddressForm/AddressForm';
+import type { 
+  PurchaseStatus, 
+  ConversionResultDto, 
+  DeliveryAddressDto, 
+  StatusResponseDto,
+  AddDeliveryAddressRequestDto,
+} from '../../types/api';
 import { useUIKit } from '../../hooks/useUIkit';
 import { useMergeRefs } from '../../hooks/useMergeRefs';
 import styles from './PurchaseModal.module.scss';
 
-interface PurchaseModalProps {
-  purchase: PurchaseResponseDto;
-  onClose?: () => void;
-  onStatusChange?: (status: PurchaseStatus) => void;
-}
+type AddressLoadState = 'loading' | 'error' | 'empty' | 'list';
 
-export const PurchaseModal = forwardRef<HTMLDivElement, PurchaseModalProps>(
-  ({ purchase, onClose, onStatusChange }, ref) => {
+export const PurchaseModal = forwardRef<HTMLDivElement>(
+  (_props, ref) => {
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
-    const { preferredCurrency } = useAuth();
-    const [status, setStatus] = useState<PurchaseStatus>(purchase.status);
-    const [paidAmount, setPaidAmount] = useState<number>(purchase.payment.paidAmount);
+    const { preferredCurrency, countryOfResidence } = useAuth();
+    const { activePurchase, purchaseIntent, selectedAddress } = useAppSelector(state => state.purchase);
+    const { getCountryName } = useCountries();
+
+    // Derive step from Redux state
+    const step: 'address' | 'payment' = activePurchase ? 'payment' : 'address';
+    const purchase = activePurchase;
+
+    // Address selection state
+    const [addresses, setAddresses] = useState<DeliveryAddressDto[]>([]);
+    const [addressLoadState, setAddressLoadState] = useState<AddressLoadState>('loading');
+    const [showAddForm, setShowAddForm] = useState(false);
+    const [isCreatingPurchase, setIsCreatingPurchase] = useState(false);
+    const [purchaseError, setPurchaseError] = useState<string | null>(null);
+    const [isAddingAddress, setIsAddingAddress] = useState(false);
+
+    // Payment state (only relevant when step === 'payment')
+    const [status, setStatus] = useState<PurchaseStatus>(purchase?.status ?? 'AWAITING_PAYMENT');
+    const [paidAmount, setPaidAmount] = useState<number>(purchase?.payment?.paidAmount ?? 0);
     const [isCancelling, setIsCancelling] = useState(false);
     const [secondsLeft, setSecondsLeft] = useState<number | null>(null);
     const [conversion, setConversion] = useState<ConversionResultDto | null>(null);
@@ -53,6 +81,14 @@ export const PurchaseModal = forwardRef<HTMLDivElement, PurchaseModalProps>(
 
     const mergedRef = useMergeRefs(modalRef, ref);
 
+    // Reset payment state when purchase changes
+    useEffect(() => {
+      if (purchase) {
+        setStatus(purchase.status);
+        setPaidAmount(purchase.payment?.paidAmount ?? 0);
+      }
+    }, [purchase?.purchaseId]); // eslint-disable-line react-hooks/exhaustive-deps
+
     useEffect(() => {
       if (modalInstance) {
         modalInstance.show();
@@ -64,31 +100,52 @@ export const PurchaseModal = forwardRef<HTMLDivElement, PurchaseModalProps>(
       if (!element) return;
 
       const handleHidden = () => {
-        if (onClose) {
-          onClose();
-        } else {
-          dispatch(setModalOpen(false));
-          if (status !== 'AWAITING_PAYMENT') {
-            dispatch(clearActivePurchase());
-          }
+        dispatch(setModalOpen(false));
+        if (status !== 'AWAITING_PAYMENT') {
+          dispatch(clearActivePurchase());
         }
       };
 
       UIkit.util.on(element, 'hidden', handleHidden);
-    }, [onClose, dispatch, status, modalRef]);
+    }, [dispatch, status, modalRef]);
+
+    // Fetch delivery addresses for step 1
+    const fetchAddresses = useCallback(async () => {
+      setAddressLoadState('loading');
+      try {
+        const all = await userService.getDeliveryAddresses();
+        const filtered = countryOfResidence
+          ? all.filter(a => a.country.toUpperCase() === countryOfResidence.toUpperCase())
+          : all;
+        setAddresses(filtered);
+        setAddressLoadState(filtered.length > 0 ? 'list' : 'empty');
+
+        // Auto-select default or first address
+        if (filtered.length > 0 && !selectedAddress) {
+          const defaultAddr = filtered.find(a => a.isDefault) ?? filtered[0];
+          dispatch(setSelectedAddress(defaultAddr));
+        }
+      } catch {
+        setAddressLoadState('error');
+      }
+    }, [countryOfResidence, selectedAddress, dispatch]);
 
     useEffect(() => {
+      if (step === 'address') {
+        void fetchAddresses();
+      }
+    }, [step]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    // Status polling (payment step only)
+    useEffect(() => {
+      if (step !== 'payment' || !purchase) return;
       if (status === 'AWAITING_PAYMENT') {
         const interval = setInterval(async () => {
           try {
             const response = await purchaseService.getPurchaseStatus(purchase.purchaseId);
             if (response.status !== status) {
               setStatus(response.status);
-              if (onStatusChange) {
-                onStatusChange(response.status);
-              } else {
-                dispatch(updateActivePurchaseStatus(response.status));
-              }
+              dispatch(updateActivePurchaseStatus(response.status));
             }
             if (response.paidAmount !== undefined) {
               setPaidAmount(response.paidAmount);
@@ -100,10 +157,12 @@ export const PurchaseModal = forwardRef<HTMLDivElement, PurchaseModalProps>(
 
         return () => clearInterval(interval);
       }
-    }, [purchase.purchaseId, status, onStatusChange, dispatch]);
+    }, [purchase?.purchaseId, status, dispatch, step]); // eslint-disable-line react-hooks/exhaustive-deps
 
+    // Countdown timer (payment step only)
     useEffect(() => {
-      if (status === 'AWAITING_PAYMENT' && purchase.payment.deadline) {
+      if (step !== 'payment' || !purchase) return;
+      if (status === 'AWAITING_PAYMENT' && purchase.payment?.deadline) {
         const calculateTimeLeft = () => {
           const deadline = new Date(purchase.payment.deadline).getTime();
           const now = new Date().getTime();
@@ -117,9 +176,12 @@ export const PurchaseModal = forwardRef<HTMLDivElement, PurchaseModalProps>(
       } else {
         setSecondsLeft(null);
       }
-    }, [status, purchase.payment.deadline]);
+    }, [status, purchase?.payment?.deadline, step]); // eslint-disable-line react-hooks/exhaustive-deps
 
+    // Currency conversion (payment step only)
     useEffect(() => {
+      if (step !== 'payment' || !purchase) return;
+
       const fetchConversion = () => {
         if (preferredCurrency && preferredCurrency !== purchase.currency) {
           currencyService.convertCurrency(purchase.payment.amount, purchase.currency, preferredCurrency)
@@ -136,7 +198,7 @@ export const PurchaseModal = forwardRef<HTMLDivElement, PurchaseModalProps>(
         const interval = setInterval(fetchConversion, 60000);
         return () => clearInterval(interval);
       }
-    }, [preferredCurrency, purchase.currency, purchase.payment.amount, status]);
+    }, [preferredCurrency, purchase?.currency, purchase?.payment?.amount, status, step]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const formatTime = (seconds: number) => {
       const mins = Math.floor(seconds / 60);
@@ -150,7 +212,69 @@ export const PurchaseModal = forwardRef<HTMLDivElement, PurchaseModalProps>(
       return 'uk-text-danger';
     };
 
+    const handleConfirmAndPay = async () => {
+      if (!purchaseIntent || !selectedAddress) return;
+      setIsCreatingPurchase(true);
+      setPurchaseError(null);
+      try {
+        const response = await purchaseService.createPurchase({
+          ...purchaseIntent,
+          deliveryAddressId: selectedAddress.id,
+        });
+        dispatch(setActivePurchase({
+          ...response,
+          currency: response.currency || purchaseIntent.currency,
+        }));
+      } catch (error: unknown) {
+        const err = error as StatusResponseDto;
+        if (err.status === 'PURCHASE_CURRENCY_FROZEN') {
+          setPurchaseError(t('purchases.currencyFrozen', { currency: purchaseIntent.currency }));
+        } else if (err.status === 'PURCHASE_PRICE_MISMATCH') {
+          setPurchaseError(t('purchases.priceMismatch'));
+        } else if (err.status === 'PURCHASE_DELIVERY_ADDRESS_COUNTRY_MISMATCH') {
+          setPurchaseError(t('purchases.addressCountryMismatch'));
+        } else if (err.status === 'PURCHASE_COUNTRY_OF_RESIDENCE_REQUIRED') {
+          setPurchaseError(t('purchases.countryOfResidenceRequired'));
+        } else {
+          setPurchaseError(err.message || t('auth.errors.generic'));
+        }
+      } finally {
+        setIsCreatingPurchase(false);
+      }
+    };
+
+    const handleAddAddress = async (data: AddDeliveryAddressRequestDto) => {
+      setIsAddingAddress(true);
+      try {
+        await userService.addDeliveryAddress(data);
+        setShowAddForm(false);
+        // Re-fetch addresses and auto-select the new one
+        const all = await userService.getDeliveryAddresses();
+        const filtered = countryOfResidence
+          ? all.filter(a => a.country.toUpperCase() === countryOfResidence.toUpperCase())
+          : all;
+        setAddresses(filtered);
+        setAddressLoadState(filtered.length > 0 ? 'list' : 'empty');
+        // Select the most recently added (last in the list)
+        if (filtered.length > 0) {
+          dispatch(setSelectedAddress(filtered[filtered.length - 1]));
+        }
+      } catch (err: unknown) {
+        const error = err as StatusResponseDto;
+        UIkit.notification({
+          message: error.message || t('profile.deliveryAddresses.addError'),
+          status: 'danger',
+          pos: 'top-center',
+          timeout: 5000,
+        });
+      } finally {
+        setIsAddingAddress(false);
+      }
+    };
+
     const handleCancel = async () => {
+      if (!purchase) return;
+
       const confirmMessage = paidAmount > 0 
         ? t('purchases.partialPaymentWarning', { 
             paid: formatPrice(paidAmount, purchase.currency)
@@ -168,11 +292,7 @@ export const PurchaseModal = forwardRef<HTMLDivElement, PurchaseModalProps>(
         try {
           await purchaseService.cancelPurchase(purchase.purchaseId);
           setStatus('CANCELLED');
-          if (onStatusChange) {
-            onStatusChange('CANCELLED');
-          } else {
-            dispatch(updateActivePurchaseStatus('CANCELLED'));
-          }
+          dispatch(updateActivePurchaseStatus('CANCELLED'));
         } catch (error: unknown) {
           console.error('Failed to cancel purchase', error);
           UIkit.modal.alert((error as Error).message || t('auth.errors.generic'), { 
@@ -194,13 +314,9 @@ export const PurchaseModal = forwardRef<HTMLDivElement, PurchaseModalProps>(
       if (modalInstance) {
         modalInstance.hide();
       } else {
-        if (onClose) {
-          onClose();
-        } else {
-          dispatch(setModalOpen(false));
-          if (status !== 'AWAITING_PAYMENT') {
-            dispatch(clearActivePurchase());
-          }
+        dispatch(setModalOpen(false));
+        if (status !== 'AWAITING_PAYMENT') {
+          dispatch(clearActivePurchase());
         }
       }
     };
@@ -226,19 +342,21 @@ export const PurchaseModal = forwardRef<HTMLDivElement, PurchaseModalProps>(
                 {t('purchases.statusAwaiting')}
               </p>
               
-              <div className="uk-margin-small-top">
-                <p className="uk-text-small uk-margin-remove-bottom">
-                  {t('purchases.paymentProgress', { 
-                    paid: formatPrice(paidAmount, purchase.currency), 
-                    total: formatPrice(purchase.payment.amount, purchase.currency)
-                  })}
-                </p>
-                <Progress 
-                  value={paidAmount} 
-                  max={purchase.payment.amount}
-                  className="uk-margin-remove-top"
-                />
-              </div>
+              {purchase && (
+                <div className="uk-margin-small-top">
+                  <p className="uk-text-small uk-margin-remove-bottom">
+                    {t('purchases.paymentProgress', { 
+                      paid: formatPrice(paidAmount, purchase.currency), 
+                      total: formatPrice(purchase.payment.amount, purchase.currency)
+                    })}
+                  </p>
+                  <Progress 
+                    value={paidAmount} 
+                    max={purchase.payment.amount}
+                    className="uk-margin-remove-top"
+                  />
+                </div>
+              )}
             </div>
           );
         case 'COMPLETE':
@@ -274,111 +392,288 @@ export const PurchaseModal = forwardRef<HTMLDivElement, PurchaseModalProps>(
       }
     };
 
+    const renderAddressSummary = (addr: DeliveryAddressDto) => (
+      <div className={`uk-card uk-card-default uk-card-body uk-card-small uk-margin-bottom ${styles.addressSummary}`}>
+        <p className="uk-text-small uk-text-muted uk-margin-remove-bottom">{t('purchases.deliveryTo')}</p>
+        <p className="uk-text-bold uk-margin-remove">{addr.name}</p>
+        <p className="uk-text-small uk-margin-remove">
+          {addr.fullName} · {addr.street} · {addr.city}, {addr.postalCode}
+        </p>
+        <p className="uk-text-small uk-margin-remove">
+          {getCountryFlag(addr.country)} {getCountryName(addr.country)} · {addr.phoneNumber}
+        </p>
+      </div>
+    );
+
     const springTransition: Transition = { type: 'spring', stiffness: 400, damping: 40 };
+
+    const renderAddressStep = () => (
+      <>
+        {!countryOfResidence && (
+          <div className="uk-alert-warning" uk-alert="">
+            <p>{t('purchases.countryOfResidenceRequired')}</p>
+          </div>
+        )}
+
+        {addressLoadState === 'loading' && (
+          <div className="uk-text-center uk-margin-large-top uk-margin-large-bottom">
+            <Spinner ratio={2} />
+          </div>
+        )}
+
+        {addressLoadState === 'error' && (
+          <div className="uk-text-center uk-margin-top">
+            <Icon icon="warning" ratio={2} className="uk-text-danger uk-margin-small-bottom" />
+            <p className="uk-text-danger">{t('purchases.loadAddressesError')}</p>
+            <Button variant="default" size="small" onClick={fetchAddresses}>
+              {t('common.retry')}
+            </Button>
+          </div>
+        )}
+
+        {addressLoadState === 'empty' && !showAddForm && (
+          <div className="uk-text-center uk-margin-top">
+            <Icon icon="location" ratio={2} className="uk-text-muted uk-margin-small-bottom" />
+            <p className="uk-text-muted">
+              {t('purchases.noAddressesForCountry')}
+            </p>
+            <Button variant="primary" size="small" onClick={() => setShowAddForm(true)}>
+              {t('purchases.addAddress')}
+            </Button>
+          </div>
+        )}
+
+        {addressLoadState === 'list' && !showAddForm && (
+          <div className="uk-flex uk-flex-column" style={{ gap: '8px' }}>
+            {addresses.map((addr) => (
+              <div
+                key={addr.id}
+                className={`uk-card uk-card-body uk-card-small ${styles.addressCard} ${
+                  selectedAddress?.id === addr.id ? styles.addressCardSelected : 'uk-card-default'
+                }`}
+                onClick={() => dispatch(setSelectedAddress(addr))}
+                role="radio"
+                aria-checked={selectedAddress?.id === addr.id}
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    dispatch(setSelectedAddress(addr));
+                  }
+                }}
+              >
+                <div className="uk-flex uk-flex-middle uk-flex-wrap" style={{ gap: '6px' }}>
+                  <span className={`${styles.radioIndicator} ${selectedAddress?.id === addr.id ? styles.radioSelected : ''}`} />
+                  <span className="uk-text-bold">{addr.name}</span>
+                  {addr.isDefault && (
+                    <span className="uk-label uk-label-success" style={{ fontSize: '0.7rem' }}>
+                      {t('profile.deliveryAddresses.default')}
+                    </span>
+                  )}
+                </div>
+                <div className="uk-text-small uk-margin-small-top" style={{ paddingLeft: '22px' }}>
+                  <div>{addr.fullName}</div>
+                  <div>{addr.street}</div>
+                  <div>{addr.city}, {addr.postalCode}</div>
+                  <div>{getCountryFlag(addr.country)} {getCountryName(addr.country)}</div>
+                  {addr.phoneNumber && <div className="uk-text-muted">{addr.phoneNumber}</div>}
+                </div>
+              </div>
+            ))}
+            <Button
+              variant="text"
+              size="small"
+              className="uk-margin-small-top"
+              onClick={() => setShowAddForm(true)}
+            >
+              <Icon icon="plus" ratio={0.8} /> {t('purchases.addAddress')}
+            </Button>
+          </div>
+        )}
+
+        <AnimatePresence>
+          {showAddForm && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={springTransition}
+              style={{ overflow: 'hidden' }}
+              className="uk-margin-top"
+            >
+              <AddressForm
+                onSubmit={handleAddAddress}
+                onCancel={() => setShowAddForm(false)}
+                isSubmitting={isAddingAddress}
+                lockedCountry={countryOfResidence ?? undefined}
+                showDefault={false}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {purchaseError && (
+          <div className="uk-alert-danger uk-margin-top" uk-alert="">
+            <p>{purchaseError}</p>
+          </div>
+        )}
+      </>
+    );
+
+    const renderPaymentStep = () => {
+      if (!purchase) return null;
+      return (
+        <>
+          {selectedAddress && renderAddressSummary(selectedAddress)}
+
+          <div className="uk-grid-small uk-flex-middle" uk-grid="">
+            <div className="uk-width-auto">
+              <Image 
+                src={purchase.currency === 'YEC' ? '/currencies/yec-primary.svg' : '/currencies/pirate-black.svg'}
+                alt={purchase.currency} 
+                width="40" 
+                height="40" 
+              />
+            </div>
+            <div className="uk-width-expand">
+              <p className="uk-margin-remove uk-text-large uk-text-bold">
+                {formatPrice(purchase.payment.amount, purchase.currency)}
+              </p>
+              {conversion && (
+                <p className="uk-margin-remove uk-text-muted uk-text-small">
+                  ≈ {formatPrice(conversion.targetAmount, conversion.to)}
+                  {conversion.isVolatile && (
+                    <span 
+                      className="uk-margin-small-left uk-text-warning" 
+                      uk-tooltip={t('purchases.volatilityWarning', { currency: conversion.to })}
+                    >
+                      <Icon icon="warning" ratio={0.8} />
+                    </span>
+                  )}
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div className="uk-margin-medium-top uk-text-center">
+            <div className="uk-inline uk-padding-small uk-border-rounded uk-box-shadow-large">
+              <QRCodeSVG 
+                value={purchase.payment.qrCodeUri} 
+                size={200}
+                level="H"
+                marginSize={8}
+                imageSettings={{
+                  src: purchase.currency === 'YEC' ? "/currencies/yec-qr-logo.svg" : "/currencies/pirate-qr-logo.svg",
+                  height: 45,
+                  width: 45,
+                  excavate: true,
+                }}
+              />
+            </div>
+          </div>
+
+          <div className="uk-margin-medium-top">
+            <p className="uk-margin-small-bottom uk-text-muted uk-text-small">{t('purchases.toAddress')}:</p>
+            <div className="uk-padding-small uk-background-muted uk-border-rounded uk-text-break uk-text-emphasis uk-text-small">
+              {purchase.payment.address}
+            </div>
+          </div>
+
+          <div className="uk-margin">
+            <p className="uk-margin-small-bottom uk-text-muted uk-text-small">{t('purchases.memo')}:</p>
+            <div className="uk-padding-small uk-background-muted uk-border-rounded uk-text-emphasis">
+              {purchase.payment.memo}
+            </div>
+          </div>
+
+          <hr />
+
+          <div className={`uk-height-small uk-flex uk-flex-column uk-flex-center uk-flex-middle uk-margin-medium-top ${styles.statusContainer}`}>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={status}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={springTransition}
+                className="uk-width-1-1"
+              >
+                {renderStatus()}
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </>
+      );
+    };
 
     return (
       <Modal ref={mergedRef} container={false} escClose={false} bgClose={false}>
         <ModalDialog>
           <ModalHeader>
-            <ModalTitle>{t('purchases.paymentTitle')}</ModalTitle>
+            <ModalTitle>
+              {step === 'address' ? t('purchases.selectAddress') : t('purchases.paymentTitle')}
+            </ModalTitle>
+            {purchaseIntent && (
+              <span className="uk-text-muted uk-text-small">
+                {t('purchases.stepOf', { current: step === 'address' ? 1 : 2, total: 2 })}
+              </span>
+            )}
           </ModalHeader>
           <ModalBody>
-            <div className="uk-grid-small uk-flex-middle" uk-grid="">
-              <div className="uk-width-auto">
-                <Image 
-                  src={purchase.currency === 'YEC' ? '/currencies/yec-primary.svg' : '/currencies/pirate-black.svg'}
-                  alt={purchase.currency} 
-                  width="40" 
-                  height="40" 
-                />
-              </div>
-              <div className="uk-width-expand">
-                <p className="uk-margin-remove uk-text-large uk-text-bold">
-                  {formatPrice(purchase.payment.amount, purchase.currency)}
-                </p>
-                {conversion && (
-                  <p className="uk-margin-remove uk-text-muted uk-text-small">
-                    ≈ {formatPrice(conversion.targetAmount, conversion.to)}
-                    {conversion.isVolatile && (
-                      <span 
-                        className="uk-margin-small-left uk-text-warning" 
-                        uk-tooltip={t('purchases.volatilityWarning', { currency: conversion.to })}
-                      >
-                        <Icon icon="warning" ratio={0.8} />
-                      </span>
-                    )}
-                  </p>
-                )}
-              </div>
-            </div>
-
-            <div className="uk-margin-medium-top uk-text-center">
-              <div className="uk-inline uk-padding-small uk-border-rounded uk-box-shadow-large">
-                <QRCodeSVG 
-                  value={purchase.payment.qrCodeUri} 
-                  size={200}
-                  level="H"
-                  marginSize={8}
-                  imageSettings={{
-                    src: purchase.currency === 'YEC' ? "/currencies/yec-qr-logo.svg" : "/currencies/pirate-qr-logo.svg",
-                    height: 45,
-                    width: 45,
-                    excavate: true,
-                  }}
-                />
-              </div>
-            </div>
-
-            <div className="uk-margin-medium-top">
-              <p className="uk-margin-small-bottom uk-text-muted uk-text-small">{t('purchases.toAddress')}:</p>
-              <div className="uk-padding-small uk-background-muted uk-border-rounded uk-text-break uk-text-emphasis uk-text-small">
-                {purchase.payment.address}
-              </div>
-            </div>
-
-            <div className="uk-margin">
-              <p className="uk-margin-small-bottom uk-text-muted uk-text-small">{t('purchases.memo')}:</p>
-              <div className="uk-padding-small uk-background-muted uk-border-rounded uk-text-emphasis">
-                {purchase.payment.memo}
-              </div>
-            </div>
-
-            <hr />
-
-            <div className={`uk-height-small uk-flex uk-flex-column uk-flex-center uk-flex-middle uk-margin-medium-top ${styles.statusContainer}`}>
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={status}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={springTransition}
-                  className="uk-width-1-1"
-                >
-                  {renderStatus()}
-                </motion.div>
-              </AnimatePresence>
-            </div>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={step}
+                initial={{ opacity: 0, x: step === 'payment' ? 30 : -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: step === 'payment' ? -30 : 30 }}
+                transition={springTransition}
+              >
+                {step === 'address' ? renderAddressStep() : renderPaymentStep()}
+              </motion.div>
+            </AnimatePresence>
           </ModalBody>
           <ModalFooter>
             <div className="uk-grid-small uk-child-width-1-1 uk-child-width-auto@s uk-flex-right" uk-grid="">
-              {status === 'AWAITING_PAYMENT' && (
-                <div>
-                  <Button 
-                    variant="default" 
-                    className="uk-width-1-1" 
-                    onClick={handleCancel}
-                    disabled={isCancelling}
-                  >
-                    {isCancelling ? <Spinner ratio={0.6} /> : t('purchases.cancelPurchase')}
-                  </Button>
-                </div>
+              {step === 'address' && (
+                <>
+                  <div>
+                    <Button variant="default" className="uk-width-1-1" onClick={handleClose}>
+                      {t('common.cancel')}
+                    </Button>
+                  </div>
+                  <div>
+                    <Button 
+                      variant="primary" 
+                      className="uk-width-1-1"
+                      onClick={handleConfirmAndPay}
+                      disabled={!selectedAddress || isCreatingPurchase || !countryOfResidence}
+                    >
+                      {isCreatingPurchase ? <Spinner ratio={0.6} /> : t('purchases.confirmAndPay')}
+                    </Button>
+                  </div>
+                </>
               )}
-              <div>
-                <Button variant="primary" className="uk-width-1-1" onClick={handleClose}>
-                  {t('purchases.close')}
-                </Button>
-              </div>
+              {step === 'payment' && (
+                <>
+                  {status === 'AWAITING_PAYMENT' && (
+                    <div>
+                      <Button 
+                        variant="default" 
+                        className="uk-width-1-1" 
+                        onClick={handleCancel}
+                        disabled={isCancelling}
+                      >
+                        {isCancelling ? <Spinner ratio={0.6} /> : t('purchases.cancelPurchase')}
+                      </Button>
+                    </div>
+                  )}
+                  <div>
+                    <Button variant="primary" className="uk-width-1-1" onClick={handleClose}>
+                      {t('purchases.close')}
+                    </Button>
+                  </div>
+                </>
+              )}
             </div>
           </ModalFooter>
         </ModalDialog>

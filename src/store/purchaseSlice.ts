@@ -1,9 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { PurchaseResponseDto, PurchaseStatus } from '../types/api';
+import type { PurchaseResponseDto, PurchaseStatus, PurchaseItemRequestDto, Currency, DeliveryAddressDto } from '../types/api';
+
+export interface PurchaseIntent {
+  items: PurchaseItemRequestDto[];
+  currency: Currency;
+}
 
 export interface PurchaseState {
   activePurchase: PurchaseResponseDto | null;
+  purchaseIntent: PurchaseIntent | null;
+  selectedAddress: DeliveryAddressDto | null;
   isModalOpen: boolean;
   currentUser: string | null;
 }
@@ -12,6 +19,8 @@ const getStorageKey = (username: string) => `activePurchase:${username}`;
 
 const initialState: PurchaseState = {
   activePurchase: null,
+  purchaseIntent: null,
+  selectedAddress: null,
   isModalOpen: false,
   currentUser: null,
 };
@@ -40,11 +49,23 @@ export const purchaseSlice = createSlice({
     },
     clearForLogout: (state) => {
       state.activePurchase = null;
+      state.purchaseIntent = null;
+      state.selectedAddress = null;
       state.isModalOpen = false;
       state.currentUser = null;
     },
+    startPurchaseFlow: (state, action: PayloadAction<PurchaseIntent>) => {
+      state.purchaseIntent = action.payload;
+      state.activePurchase = null;
+      state.selectedAddress = null;
+      state.isModalOpen = true;
+    },
+    setSelectedAddress: (state, action: PayloadAction<DeliveryAddressDto | null>) => {
+      state.selectedAddress = action.payload;
+    },
     setActivePurchase: (state, action: PayloadAction<PurchaseResponseDto | null>) => {
       state.activePurchase = action.payload;
+      state.purchaseIntent = null;
       state.isModalOpen = !!action.payload;
       if (action.payload && action.payload.status === 'AWAITING_PAYMENT' && state.currentUser) {
         localStorage.setItem(getStorageKey(state.currentUser), JSON.stringify(action.payload));
@@ -67,6 +88,8 @@ export const purchaseSlice = createSlice({
     },
     clearActivePurchase: (state) => {
       state.activePurchase = null;
+      state.purchaseIntent = null;
+      state.selectedAddress = null;
       state.isModalOpen = false;
       if (state.currentUser) {
         localStorage.removeItem(getStorageKey(state.currentUser));
@@ -75,5 +98,5 @@ export const purchaseSlice = createSlice({
   },
 });
 
-export const { rehydrateForUser, clearForLogout, setActivePurchase, setModalOpen, updateActivePurchaseStatus, clearActivePurchase } = purchaseSlice.actions;
+export const { rehydrateForUser, clearForLogout, startPurchaseFlow, setSelectedAddress, setActivePurchase, setModalOpen, updateActivePurchaseStatus, clearActivePurchase } = purchaseSlice.actions;
 export default purchaseSlice.reducer;

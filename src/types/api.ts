@@ -364,6 +364,7 @@ export interface PurchaseItemRequestDto {
 export interface PurchaseRequestDto {
   items: PurchaseItemRequestDto[];
   currency: Currency;
+  deliveryAddressId: string;
 }
 
 export interface PaymentDetailsDto {

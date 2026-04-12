@@ -6,9 +6,8 @@ import UIkit from 'uikit';
 import { useAuth } from '../../context/AuthContext';
 import { adService } from '../services/adService';
 import { useAppDispatch, useAppSelector } from '../../store';
-import { setActivePurchase, setModalOpen } from '../../store/purchaseSlice';
-import { purchaseService } from '../../purchases/services/purchaseService';
-import type { AdDiscoveryDetailsDto, CurrencyAmountDto, StatusResponseDto } from '../../types/api';
+import { startPurchaseFlow, setModalOpen } from '../../store/purchaseSlice';
+import type { AdDiscoveryDetailsDto, CurrencyAmountDto } from '../../types/api';
 import { Heading } from '../../components/uikit/Heading/Heading';
 import { Spinner } from '../../components/uikit/Spinner/Spinner';
 import { Grid } from '../../components/uikit/Grid/Grid';
@@ -79,9 +78,8 @@ const AdDetailsPage: React.FC = () => {
   const [showLightboxThumbnav, setShowLightboxThumbnav] = useState(window.innerWidth >= 960);
   const [quantity, setQuantity] = useState(1);
   const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null);
-  const activePurchase = useAppSelector(state => state.purchase.activePurchase);
+  const { activePurchase, purchaseIntent } = useAppSelector(state => state.purchase);
   const dispatch = useAppDispatch();
-  const [isPurchasing, setIsPurchasing] = useState(false);
   const [isWatched, setIsWatched] = useState(false);
   const [watchersCount, setWatchersCount] = useState(0);
   const mainSliderRef = useRef<HTMLDivElement>(null);
@@ -160,7 +158,7 @@ const AdDetailsPage: React.FC = () => {
   }, [ad, loading]); // Depend on ad and loading to ensure listener is attached when slider is rendered
 
 
-  const handleBuyNow = async () => {
+  const handleBuyNow = () => {
     if (!isAuthenticated) {
       navigate('/login', { 
         state: { 
@@ -173,46 +171,19 @@ const AdDetailsPage: React.FC = () => {
 
     if (!ad || !selectedCurrency) return;
 
-    // Find the settlement price for the selected currency
     const settlementPrice = ad.settlementPrices?.find(sp => sp.currency === selectedCurrency);
     if (!settlementPrice) return;
 
-    setIsPurchasing(true);
-    try {
-      const response = await purchaseService.createPurchase({
-        currency: selectedCurrency,
-        items: [
-          {
-            adId: ad.id,
-            quantity: quantity,
-            unitPrice: settlementPrice.amount
-          }
-        ]
-      });
-      dispatch(setActivePurchase({
-        ...response,
-        currency: response.currency || selectedCurrency
-      }));
-    } catch (error: unknown) {
-      const err = error as StatusResponseDto;
-      console.error('Failed to create purchase', error);
-      if (err.status === 'PURCHASE_CURRENCY_FROZEN') {
-        UIkit.modal.alert(t('purchases.currencyFrozen', { currency: selectedCurrency }), { stack: true, i18n: { ok: t('common.ok'), cancel: t('common.cancel') } });
-      } else if (err.status === 'PURCHASE_PRICE_MISMATCH') {
-        UIkit.modal.alert(t('purchases.priceMismatch'), { stack: true, i18n: { ok: t('common.ok'), cancel: t('common.cancel') } });
-        // Refresh ad data to get updated prices
-        if (id) {
-          adService.getAdById(id).then(data => {
-            setAd(data);
-            autoSelectCurrency(data);
-          }).catch(() => {});
+    dispatch(startPurchaseFlow({
+      currency: selectedCurrency,
+      items: [
+        {
+          adId: ad.id,
+          quantity: quantity,
+          unitPrice: settlementPrice.amount
         }
-      } else {
-        UIkit.modal.alert(err.message || t('auth.errors.generic'));
-      }
-    } finally {
-      setIsPurchasing(false);
-    }
+      ]
+    }));
   };
 
   const autoSelectCurrency = (adData: AdDiscoveryDetailsDto) => {
@@ -588,9 +559,9 @@ const AdDetailsPage: React.FC = () => {
                   variant="primary" 
                   className="uk-width-1-1 uk-margin-small-top uk-border-rounded" 
                   onClick={handleBuyNow}
-                  disabled={isPurchasing || ad.isBuyable === false || !selectedCurrency || ad.frozenCurrencies?.includes(selectedCurrency) || !!activePurchase || ad.userCanPurchase === false}
+                  disabled={ad.isBuyable === false || !selectedCurrency || ad.frozenCurrencies?.includes(selectedCurrency) || !!activePurchase || !!purchaseIntent || ad.userCanPurchase === false}
                 >
-                  {isPurchasing ? <Spinner ratio={0.8} /> : t('purchases.buyNow')}
+                  {t('purchases.buyNow')}
                 </Button>
 
                 {ad.userCanPurchase === false && (

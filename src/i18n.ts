@@ -25,7 +25,8 @@ const resources = {
         "reset": "Reset",
         "increment": "Increment",
         "decrement": "Decrement",
-        "externalLinkWarning": "You are leaving Gimlee. We are not responsible for the content of external websites. Do you want to proceed?"
+        "externalLinkWarning": "You are leaving Gimlee. We are not responsible for the content of external websites. Do you want to proceed?",
+        "retry": "Retry"
       },
       "navbar": {
         "browseAds": "Browse Ads",
@@ -230,7 +231,16 @@ const resources = {
         "currencyFrozen": "This payment method is temporarily unavailable due to market volatility. Try another payment method.",
         "currencyNotAccepted": "This ad does not accept payment in {{currency}}.",
         "priceMismatch": "The price has changed since you loaded this page. Please review the updated prices and try again.",
-        "insufficientStock": "Only {{count}} items available."
+        "insufficientStock": "Only {{count}} items available.",
+        "selectAddress": "Select Delivery Address",
+        "noAddressesForCountry": "You don't have any delivery addresses for your country.",
+        "addAddress": "Add Delivery Address",
+        "confirmAndPay": "Confirm & Pay",
+        "deliveryTo": "Delivery to",
+        "stepOf": "Step {{current}} of {{total}}",
+        "addressCountryMismatch": "This address doesn't match your country of residence.",
+        "countryOfResidenceRequired": "Please set your country of residence before purchasing.",
+        "loadAddressesError": "Failed to load delivery addresses. Please try again."
       },
       "profile": {
         "title": "Profile & Settings",
@@ -891,7 +901,8 @@ const resources = {
         "reset": "Resetuj",
         "increment": "Zwiększ",
         "decrement": "Zmniejsz",
-        "externalLinkWarning": "Opuszczasz Gimlee. Nie ponosimy odpowiedzialności za treści na zewnętrznych stronach. Czy chcesz kontynuować?"
+        "externalLinkWarning": "Opuszczasz Gimlee. Nie ponosimy odpowiedzialności za treści na zewnętrznych stronach. Czy chcesz kontynuować?",
+        "retry": "Ponów"
       },
       "navbar": {
         "browseAds": "Przeglądaj ogłoszenia",
@@ -1096,7 +1107,16 @@ const resources = {
         "currencyFrozen": "Ta metoda płatności jest tymczasowo niedostępna z powodu zmienności rynku. Spróbuj innej metody płatności.",
         "currencyNotAccepted": "To ogłoszenie nie akceptuje płatności w {{currency}}.",
         "priceMismatch": "Cena zmieniła się od momentu załadowania strony. Sprawdź zaktualizowane ceny i spróbuj ponownie.",
-        "insufficientStock": "Dostępnych jest tylko {{count}} sztuk."
+        "insufficientStock": "Dostępnych jest tylko {{count}} sztuk.",
+        "selectAddress": "Wybierz adres dostawy",
+        "noAddressesForCountry": "Nie masz żadnych adresów dostawy dla Twojego kraju.",
+        "addAddress": "Dodaj adres dostawy",
+        "confirmAndPay": "Potwierdź i zapłać",
+        "deliveryTo": "Dostawa do",
+        "stepOf": "Krok {{current}} z {{total}}",
+        "addressCountryMismatch": "Ten adres nie pasuje do Twojego kraju zamieszkania.",
+        "countryOfResidenceRequired": "Proszę ustawić kraj zamieszkania przed zakupem.",
+        "loadAddressesError": "Nie udało się załadować adresów dostawy. Spróbuj ponownie."
       },
       "profile": {
         "title": "Profil i ustawienia",
