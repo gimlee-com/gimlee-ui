@@ -11,23 +11,7 @@ import { SmartPagination } from '../../components/SmartPagination';
 import CreateTicketForm from '../components/CreateTicketForm/CreateTicketForm';
 import type { TicketListItemDto } from '../../admin/types/adminTicket';
 import type { PageMetadata } from '../../types/api';
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.06 },
-  },
-} as const;
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: 'spring', stiffness: 400, damping: 40 },
-  },
-} as const;
+import { createPageContainerVariants, pageItemVariants, expandCollapseProps } from '../../animations';
 
 const MyTicketsPage: React.FC = () => {
   useNavbarMode('focused', '/profile');
@@ -100,10 +84,7 @@ const MyTicketsPage: React.FC = () => {
       <AnimatePresence>
         {showCreateForm && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 40 }}
+            {...expandCollapseProps}
             className="uk-margin-bottom"
           >
             <div className="uk-card uk-card-default uk-card-body">
@@ -136,7 +117,7 @@ const MyTicketsPage: React.FC = () => {
         <motion.div
           className="uk-flex uk-flex-column"
           style={{ gap: '12px' }}
-          variants={containerVariants}
+          variants={createPageContainerVariants()}
           initial="hidden"
           animate="visible"
         >
@@ -144,7 +125,7 @@ const MyTicketsPage: React.FC = () => {
             const createdDate = new Date(ticket.createdAt / 1000).toLocaleDateString();
 
             return (
-              <motion.div key={ticket.id} variants={itemVariants} layout>
+              <motion.div key={ticket.id} variants={pageItemVariants} layout>
                 <Link
                   to={`/profile/tickets/${ticket.id}`}
                   state={{ from: location.pathname + location.search }}

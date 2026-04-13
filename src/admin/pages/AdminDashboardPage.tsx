@@ -6,23 +6,7 @@ import { useNavbarMode } from '../../hooks/useNavbarMode';
 import NavbarPortal from '../../components/Navbar/NavbarPortal';
 import { Icon } from '../../components/uikit/Icon/Icon';
 import AdminSubNav from '../components/AdminSubNav';
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.08 },
-  },
-} as const;
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: 'spring', stiffness: 400, damping: 40 },
-  },
-} as const;
+import { createPageContainerVariants, pageItemVariants } from '../../animations';
 
 const AdminDashboardPage: React.FC = () => {
   const { t } = useTranslation();
@@ -62,16 +46,16 @@ const AdminDashboardPage: React.FC = () => {
       </NavbarPortal>
       <AdminSubNav />
       <motion.div
-        variants={containerVariants}
+        variants={createPageContainerVariants()}
         initial="hidden"
         animate="visible"
       >
-        <motion.h2 variants={itemVariants} className="uk-h3">
+        <motion.h2 variants={pageItemVariants} className="uk-h3">
           {t('admin.dashboard')}
         </motion.h2>
 
         <motion.div
-          variants={itemVariants}
+          variants={pageItemVariants}
           className="uk-grid uk-grid-match uk-child-width-1-2@s uk-child-width-1-3@m"
           uk-grid=""
         >

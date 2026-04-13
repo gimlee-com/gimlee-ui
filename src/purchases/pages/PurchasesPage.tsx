@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { motion, AnimatePresence, stagger } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import { purchaseService } from '../services/purchaseService';
 import type { PagePurchaseHistoryDto } from '../../types/api';
 import { Heading } from '../../components/uikit/Heading/Heading';
@@ -9,34 +9,7 @@ import { Grid } from '../../components/uikit/Grid/Grid';
 import { Alert } from '../../components/uikit/Alert/Alert';
 import { SmartPagination } from '../../components/SmartPagination';
 import { OrderItemCard } from '../../components/OrderItemCard';
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      delayChildren: stagger(0.1)
-    }
-  }
-} as const;
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: 'spring', stiffness: 400, damping: 40 }
-  }
-} as const;
-
-const orderVariants = {
-  hidden: { opacity: 0, scale: 0.95 },
-  visible: { 
-    opacity: 1, 
-    scale: 1,
-    transition: { type: 'spring', stiffness: 400, damping: 40 }
-  }
-} as const;
+import { createPageContainerVariants, pageItemVariants, scaleItemVariants } from '../../animations';
 
 const PurchasesPage: React.FC = () => {
   const { t } = useTranslation();
@@ -62,11 +35,11 @@ const PurchasesPage: React.FC = () => {
 
   return (
     <motion.div
-      variants={containerVariants}
+      variants={createPageContainerVariants()}
       initial="hidden"
       animate="visible"
     >
-      <motion.div variants={itemVariants} className="uk-flex uk-flex-between uk-flex-middle uk-margin-bottom">
+      <motion.div variants={pageItemVariants} className="uk-flex uk-flex-between uk-flex-middle uk-margin-bottom">
         <Heading as="h2">{t('purchases.title')}</Heading>
       </motion.div>
 
@@ -84,7 +57,7 @@ const PurchasesPage: React.FC = () => {
         ) : error ? (
           <motion.div
             key="error"
-            variants={itemVariants}
+            variants={pageItemVariants}
           >
             <Alert variant="danger">
               {error}
@@ -95,15 +68,7 @@ const PurchasesPage: React.FC = () => {
             key="content"
             initial="hidden"
             animate="visible"
-            variants={{
-              hidden: { opacity: 0 },
-              visible: {
-                opacity: 1,
-                transition: {
-                  delayChildren: stagger(0.05)
-                }
-              }
-            }}
+            variants={createPageContainerVariants(0.05)}
           >
             <Grid gap="medium" className="uk-child-width-1-1 uk-child-width-1-2@m">
               <AnimatePresence mode="popLayout">
@@ -111,7 +76,7 @@ const PurchasesPage: React.FC = () => {
                   <motion.div
                     key={purchase.id}
                     layout
-                    variants={orderVariants}
+                    variants={scaleItemVariants}
                     initial="hidden"
                     animate="visible"
                     exit={{ opacity: 0, scale: 0.95 }}
@@ -123,7 +88,7 @@ const PurchasesPage: React.FC = () => {
             </Grid>
             {purchasesPage?.content.length === 0 && (
               <motion.div
-                variants={itemVariants}
+                variants={pageItemVariants}
                 className="uk-text-center uk-text-muted uk-padding-large"
               >
                 {t('purchases.noPurchases')}
@@ -134,7 +99,7 @@ const PurchasesPage: React.FC = () => {
       </AnimatePresence>
 
       {purchasesPage && purchasesPage.page.totalPages > 1 && (
-        <motion.div variants={itemVariants} className="uk-margin-large-top">
+        <motion.div variants={pageItemVariants} className="uk-margin-large-top">
           <SmartPagination 
             currentPage={purchasesPage.page.number} 
             totalPages={purchasesPage.page.totalPages} 

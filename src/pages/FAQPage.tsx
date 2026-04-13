@@ -11,23 +11,7 @@ import {
   AccordionContent,
 } from '../components/uikit/Accordion/Accordion';
 import styles from './FAQPage.module.scss';
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.08 }
-  }
-} as const;
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: 'spring', stiffness: 400, damping: 40 }
-  }
-} as const;
+import { createPageContainerVariants, pageItemVariants } from '../animations';
 
 const FAQ_KEYS = [
   'whatIsGimlee',
@@ -47,7 +31,7 @@ const FAQPage: React.FC = () => {
 
   return (
     <motion.div
-      variants={containerVariants}
+      variants={createPageContainerVariants()}
       initial="hidden"
       animate="visible"
     >
@@ -57,14 +41,14 @@ const FAQPage: React.FC = () => {
         </Heading>
       </NavbarPortal>
 
-      <motion.section variants={itemVariants} className={styles.hero}>
+      <motion.section variants={pageItemVariants} className={styles.hero}>
         <h1 className="uk-heading-medium uk-text-center">{t('faq.title')}</h1>
         <p className={`uk-text-lead uk-text-center uk-text-muted ${styles.subtitle}`}>
           {t('faq.subtitle')}
         </p>
       </motion.section>
 
-      <motion.section variants={itemVariants} className={styles.content}>
+      <motion.section variants={pageItemVariants} className={styles.content}>
         <Accordion collapsible multiple>
           {FAQ_KEYS.map((key, index) => (
             <AccordionItem key={key} open={index === 0}>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { motion, AnimatePresence, stagger } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import { adService } from '../services/adService';
 import type { PageAdDiscoveryPreviewDto } from '../../types/api';
 import { AdCard } from '../components/AdCard';
@@ -11,25 +11,7 @@ import { Grid } from '../../components/uikit/Grid/Grid';
 import { Heading } from '../../components/uikit/Heading/Heading';
 import { Spinner } from '../../components/uikit/Spinner/Spinner';
 import { SmartPagination } from '../../components/SmartPagination';
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      delayChildren: stagger(0.1)
-    }
-  }
-} as const;
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: 'spring', stiffness: 400, damping: 40 }
-  }
-} as const;
+import { createPageContainerVariants, pageItemVariants } from '../../animations';
 
 const AdListingPage: React.FC = () => {
   const { t } = useTranslation();
@@ -68,15 +50,15 @@ const AdListingPage: React.FC = () => {
 
   return (
     <motion.div
-      variants={containerVariants}
+      variants={createPageContainerVariants()}
       initial="hidden"
       animate="visible"
     >
-      <motion.div variants={itemVariants}>
+      <motion.div variants={pageItemVariants}>
         <Heading as="h2">{t('ads.browseTitle')}</Heading>
       </motion.div>
   
-      <motion.div variants={itemVariants}>
+      <motion.div variants={pageItemVariants}>
         <AdSearchFilters />
       </motion.div>
 
@@ -94,7 +76,7 @@ const AdListingPage: React.FC = () => {
         ) : error ? (
           <motion.div
             key="error"
-            variants={itemVariants}
+            variants={pageItemVariants}
           >
             <Alert variant="danger">
               {error}
@@ -105,15 +87,7 @@ const AdListingPage: React.FC = () => {
             key="content"
             initial="hidden"
             animate="visible"
-            variants={{
-              hidden: { opacity: 0 },
-              visible: {
-                opacity: 1,
-                transition: {
-                  delayChildren: stagger(0.05)
-                }
-              }
-            }}
+            variants={createPageContainerVariants(0.05)}
           >
             <Grid gap="medium" match className="uk-child-width-1-2@s uk-child-width-1-4@m">
               <AnimatePresence mode="popLayout">
@@ -124,7 +98,7 @@ const AdListingPage: React.FC = () => {
             </Grid>
             
             {data && data.page.totalPages > 1 && (
-              <motion.div variants={itemVariants} className="uk-margin-large-top">
+              <motion.div variants={pageItemVariants} className="uk-margin-large-top">
                 <SmartPagination 
                   currentPage={data.page.number} 
                   totalPages={data.page.totalPages} 
@@ -135,7 +109,7 @@ const AdListingPage: React.FC = () => {
             )}
             
             {data?.content.length === 0 && (
-              <motion.div variants={itemVariants} className="uk-text-center uk-margin-large-top">
+              <motion.div variants={pageItemVariants} className="uk-text-center uk-margin-large-top">
                 <p>{t('ads.noAdsFound')}</p>
               </motion.div>
             )}

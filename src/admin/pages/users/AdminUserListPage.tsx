@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { motion, AnimatePresence, stagger } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import { adminUserService } from '../../services/adminUserService';
 import type { PageAdminUserListItemDto, UserStatus, AdminUserSortField, SortDirection } from '../../types/adminUser';
 import AdminUserCard from './AdminUserCard';
@@ -13,23 +13,7 @@ import { Alert } from '../../../components/uikit/Alert/Alert';
 import { Spinner } from '../../../components/uikit/Spinner/Spinner';
 import { SmartPagination } from '../../../components/SmartPagination';
 import { Icon } from '../../../components/uikit/Icon/Icon';
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.06 },
-  },
-} as const;
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: 'spring', stiffness: 400, damping: 40 },
-  },
-} as const;
+import { createPageContainerVariants, pageItemVariants } from '../../../animations';
 
 const USER_STATUSES: UserStatus[] = ['ACTIVE', 'PENDING_VERIFICATION', 'BANNED', 'SUSPENDED'];
 const SORT_FIELDS: AdminUserSortField[] = ['registeredAt', 'lastLogin', 'username'];
@@ -126,8 +110,8 @@ const AdminUserListPage: React.FC = () => {
       </NavbarPortal>
       <AdminSubNav />
 
-      <motion.div variants={containerVariants} initial="hidden" animate="visible">
-        <motion.div variants={itemVariants} className="uk-margin-bottom">
+      <motion.div variants={createPageContainerVariants()} initial="hidden" animate="visible">
+        <motion.div variants={pageItemVariants} className="uk-margin-bottom">
           {/* Search & Filters */}
           <div className="uk-grid uk-grid-small uk-flex-middle" uk-grid="">
             <div className="uk-width-1-1 uk-width-1-3@m">
@@ -182,7 +166,7 @@ const AdminUserListPage: React.FC = () => {
           </div>
         </motion.div>
 
-        <motion.div variants={itemVariants}>
+        <motion.div variants={pageItemVariants}>
           <ActiveFilterBadges
             search={searchParams.get('search') || ''}
             status={(searchParams.get('status') as UserStatus) || ''}
@@ -203,7 +187,7 @@ const AdminUserListPage: React.FC = () => {
               <Spinner ratio={2} />
             </motion.div>
           ) : error ? (
-            <motion.div key="error" variants={itemVariants}>
+            <motion.div key="error" variants={pageItemVariants}>
               <Alert variant="danger">{error}</Alert>
             </motion.div>
           ) : (
@@ -211,13 +195,7 @@ const AdminUserListPage: React.FC = () => {
               key="content"
               initial="hidden"
               animate="visible"
-              variants={{
-                hidden: { opacity: 0 },
-                visible: {
-                  opacity: 1,
-                  transition: { delayChildren: stagger(0.04) },
-                },
-              }}
+              variants={createPageContainerVariants(0.04)}
             >
               <div className="uk-grid uk-grid-small uk-child-width-1-1 uk-child-width-1-2@m" uk-grid="">
                 <AnimatePresence mode="popLayout">
@@ -228,7 +206,7 @@ const AdminUserListPage: React.FC = () => {
               </div>
 
               {data && data.page.totalPages > 1 && (
-                <motion.div variants={itemVariants} className="uk-margin-large-top">
+                <motion.div variants={pageItemVariants} className="uk-margin-large-top">
                   <SmartPagination
                     currentPage={data.page.number}
                     totalPages={data.page.totalPages}
@@ -239,7 +217,7 @@ const AdminUserListPage: React.FC = () => {
               )}
 
               {data?.content.length === 0 && (
-                <motion.div variants={itemVariants} className="uk-text-center uk-margin-large-top">
+                <motion.div variants={pageItemVariants} className="uk-text-center uk-margin-large-top">
                   <p className="uk-text-meta">{t('admin.users.noUsers')}</p>
                 </motion.div>
               )}

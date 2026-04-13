@@ -34,35 +34,13 @@ import { WatchButton } from '../components/WatchButton/WatchButton';
 import { QuestionsSection } from '../components/qa/QuestionsSection';
 import ReportButton from '../../components/ReportButton/ReportButton';
 import styles from './AdDetailsPage.module.scss';
+import { createPageContainerVariants, pageItemVariants } from '../../animations';
 
 const API_URL = import.meta.env.VITE_API_URL || '';
 
 interface UIkitSliderInstance extends UIkit.UIkitSliderElement {
   index: number;
 }
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1
-    }
-  }
-} as const;
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      type: 'spring',
-      stiffness: 400,
-      damping: 40
-    }
-  }
-} as const;
 
 const AdDetailsPage: React.FC = () => {
   const { t } = useTranslation();
@@ -264,7 +242,7 @@ const AdDetailsPage: React.FC = () => {
 
   return (
     <motion.div
-      variants={containerVariants}
+      variants={createPageContainerVariants()}
       initial="hidden"
       animate="visible"
     >
@@ -297,7 +275,7 @@ const AdDetailsPage: React.FC = () => {
       </NavbarPortal>
       <Grid gap="large">
         <div className="uk-width-2-3@m">
-          <motion.div variants={itemVariants}>
+          <motion.div variants={pageItemVariants}>
             {images.length > 0 ? (
               <>
                 <Lightbox nav={showLightboxThumbnav ? 'thumbnav' : undefined}>
@@ -373,7 +351,7 @@ const AdDetailsPage: React.FC = () => {
             )}
           </motion.div>
 
-          <motion.div variants={itemVariants} className="uk-margin-large-top">
+          <motion.div variants={pageItemVariants} className="uk-margin-large-top">
             <Heading as="h4" divider>{t('ads.description')}</Heading>
             <div className="uk-margin">
               {ad.description ? (
@@ -385,7 +363,7 @@ const AdDetailsPage: React.FC = () => {
           </motion.div>
 
           {ad.otherAds && ad.otherAds.length > 0 && (
-            <motion.div variants={itemVariants} className="uk-margin-large-top">
+            <motion.div variants={pageItemVariants} className="uk-margin-large-top">
               <Heading as="h4" divider>{t('adDetails.otherAds')}</Heading>
               <div className="uk-margin">
                 <Grid
@@ -413,12 +391,12 @@ const AdDetailsPage: React.FC = () => {
             </motion.div>
           )}
 
-          <motion.div variants={itemVariants}>
+          <motion.div variants={pageItemVariants}>
             <QuestionsSection adId={ad.id} sellerId={ad.user?.userId} />
           </motion.div>
         </div>
         <div className="uk-width-1-3@m">
-          <motion.div variants={itemVariants}>
+          <motion.div variants={pageItemVariants}>
             <Card className="uk-border-rounded uk-box-shadow-medium">
               <CardBody>
                 <div className="uk-flex uk-flex-right uk-flex-middle uk-margin-small-bottom">
@@ -593,7 +571,7 @@ const AdDetailsPage: React.FC = () => {
           </motion.div>
 
           {ad.user && (
-            <motion.div variants={itemVariants} className="uk-margin-medium-top">
+            <motion.div variants={pageItemVariants} className="uk-margin-medium-top">
               <Link 
                 to={`/u/${ad.user.username}`} 
                 state={{ from: location.pathname + location.search }}
@@ -640,7 +618,7 @@ const AdDetailsPage: React.FC = () => {
             </motion.div>
           )}
 
-          <motion.div variants={itemVariants} className="uk-margin-medium-top">
+          <motion.div variants={pageItemVariants} className="uk-margin-medium-top">
             <Card className="uk-border-rounded">
               <CardBody>
                 <Heading as="h4" className="uk-margin-small-bottom">{t('adDetails.popularity')}</Heading>
@@ -673,7 +651,7 @@ const AdDetailsPage: React.FC = () => {
           </motion.div>
 
           {ad.location?.city && (
-            <motion.div variants={itemVariants} className="uk-margin-medium-top">
+            <motion.div variants={pageItemVariants} className="uk-margin-medium-top">
               <Card className="uk-border-rounded">
                 <CardBody>
                   <Heading as="h4" className="uk-margin-small-bottom">{t('adDetails.shipping')}</Heading>

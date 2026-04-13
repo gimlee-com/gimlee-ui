@@ -27,27 +27,9 @@ import { Image } from '../../components/Image/Image';
 import { MarkdownEditor } from '../../components/Markdown/MarkdownEditor';
 import AdVisitStatsCard from '../../profile/components/AdVisitStatsCard/AdVisitStatsCard';
 import styles from './EditAdPage.module.scss';
+import { createPageContainerVariants, pageItemVariants } from '../../animations';
 
 const API_URL = import.meta.env.VITE_API_URL || '';
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1
-    }
-  }
-} as const;
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { 
-    opacity: 1, 
-    y: 0,
-    transition: { type: 'spring', stiffness: 400, damping: 40 }
-  }
-} as const;
 
 const EditAdPage: React.FC = () => {
   const { t } = useTranslation();
@@ -271,7 +253,7 @@ const EditAdPage: React.FC = () => {
 
   return (
     <motion.div
-      variants={containerVariants}
+      variants={createPageContainerVariants()}
       initial="hidden"
       animate="visible"
     >
@@ -305,7 +287,7 @@ const EditAdPage: React.FC = () => {
       )}
 
       <Form onSubmit={handleSubmit(onSubmit)} layout="stacked">
-        <motion.div variants={itemVariants} className="uk-margin-medium-bottom">
+        <motion.div variants={pageItemVariants} className="uk-margin-medium-bottom">
           <Card>
             <CardBody>
               <Heading as="h4" divider>{t('ads.generalInfo')}</Heading>
@@ -362,7 +344,7 @@ const EditAdPage: React.FC = () => {
           </Card>
         </motion.div>
 
-        <motion.div variants={itemVariants} className="uk-margin-medium-bottom">
+        <motion.div variants={pageItemVariants} className="uk-margin-medium-bottom">
           <Card>
             <CardBody>
               <Heading as="h4" divider>{t('ads.classificationLocation')}</Heading>
@@ -426,7 +408,7 @@ const EditAdPage: React.FC = () => {
           </Card>
         </motion.div>
 
-        <motion.div variants={itemVariants} className="uk-margin-medium-bottom">
+        <motion.div variants={pageItemVariants} className="uk-margin-medium-bottom">
           <Card>
             <CardBody>
               <Heading as="h4" divider>{t('ads.pricingStock')}</Heading>
@@ -653,7 +635,7 @@ const EditAdPage: React.FC = () => {
           </Card>
         </motion.div>
 
-        <motion.div variants={itemVariants} className="uk-margin-medium-bottom">
+        <motion.div variants={pageItemVariants} className="uk-margin-medium-bottom">
           <Card>
             <CardBody>
               <Heading as="h4" divider>{t('ads.media')}</Heading>
@@ -774,7 +756,7 @@ const EditAdPage: React.FC = () => {
           </Card>
         </motion.div>
 
-        <motion.div variants={itemVariants} className="uk-margin-large-top uk-flex uk-flex-right">
+        <motion.div variants={pageItemVariants} className="uk-margin-large-top uk-flex uk-flex-right">
           <Button 
             type="button" 
             className="uk-margin-right" 

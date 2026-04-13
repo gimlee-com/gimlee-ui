@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { motion, AnimatePresence, stagger } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import { salesService } from '../services/salesService';
 import type { PageSalesOrderDto } from '../../types/api';
 import { Heading } from '../../components/uikit/Heading/Heading';
@@ -10,34 +10,7 @@ import { Alert } from '../../components/uikit/Alert/Alert';
 import { SmartPagination } from '../../components/SmartPagination';
 import { OrderItemCard } from '../../components/OrderItemCard';
 import SalesSubNav from '../components/SalesSubNav';
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      delayChildren: stagger(0.1)
-    }
-  }
-} as const;
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: 'spring', stiffness: 400, damping: 40 }
-  }
-} as const;
-
-const orderVariants = {
-  hidden: { opacity: 0, scale: 0.95 },
-  visible: { 
-    opacity: 1, 
-    scale: 1,
-    transition: { type: 'spring', stiffness: 400, damping: 40 }
-  }
-} as const;
+import { createPageContainerVariants, pageItemVariants, scaleItemVariants } from '../../animations';
 
 const SalesOrdersPage: React.FC = () => {
   const { t } = useTranslation();
@@ -63,15 +36,15 @@ const SalesOrdersPage: React.FC = () => {
 
   return (
     <motion.div
-      variants={containerVariants}
+      variants={createPageContainerVariants()}
       initial="hidden"
       animate="visible"
     >
-      <motion.div variants={itemVariants} className="uk-flex uk-flex-between uk-flex-middle uk-margin-bottom">
+      <motion.div variants={pageItemVariants} className="uk-flex uk-flex-between uk-flex-middle uk-margin-bottom">
         <Heading as="h2">{t('sales.title')}</Heading>
       </motion.div>
 
-      <motion.div variants={itemVariants}>
+      <motion.div variants={pageItemVariants}>
         <SalesSubNav />
       </motion.div>
 
@@ -89,7 +62,7 @@ const SalesOrdersPage: React.FC = () => {
         ) : error ? (
           <motion.div
             key="error"
-            variants={itemVariants}
+            variants={pageItemVariants}
           >
             <Alert variant="danger">
               {error}
@@ -100,15 +73,7 @@ const SalesOrdersPage: React.FC = () => {
             key="content"
             initial="hidden"
             animate="visible"
-            variants={{
-              hidden: { opacity: 0 },
-              visible: {
-                opacity: 1,
-                transition: {
-                  delayChildren: stagger(0.05)
-                }
-              }
-            }}
+            variants={createPageContainerVariants(0.05)}
           >
             <Grid gap="medium" className="uk-child-width-1-1 uk-child-width-1-2@m">
               <AnimatePresence mode="popLayout">
@@ -116,7 +81,7 @@ const SalesOrdersPage: React.FC = () => {
                   <motion.div
                     key={order.id}
                     layout
-                    variants={orderVariants}
+                    variants={scaleItemVariants}
                     initial="hidden"
                     animate="visible"
                     exit={{ opacity: 0, scale: 0.95 }}
@@ -128,7 +93,7 @@ const SalesOrdersPage: React.FC = () => {
             </Grid>
             {ordersPage?.content.length === 0 && (
               <motion.div
-                variants={itemVariants}
+                variants={pageItemVariants}
                 className="uk-text-center uk-text-muted uk-padding-large"
               >
                 {t('sales.noOrders')}
@@ -139,7 +104,7 @@ const SalesOrdersPage: React.FC = () => {
       </AnimatePresence>
 
       {ordersPage && ordersPage.page.totalPages > 1 && (
-        <motion.div variants={itemVariants} className="uk-margin-large-top">
+        <motion.div variants={pageItemVariants} className="uk-margin-large-top">
           <SmartPagination 
             currentPage={ordersPage.page.number} 
             totalPages={ordersPage.page.totalPages} 

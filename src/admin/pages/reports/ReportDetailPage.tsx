@@ -16,23 +16,7 @@ import ReportSiblingList from '../../components/ReportSiblingList/ReportSiblingL
 import { Alert } from '../../../components/uikit/Alert/Alert';
 import { Spinner } from '../../../components/uikit/Spinner/Spinner';
 import { Icon } from '../../../components/uikit/Icon/Icon';
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.08 },
-  },
-} as const;
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: 'spring', stiffness: 400, damping: 40 },
-  },
-} as const;
+import { createPageContainerVariants, pageItemVariants } from '../../../animations';
 
 const formatMicros = (micros: number | null | undefined): string => {
   if (micros == null) return '—';
@@ -171,9 +155,9 @@ const ReportDetailPage: React.FC = () => {
         <span className="uk-text-bold">{report.targetTitle || `#${report.id}`}</span>
       </NavbarPortal>
 
-      <motion.div variants={containerVariants} initial="hidden" animate="visible">
+      <motion.div variants={createPageContainerVariants()} initial="hidden" animate="visible">
         {/* Header Card */}
-        <motion.div variants={itemVariants} className="uk-card uk-card-default uk-card-body uk-margin-bottom">
+        <motion.div variants={pageItemVariants} className="uk-card uk-card-default uk-card-body uk-margin-bottom">
           <div className="uk-flex uk-flex-middle uk-flex-wrap" style={{ gap: '8px' }}>
             <h2 className="uk-margin-remove">{report.targetTitle}</h2>
             <ReportTypeBadge targetType={report.targetType} />
@@ -245,7 +229,7 @@ const ReportDetailPage: React.FC = () => {
         </motion.div>
 
         {/* Description Card */}
-        <motion.div variants={itemVariants} className="uk-card uk-card-default uk-card-body uk-margin-bottom">
+        <motion.div variants={pageItemVariants} className="uk-card uk-card-default uk-card-body uk-margin-bottom">
           <h3 className="uk-card-title">{t('admin.reports.detail.description', 'Description')}</h3>
           <p>{report.description || '—'}</p>
           {report.internalNotes && (
@@ -257,7 +241,7 @@ const ReportDetailPage: React.FC = () => {
         </motion.div>
 
         {/* Target Snapshot Card */}
-        <motion.div variants={itemVariants} className="uk-card uk-card-default uk-card-body uk-margin-bottom">
+        <motion.div variants={pageItemVariants} className="uk-card uk-card-default uk-card-body uk-margin-bottom">
           <h3 className="uk-card-title">{t('admin.reports.detail.targetSnapshot', 'Target Snapshot')}</h3>
           <pre className="uk-overflow-auto" style={{ maxHeight: '400px' }}>
             {JSON.stringify(report.targetSnapshot, null, 2)}
@@ -267,7 +251,7 @@ const ReportDetailPage: React.FC = () => {
         {/* Sibling Reports */}
         <AnimatePresence>
           {report.siblingCount > 1 && (
-            <motion.div variants={itemVariants} className="uk-card uk-card-default uk-card-body uk-margin-bottom">
+            <motion.div variants={pageItemVariants} className="uk-card uk-card-default uk-card-body uk-margin-bottom">
               <h3 className="uk-card-title">
                 {t('admin.reports.detail.siblingReports', 'Sibling Reports')}
                 <span className="uk-text-meta uk-margin-small-left">
@@ -284,7 +268,7 @@ const ReportDetailPage: React.FC = () => {
         </AnimatePresence>
 
         {/* Timeline Card */}
-        <motion.div variants={itemVariants} className="uk-card uk-card-default uk-card-body">
+        <motion.div variants={pageItemVariants} className="uk-card uk-card-default uk-card-body">
           <h3 className="uk-card-title">{t('admin.reports.timeline.title')}</h3>
           {report.timeline.length > 0 ? (
             <ReportTimeline entries={report.timeline} />

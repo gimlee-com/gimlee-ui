@@ -12,23 +12,7 @@ import { Grid } from '../../components/uikit/Grid/Grid';
 import { Icon } from '../../components/uikit/Icon/Icon';
 import { Button } from '../../components/uikit/Button/Button';
 import { AdCard } from '../components/AdCard';
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.06 }
-  }
-} as const;
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: 'spring', stiffness: 400, damping: 40 }
-  }
-} as const;
+import { createPageContainerVariants, pageItemVariants } from '../../animations';
 
 const AdWatchlistPage: React.FC = () => {
   const { t } = useTranslation();
@@ -83,16 +67,16 @@ const AdWatchlistPage: React.FC = () => {
 
   return (
     <motion.div
-      variants={containerVariants}
+      variants={createPageContainerVariants()}
       initial="hidden"
       animate="visible"
     >
-      <motion.div variants={itemVariants}>
+      <motion.div variants={pageItemVariants}>
         <Heading as="h2">{t('watchlist.title')}</Heading>
       </motion.div>
 
       {ads.length === 0 ? (
-        <motion.div variants={itemVariants} className="uk-text-center uk-padding-large">
+        <motion.div variants={pageItemVariants} className="uk-text-center uk-padding-large">
           <Icon icon="heart" ratio={3} className="uk-text-muted uk-margin-small-bottom" />
           <Heading as="h4" className="uk-text-muted">{t('watchlist.empty')}</Heading>
           <p className="uk-text-muted">{t('watchlist.emptyHint')}</p>
@@ -106,7 +90,7 @@ const AdWatchlistPage: React.FC = () => {
             {ads.map(ad => (
               <motion.div
                 key={ad.id}
-                variants={itemVariants}
+                variants={pageItemVariants}
                 exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
                 layout
               >

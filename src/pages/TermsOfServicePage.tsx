@@ -7,28 +7,12 @@ import { Heading } from '../components/uikit/Heading/Heading';
 import { Markdown } from '../components/Markdown/Markdown';
 import { Spinner } from '../components/uikit/Spinner/Spinner';
 import styles from './TermsOfServicePage.module.scss';
+import { createPageContainerVariants, pageItemVariants } from '../animations';
 
 const termsLoaders: Record<string, () => Promise<string>> = {
   'en-US': () => import('../legal/terms-en-US.md?raw').then(m => m.default),
   'pl-PL': () => import('../legal/terms-pl-PL.md?raw').then(m => m.default),
 };
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1 }
-  }
-} as const;
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: 'spring', stiffness: 400, damping: 40 }
-  }
-} as const;
 
 const TermsOfServicePage: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -43,7 +27,7 @@ const TermsOfServicePage: React.FC = () => {
 
   return (
     <motion.div
-      variants={containerVariants}
+      variants={createPageContainerVariants()}
       initial="hidden"
       animate="visible"
     >
@@ -53,7 +37,7 @@ const TermsOfServicePage: React.FC = () => {
         </Heading>
       </NavbarPortal>
 
-      <motion.article variants={itemVariants} className={`uk-article ${styles.article}`}>
+      <motion.article variants={pageItemVariants} className={`uk-article ${styles.article}`}>
         <h1 className="uk-article-title">{t('terms.title')}</h1>
         <p className="uk-article-meta">{t('terms.lastUpdated')}</p>
         {content ? <Markdown content={content} /> : (

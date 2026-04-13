@@ -11,23 +11,7 @@ import ReportReasonBadge from '../../admin/components/ReportReasonBadge/ReportRe
 import { SmartPagination } from '../../components/SmartPagination';
 import type { ReportListItemDto } from '../../admin/types/adminReport';
 import type { PageMetadata } from '../../types/api';
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.06 },
-  },
-} as const;
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: 'spring', stiffness: 400, damping: 40 },
-  },
-} as const;
+import { createPageContainerVariants, pageItemVariants } from '../../animations';
 
 const MyReportsPage: React.FC = () => {
   useNavbarMode('focused', '/profile');
@@ -103,7 +87,7 @@ const MyReportsPage: React.FC = () => {
         <motion.div
           className="uk-flex uk-flex-column"
           style={{ gap: '12px' }}
-          variants={containerVariants}
+          variants={createPageContainerVariants()}
           initial="hidden"
           animate="visible"
         >
@@ -111,7 +95,7 @@ const MyReportsPage: React.FC = () => {
             const createdDate = new Date(report.createdAt / 1000).toLocaleDateString();
 
             return (
-              <motion.div key={report.id} variants={itemVariants} layout>
+              <motion.div key={report.id} variants={pageItemVariants} layout>
                 <div className="uk-card uk-card-default uk-card-body uk-card-small">
                   <div className="uk-flex uk-flex-middle uk-flex-wrap" style={{ gap: '6px' }}>
                     <span className="uk-text-bold uk-text-truncate">{report.targetTitle}</span>

@@ -5,23 +5,7 @@ import { useNavbarMode } from '../hooks/useNavbarMode';
 import NavbarPortal from '../components/Navbar/NavbarPortal';
 import { Heading } from '../components/uikit/Heading/Heading';
 import styles from './AboutPage.module.scss';
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1 }
-  }
-} as const;
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: 'spring', stiffness: 400, damping: 40 }
-  }
-} as const;
+import { createPageContainerVariants, pageItemVariants } from '../animations';
 
 const AboutPage: React.FC = () => {
   const { t } = useTranslation();
@@ -30,7 +14,7 @@ const AboutPage: React.FC = () => {
 
   return (
     <motion.div
-      variants={containerVariants}
+      variants={createPageContainerVariants()}
       initial="hidden"
       animate="visible"
     >
@@ -40,19 +24,19 @@ const AboutPage: React.FC = () => {
         </Heading>
       </NavbarPortal>
 
-      <motion.section variants={itemVariants} className={styles.hero}>
+      <motion.section variants={pageItemVariants} className={styles.hero}>
         <h1 className="uk-heading-medium uk-text-center">{t('about.title')}</h1>
         <p className={`uk-text-lead uk-text-center uk-text-muted ${styles.subtitle}`}>
           {t('about.subtitle')}
         </p>
       </motion.section>
 
-      <motion.section variants={itemVariants} className={`uk-section uk-section-small ${styles.section}`}>
+      <motion.section variants={pageItemVariants} className={`uk-section uk-section-small ${styles.section}`}>
         <Heading as="h2">{t('about.mission.heading')}</Heading>
         <p>{t('about.mission.text')}</p>
       </motion.section>
 
-      <motion.section variants={itemVariants} className={`uk-section uk-section-small ${styles.section}`}>
+      <motion.section variants={pageItemVariants} className={`uk-section uk-section-small ${styles.section}`}>
         <Heading as="h2" className="uk-text-center uk-margin-medium-bottom">
           {t('about.features.heading')}
         </Heading>
@@ -73,7 +57,7 @@ const AboutPage: React.FC = () => {
         </div>
       </motion.section>
 
-      <motion.section variants={itemVariants} className={`uk-section uk-section-small ${styles.section}`}>
+      <motion.section variants={pageItemVariants} className={`uk-section uk-section-small ${styles.section}`}>
         <Heading as="h2">{t('about.cryptos.heading')}</Heading>
         <p>{t('about.cryptos.text')}</p>
       </motion.section>

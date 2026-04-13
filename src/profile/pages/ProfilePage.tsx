@@ -23,40 +23,7 @@ import ChangePasswordCard from '../components/ChangePasswordCard/ChangePasswordC
 import AvatarUploadCard from '../components/AvatarUploadCard/AvatarUploadCard';
 import DeliveryAddressCard from '../components/DeliveryAddressCard/DeliveryAddressCard';
 import { CountrySelector } from '../../components/CountrySelector/CountrySelector';
-
-const springConfig = { type: 'spring', stiffness: 400, damping: 40 } as const;
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.18
-    }
-  }
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { 
-    opacity: 1, 
-    y: 0,
-    transition: {
-      ...springConfig,
-      when: 'beforeChildren' as const,
-      staggerChildren: 0.05,
-    }
-  }
-};
-
-const cardItemVariants = {
-  hidden: { opacity: 0, y: 8 },
-  visible: { 
-    opacity: 1, 
-    y: 0,
-    transition: { type: 'spring', stiffness: 500, damping: 35 }
-  }
-};
+import { spring, createPageContainerVariants, createCardContainerVariants, cardItemVariants, expandCollapseProps } from '../../animations';
 
 const ProfilePage: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -224,12 +191,12 @@ const ProfilePage: React.FC = () => {
   };
 
   return (
-    <motion.div initial="hidden" animate="visible" variants={containerVariants}>
-      <motion.div variants={cardVariants}>
+    <motion.div initial="hidden" animate="visible" variants={createPageContainerVariants()}>
+      <motion.div variants={createCardContainerVariants()}>
         <Heading as="h2">{t('profile.title')}</Heading>
       </motion.div>
 
-      <motion.div variants={cardVariants}>
+      <motion.div variants={createCardContainerVariants()}>
         <Card className="uk-margin-bottom">
           <CardBody>
             <motion.div variants={cardItemVariants}>
@@ -411,19 +378,19 @@ const ProfilePage: React.FC = () => {
         </Card>
       </motion.div>
 
-      <motion.div variants={cardVariants}>
+      <motion.div variants={createCardContainerVariants()}>
         <AvatarUploadCard />
       </motion.div>
 
-      <motion.div variants={cardVariants}>
+      <motion.div variants={createCardContainerVariants()}>
         <ChangePasswordCard />
       </motion.div>
 
-      <motion.div variants={cardVariants}>
+      <motion.div variants={createCardContainerVariants()}>
         <DeliveryAddressCard />
       </motion.div>
 
-      <motion.div variants={cardVariants}>
+      <motion.div variants={createCardContainerVariants()}>
         <Card>
           <CardBody>
             <motion.div variants={cardItemVariants}>
@@ -492,11 +459,7 @@ const ProfilePage: React.FC = () => {
                   <AnimatePresence>
                     {showArrrTransactions && (
                       <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={springConfig}
-                        style={{ overflow: 'hidden' }}
+                        {...expandCollapseProps}
                       >
                         {loadingArrr ? (
                           <div className="uk-flex uk-flex-center uk-padding-small">
@@ -509,7 +472,7 @@ const ProfilePage: React.FC = () => {
                                 key={tx.txid}
                                 initial={{ opacity: 0, x: -20 }}
                                 animate={{ opacity: 1, x: 0 }}
-                                transition={{ ...springConfig, delay: index * 0.05 }}
+                                transition={{ ...spring, delay: index * 0.05 }}
                               >
                                 <TransactionCard transaction={tx} currency="ARRR" />
                               </motion.div>
@@ -579,11 +542,7 @@ const ProfilePage: React.FC = () => {
                   <AnimatePresence>
                     {showYecTransactions && (
                       <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={springConfig}
-                        style={{ overflow: 'hidden' }}
+                        {...expandCollapseProps}
                       >
                         {loadingYec ? (
                           <div className="uk-flex uk-flex-center uk-padding-small">
@@ -596,7 +555,7 @@ const ProfilePage: React.FC = () => {
                                 key={tx.txid}
                                 initial={{ opacity: 0, x: 20 }}
                                 animate={{ opacity: 1, x: 0 }}
-                                transition={{ ...springConfig, delay: index * 0.05 }}
+                                transition={{ ...spring, delay: index * 0.05 }}
                               >
                                 <TransactionCard transaction={tx} currency="YEC" />
                               </motion.div>

@@ -16,23 +16,7 @@ import { useCategoryHideFlow } from '../../hooks/useCategoryHideFlow';
 import { adminCategoryService } from '../../services/adminCategoryService';
 import type { AdminCategoryTreeDto } from '../../types/admin';
 import styles from './CategoryManagementPage.module.scss';
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.06 },
-  },
-} as const;
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 15 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: 'spring', stiffness: 400, damping: 40 },
-  },
-} as const;
+import { createPageContainerVariants, pageItemVariants } from '../../../animations';
 
 const CategoryManagementPage: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -219,12 +203,12 @@ const CategoryManagementPage: React.FC = () => {
       <AdminSubNav />
 
       <motion.div
-        variants={containerVariants}
+        variants={createPageContainerVariants()}
         initial="hidden"
         animate="visible"
       >
         {/* Toolbar */}
-        <motion.div variants={itemVariants} className={styles.toolbar}>
+        <motion.div variants={pageItemVariants} className={styles.toolbar}>
           <div className={styles.searchInput}>
             <div className="uk-inline uk-width-1-1">
               <span className="uk-form-icon">
@@ -248,7 +232,7 @@ const CategoryManagementPage: React.FC = () => {
 
         {/* Search results */}
         {searchQuery.trim() && (
-          <motion.div variants={itemVariants} className={styles.searchResults}>
+          <motion.div variants={pageItemVariants} className={styles.searchResults}>
             {searching ? (
               <div className="uk-flex uk-flex-center uk-padding-small">
                 <div uk-spinner="ratio: 0.6" />
@@ -296,7 +280,7 @@ const CategoryManagementPage: React.FC = () => {
 
         {/* Main layout — hidden while searching */}
         {!searchQuery.trim() && (
-          <motion.div variants={itemVariants} className={styles.pageLayout}>
+          <motion.div variants={pageItemVariants} className={styles.pageLayout}>
             <div className={styles.treePanel}>
               <CategoryTreeManager
                 selectedNodeId={selectedNodeId}

@@ -5,23 +5,7 @@ import { useNavbarMode } from '../hooks/useNavbarMode';
 import NavbarPortal from '../components/Navbar/NavbarPortal';
 import { Heading } from '../components/uikit/Heading/Heading';
 import styles from './ContactPage.module.scss';
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1 }
-  }
-} as const;
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: 'spring', stiffness: 400, damping: 40 }
-  }
-} as const;
+import { createPageContainerVariants, pageItemVariants } from '../animations';
 
 const ContactPage: React.FC = () => {
   const { t } = useTranslation();
@@ -30,7 +14,7 @@ const ContactPage: React.FC = () => {
 
   return (
     <motion.div
-      variants={containerVariants}
+      variants={createPageContainerVariants()}
       initial="hidden"
       animate="visible"
     >
@@ -40,14 +24,14 @@ const ContactPage: React.FC = () => {
         </Heading>
       </NavbarPortal>
 
-      <motion.section variants={itemVariants} className={styles.hero}>
+      <motion.section variants={pageItemVariants} className={styles.hero}>
         <h1 className="uk-heading-medium uk-text-center">{t('contact.title')}</h1>
         <p className={`uk-text-lead uk-text-center uk-text-muted ${styles.subtitle}`}>
           {t('contact.subtitle')}
         </p>
       </motion.section>
 
-      <motion.section variants={itemVariants} className={styles.content}>
+      <motion.section variants={pageItemVariants} className={styles.content}>
         <div className={`uk-card uk-card-default uk-card-body ${styles.emailCard}`}>
           <span className={styles.emailIcon} uk-icon="icon: mail; ratio: 3" />
           <Heading as="h3" className="uk-text-center uk-margin-small-top">

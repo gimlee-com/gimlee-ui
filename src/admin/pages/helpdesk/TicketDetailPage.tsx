@@ -18,26 +18,10 @@ import TicketAssignModal from '../../components/TicketAssignModal/TicketAssignMo
 import { Alert } from '../../../components/uikit/Alert/Alert';
 import { Spinner } from '../../../components/uikit/Spinner/Spinner';
 import { Icon } from '../../../components/uikit/Icon/Icon';
+import { createPageContainerVariants, pageItemVariants } from '../../../animations';
 
 const TICKET_STATUSES: TicketStatus[] = ['OPEN', 'IN_PROGRESS', 'AWAITING_USER', 'RESOLVED', 'CLOSED'];
 const TICKET_PRIORITIES: TicketPriority[] = ['LOW', 'MEDIUM', 'HIGH', 'URGENT'];
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.08 },
-  },
-} as const;
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: 'spring', stiffness: 400, damping: 40 },
-  },
-} as const;
 
 const formatMicros = (micros: number | null | undefined): string => {
   if (micros == null) return '—';
@@ -192,9 +176,9 @@ const TicketDetailPage: React.FC = () => {
         <span className="uk-text-bold uk-text-truncate">{ticket.subject}</span>
       </NavbarPortal>
 
-      <motion.div variants={containerVariants} initial="hidden" animate="visible">
+      <motion.div variants={createPageContainerVariants()} initial="hidden" animate="visible">
         {/* Header Card */}
-        <motion.div variants={itemVariants} className="uk-card uk-card-default uk-card-body uk-margin-bottom">
+        <motion.div variants={pageItemVariants} className="uk-card uk-card-default uk-card-body uk-margin-bottom">
           <div className="uk-flex uk-flex-middle uk-flex-wrap" style={{ gap: '8px' }}>
             <h2 className="uk-margin-remove">{ticket.subject}</h2>
             <TicketCategoryBadge category={ticket.category} />
@@ -269,7 +253,7 @@ const TicketDetailPage: React.FC = () => {
         {/* Related Reports */}
         <AnimatePresence>
           {ticket.relatedReportIds.length > 0 && (
-            <motion.div variants={itemVariants} className="uk-card uk-card-default uk-card-body uk-margin-bottom">
+            <motion.div variants={pageItemVariants} className="uk-card uk-card-default uk-card-body uk-margin-bottom">
               <h3 className="uk-card-title">{t('admin.helpdesk.detail.relatedReports', 'Related Reports')}</h3>
               <ul className="uk-list uk-list-bullet">
                 {ticket.relatedReportIds.map(reportId => (
@@ -285,13 +269,13 @@ const TicketDetailPage: React.FC = () => {
         </AnimatePresence>
 
         {/* Conversation */}
-        <motion.div variants={itemVariants} className="uk-card uk-card-default uk-card-body uk-margin-bottom">
+        <motion.div variants={pageItemVariants} className="uk-card uk-card-default uk-card-body uk-margin-bottom">
           <h3 className="uk-card-title">{t('admin.helpdesk.detail.conversation', 'Conversation')}</h3>
           <TicketConversation messages={ticket.messages} />
         </motion.div>
 
         {/* Reply Form */}
-        <motion.div variants={itemVariants} className="uk-card uk-card-default uk-card-body">
+        <motion.div variants={pageItemVariants} className="uk-card uk-card-default uk-card-body">
           <TicketReplyForm onSubmit={handleReply} isSubmitting={replySubmitting} />
         </motion.div>
       </motion.div>

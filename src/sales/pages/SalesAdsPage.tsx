@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import UIkit from 'uikit';
-import { motion, AnimatePresence, stagger } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import { salesService } from '../services/salesService';
 import type { SalesAdsRequestDto } from '../services/salesService';
 import type { AdDto, PageAdDto } from '../../types/api';
@@ -14,25 +14,7 @@ import { Alert } from '../../components/uikit/Alert/Alert';
 import { SalesAdCard } from '../components/SalesAdCard';
 import { SmartPagination } from '../../components/SmartPagination';
 import SalesSubNav from '../components/SalesSubNav';
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      delayChildren: stagger(0.1)
-    }
-  }
-} as const;
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: 'spring', stiffness: 400, damping: 40 }
-  }
-} as const;
+import { createPageContainerVariants, pageItemVariants } from '../../animations';
 
 const SalesAdsPage: React.FC = () => {
   const { t } = useTranslation();
@@ -77,18 +59,18 @@ const SalesAdsPage: React.FC = () => {
 
   return (
     <motion.div
-      variants={containerVariants}
+      variants={createPageContainerVariants()}
       initial="hidden"
       animate="visible"
     >
-      <motion.div variants={itemVariants} className="uk-flex uk-flex-between uk-flex-middle uk-margin-bottom">
+      <motion.div variants={pageItemVariants} className="uk-flex uk-flex-between uk-flex-middle uk-margin-bottom">
         <Heading as="h2">{t('sales.title')}</Heading>
         <Button variant="primary" onClick={() => navigate('/sales/ads/create')}>
           {t('ads.createNew')}
         </Button>
       </motion.div>
 
-      <motion.div variants={itemVariants}>
+      <motion.div variants={pageItemVariants}>
         <SalesSubNav />
       </motion.div>
 
@@ -106,7 +88,7 @@ const SalesAdsPage: React.FC = () => {
         ) : error ? (
           <motion.div
             key="error"
-            variants={itemVariants}
+            variants={pageItemVariants}
           >
             <Alert variant="danger">
               {error}
@@ -115,7 +97,7 @@ const SalesAdsPage: React.FC = () => {
         ) : adsPage?.content.length === 0 ? (
           <motion.div
             key="empty"
-            variants={itemVariants}
+            variants={pageItemVariants}
             className="uk-text-center uk-text-muted uk-padding-large"
           >
             {t('ads.noAdsYet')}
@@ -125,15 +107,7 @@ const SalesAdsPage: React.FC = () => {
             key="content"
             initial="hidden"
             animate="visible"
-            variants={{
-              hidden: { opacity: 0 },
-              visible: {
-                opacity: 1,
-                transition: {
-                  delayChildren: stagger(0.05)
-                }
-              }
-            }}
+            variants={createPageContainerVariants(0.05)}
           >
             <Grid gap="medium" match className="uk-child-width-1-2@s uk-child-width-1-3@m uk-child-width-1-4@l">
               <AnimatePresence mode="sync">
@@ -151,7 +125,7 @@ const SalesAdsPage: React.FC = () => {
       </AnimatePresence>
 
       {adsPage && adsPage.page.totalPages > 1 && (
-        <motion.div variants={itemVariants} className="uk-margin-large-top">
+        <motion.div variants={pageItemVariants} className="uk-margin-large-top">
           <SmartPagination 
             currentPage={adsPage.page.number} 
             totalPages={adsPage.page.totalPages} 

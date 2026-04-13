@@ -15,23 +15,7 @@ import { Alert } from '../../../components/uikit/Alert/Alert';
 import { Spinner } from '../../../components/uikit/Spinner/Spinner';
 import { Icon } from '../../../components/uikit/Icon/Icon';
 import { useCountdown } from '../../../hooks/useCountdown';
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.08 },
-  },
-} as const;
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: 'spring', stiffness: 400, damping: 40 },
-  },
-} as const;
+import { createPageContainerVariants, pageItemVariants } from '../../../animations';
 
 /** Converts epoch microseconds to a localized date string */
 const formatMicros = (micros: number | null | undefined): string => {
@@ -187,9 +171,9 @@ const AdminUserDetailPage: React.FC = () => {
         <span className="uk-text-bold">@{user.username}</span>
       </NavbarPortal>
 
-      <motion.div variants={containerVariants} initial="hidden" animate="visible">
+      <motion.div variants={createPageContainerVariants()} initial="hidden" animate="visible">
         {/* Identity Header */}
-        <motion.div variants={itemVariants} className="uk-card uk-card-default uk-card-body uk-margin-bottom">
+        <motion.div variants={pageItemVariants} className="uk-card uk-card-default uk-card-body uk-margin-bottom">
           <div className="uk-flex uk-flex-middle">
             <div className="uk-margin-right" style={{ flexShrink: 0 }}>
               {user.avatarUrl ? (
@@ -244,7 +228,7 @@ const AdminUserDetailPage: React.FC = () => {
         <AnimatePresence>
           {user.activeBan && (
             <motion.div
-              variants={itemVariants}
+              variants={pageItemVariants}
               initial="hidden"
               animate="visible"
               exit={{ opacity: 0, y: -10 }}
@@ -280,7 +264,7 @@ const AdminUserDetailPage: React.FC = () => {
         </AnimatePresence>
 
         {/* Profile Card */}
-        <motion.div variants={itemVariants} className="uk-card uk-card-default uk-card-body uk-margin-bottom">
+        <motion.div variants={pageItemVariants} className="uk-card uk-card-default uk-card-body uk-margin-bottom">
           <h3 className="uk-card-title">{t('admin.users.detail.profile')}</h3>
           <div className="uk-grid uk-grid-small uk-child-width-1-2@s" uk-grid="">
             <div>
@@ -319,7 +303,7 @@ const AdminUserDetailPage: React.FC = () => {
         </motion.div>
 
         {/* Statistics Card */}
-        <motion.div variants={itemVariants} className="uk-card uk-card-default uk-card-body uk-margin-bottom">
+        <motion.div variants={pageItemVariants} className="uk-card uk-card-default uk-card-body uk-margin-bottom">
           <h3 className="uk-card-title">{t('admin.users.detail.statistics')}</h3>
           <div className="uk-grid uk-grid-small uk-child-width-1-3@s" uk-grid="">
             <StatItem label={t('admin.users.stats.activeAds')} value={user.stats.activeAdsCount} />
@@ -332,7 +316,7 @@ const AdminUserDetailPage: React.FC = () => {
         </motion.div>
 
         {/* Ban History */}
-        <motion.div variants={itemVariants} className="uk-card uk-card-default uk-card-body">
+        <motion.div variants={pageItemVariants} className="uk-card uk-card-default uk-card-body">
           <h3 className="uk-card-title">{t('admin.users.detail.banHistory')}</h3>
           {banHistory.length === 0 ? (
             <p className="uk-text-meta">{t('admin.users.detail.noBanHistory')}</p>

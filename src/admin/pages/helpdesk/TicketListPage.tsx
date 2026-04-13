@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { motion, AnimatePresence, stagger } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import { adminTicketService } from '../../services/adminTicketService';
 import type {
   PageTicketListItemDto,
@@ -20,23 +20,7 @@ import { Alert } from '../../../components/uikit/Alert/Alert';
 import { Spinner } from '../../../components/uikit/Spinner/Spinner';
 import { SmartPagination } from '../../../components/SmartPagination';
 import { Icon } from '../../../components/uikit/Icon/Icon';
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.06 },
-  },
-} as const;
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: 'spring', stiffness: 400, damping: 40 },
-  },
-} as const;
+import { createPageContainerVariants, pageItemVariants } from '../../../animations';
 
 const TICKET_STATUSES: TicketStatus[] = ['OPEN', 'IN_PROGRESS', 'AWAITING_USER', 'RESOLVED', 'CLOSED'];
 const TICKET_PRIORITIES: TicketPriority[] = ['LOW', 'MEDIUM', 'HIGH', 'URGENT'];
@@ -144,8 +128,8 @@ const TicketListPage: React.FC = () => {
       </NavbarPortal>
       <AdminSubNav />
 
-      <motion.div variants={containerVariants} initial="hidden" animate="visible">
-        <motion.div variants={itemVariants} className="uk-margin-bottom">
+      <motion.div variants={createPageContainerVariants()} initial="hidden" animate="visible">
+        <motion.div variants={pageItemVariants} className="uk-margin-bottom">
           <div className="uk-grid uk-grid-small uk-flex-middle" uk-grid="">
             <div className="uk-width-1-1 uk-width-1-3@m">
               <div className="uk-inline uk-width-1-1">
@@ -223,7 +207,7 @@ const TicketListPage: React.FC = () => {
           </div>
         </motion.div>
 
-        <motion.div variants={itemVariants}>
+        <motion.div variants={pageItemVariants}>
           <TicketFilterBadges
             search={searchParams.get('search') || ''}
             status={(searchParams.get('status') as TicketStatus) || ''}
@@ -248,7 +232,7 @@ const TicketListPage: React.FC = () => {
               <Spinner ratio={2} />
             </motion.div>
           ) : error ? (
-            <motion.div key="error" variants={itemVariants}>
+            <motion.div key="error" variants={pageItemVariants}>
               <Alert variant="danger">{error}</Alert>
             </motion.div>
           ) : (
@@ -256,13 +240,7 @@ const TicketListPage: React.FC = () => {
               key="content"
               initial="hidden"
               animate="visible"
-              variants={{
-                hidden: { opacity: 0 },
-                visible: {
-                  opacity: 1,
-                  transition: { delayChildren: stagger(0.04) },
-                },
-              }}
+              variants={createPageContainerVariants(0.04)}
             >
               <div className="uk-grid uk-grid-small uk-child-width-1-1 uk-child-width-1-2@m" uk-grid="">
                 <AnimatePresence mode="popLayout">
@@ -273,7 +251,7 @@ const TicketListPage: React.FC = () => {
               </div>
 
               {data && data.page.totalPages > 1 && (
-                <motion.div variants={itemVariants} className="uk-margin-large-top">
+                <motion.div variants={pageItemVariants} className="uk-margin-large-top">
                   <SmartPagination
                     currentPage={data.page.number}
                     totalPages={data.page.totalPages}
@@ -284,7 +262,7 @@ const TicketListPage: React.FC = () => {
               )}
 
               {data?.content.length === 0 && (
-                <motion.div variants={itemVariants} className="uk-text-center uk-margin-large-top">
+                <motion.div variants={pageItemVariants} className="uk-text-center uk-margin-large-top">
                   <p className="uk-text-meta">{t('admin.helpdesk.noTickets')}</p>
                 </motion.div>
               )}
