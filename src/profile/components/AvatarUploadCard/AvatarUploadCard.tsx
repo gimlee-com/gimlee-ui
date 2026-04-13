@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import UIkit from 'uikit';
 import { motion } from 'motion/react';
+import { cardItemVariants } from '../../../animations';
 import { useAuth } from '../../../context/AuthContext';
 import { userService } from '../../services/userService';
 import { apiClient } from '../../../services/apiClient';
@@ -13,15 +14,6 @@ import { GeometricAvatar } from '../../../components/GeometricAvatar/GeometricAv
 import type { MediaUploadResponseDto } from '../../../types/api';
 
 const API_URL = import.meta.env.VITE_API_URL || '';
-
-const cardItemVariants = {
-  hidden: { opacity: 0, y: 8 },
-  visible: { 
-    opacity: 1, 
-    y: 0,
-    transition: { type: 'spring', stiffness: 500, damping: 35 }
-  }
-};
 
 const AvatarUploadCard: React.FC = () => {
   const { t } = useTranslation();

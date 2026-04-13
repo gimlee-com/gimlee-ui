@@ -2,19 +2,11 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
+import { pageItemVariants } from '../../../animations';
 import ReportTypeBadge from '../ReportTypeBadge/ReportTypeBadge';
 import ReportReasonBadge from '../ReportReasonBadge/ReportReasonBadge';
 import ReportStatusBadge from '../ReportStatusBadge/ReportStatusBadge';
 import type { ReportListItemDto } from '../../types/adminReport';
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: 'spring', stiffness: 400, damping: 40 },
-  },
-} as const;
 
 interface ReportCardProps {
   report: ReportListItemDto;
@@ -26,7 +18,7 @@ const ReportCard: React.FC<ReportCardProps> = ({ report }) => {
   const createdDate = new Date(report.createdAt / 1000).toLocaleDateString();
 
   return (
-    <motion.div variants={itemVariants} layout>
+    <motion.div variants={pageItemVariants} layout>
       <Link
         to={`/admin/reports/${report.id}`}
         state={{ from: location.pathname + location.search }}

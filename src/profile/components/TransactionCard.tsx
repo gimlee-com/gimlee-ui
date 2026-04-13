@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
+import { expandCollapseProps } from '../../animations';
 import { Card, CardBody } from '../../components/uikit/Card/Card';
 import { Label } from '../../components/uikit/Label/Label';
 import { Grid } from '../../components/uikit/Grid/Grid';
@@ -58,11 +59,7 @@ export const TransactionCard: React.FC<TransactionCardProps> = ({ transaction, c
         <AnimatePresence>
           {isExpanded && (
             <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ type: 'spring', stiffness: 400, damping: 40 }}
-              style={{ overflow: 'hidden' }}
+              {...expandCollapseProps}
             >
               <Divider className="uk-margin-small" />
               <Grid gap="small" className="uk-child-width-1-1">

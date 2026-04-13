@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
+import { expandCollapseProps } from '../../../animations';
 import { Grid } from '../../../components/uikit/Grid/Grid';
 import { Input, Select, FormLabel } from '../../../components/Form/Form';
 import { Button } from '../../../components/uikit/Button/Button';
@@ -117,8 +118,6 @@ export const AdSearchFilters: React.FC = () => {
 
   const hasAdvancedFilters = minPrice || maxPrice || selectedCity || selectedCategory || sortBy !== 'CREATED_DATE' || sortDir !== 'DESC';
 
-  const springTransition = { type: 'spring', stiffness: 400, damping: 40 } as const;
-
   return (
     <div className={styles.filtersContainer}>
       <form onSubmit={handleSearchSubmit}>
@@ -157,16 +156,13 @@ export const AdSearchFilters: React.FC = () => {
         <AnimatePresence>
           {showAdvanced && (
             <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
+              {...expandCollapseProps}
               onAnimationStart={() => {
                 if (!showAdvanced) setIsExpanded(false);
               }}
               onAnimationComplete={() => {
                 if (showAdvanced) setIsExpanded(true);
               }}
-              transition={springTransition}
               className={`${styles.advancedWrapper} ${isExpanded ? styles.expanded : ''}`}
             >
               <div className="uk-padding-small uk-background-muted uk-margin-small-top uk-border-rounded">

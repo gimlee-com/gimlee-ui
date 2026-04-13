@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { motion, AnimatePresence } from 'motion/react';
+import { expandCollapseProps } from '../../../animations';
 import { qaService } from '../../services/qaService';
 import { Button } from '../../../components/uikit/Button/Button';
 import type { AnswerDto } from '../../types/qa';
@@ -62,10 +63,7 @@ export const AnswerForm: React.FC<AnswerFormProps> = ({ questionId, onAnswerSubm
   return (
     <AnimatePresence>
       <motion.div
-        initial={{ height: 0, opacity: 0 }}
-        animate={{ height: 'auto', opacity: 1 }}
-        exit={{ height: 0, opacity: 0 }}
-        transition={{ type: 'spring', stiffness: 400, damping: 40 }}
+        {...expandCollapseProps}
         className="uk-margin-small-top"
       >
         <form onSubmit={handleSubmit(onSubmit)}>

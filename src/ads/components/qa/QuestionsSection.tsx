@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
+import { createPageContainerVariants, pageItemVariants } from '../../../animations';
 import { useAuth } from '../../../context/AuthContext';
 import { qaService } from '../../services/qaService';
 import { QuestionCard } from './QuestionCard';
@@ -19,22 +20,7 @@ interface QuestionsSectionProps {
 
 const PAGE_SIZE = 10;
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.06 },
-  },
-} as const;
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 15 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: 'spring', stiffness: 400, damping: 40 },
-  },
-} as const;
+const containerVariants = createPageContainerVariants(0.06);
 
 export const QuestionsSection: React.FC<QuestionsSectionProps> = ({ adId, sellerId }) => {
   const { t } = useTranslation();
@@ -151,7 +137,7 @@ export const QuestionsSection: React.FC<QuestionsSectionProps> = ({ adId, seller
           </h5>
           <motion.div variants={containerVariants} initial="hidden" animate="visible">
             {pendingQuestions.map((q) => (
-              <motion.div key={q.id} variants={itemVariants} initial="hidden" animate="visible">
+              <motion.div key={q.id} variants={pageItemVariants} initial="hidden" animate="visible">
                 <QuestionCard
                   question={q}
                   isSeller={isSeller}
@@ -204,7 +190,7 @@ export const QuestionsSection: React.FC<QuestionsSectionProps> = ({ adId, seller
         <div style={{ opacity: fetching ? 0.5 : 1, transition: 'opacity 0.2s ease' }}>
           <motion.div variants={containerVariants} initial="hidden" animate="visible">
             {questions.map((q) => (
-              <motion.div key={q.id} variants={itemVariants} initial="hidden" animate="visible">
+              <motion.div key={q.id} variants={pageItemVariants} initial="hidden" animate="visible">
                 <QuestionCard
                   question={q}
                   isSeller={isSeller}

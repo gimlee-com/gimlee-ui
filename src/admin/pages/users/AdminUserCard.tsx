@@ -2,19 +2,11 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
+import { pageItemVariants } from '../../../animations';
 import { Image } from '../../../components/Image/Image';
 import { GeometricAvatar } from '../../../components/GeometricAvatar/GeometricAvatar';
 import UserStatusBadge from '../../components/UserStatusBadge/UserStatusBadge';
 import type { AdminUserListItemDto } from '../../types/adminUser';
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: 'spring', stiffness: 400, damping: 40 },
-  },
-} as const;
 
 interface AdminUserCardProps {
   user: AdminUserListItemDto;
@@ -26,7 +18,7 @@ const AdminUserCard: React.FC<AdminUserCardProps> = ({ user }) => {
   const registeredDate = new Date(user.registeredAt / 1000).toLocaleDateString();
 
   return (
-    <motion.div variants={itemVariants} layout>
+    <motion.div variants={pageItemVariants} layout>
       <Link
         to={`/admin/users/${user.userId}`}
         state={{ from: location.pathname + location.search }}

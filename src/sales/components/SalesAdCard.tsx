@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
+import { scaleItemVariants } from '../../animations';
 import type { AdDto } from '../../types/api';
 import { Card, CardBody } from '../../components/uikit/Card/Card';
 import { Label } from '../../components/uikit/Label/Label';
@@ -18,15 +19,6 @@ interface SalesAdCardProps {
 }
 
 const API_URL = import.meta.env.VITE_API_URL || '';
-
-const cardVariants = {
-  hidden: { opacity: 0, scale: 0.95 },
-  visible: { 
-    opacity: 1, 
-    scale: 1,
-    transition: { type: 'spring', stiffness: 400, damping: 40 }
-  }
-} as const;
 
 export const SalesAdCard: React.FC<SalesAdCardProps> = ({ ad, onToggleStatus }) => {
   const { t } = useTranslation();
@@ -52,7 +44,7 @@ export const SalesAdCard: React.FC<SalesAdCardProps> = ({ ad, onToggleStatus }) 
   return (
     <motion.div
       layout
-      variants={cardVariants}
+      variants={scaleItemVariants}
       initial="hidden"
       animate="visible"
       exit={{ opacity: 0, scale: 0.95 }}

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
+import { expandCollapseProps } from '../animations';
 import { Heading } from './uikit/Heading/Heading';
 import { Card, CardBody } from './uikit/Card/Card';
 import { Label } from './uikit/Label/Label';
@@ -133,10 +134,7 @@ export const OrderItemCard: React.FC<OrderItemCardProps> = ({ order, type }) => 
         <AnimatePresence>
           {isExpanded && (
             <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ type: 'spring', stiffness: 400, damping: 40 }}
+              {...expandCollapseProps}
               className="uk-overflow-hidden"
             >
               <hr className="uk-margin-small" />

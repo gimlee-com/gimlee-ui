@@ -2,19 +2,11 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
+import { pageItemVariants } from '../../../animations';
 import TicketCategoryBadge from '../TicketCategoryBadge/TicketCategoryBadge';
 import TicketStatusBadge from '../TicketStatusBadge/TicketStatusBadge';
 import TicketPriorityBadge from '../TicketPriorityBadge/TicketPriorityBadge';
 import type { TicketListItemDto } from '../../types/adminTicket';
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: 'spring', stiffness: 400, damping: 40 },
-  },
-} as const;
 
 interface TicketCardProps {
   ticket: TicketListItemDto;
@@ -29,7 +21,7 @@ const TicketCard: React.FC<TicketCardProps> = ({ ticket }) => {
     : null;
 
   return (
-    <motion.div variants={itemVariants} layout>
+    <motion.div variants={pageItemVariants} layout>
       <Link
         to={`/admin/tickets/${ticket.id}`}
         state={{ from: location.pathname + location.search }}

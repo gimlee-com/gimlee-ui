@@ -1,25 +1,11 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
+import { createPageContainerVariants, pageItemVariants } from '../../../animations';
 import type { TicketMessageDto } from '../../types/adminTicket';
 import styles from './TicketConversation.module.scss';
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.06 },
-  },
-} as const;
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 16 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: 'spring', stiffness: 400, damping: 40 },
-  },
-} as const;
+const containerVariants = createPageContainerVariants(0.06);
 
 interface TicketConversationProps {
   messages: TicketMessageDto[];
@@ -51,7 +37,7 @@ const TicketConversation: React.FC<TicketConversationProps> = ({ messages }) => 
         return (
           <motion.div
             key={msg.id}
-            variants={itemVariants}
+            variants={pageItemVariants}
             className={`uk-card uk-card-default uk-card-body uk-card-small ${styles.message} ${
               isSupport ? styles.supportMessage : styles.userMessage
             }`}

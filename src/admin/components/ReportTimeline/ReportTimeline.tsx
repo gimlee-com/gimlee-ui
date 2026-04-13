@@ -1,24 +1,11 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
+import { createPageContainerVariants, timelineItemVariants } from '../../../animations';
 import type { ReportTimelineEntryDto } from '../../types/adminReport';
 import styles from './ReportTimeline.module.scss';
 
-const containerVariants = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.06 },
-  },
-} as const;
-
-const itemVariants = {
-  hidden: { opacity: 0, x: -12 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: { type: 'spring', stiffness: 400, damping: 40 },
-  },
-} as const;
+const containerVariants = createPageContainerVariants(0.06);
 
 const actionIcons: Record<ReportTimelineEntryDto['action'], string> = {
   CREATED: 'plus',
@@ -48,7 +35,7 @@ const ReportTimeline: React.FC<ReportTimelineProps> = ({ entries }) => {
         const date = new Date(entry.createdAt / 1000).toLocaleString();
 
         return (
-          <motion.li key={entry.id} className={styles.entry} variants={itemVariants}>
+          <motion.li key={entry.id} className={styles.entry} variants={timelineItemVariants}>
             <div className={styles.icon}>
               <span uk-icon={`icon: ${actionIcons[entry.action]}; ratio: 0.8`} />
             </div>

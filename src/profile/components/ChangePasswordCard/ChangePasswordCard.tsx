@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import UIkit from 'uikit';
 import { motion } from 'motion/react';
+import { cardItemVariants } from '../../../animations';
 import { authService } from '../../../auth/services/authService';
 import { Card, CardBody } from '../../../components/uikit/Card/Card';
 import { Heading } from '../../../components/uikit/Heading/Heading';
@@ -22,15 +23,6 @@ interface ChangePasswordFormValues {
 }
 
 const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,64}$/;
-
-const cardItemVariants = {
-  hidden: { opacity: 0, y: 8 },
-  visible: { 
-    opacity: 1, 
-    y: 0,
-    transition: { type: 'spring', stiffness: 500, damping: 35 }
-  }
-};
 
 const ChangePasswordCard: React.FC = () => {
   const { t } = useTranslation();

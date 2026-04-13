@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
+import { bannerProps } from '../../animations';
 import { Alert } from '../uikit/Alert/Alert';
 import { Icon } from '../uikit/Icon/Icon';
 import { useAuth } from '../../context/AuthContext';
@@ -34,10 +35,7 @@ export const BanNotificationBanner: React.FC = () => {
     <AnimatePresence>
       {isBanned && (
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ type: 'spring', stiffness: 400, damping: 40 }}
+          {...bannerProps}
           className="uk-margin-small-bottom"
         >
           <Alert variant="danger" className="uk-border-rounded">

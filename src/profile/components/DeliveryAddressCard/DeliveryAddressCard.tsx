@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import UIkit from 'uikit';
 import { motion, AnimatePresence } from 'motion/react';
+import { cardItemVariants, expandCollapseProps } from '../../../animations';
 import { userService } from '../../services/userService';
 import { Card, CardBody } from '../../../components/uikit/Card/Card';
 import { Heading } from '../../../components/uikit/Heading/Heading';
@@ -9,15 +10,6 @@ import { Button } from '../../../components/uikit/Button/Button';
 import { useCountries } from '../../../hooks/useCountries';
 import { AddressForm } from '../AddressForm/AddressForm';
 import type { DeliveryAddressDto, AddDeliveryAddressRequestDto } from '../../../types/api';
-
-const cardItemVariants = {
-  hidden: { opacity: 0, y: 8 },
-  visible: { 
-    opacity: 1, 
-    y: 0,
-    transition: { type: 'spring', stiffness: 500, damping: 35 }
-  }
-};
 
 const DeliveryAddressCard: React.FC = () => {
   const { t } = useTranslation();
@@ -102,11 +94,7 @@ const DeliveryAddressCard: React.FC = () => {
         <AnimatePresence>
           {showForm && (
             <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ type: 'spring', stiffness: 400, damping: 40 }}
-              style={{ overflow: 'hidden' }}
+              {...expandCollapseProps}
               className="uk-margin-bottom"
             >
               <AddressForm

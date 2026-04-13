@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
+import { scaleItemVariants } from '../../animations';
 import type { AdDiscoveryPreviewDto } from '../../types/api';
 import { Card, CardBody } from '../../components/uikit/Card/Card';
 import { Label } from '../../components/uikit/Label/Label';
@@ -18,15 +19,6 @@ interface AdCardProps {
 
 const API_URL = import.meta.env.VITE_API_URL || '';
 
-const cardVariants = {
-  hidden: { opacity: 0, scale: 0.95 },
-  visible: { 
-    opacity: 1, 
-    scale: 1,
-    transition: { type: 'spring', stiffness: 400, damping: 40 }
-  }
-} as const;
-
 export const AdCard: React.FC<AdCardProps> = ({ ad, onWatchToggle }) => {
   const { t } = useTranslation();
   const location = useLocation();
@@ -38,7 +30,7 @@ export const AdCard: React.FC<AdCardProps> = ({ ad, onWatchToggle }) => {
 
   return (
     <motion.div
-      variants={cardVariants}
+      variants={scaleItemVariants}
       initial="hidden"
       animate="visible"
       className="uk-height-1-1"

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
+import { bannerProps } from '../../../animations';
 import { Alert } from '../../../components/uikit/Alert/Alert';
 import { Icon } from '../../../components/uikit/Icon/Icon';
 import { useAuth } from '../../../context/AuthContext';
@@ -39,10 +40,7 @@ export const VolatilityBanner: React.FC = () => {
   return (
     <AnimatePresence>
       <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
-        transition={{ type: 'spring', stiffness: 400, damping: 40 }}
+        {...bannerProps}
         className="uk-margin-small-bottom"
       >
         {volatileCurrencies.map(s => (
