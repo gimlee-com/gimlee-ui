@@ -2,6 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import UIkit from 'uikit';
+import { motion } from 'motion/react';
 import { authService } from '../../../auth/services/authService';
 import { Card, CardBody } from '../../../components/uikit/Card/Card';
 import { Heading } from '../../../components/uikit/Heading/Heading';
@@ -21,6 +22,15 @@ interface ChangePasswordFormValues {
 }
 
 const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,64}$/;
+
+const cardItemVariants = {
+  hidden: { opacity: 0, y: 8 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { type: 'spring', stiffness: 500, damping: 35 }
+  }
+};
 
 const ChangePasswordCard: React.FC = () => {
   const { t } = useTranslation();
@@ -72,10 +82,12 @@ const ChangePasswordCard: React.FC = () => {
   return (
     <Card className="uk-margin-bottom">
       <CardBody>
-        <Heading as="h4">{t('auth.changePassword.title')}</Heading>
+        <motion.div variants={cardItemVariants}>
+          <Heading as="h4">{t('auth.changePassword.title')}</Heading>
+        </motion.div>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="uk-margin">
+          <motion.div variants={cardItemVariants} className="uk-margin">
             <FormLabel>{t('auth.changePassword.oldPassword')}</FormLabel>
             <FormControls>
               <Input
@@ -95,9 +107,9 @@ const ChangePasswordCard: React.FC = () => {
                 </FormMessage>
               )}
             </AnimatePresence>
-          </div>
+          </motion.div>
 
-          <div className="uk-margin">
+          <motion.div variants={cardItemVariants} className="uk-margin">
             <FormLabel>{t('auth.changePassword.newPassword')}</FormLabel>
             <FormControls>
               <Input
@@ -121,9 +133,9 @@ const ChangePasswordCard: React.FC = () => {
                 </FormMessage>
               )}
             </AnimatePresence>
-          </div>
+          </motion.div>
 
-          <div className="uk-margin">
+          <motion.div variants={cardItemVariants} className="uk-margin">
             <FormLabel>{t('auth.changePassword.confirmPassword')}</FormLabel>
             <FormControls>
               <Input
@@ -145,15 +157,17 @@ const ChangePasswordCard: React.FC = () => {
                 </FormMessage>
               )}
             </AnimatePresence>
-          </div>
+          </motion.div>
 
-          <Button
-            type="submit"
-            variant="primary"
-            disabled={!isValid || isSubmitting}
-          >
-            {t('auth.changePassword.submit')}
-          </Button>
+          <motion.div variants={cardItemVariants}>
+            <Button
+              type="submit"
+              variant="primary"
+              disabled={!isValid || isSubmitting}
+            >
+              {t('auth.changePassword.submit')}
+            </Button>
+          </motion.div>
         </form>
       </CardBody>
     </Card>

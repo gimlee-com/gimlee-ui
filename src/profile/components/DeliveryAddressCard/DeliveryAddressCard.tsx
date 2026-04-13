@@ -10,6 +10,15 @@ import { useCountries } from '../../../hooks/useCountries';
 import { AddressForm } from '../AddressForm/AddressForm';
 import type { DeliveryAddressDto, AddDeliveryAddressRequestDto } from '../../../types/api';
 
+const cardItemVariants = {
+  hidden: { opacity: 0, y: 8 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { type: 'spring', stiffness: 500, damping: 35 }
+  }
+};
+
 const DeliveryAddressCard: React.FC = () => {
   const { t } = useTranslation();
 
@@ -76,7 +85,7 @@ const DeliveryAddressCard: React.FC = () => {
   return (
     <Card className="uk-margin-bottom">
       <CardBody>
-        <div className="uk-flex uk-flex-between uk-flex-middle uk-margin-bottom">
+        <motion.div variants={cardItemVariants} className="uk-flex uk-flex-between uk-flex-middle uk-margin-bottom">
           <Heading as="h4" className="uk-margin-remove">
             {t('profile.deliveryAddresses.title')}
           </Heading>
@@ -88,7 +97,7 @@ const DeliveryAddressCard: React.FC = () => {
           >
             {showForm ? t('common.cancel') : t('profile.deliveryAddresses.addAddress')}
           </Button>
-        </div>
+        </motion.div>
 
         <AnimatePresence>
           {showForm && (
@@ -109,49 +118,51 @@ const DeliveryAddressCard: React.FC = () => {
           )}
         </AnimatePresence>
 
-        {loading && (
-          <div className="uk-text-center uk-margin-top">
-            <div uk-spinner="" />
-          </div>
-        )}
+        <motion.div variants={cardItemVariants}>
+          {loading && (
+            <div className="uk-text-center uk-margin-top">
+              <div uk-spinner="" />
+            </div>
+          )}
 
-        {!loading && addresses.length === 0 && (
-          <div className="uk-text-center uk-text-muted uk-margin-top">
-            <span uk-icon="icon: location; ratio: 2" className="uk-margin-small-bottom" />
-            <p>{t('profile.deliveryAddresses.noAddresses')}</p>
-          </div>
-        )}
+          {!loading && addresses.length === 0 && (
+            <div className="uk-text-center uk-text-muted uk-margin-top">
+              <span uk-icon="icon: location; ratio: 2" className="uk-margin-small-bottom" />
+              <p>{t('profile.deliveryAddresses.noAddresses')}</p>
+            </div>
+          )}
 
-        {!loading && addresses.length > 0 && (
-          <div className="uk-flex uk-flex-column" style={{ gap: '12px' }}>
-            {addresses.map((addr) => (
-              <div
-                key={addr.id}
-                className="uk-card uk-card-default uk-card-body uk-card-small"
-              >
-                <div className="uk-flex uk-flex-middle uk-flex-wrap" style={{ gap: '6px' }}>
-                  <span className="uk-text-bold">{addr.name}</span>
-                  {addr.isDefault && (
-                    <span className="uk-label">
-                      {t('profile.deliveryAddresses.default')}
-                    </span>
+          {!loading && addresses.length > 0 && (
+            <div className="uk-flex uk-flex-column" style={{ gap: '12px' }}>
+              {addresses.map((addr) => (
+                <div
+                  key={addr.id}
+                  className="uk-card uk-card-default uk-card-body uk-card-small"
+                >
+                  <div className="uk-flex uk-flex-middle uk-flex-wrap" style={{ gap: '6px' }}>
+                    <span className="uk-text-bold">{addr.name}</span>
+                    {addr.isDefault && (
+                      <span className="uk-label">
+                        {t('profile.deliveryAddresses.default')}
+                      </span>
+                    )}
+                  </div>
+                  <div className="uk-text-meta uk-margin-small-top">
+                    {addr.fullName}
+                  </div>
+                  <div className="uk-text-small">{addr.street}</div>
+                  <div className="uk-text-small">
+                    {addr.city}, {addr.postalCode}
+                  </div>
+                  <div className="uk-text-small">{getCountryName(addr.country)}</div>
+                  {addr.phoneNumber && (
+                    <div className="uk-text-small uk-text-muted">{addr.phoneNumber}</div>
                   )}
                 </div>
-                <div className="uk-text-meta uk-margin-small-top">
-                  {addr.fullName}
-                </div>
-                <div className="uk-text-small">{addr.street}</div>
-                <div className="uk-text-small">
-                  {addr.city}, {addr.postalCode}
-                </div>
-                <div className="uk-text-small">{getCountryName(addr.country)}</div>
-                {addr.phoneNumber && (
-                  <div className="uk-text-small uk-text-muted">{addr.phoneNumber}</div>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
+              ))}
+            </div>
+          )}
+        </motion.div>
       </CardBody>
     </Card>
   );

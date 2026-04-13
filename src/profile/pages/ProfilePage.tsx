@@ -32,7 +32,7 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1
+      staggerChildren: 0.18
     }
   }
 };
@@ -42,7 +42,20 @@ const cardVariants = {
   visible: { 
     opacity: 1, 
     y: 0,
-    transition: springConfig
+    transition: {
+      ...springConfig,
+      when: 'beforeChildren' as const,
+      staggerChildren: 0.05,
+    }
+  }
+};
+
+const cardItemVariants = {
+  hidden: { opacity: 0, y: 8 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { type: 'spring', stiffness: 500, damping: 35 }
   }
 };
 
@@ -258,9 +271,11 @@ const ProfilePage: React.FC = () => {
       <motion.div variants={cardVariants} layout transition={springConfig}>
         <Card className="uk-margin-bottom">
           <CardBody>
-            <Heading as="h4">{t('profile.regionalSettings')}</Heading>
+            <motion.div variants={cardItemVariants}>
+              <Heading as="h4">{t('profile.regionalSettings')}</Heading>
+            </motion.div>
 
-            <div className="uk-margin">
+            <motion.div variants={cardItemVariants} className="uk-margin">
               <FormLabel>{t('profile.language')}</FormLabel>
               <div className="uk-button-group uk-margin-small-top uk-display-block">
                 <Button
@@ -278,9 +293,9 @@ const ProfilePage: React.FC = () => {
                   Polski
                 </Button>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="uk-margin">
+            <motion.div variants={cardItemVariants} className="uk-margin">
               <FormLabel>{t('profile.theme')}</FormLabel>
               <div className="uk-button-group uk-margin-small-top uk-display-block">
                 <Button
@@ -312,9 +327,9 @@ const ProfilePage: React.FC = () => {
                   {t('profile.themes.iron-age')}
                 </Button>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="uk-margin">
+            <motion.div variants={cardItemVariants} className="uk-margin">
               <FormLabel>{t('profile.preferredCurrency')}</FormLabel>
               <div className="uk-margin-small-top">
                 {loadingCurrencies ? (
@@ -357,9 +372,9 @@ const ProfilePage: React.FC = () => {
                   </div>
                 )}
               </div>
-            </div>
+            </motion.div>
 
-            <div className="uk-margin">
+            <motion.div variants={cardItemVariants} className="uk-margin">
               <FormLabel>{t('profile.countryOfResidence')}</FormLabel>
               <div className="uk-margin-small-top">
                 <CountrySelector
@@ -368,11 +383,13 @@ const ProfilePage: React.FC = () => {
                   disabled={savingCountry}
                 />
               </div>
-            </div>
+            </motion.div>
 
-            <hr />
+            <motion.div variants={cardItemVariants}>
+              <hr />
+            </motion.div>
 
-            <div className="uk-margin">
+            <motion.div variants={cardItemVariants} className="uk-margin">
               <FormLabel>{t('presence.status')}</FormLabel>
               <div className="uk-button-group uk-margin-small-top uk-display-block">
                 <Button
@@ -400,9 +417,9 @@ const ProfilePage: React.FC = () => {
                   {t('presence.busy')}
                 </Button>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="uk-margin">
+            <motion.div variants={cardItemVariants} className="uk-margin">
               <FormLabel>{t('presence.customMessage')}</FormLabel>
               <form onSubmit={handleCustomStatusSubmit} className="uk-margin-small-top">
                 <Grid gap="small">
@@ -428,7 +445,7 @@ const ProfilePage: React.FC = () => {
                   </div>
                 </Grid>
               </form>
-            </div>
+            </motion.div>
           </CardBody>
         </Card>
       </motion.div>
@@ -448,13 +465,18 @@ const ProfilePage: React.FC = () => {
       <motion.div variants={cardVariants} layout transition={springConfig}>
         <Card>
           <CardBody>
-            <Heading as="h4">{t('profile.sellingAndPayments')}</Heading>
+            <motion.div variants={cardItemVariants}>
+              <Heading as="h4">{t('profile.sellingAndPayments')}</Heading>
+            </motion.div>
             
-            <Tab connect="#selling-payments-switcher" animation="uk-animation-fade">
+            <motion.div variants={cardItemVariants}>
+              <Tab connect="#selling-payments-switcher" animation="uk-animation-fade">
               <TabItem><a href="#">{t('profile.paymentMonitoring')}</a></TabItem>
               <TabItem><a href="#">{t('profile.paymentMonitoringYec')}</a></TabItem>
             </Tab>
+            </motion.div>
 
+            <motion.div variants={cardItemVariants}>
             <SwitcherContainer id="selling-payments-switcher" className="uk-margin-medium-top">
               <div>
                 <p className="uk-text-meta">{t('profile.paymentDesc')}</p>
@@ -631,6 +653,7 @@ const ProfilePage: React.FC = () => {
                 </div>
               </div>
             </SwitcherContainer>
+            </motion.div>
           </CardBody>
         </Card>
       </motion.div>
