@@ -225,9 +225,11 @@ const ProfilePage: React.FC = () => {
 
   return (
     <motion.div initial="hidden" animate="visible" variants={containerVariants}>
-      <Heading as="h2">{t('profile.title')}</Heading>
+      <motion.div variants={cardVariants}>
+        <Heading as="h2">{t('profile.title')}</Heading>
+      </motion.div>
 
-      <motion.div variants={cardVariants} layout transition={springConfig}>
+      <motion.div variants={cardVariants}>
         <Card className="uk-margin-bottom">
           <CardBody>
             <motion.div variants={cardItemVariants}>
@@ -409,19 +411,19 @@ const ProfilePage: React.FC = () => {
         </Card>
       </motion.div>
 
-      <motion.div variants={cardVariants} layout transition={springConfig}>
+      <motion.div variants={cardVariants}>
         <AvatarUploadCard />
       </motion.div>
 
-      <motion.div variants={cardVariants} layout transition={springConfig}>
+      <motion.div variants={cardVariants}>
         <ChangePasswordCard />
       </motion.div>
 
-      <motion.div variants={cardVariants} layout transition={springConfig}>
+      <motion.div variants={cardVariants}>
         <DeliveryAddressCard />
       </motion.div>
 
-      <motion.div variants={cardVariants} layout transition={springConfig}>
+      <motion.div variants={cardVariants}>
         <Card>
           <CardBody>
             <motion.div variants={cardItemVariants}>
