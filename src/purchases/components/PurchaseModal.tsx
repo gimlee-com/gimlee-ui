@@ -1,8 +1,8 @@
 import { useEffect, useState, useCallback, useRef, forwardRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
-import type { Transition } from 'motion/react';
 import UIkit from 'uikit';
+import { spring } from '../../animations';
 import { QRCodeSVG } from 'qrcode.react';
 import { 
   Modal, 
@@ -417,7 +417,6 @@ export const PurchaseModal = forwardRef<HTMLDivElement>(
       </div>
     );
 
-    const springTransition: Transition = { type: 'spring', stiffness: 400, damping: 40 };
 
     const renderAddressStep = () => (
       <>
@@ -509,7 +508,7 @@ export const PurchaseModal = forwardRef<HTMLDivElement>(
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              transition={springTransition}
+              transition={spring}
               style={{ overflow: 'hidden' }}
               className="uk-margin-top"
             >
@@ -607,7 +606,7 @@ export const PurchaseModal = forwardRef<HTMLDivElement>(
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                transition={springTransition}
+                transition={spring}
                 className="uk-width-1-1"
               >
                 {renderStatus()}
@@ -638,7 +637,7 @@ export const PurchaseModal = forwardRef<HTMLDivElement>(
                 initial={{ opacity: 0, x: step === 'payment' ? 30 : -30 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: step === 'payment' ? -30 : 30 }}
-                transition={springTransition}
+                transition={spring}
               >
                 {step === 'address' ? renderAddressStep() : renderPaymentStep()}
               </motion.div>

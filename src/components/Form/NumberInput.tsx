@@ -1,6 +1,7 @@
 import React, { forwardRef, useCallback, useRef } from 'react'
 import { motion } from 'motion/react'
 import { useTranslation } from 'react-i18next'
+import { spring } from '../../animations'
 import { useMergeRefs } from '../../hooks/useMergeRefs'
 import { Icon } from '../uikit/Icon/Icon'
 import { Input, type InputProps } from './Form'
@@ -13,8 +14,6 @@ export interface NumberInputProps extends Omit<InputProps, 'type'> {
   max?: number
   step?: number
 }
-
-const springConfig = { stiffness: 400, damping: 40 }
 
 export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
   ({ value, onValueChange, onChange, min, max, step = 1, className, formWidth, ...props }, ref) => {
@@ -81,7 +80,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
           onClick={handleDecrement}
           disabled={isDecrementDisabled}
           whileTap={!isDecrementDisabled ? { scale: 0.9 } : undefined}
-          transition={springConfig}
+          transition={spring}
           tabIndex={-1}
           aria-label={t('common.decrement')}
         >
@@ -104,7 +103,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
           onClick={handleIncrement}
           disabled={isIncrementDisabled}
           whileTap={!isIncrementDisabled ? { scale: 0.9 } : undefined}
-          transition={springConfig}
+          transition={spring}
           tabIndex={-1}
           aria-label={t('common.increment')}
         >

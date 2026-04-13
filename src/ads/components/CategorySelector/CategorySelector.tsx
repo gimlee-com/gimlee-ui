@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, forwardRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import UIkit from 'uikit';
+import { spring } from '../../../animations';
 import { Modal, ModalDialog, ModalHeader, ModalBody, ModalTitle, ModalCloseDefault } from '../../../components/uikit/Modal/Modal';
 import { Input } from '../../../components/uikit/Form/Form';
 import { Spinner } from '../../../components/uikit/Spinner/Spinner';
@@ -140,7 +141,6 @@ export const CategorySelector = forwardRef<HTMLDivElement, CategorySelectorProps
     setSuggestions([]);
   };
 
-  const springTransition = { type: 'spring', stiffness: 400, damping: 40 } as const;
 
   return (
     <Modal id={id} ref={mergedRef} stack className={styles.categoryModal}>
@@ -198,7 +198,7 @@ export const CategorySelector = forwardRef<HTMLDivElement, CategorySelectorProps
                   initial={{ x: 300, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
                   exit={{ x: -300, opacity: 0 }}
-                  transition={springTransition}
+                  transition={spring}
                   className={styles.mobileList}
                 >
                   {selectedPath.length > 0 && (
@@ -238,7 +238,7 @@ export const CategorySelector = forwardRef<HTMLDivElement, CategorySelectorProps
                   key={idx}
                   initial={{ width: 0, opacity: 0 }}
                   animate={{ width: 250, opacity: 1 }}
-                  transition={springTransition}
+                  transition={spring}
                   className={styles.column}
                 >
                   {allowParentSelection && idx > 0 && (

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { motion, AnimatePresence, stagger } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import { spacesService } from '../services/spacesService';
+import { createPageContainerVariants, pageItemVariants } from '../../animations';
 import { presenceService } from '../../profile/services/presenceService';
 import type { UserSpaceDto, UserPresenceDto } from '../../types/api';
 import { AdCard } from '../../ads/components/AdCard';
@@ -19,24 +20,8 @@ import NavbarPortal from '../../components/Navbar/NavbarPortal';
 import ReportButton from '../../components/ReportButton/ReportButton';
 import styles from './UserSpacePage.module.scss';
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      delayChildren: stagger(0.1)
-    }
-  }
-} as const;
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: 'spring', stiffness: 400, damping: 40 }
-  }
-} as const;
+const containerVariants = createPageContainerVariants();
+const itemVariants = pageItemVariants;
 
 const UserSpacePage: React.FC = () => {
   const { t } = useTranslation();
@@ -150,15 +135,7 @@ const UserSpacePage: React.FC = () => {
             key={`page-${page}`}
             initial="hidden"
             animate="visible"
-            variants={{
-              hidden: { opacity: 0 },
-              visible: {
-                opacity: 1,
-                transition: {
-                  delayChildren: stagger(0.05)
-                }
-              }
-            }}
+            variants={createPageContainerVariants(0.05)}
           >
             <Grid gap="medium" match className="uk-child-width-1-2@s uk-child-width-1-3@m uk-child-width-1-4@l">
               <AnimatePresence mode="popLayout">
