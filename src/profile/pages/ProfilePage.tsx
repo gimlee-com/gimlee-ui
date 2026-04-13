@@ -10,7 +10,6 @@ import { useTheme } from '../../context/ThemeContext';
 import type { PirateChainTransaction, YCashTransaction, CurrencyDto, PresenceStatus } from '../../types/api';
 import { Heading } from '../../components/uikit/Heading/Heading';
 import { Button } from '../../components/uikit/Button/Button';
-import { Alert } from '../../components/uikit/Alert/Alert';
 import { Spinner } from '../../components/uikit/Spinner/Spinner';
 import { Input, FormLabel, FormControls, FormMessage } from '../../components/Form/Form';
 import { Dropdown } from '../../components/uikit/Dropdown/Dropdown';
@@ -80,7 +79,6 @@ const ProfilePage: React.FC = () => {
   const [savingCountry, setSavingCountry] = useState(false);
   const [savingPresence, setSavingPresence] = useState(false);
   const [customStatus, setCustomStatus] = useState('');
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (presence) {
@@ -90,13 +88,11 @@ const ProfilePage: React.FC = () => {
 
   const handleUpdatePresence = async (status: PresenceStatus) => {
     setSavingPresence(true);
-    setError(null);
-    setSuccess(null);
     try {
       await updatePresence(status, customStatus);
-      setSuccess(t('presence.statusUpdated'));
+      UIkit.notification({ message: t('presence.statusUpdated'), status: 'success', pos: 'top-center', timeout: 3000 });
     } catch (err: unknown) {
-      setError((err as Error).message || t('presence.failedToUpdate'));
+      UIkit.notification({ message: (err as Error).message || t('presence.failedToUpdate'), status: 'danger', pos: 'top-center', timeout: 5000 });
     } finally {
       setSavingPresence(false);
     }
@@ -113,7 +109,7 @@ const ProfilePage: React.FC = () => {
   const [yecError, setYecError] = useState<string | null>(null);
   const [arrrFocused, setArrrFocused] = useState(false);
   const [yecFocused, setYecFocused] = useState(false);
-  const [success, setSuccess] = useState<string | null>(null);
+
   const [showArrrTransactions, setShowArrrTransactions] = useState(false);
   const [showYecTransactions, setShowYecTransactions] = useState(false);
 
@@ -140,17 +136,15 @@ const ProfilePage: React.FC = () => {
   }, []);
 
   const handleLanguageChange = async (lang: string) => {
-    setError(null);
     setArrrError(null);
     setYecError(null);
-    setSuccess(null);
     i18n.changeLanguage(lang);
     if (isAuthenticated) {
       try {
         await userService.updateUserPreferences({ language: lang });
-        setSuccess(t('profile.preferencesUpdated'));
+        UIkit.notification({ message: t('profile.preferencesUpdated'), status: 'success', pos: 'top-center', timeout: 3000 });
       } catch {
-        setError(t('profile.failedToSaveLanguage'));
+        UIkit.notification({ message: t('profile.failedToSaveLanguage'), status: 'danger', pos: 'top-center', timeout: 5000 });
       }
     }
   };
@@ -163,17 +157,15 @@ const ProfilePage: React.FC = () => {
     }
 
     setSavingCurrency(true);
-    setError(null);
     setArrrError(null);
     setYecError(null);
-    setSuccess(null);
     try {
       await userService.updateUserPreferences({ preferredCurrency: currencyCode });
       setPreferredCurrency(currencyCode);
-      setSuccess(t('profile.preferencesUpdated'));
+      UIkit.notification({ message: t('profile.preferencesUpdated'), status: 'success', pos: 'top-center', timeout: 3000 });
       setCurrencySearch('');
     } catch (err: unknown) {
-      setError((err as Error).message || t('profile.failedToSaveCurrency'));
+      UIkit.notification({ message: (err as Error).message || t('profile.failedToSaveCurrency'), status: 'danger', pos: 'top-center', timeout: 5000 });
     } finally {
       setSavingCurrency(false);
     }
@@ -182,14 +174,12 @@ const ProfilePage: React.FC = () => {
   const handleCountrySelect = async (code: string | null) => {
     if (!isAuthenticated || !code) return;
     setSavingCountry(true);
-    setError(null);
-    setSuccess(null);
     try {
       await userService.updateUserPreferences({ countryOfResidence: code });
       setCountryOfResidence(code);
-      setSuccess(t('profile.preferencesUpdated'));
+      UIkit.notification({ message: t('profile.preferencesUpdated'), status: 'success', pos: 'top-center', timeout: 3000 });
     } catch (err: unknown) {
-      setError((err as Error).message || t('profile.failedToSaveCountry'));
+      UIkit.notification({ message: (err as Error).message || t('profile.failedToSaveCountry'), status: 'danger', pos: 'top-center', timeout: 5000 });
     } finally {
       setSavingCountry(false);
     }
@@ -198,12 +188,10 @@ const ProfilePage: React.FC = () => {
   const handleSaveArrrViewKey = async (e: React.FormEvent) => {
     e.preventDefault();
     setSavingArrr(true);
-    setError(null);
     setArrrError(null);
-    setSuccess(null);
     try {
       await paymentService.addPirateChainViewKey(arrrViewKey);
-      setSuccess(t('profile.keyUpdated'));
+      UIkit.notification({ message: t('profile.keyUpdated'), status: 'success', pos: 'top-center', timeout: 3000 });
       setArrrViewKey('');
       // Refresh transactions
       const txs = await paymentService.getPirateChainTransactions();
@@ -219,12 +207,10 @@ const ProfilePage: React.FC = () => {
   const handleSaveYecViewKey = async (e: React.FormEvent) => {
     e.preventDefault();
     setSavingYec(true);
-    setError(null);
     setYecError(null);
-    setSuccess(null);
     try {
       await paymentService.addYCashViewKey(yecViewKey);
-      setSuccess(t('profile.keyUpdated'));
+      UIkit.notification({ message: t('profile.keyUpdated'), status: 'success', pos: 'top-center', timeout: 3000 });
       setYecViewKey('');
       // Refresh transactions
       const txs = await paymentService.getYCashTransactions();
@@ -240,33 +226,6 @@ const ProfilePage: React.FC = () => {
   return (
     <motion.div initial="hidden" animate="visible" variants={containerVariants}>
       <Heading as="h2">{t('profile.title')}</Heading>
-
-      <AnimatePresence mode="wait">
-        {error && (
-          <motion.div
-            key="error"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={springConfig}
-            style={{ overflow: 'hidden' }}
-          >
-            <Alert variant="danger" onClose={() => setError(null)}>{error}</Alert>
-          </motion.div>
-        )}
-        {success && (
-          <motion.div
-            key="success"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={springConfig}
-            style={{ overflow: 'hidden' }}
-          >
-            <Alert variant="success" onClose={() => setSuccess(null)}>{success}</Alert>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       <motion.div variants={cardVariants} layout transition={springConfig}>
         <Card className="uk-margin-bottom">
