@@ -7,8 +7,15 @@ import type {
 
 const API_URL = import.meta.env.VITE_API_URL || '';
 
+interface DataEnvelope<T> {
+  success: boolean;
+  status: string;
+  message?: string;
+  data: T;
+}
+
 export const notificationService = {
-  list: (options?: {
+  list: async (options?: {
     category?: NotificationCategory;
     limit?: number;
     beforeId?: string;
@@ -18,21 +25,24 @@ export const notificationService = {
     if (options?.limit) params.set('limit', String(options.limit));
     if (options?.beforeId) params.set('beforeId', options.beforeId);
     const qs = params.toString();
-    return apiClient.get<NotificationListDto>(`/notifications${qs ? `?${qs}` : ''}`);
+    const res = await apiClient.get<DataEnvelope<NotificationListDto>>(`/notifications${qs ? `?${qs}` : ''}`);
+    return res.data;
   },
 
   markRead: (id: string) =>
-    apiClient.patch<Record<string, never>>(`/notifications/${id}/read`),
+    apiClient.patch<DataEnvelope<Record<string, never>>>(`/notifications/${id}/read`),
 
   markAllRead: (category?: NotificationCategory) => {
     const params = new URLSearchParams();
     if (category) params.set('category', category);
     const qs = params.toString();
-    return apiClient.patch<Record<string, never>>(`/notifications/read-all${qs ? `?${qs}` : ''}`);
+    return apiClient.patch<DataEnvelope<Record<string, never>>>(`/notifications/read-all${qs ? `?${qs}` : ''}`);
   },
 
-  getUnreadCount: () =>
-    apiClient.get<UnreadCountDto>('/notifications/unread-count'),
+  getUnreadCount: async () => {
+    const res = await apiClient.get<DataEnvelope<UnreadCountDto>>('/notifications/unread-count');
+    return res.data;
+  },
 
   getStreamUrl: () => `${API_URL}/api/notifications/stream`,
 };
