@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react';
+import { useAuth } from '../../context/AuthContext';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { notificationService } from '../services/notificationService';
 import {
@@ -22,6 +23,7 @@ const QUERY_KEY = (cat: NotificationCategory | null) => cat ?? 'all';
  */
 export const useNotifications = () => {
   const dispatch = useAppDispatch();
+  const { isAuthenticated } = useAuth();
   const { entities, queries, unreadCount, activeCategory } = useAppSelector(
     (state) => state.notifications
   );
@@ -66,6 +68,7 @@ export const useNotifications = () => {
 
   // On first mount, fetch the 'all' category + unread count
   useEffect(() => {
+    if (!isAuthenticated) return;
     fetchCategory(null);
     notificationService
       .getUnreadCount()
@@ -75,12 +78,13 @@ export const useNotifications = () => {
         }
       })
       .catch(() => {});
-  }, [fetchCategory, dispatch]);
+  }, [isAuthenticated, fetchCategory, dispatch]);
 
   // Fetch when active category changes
   useEffect(() => {
+    if (!isAuthenticated) return;
     fetchCategory(activeCategory);
-  }, [activeCategory, fetchCategory]);
+  }, [isAuthenticated, activeCategory, fetchCategory]);
 
   // --- Public actions ---
 
