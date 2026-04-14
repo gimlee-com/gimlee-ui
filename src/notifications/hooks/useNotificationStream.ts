@@ -5,11 +5,13 @@ import { apiClient } from '../../services/apiClient';
 import { useAppDispatch } from '../../store';
 import { notificationService } from '../services/notificationService';
 import {
+  setNotifications,
   prependNotification,
   markOneRead,
   markAllReadInState,
   setUnreadCount,
   setStreamConnected,
+  setQueryLoading,
   resetNotifications,
 } from '../store/notificationSlice';
 import { SSE_EVENTS } from '../types/notification';
@@ -41,6 +43,17 @@ export const useNotificationStream = () => {
 
     const token = apiClient.getToken();
     if (!token) return;
+
+    // Bootstrap: fetch initial "all" notifications + unread count
+    dispatch(setQueryLoading({ category: null, loading: true }));
+    notificationService.list()
+      .then((data) => dispatch(setNotifications({ category: null, data })))
+      .catch(() => dispatch(setQueryLoading({ category: null, loading: false })));
+    notificationService.getUnreadCount()
+      .then((res) => {
+        if (typeof res?.count === 'number') dispatch(setUnreadCount(res.count));
+      })
+      .catch(() => {});
 
     // Abort any existing connection before establishing a new one
     if (abortRef.current) {

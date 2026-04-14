@@ -67,18 +67,22 @@ export const useNotifications = () => {
   );
 
   // On first mount, fetch the 'all' category + unread count
+  // (skipped if already bootstrapped by useNotificationStream)
   useEffect(() => {
     if (!isAuthenticated) return;
     fetchCategory(null);
-    notificationService
-      .getUnreadCount()
-      .then((res) => {
-        if (typeof res?.count === 'number') {
-          dispatch(setUnreadCount(res.count));
-        }
-      })
-      .catch(() => {});
-  }, [isAuthenticated, fetchCategory, dispatch]);
+    // Only fetch unread count if not yet set (SSE bootstrap handles this)
+    if (unreadCount === 0) {
+      notificationService
+        .getUnreadCount()
+        .then((res) => {
+          if (typeof res?.count === 'number') {
+            dispatch(setUnreadCount(res.count));
+          }
+        })
+        .catch(() => {});
+    }
+  }, [isAuthenticated, fetchCategory, dispatch]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Fetch when active category changes
   useEffect(() => {

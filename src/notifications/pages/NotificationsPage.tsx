@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
@@ -50,14 +50,29 @@ const NotificationsPage: React.FC = () => {
     }
   }, [searchParams]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Unread-only filter, synced to URL
+  const unreadOnly = searchParams.get('unread') === 'true';
+
+  const updateSearchParams = (category: NotificationCategory | null, unread: boolean) => {
+    const next: Record<string, string> = {};
+    if (category) next.category = category;
+    if (unread) next.unread = 'true';
+    setSearchParams(next);
+  };
+
   const handleCategoryChange = (category: NotificationCategory | null) => {
     setCategory(category);
-    if (category) {
-      setSearchParams({ category });
-    } else {
-      setSearchParams({});
-    }
+    updateSearchParams(category, unreadOnly);
   };
+
+  const handleUnreadToggle = () => {
+    updateSearchParams(activeCategory, !unreadOnly);
+  };
+
+  const filteredNotifications = useMemo(
+    () => unreadOnly ? notifications.filter((n) => !n.read) : notifications,
+    [notifications, unreadOnly]
+  );
 
   if (!isAuthenticated) {
     navigate('/login', { state: { from: location.pathname } });
@@ -88,32 +103,45 @@ const NotificationsPage: React.FC = () => {
       </motion.div>
 
       <motion.div variants={pageItemVariants} className="uk-margin-bottom">
-        <NotificationCategoryFilter
-          activeCategory={activeCategory}
-          onChange={handleCategoryChange}
-        />
+        <div className="uk-flex uk-flex-between uk-flex-middle">
+          <NotificationCategoryFilter
+            activeCategory={activeCategory}
+            onChange={handleCategoryChange}
+          />
+          <label className="uk-flex uk-flex-middle" style={{ gap: 6, whiteSpace: 'nowrap', cursor: 'pointer', fontSize: 13 }}>
+            <input
+              className="uk-checkbox"
+              type="checkbox"
+              checked={unreadOnly}
+              onChange={handleUnreadToggle}
+            />
+            {t('notifications.unreadOnly')}
+          </label>
+        </div>
       </motion.div>
 
       {loading ? (
         <div className="uk-text-center uk-margin-large-top">
           <Spinner />
         </div>
-      ) : notifications.length === 0 ? (
+      ) : filteredNotifications.length === 0 ? (
         <motion.div
           variants={pageItemVariants}
           className="uk-text-center uk-margin-large-top"
         >
           <Icon icon="bell" ratio={3} className="uk-text-muted" />
           <p className="uk-text-muted uk-margin-small-top">
-            {activeCategory
-              ? t('notifications.emptyCategory')
-              : t('notifications.empty')}
+            {unreadOnly
+              ? t('notifications.emptyUnread')
+              : activeCategory
+                ? t('notifications.emptyCategory')
+                : t('notifications.empty')}
           </p>
         </motion.div>
       ) : (
         <>
           <AnimatePresence initial={false}>
-            {notifications.map((notification) => (
+            {filteredNotifications.map((notification) => (
               <motion.div
                 key={notification.id}
                 variants={pageItemVariants}
