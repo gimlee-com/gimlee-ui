@@ -1,0 +1,81 @@
+@import "../../../styles/uikit-imports";
+
+.item {
+  display: flex;
+  gap: 12px;
+  padding: 12px 15px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  border-left: 3px solid transparent;
+
+  &:hover {
+    background-color: color-mix(in srgb, $global-muted-background, transparent 30%);
+  }
+
+  &.unread {
+    background-color: color-mix(in srgb, $global-primary-background, transparent 95%);
+  }
+
+  &.severityInfo {
+    border-left-color: $global-primary-background;
+  }
+
+  &.severitySuccess {
+    border-left-color: $global-success-background;
+  }
+
+  &.severityWarning {
+    border-left-color: $global-warning-background;
+  }
+
+  &.severityDanger {
+    border-left-color: $global-danger-background;
+  }
+}
+
+.iconWrapper {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: $global-muted-background;
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+}
+
+.title {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: $global-emphasis-color;
+  margin: 0;
+
+  .item:not(.unread) & {
+    font-weight: 400;
+    color: $global-color;
+  }
+}
+
+.message {
+  font-size: 12px;
+  color: $global-muted-color;
+  line-height: 1.4;
+  margin: 2px 0 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.timestamp {
+  font-size: 11px;
+  color: $global-muted-color;
+  margin-top: 4px;
+  white-space: nowrap;
+}

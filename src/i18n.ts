@@ -876,6 +876,24 @@ const resources = {
         "restricted": {
           "message": "This action is not available while your account is restricted."
         }
+      },
+      "notifications": {
+        "title": "Notifications",
+        "empty": "You're all caught up!",
+        "emptyCategory": "No notifications in this category.",
+        "markAllRead": "Mark all read",
+        "viewAll": "View all notifications",
+        "loadMore": "Load more",
+        "categories": {
+          "all": "All",
+          "orders": "Orders",
+          "messages": "Messages",
+          "ads": "Ads",
+          "qa": "Q&A",
+          "support": "Support",
+          "account": "Account"
+        },
+        "justNow": "Just now"
       }
     }
   },
@@ -1755,6 +1773,24 @@ const resources = {
         "restricted": {
           "message": "Ta akcja jest niedostępna, gdy Twoje konto jest ograniczone."
         }
+      },
+      "notifications": {
+        "title": "Powiadomienia",
+        "empty": "Brak nowych powiadomień!",
+        "emptyCategory": "Brak powiadomień w tej kategorii.",
+        "markAllRead": "Oznacz wszystkie jako przeczytane",
+        "viewAll": "Zobacz wszystkie powiadomienia",
+        "loadMore": "Załaduj więcej",
+        "categories": {
+          "all": "Wszystkie",
+          "orders": "Zamówienia",
+          "messages": "Wiadomości",
+          "ads": "Ogłoszenia",
+          "qa": "Pytania i odpowiedzi",
+          "support": "Wsparcie",
+          "account": "Konto"
+        },
+        "justNow": "Przed chwilą"
       }
     }
   }

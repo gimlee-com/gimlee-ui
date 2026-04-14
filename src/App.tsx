@@ -9,6 +9,7 @@ import { PurchaseModal } from './purchases/components/PurchaseModal';
 import { rehydrateForUser, clearForLogout } from './store/purchaseSlice';
 import { VolatilityBanner } from './payments/components/VolatilityBanner/VolatilityBanner';
 import { BanNotificationBanner } from './components/BanNotificationBanner/BanNotificationBanner';
+import { useNotificationStream } from './notifications/hooks/useNotificationStream';
 import './i18n';
 import Navbar from './components/Navbar/Navbar';
 import { FLOATING_BUTTON_CONTAINER_ID } from './components/FloatingButton/FloatingButtonPortal';
@@ -30,6 +31,7 @@ const AboutPage = lazy(() => import('./pages/AboutPage'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
 const FAQPage = lazy(() => import('./pages/FAQPage'));
 const AdminPages = lazy(() => import('./admin/pages/AdminPages'));
+const NotificationsPage = lazy(() => import('./notifications/pages/NotificationsPage'));
 
 
 function App() {
@@ -37,6 +39,9 @@ function App() {
   const { isAuthenticated, username } = useAuth();
   const dispatch = useAppDispatch();
   const { theme } = useTheme();
+
+  // Establish notification SSE stream when authenticated
+  useNotificationStream();
 
   useEffect(() => {
     if (isAuthenticated && username) {
@@ -84,6 +89,7 @@ function App() {
             <Route path="/watchlist" element={<AdWatchlistPage />} />
             <Route path="/sales/*" element={<Suspense><SalesPages /></Suspense>} />
             <Route path="/purchases" element={<PurchasesPage />} />
+            <Route path="/notifications" element={<Suspense><NotificationsPage /></Suspense>} />
             <Route path="/profile/*" element={<Suspense><ProfilePages /></Suspense>} />
             <Route path="/u/:userName" element={<UserSpacePage />} />
             <Route path="/terms" element={<Suspense><TermsOfServicePage /></Suspense>} />

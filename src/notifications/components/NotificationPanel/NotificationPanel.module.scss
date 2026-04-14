@@ -1,0 +1,105 @@
+@import "../../../styles/uikit-imports";
+
+.panel {
+  width: 380px;
+  max-height: 480px;
+  display: flex;
+  flex-direction: column;
+  background: $global-background;
+  border-radius: $global-border-radius;
+  box-shadow: var(--global-large-shadow);
+  overflow: hidden;
+
+  @media (max-width: $breakpoint-small-max) {
+    width: calc(100vw - 30px);
+    max-height: 70vh;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 15px 0;
+}
+
+.headerTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: $global-emphasis-color;
+  margin: 0;
+}
+
+.markAllRead {
+  font-size: 12px;
+  cursor: pointer;
+  color: $global-primary-background;
+  background: none;
+  border: none;
+  padding: 0;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.filters {
+  padding: 10px 15px 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.list {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.footer {
+  border-top: 1px solid $global-border;
+  padding: 10px 15px;
+  text-align: center;
+}
+
+.footerLink {
+  font-size: 13px;
+  color: $global-primary-background;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  color: $global-muted-color;
+  font-size: 14px;
+  text-align: center;
+}
+
+.loadMore {
+  padding: 10px 15px;
+  text-align: center;
+}
+
+.loadMoreBtn {
+  font-size: 12px;
+  cursor: pointer;
+  color: $global-primary-background;
+  background: none;
+  border: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

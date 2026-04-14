@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'motion/react';
@@ -25,6 +25,9 @@ import { usePresence } from '../../context/PresenceContext';
 import { useTheme } from '../../context/ThemeContext';
 import { useGuestCountry } from '../../hooks/useGuestCountry';
 import { CountrySelector } from '../CountrySelector/CountrySelector';
+import { NotificationBell } from '../../notifications/components/NotificationBell/NotificationBell';
+import { NotificationPanel } from '../../notifications/components/NotificationPanel/NotificationPanel';
+import { useNotifications } from '../../notifications/hooks/useNotifications';
 import styles from './Navbar.module.scss';
 
 const MotionNavbarItem = motion.create(NavbarItem);
@@ -43,6 +46,48 @@ const Navbar: React.FC = () => {
   const { scrollY } = useScroll();
   const [isScrolled, setIsScrolled] = useState(scrollY.get() > 60);
   const { guestCountryCode, setGuestCountryCode } = useGuestCountry();
+  const [isNotificationPanelOpen, setIsNotificationPanelOpen] = useState(false);
+  const notificationPanelRef = useRef<HTMLDivElement>(null);
+  const notificationBellRef = useRef<HTMLDivElement>(null);
+
+  const {
+    notifications: notifItems,
+    unreadCount: notifUnreadCount,
+    hasMore: notifHasMore,
+    loading: notifLoading,
+    loadingMore: notifLoadingMore,
+    activeCategory: notifActiveCategory,
+    loadMore: notifLoadMore,
+    markRead: notifMarkRead,
+    markAllRead: notifMarkAllRead,
+    setCategory: notifSetCategory,
+  } = useNotifications();
+
+  const toggleNotificationPanel = useCallback(() => {
+    setIsNotificationPanelOpen((prev) => !prev);
+  }, []);
+
+  const closeNotificationPanel = useCallback(() => {
+    setIsNotificationPanelOpen(false);
+  }, []);
+
+  // Close notification panel on outside click
+  useEffect(() => {
+    if (!isNotificationPanelOpen) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as Node;
+      if (
+        notificationPanelRef.current &&
+        !notificationPanelRef.current.contains(target) &&
+        notificationBellRef.current &&
+        !notificationBellRef.current.contains(target)
+      ) {
+        setIsNotificationPanelOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isNotificationPanelOpen]);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setIsScrolled(latest > 60);
@@ -61,6 +106,7 @@ const Navbar: React.FC = () => {
     if (offcanvasInstance && isMenuOpen) {
       offcanvasInstance.hide();
     }
+    setIsNotificationPanelOpen(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 
@@ -114,6 +160,49 @@ const Navbar: React.FC = () => {
                 transition={{ duration: 0.2, delay: 0.05 }}
               >
                 <Link to="/purchases">{t('navbar.purchases')}</Link>
+              </MotionNavbarItem>
+            )}
+            {isAuthenticated && (
+              <MotionNavbarItem
+                key="notifications"
+                className="uk-visible@m"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2, delay: mode === 'default' ? 0.07 : 0 }}
+                style={{ position: 'relative' }}
+              >
+                <NotificationBell
+                  ref={notificationBellRef}
+                  unreadCount={notifUnreadCount}
+                  onClick={toggleNotificationPanel}
+                />
+                <AnimatePresence>
+                  {isNotificationPanelOpen && (
+                    <motion.div
+                      ref={notificationPanelRef}
+                      initial={{ opacity: 0, y: -8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -8 }}
+                      transition={{ type: 'spring', stiffness: 400, damping: 40 }}
+                      style={{ position: 'absolute', top: '100%', right: 0, zIndex: 1020, marginTop: 8 }}
+                    >
+                      <NotificationPanel
+                        notifications={notifItems}
+                        unreadCount={notifUnreadCount}
+                        hasMore={notifHasMore}
+                        loading={notifLoading}
+                        loadingMore={notifLoadingMore}
+                        activeCategory={notifActiveCategory}
+                        onCategoryChange={notifSetCategory}
+                        onMarkRead={notifMarkRead}
+                        onMarkAllRead={notifMarkAllRead}
+                        onLoadMore={notifLoadMore}
+                        onClose={closeNotificationPanel}
+                      />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </MotionNavbarItem>
             )}
             <MotionNavbarItem
@@ -325,6 +414,21 @@ const Navbar: React.FC = () => {
               transition={{ duration: 0.2, delay: 0.2 }}
             >
               <Link to="/purchases" uk-toggle="target: #mobile-menu">{t('navbar.purchases')}</Link>
+            </MotionNavItem>
+            <MotionNavItem
+              key="notifications-off"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2, delay: 0.21 }}
+            >
+              <Link to="/notifications" uk-toggle="target: #mobile-menu">
+                <Icon icon="bell" className="uk-margin-small-right" />
+                {t('notifications.title')}
+                {notifUnreadCount > 0 && (
+                  <span className="uk-badge uk-margin-small-left">{notifUnreadCount > 99 ? '99+' : notifUnreadCount}</span>
+                )}
+              </Link>
             </MotionNavItem>
             <MotionNavItem
               key="watchlist-off"
