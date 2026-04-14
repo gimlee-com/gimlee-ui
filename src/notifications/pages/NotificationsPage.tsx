@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useNotifications } from '../hooks/useNotifications';
 import { NotificationItem } from '../components/NotificationItem/NotificationItem';
@@ -12,6 +12,8 @@ import { Spinner } from '../../components/uikit/Spinner/Spinner';
 import { Icon } from '../../components/uikit/Icon/Icon';
 import { useNavbarMode } from '../../hooks/useNavbarMode';
 import { createPageContainerVariants, pageItemVariants } from '../../animations';
+import { NOTIFICATION_CATEGORIES } from '../types/notification';
+import type { NotificationCategory } from '../types/notification';
 
 const containerVariants = createPageContainerVariants();
 
@@ -20,6 +22,7 @@ const NotificationsPage: React.FC = () => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   useNavbarMode('focused', location.state?.from || '/');
 
@@ -35,6 +38,26 @@ const NotificationsPage: React.FC = () => {
     markAllRead,
     setCategory,
   } = useNotifications();
+
+  // Sync URL → Redux active category on mount / URL change
+  useEffect(() => {
+    const urlCategory = searchParams.get('category') as NotificationCategory | null;
+    const validCategory = urlCategory && NOTIFICATION_CATEGORIES.includes(urlCategory)
+      ? urlCategory
+      : null;
+    if (validCategory !== activeCategory) {
+      setCategory(validCategory);
+    }
+  }, [searchParams]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const handleCategoryChange = (category: NotificationCategory | null) => {
+    setCategory(category);
+    if (category) {
+      setSearchParams({ category });
+    } else {
+      setSearchParams({});
+    }
+  };
 
   if (!isAuthenticated) {
     navigate('/login', { state: { from: location.pathname } });
@@ -67,7 +90,7 @@ const NotificationsPage: React.FC = () => {
       <motion.div variants={pageItemVariants} className="uk-margin-bottom">
         <NotificationCategoryFilter
           activeCategory={activeCategory}
-          onChange={setCategory}
+          onChange={handleCategoryChange}
         />
       </motion.div>
 

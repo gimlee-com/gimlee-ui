@@ -1,42 +1,75 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import { Icon } from '../../../components/uikit/Icon/Icon';
 import { Spinner } from '../../../components/uikit/Spinner/Spinner';
 import { NotificationItem } from '../NotificationItem/NotificationItem';
-import { NotificationCategoryFilter } from '../NotificationCategoryFilter/NotificationCategoryFilter';
+import { CATEGORY_ICON_MAP } from '../../types/notification';
 import type { NotificationDto, NotificationCategory } from '../../types/notification';
 import styles from './NotificationPanel.module.scss';
+
+const MAX_PER_GROUP = 3;
+
+interface CategoryGroup {
+  category: NotificationCategory;
+  notifications: NotificationDto[];
+  hasMore: boolean;
+}
 
 interface NotificationPanelProps {
   notifications: NotificationDto[];
   unreadCount: number;
-  hasMore: boolean;
   loading: boolean;
-  loadingMore: boolean;
-  activeCategory: NotificationCategory | null;
-  onCategoryChange: (category: NotificationCategory | null) => void;
   onMarkRead: (id: string) => void;
-  onMarkAllRead: (category?: NotificationCategory) => void;
-  onLoadMore: () => void;
+  onMarkAllRead: () => void;
   onClose: () => void;
+}
+
+/**
+ * Groups notifications by category, sorted by the most recent item
+ * in each group. Only categories with at least one unread notification
+ * are shown. Each group is capped at MAX_PER_GROUP items.
+ */
+function buildGroups(notifications: NotificationDto[]): CategoryGroup[] {
+  const grouped = new Map<NotificationCategory, NotificationDto[]>();
+
+  for (const n of notifications) {
+    if (!grouped.has(n.category)) {
+      grouped.set(n.category, []);
+    }
+    grouped.get(n.category)!.push(n);
+  }
+
+  // Only keep categories that have at least one unread notification
+  const groups: CategoryGroup[] = [];
+  for (const [category, items] of grouped) {
+    if (items.some((n) => !n.read)) {
+      // Items are already sorted by recency from the API
+      groups.push({
+        category,
+        notifications: items.slice(0, MAX_PER_GROUP),
+        hasMore: items.length > MAX_PER_GROUP,
+      });
+    }
+  }
+
+  // Sort groups by the most recent notification (most recent first)
+  groups.sort((a, b) => b.notifications[0].createdAt - a.notifications[0].createdAt);
+
+  return groups;
 }
 
 export const NotificationPanel: React.FC<NotificationPanelProps> = ({
   notifications,
   unreadCount,
-  hasMore,
   loading,
-  loadingMore,
-  activeCategory,
-  onCategoryChange,
   onMarkRead,
   onMarkAllRead,
-  onLoadMore,
   onClose,
 }) => {
   const { t } = useTranslation();
+  const groups = useMemo(() => buildGroups(notifications), [notifications]);
 
   return (
     <div className={styles.panel}>
@@ -46,67 +79,67 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
         {unreadCount > 0 && (
           <button
             className={styles.markAllRead}
-            onClick={() => onMarkAllRead(activeCategory ?? undefined)}
+            onClick={onMarkAllRead}
           >
             {t('notifications.markAllRead')}
           </button>
         )}
       </div>
 
-      {/* Category filters */}
-      <div className={styles.filters}>
-        <NotificationCategoryFilter
-          activeCategory={activeCategory}
-          onChange={onCategoryChange}
-        />
-      </div>
-
-      {/* Notification list */}
+      {/* Grouped notification list */}
       <div className={styles.list}>
         {loading ? (
           <div className={styles.empty}>
             <Spinner />
           </div>
-        ) : notifications.length === 0 ? (
+        ) : groups.length === 0 ? (
           <div className={styles.empty}>
             <Icon icon="bell" ratio={2} className="uk-text-muted uk-margin-small-bottom" />
-            <span>
-              {activeCategory
-                ? t('notifications.emptyCategory')
-                : t('notifications.empty')}
-            </span>
+            <span>{t('notifications.empty')}</span>
           </div>
         ) : (
-          <AnimatePresence initial={false}>
-            {notifications.map((notification) => (
-              <motion.div
-                key={notification.id}
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <NotificationItem
-                  notification={notification}
-                  onRead={onMarkRead}
-                  onClose={onClose}
+          groups.map((group) => (
+            <div key={group.category} className={styles.group}>
+              <div className={styles.groupHeader}>
+                <Icon
+                  icon={CATEGORY_ICON_MAP[group.category] ?? 'bell'}
+                  ratio={0.8}
+                  className="uk-text-muted"
                 />
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        )}
+                <span className={styles.groupTitle}>
+                  {t(`notifications.categories.${group.category}`)}
+                </span>
+              </div>
 
-        {/* Load more */}
-        {!loading && hasMore && notifications.length > 0 && (
-          <div className={styles.loadMore}>
-            {loadingMore ? (
-              <Spinner ratio={0.5} />
-            ) : (
-              <button className={styles.loadMoreBtn} onClick={onLoadMore}>
-                {t('notifications.loadMore')}
-              </button>
-            )}
-          </div>
+              <AnimatePresence initial={false}>
+                {group.notifications.map((notification) => (
+                  <motion.div
+                    key={notification.id}
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <NotificationItem
+                      notification={notification}
+                      onRead={onMarkRead}
+                      onClose={onClose}
+                    />
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+
+              {group.hasMore && (
+                <Link
+                  to={`/notifications?category=${group.category}`}
+                  className={styles.showAll}
+                  onClick={onClose}
+                >
+                  {t('notifications.showAllInCategory')}
+                </Link>
+              )}
+            </div>
+          ))
         )}
       </div>
 

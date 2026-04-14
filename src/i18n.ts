@@ -884,6 +884,7 @@ const resources = {
         "markAllRead": "Mark all read",
         "viewAll": "View all notifications",
         "loadMore": "Load more",
+        "showAllInCategory": "Show all in this category →",
         "categories": {
           "all": "All",
           "orders": "Orders",
@@ -1781,6 +1782,7 @@ const resources = {
         "markAllRead": "Oznacz wszystkie jako przeczytane",
         "viewAll": "Zobacz wszystkie powiadomienia",
         "loadMore": "Załaduj więcej",
+        "showAllInCategory": "Pokaż wszystkie w tej kategorii →",
         "categories": {
           "all": "Wszystkie",
           "orders": "Zamówienia",

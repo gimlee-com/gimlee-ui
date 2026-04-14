@@ -27,7 +27,10 @@ import { useGuestCountry } from '../../hooks/useGuestCountry';
 import { CountrySelector } from '../CountrySelector/CountrySelector';
 import { NotificationBell } from '../../notifications/components/NotificationBell/NotificationBell';
 import { NotificationPanel } from '../../notifications/components/NotificationPanel/NotificationPanel';
-import { useNotifications } from '../../notifications/hooks/useNotifications';
+import { useAppDispatch } from '../../store';
+import { markOneRead as markOneReadAction, markAllReadInState } from '../../notifications/store/notificationSlice';
+import { notificationService } from '../../notifications/services/notificationService';
+import type { NotificationDto } from '../../notifications/types/notification';
 import styles from './Navbar.module.scss';
 
 const MotionNavbarItem = motion.create(NavbarItem);
@@ -49,19 +52,28 @@ const Navbar: React.FC = () => {
   const [isNotificationPanelOpen, setIsNotificationPanelOpen] = useState(false);
   const notificationPanelRef = useRef<HTMLDivElement>(null);
   const notificationBellRef = useRef<HTMLDivElement>(null);
+  const appDispatch = useAppDispatch();
 
-  const {
-    notifications: notifItems,
-    unreadCount: notifUnreadCount,
-    hasMore: notifHasMore,
-    loading: notifLoading,
-    loadingMore: notifLoadingMore,
-    activeCategory: notifActiveCategory,
-    loadMore: notifLoadMore,
-    markRead: notifMarkRead,
-    markAllRead: notifMarkAllRead,
-    setCategory: notifSetCategory,
-  } = useNotifications();
+  // Panel always reads from the "all" query — independent of the page's activeCategory
+  const notifState = useAppSelector((state) => state.notifications);
+  const notifUnreadCount = notifState.unreadCount;
+  const notifLoading = notifState.queries.all?.loading ?? false;
+  const notifItems: NotificationDto[] = (notifState.queries.all?.ids ?? [])
+    .map((id) => notifState.entities.entities[id])
+    .filter((n): n is NotificationDto => n != null);
+
+  const notifMarkRead = useCallback(
+    (id: string) => {
+      appDispatch(markOneReadAction(id));
+      notificationService.markRead(id).catch(() => {});
+    },
+    [appDispatch]
+  );
+
+  const notifMarkAllRead = useCallback(() => {
+    appDispatch(markAllReadInState({}));
+    notificationService.markAllRead().catch(() => {});
+  }, [appDispatch]);
 
   const toggleNotificationPanel = useCallback(() => {
     setIsNotificationPanelOpen((prev) => !prev);
@@ -190,14 +202,9 @@ const Navbar: React.FC = () => {
                       <NotificationPanel
                         notifications={notifItems}
                         unreadCount={notifUnreadCount}
-                        hasMore={notifHasMore}
                         loading={notifLoading}
-                        loadingMore={notifLoadingMore}
-                        activeCategory={notifActiveCategory}
-                        onCategoryChange={notifSetCategory}
                         onMarkRead={notifMarkRead}
                         onMarkAllRead={notifMarkAllRead}
-                        onLoadMore={notifLoadMore}
                         onClose={closeNotificationPanel}
                       />
                     </motion.div>
