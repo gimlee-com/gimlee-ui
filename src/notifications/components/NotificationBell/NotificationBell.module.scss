@@ -9,6 +9,12 @@
   height: 100%;
   padding: 0 5px;
   box-sizing: border-box;
+  color: $navbar-nav-item-color;
+  transition: color 0.1s ease-in-out;
+
+  &:hover {
+    color: $navbar-nav-item-hover-color;
+  }
 }
 
 .badge {
