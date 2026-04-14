@@ -33,7 +33,7 @@ export const useNotifications = () => {
   const query = queries[queryKey];
   const loading = query?.loading ?? false;
   const loadingMore = query?.loadingMore ?? false;
-  const hasMore = query?.hasMore ?? true;
+  const hasMore = query?.hasMore ?? false;
   const error = query?.error ?? null;
 
   // Resolve notification DTOs from entity map
