@@ -19,6 +19,27 @@ export type NotificationSeverity = (typeof NOTIFICATION_SEVERITIES)[number];
 
 // --- Core DTO ---
 
+export type SuggestedActionType =
+  | 'PURCHASE_LIST'
+  | 'PURCHASE_DETAILS'
+  | 'SALE_LIST'
+  | 'SALE_DETAILS'
+  | 'AD_DETAILS'
+  | 'SELLER_AD_DETAILS'
+  | 'AD_EDIT'
+  | 'BUYER_QA_DETAILS'
+  | 'SELLER_QA_DETAILS'
+  | 'ADMIN_REPORT_DETAILS'
+  | 'ADMIN_TICKET_DETAILS'
+  | 'TICKET_DETAILS'
+  | 'SUPPORT_CENTER'
+  | 'GETTING_STARTED';
+
+export interface SuggestedActionDto {
+  type: SuggestedActionType;
+  target?: string;
+}
+
 export interface NotificationDto {
   id: string;
   type: string;
@@ -28,7 +49,9 @@ export interface NotificationDto {
   message: string;
   read: boolean;
   createdAt: number; // epoch millis
+  /** @deprecated use suggestedAction */
   actionUrl?: string;
+  suggestedAction?: SuggestedActionDto;
   metadata?: Record<string, string>;
 }
 

@@ -7,6 +7,7 @@ import {
   SEVERITY_CLASS_MAP,
 } from '../../types/notification';
 import type { NotificationDto } from '../../types/notification';
+import { mapSuggestedActionToUrl } from '../../utils/suggestedActionUtils';
 import styles from './NotificationItem.module.scss';
 
 interface NotificationItemProps {
@@ -60,9 +61,17 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({
       onRead?.(notification.id);
     }
 
-    if (notification.actionUrl && isSafeActionUrl(notification.actionUrl)) {
+    let targetUrl: string | null = null;
+
+    if (notification.suggestedAction) {
+      targetUrl = mapSuggestedActionToUrl(notification.suggestedAction, notification.category);
+    } else if (notification.actionUrl && isSafeActionUrl(notification.actionUrl)) {
+      targetUrl = notification.actionUrl;
+    }
+
+    if (targetUrl) {
       onClose?.();
-      navigate(notification.actionUrl);
+      navigate(targetUrl);
     }
   };
 
