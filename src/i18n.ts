@@ -754,6 +754,9 @@ const resources = {
           "unassigned": "Unassigned",
           "lastMessage": "Last message",
           "messageCount": "{{count}} messages",
+          "card": {
+            "lastActivity": "Last activity"
+          },
           "status": {
             "OPEN": "Open",
             "IN_PROGRESS": "In Progress",
@@ -1661,6 +1664,9 @@ const resources = {
           "unassigned": "Nieprzypisany",
           "lastMessage": "Ostatnia wiadomość",
           "messageCount": "{{count}} wiadomości",
+          "card": {
+            "lastActivity": "Ostatnia aktywność"
+          },
           "status": {
             "OPEN": "Otwarte",
             "IN_PROGRESS": "W toku",

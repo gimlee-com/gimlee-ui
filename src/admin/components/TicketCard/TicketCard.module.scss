@@ -1,0 +1,149 @@
+@import "../../../styles/uikit-imports";
+
+// ── Left-border status accent ───────────────────────────────────────
+.card {
+  border-left: 4px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.statusOpen {
+  border-left-color: $global-warning-background;
+}
+
+.statusInProgress {
+  border-left-color: $global-primary-background;
+}
+
+.statusAwaitingUser {
+  border-left-color: #f0ad4e; // amber — distinct from OPEN's yellow
+}
+
+.statusResolved {
+  border-left-color: $global-success-background;
+}
+
+.statusClosed {
+  border-left-color: $global-muted-color;
+}
+
+// ── Header row ──────────────────────────────────────────────────────
+.header {
+  display: flex;
+  align-items: center;
+  gap: $global-small-gutter;
+  flex-wrap: wrap;
+}
+
+.categoryLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: $global-muted-color;
+  font-size: $global-small-font-size;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.headerRight {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: $global-small-gutter;
+  flex-shrink: 0;
+}
+
+// ── Status dot ──────────────────────────────────────────────────────
+.statusDot {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: $global-small-font-size;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dotOpen {
+  background-color: $global-warning-background;
+}
+
+.dotInProgress {
+  background-color: $global-primary-background;
+}
+
+.dotAwaitingUser {
+  background-color: #f0ad4e;
+}
+
+.dotResolved {
+  background-color: $global-success-background;
+}
+
+.dotClosed {
+  background-color: $global-muted-color;
+}
+
+// ── Message count indicator ─────────────────────────────────────────
+.messageCount {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: $global-muted-color;
+  font-size: $global-small-font-size;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+// ── Content zone ────────────────────────────────────────────────────
+.content {
+  margin-top: $global-small-margin;
+}
+
+.subject {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// ── Footer ──────────────────────────────────────────────────────────
+.footer {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: $global-small-gutter;
+  margin-top: $global-small-margin;
+  padding-top: $global-small-margin;
+  border-top: 1px solid $global-border;
+  font-size: $global-small-font-size;
+}
+
+.footerRight {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: $global-small-gutter;
+  color: $global-muted-color;
+}
+
+.creatorInfo {
+  color: $global-muted-color;
+  white-space: nowrap;
+}
+
+.assigneeInfo {
+  color: $global-muted-color;
+  white-space: nowrap;
+}
+
+.lastActivity {
+  color: $global-muted-color;
+  white-space: nowrap;
+}

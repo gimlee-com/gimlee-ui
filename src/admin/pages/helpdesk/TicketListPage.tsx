@@ -242,7 +242,7 @@ const TicketListPage: React.FC = () => {
               animate="visible"
               variants={createPageContainerVariants(0.04)}
             >
-              <div className="uk-grid uk-grid-small uk-child-width-1-1 uk-child-width-1-2@m" uk-grid="">
+              <div className="uk-grid uk-grid-small uk-child-width-1-1" uk-grid="">
                 <AnimatePresence mode="popLayout">
                   {data?.content.map(ticket => (
                     <TicketCard key={ticket.id} ticket={ticket} />
