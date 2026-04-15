@@ -103,12 +103,17 @@ const NotificationsPage: React.FC = () => {
       </motion.div>
 
       <motion.div variants={pageItemVariants} className="uk-margin-bottom">
-        <div className="uk-flex uk-flex-between uk-flex-middle">
-          <NotificationCategoryFilter
-            activeCategory={activeCategory}
-            onChange={handleCategoryChange}
-          />
-          <label className="uk-flex uk-flex-middle" style={{ gap: 6, whiteSpace: 'nowrap', cursor: 'pointer', fontSize: 13 }}>
+        <div className="uk-flex uk-flex-column uk-flex-row@s uk-flex-between@s uk-flex-middle">
+          <div className="uk-width-1-1 uk-width-auto@s">
+            <NotificationCategoryFilter
+              activeCategory={activeCategory}
+              onChange={handleCategoryChange}
+            />
+          </div>
+          <label 
+            className="uk-flex uk-flex-middle uk-margin-small-top uk-margin-remove-top@s" 
+            style={{ gap: 6, whiteSpace: 'nowrap', cursor: 'pointer', fontSize: 13 }}
+          >
             <input
               className="uk-checkbox"
               type="checkbox"

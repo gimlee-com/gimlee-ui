@@ -696,6 +696,9 @@ const Navbar: React.FC = () => {
                           />
                         )}
                       </AnimatePresence>
+                      {isAuthenticated && notifUnreadCount > 0 && !isMenuOpen && (
+                        <span className={styles.notifDot} />
+                      )}
                     </NavbarToggle>
                   </NavbarItem>
                 </NavbarNav>

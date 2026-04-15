@@ -18,6 +18,19 @@
 
 .hamburgerToggle {
   padding: 0 $padding-small-padding !important;
+  position: relative;
+}
+
+.notifDot {
+  position: absolute;
+  top: 25%;
+  right: 25%;
+  width: 8px;
+  height: 8px;
+  background-color: $global-danger-background;
+  border-radius: 50%;
+  border: 2px solid var(--global-background);
+  pointer-events: none;
 }
 
 .responsiveContainer {
