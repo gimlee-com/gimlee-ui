@@ -47,6 +47,70 @@ export type ReportSortField = 'createdAt' | 'updatedAt' | 'siblingCount';
 /** Sort direction */
 export type SortDirection = 'ASC' | 'DESC';
 
+// ── Target snapshot shapes per report type ──────────────────────────
+
+export interface AdTargetSnapshot {
+  title: string;
+  description: string;
+  price: string;
+  currency: string;
+  status: string;
+  mediaPaths: string[];
+  userId: string;
+}
+
+export interface UserTargetSnapshot {
+  username: string;
+  displayName: string;
+  avatarUrl: string | null;
+  status: string;
+}
+
+export interface QaTargetSnapshot {
+  adId: string;
+  authorId: string;
+  text: string;
+  status: string;
+}
+
+export interface MessageTargetSnapshot {
+  senderId: string;
+  text: string;
+  conversationId: string;
+}
+
+export type TargetSnapshot =
+  | AdTargetSnapshot
+  | UserTargetSnapshot
+  | QaTargetSnapshot
+  | MessageTargetSnapshot;
+
+/** Safely extract an Ad snapshot. Returns `null` when shape doesn't match. */
+export const asAdSnapshot = (s?: Record<string, unknown> | null): AdTargetSnapshot | null =>
+  s && typeof s.title === 'string' && Array.isArray(s.mediaPaths)
+    ? (s as unknown as AdTargetSnapshot)
+    : null;
+
+/** Safely extract a User snapshot. */
+export const asUserSnapshot = (s?: Record<string, unknown> | null): UserTargetSnapshot | null =>
+  s && typeof s.username === 'string'
+    ? (s as unknown as UserTargetSnapshot)
+    : null;
+
+/** Safely extract a Question / Answer snapshot. */
+export const asQaSnapshot = (s?: Record<string, unknown> | null): QaTargetSnapshot | null =>
+  s && typeof s.text === 'string' && typeof s.adId === 'string'
+    ? (s as unknown as QaTargetSnapshot)
+    : null;
+
+/** Safely extract a Message snapshot. */
+export const asMessageSnapshot = (s?: Record<string, unknown> | null): MessageTargetSnapshot | null =>
+  s && typeof s.text === 'string' && typeof s.conversationId === 'string'
+    ? (s as unknown as MessageTargetSnapshot)
+    : null;
+
+// ── DTOs ────────────────────────────────────────────────────────────
+
 /** Single report in the admin list response */
 export interface ReportListItemDto {
   id: string;
@@ -63,6 +127,8 @@ export interface ReportListItemDto {
   updatedAt: number;
   siblingCount: number;
   description: string;
+  /** Optional — returned when backend includes snapshot in list endpoint. */
+  targetSnapshot?: Record<string, unknown> | null;
 }
 
 /** Full report detail (GET /admin/reports/{reportId}) */

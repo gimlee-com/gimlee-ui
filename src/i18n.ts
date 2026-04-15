@@ -803,6 +803,13 @@ const resources = {
           "noReports": "No reports found.",
           "siblingCount": "{{count}} reports for this item",
           "reportedBy": "Reported by",
+          "card": {
+            "unassigned": "Unassigned",
+            "assignedTo": "Assigned to",
+            "reportedContent": "Reported content",
+            "onAd": "on Ad {{adId}}",
+            "descriptionPreview": "Reason"
+          },
           "filters": {
             "search": "Search reports...",
             "status": "Status",
@@ -1703,6 +1710,13 @@ const resources = {
           "noReports": "Nie znaleziono zgłoszeń.",
           "siblingCount": "{{count}} zgłoszeń dla tego elementu",
           "reportedBy": "Zgłoszone przez",
+          "card": {
+            "unassigned": "Nieprzypisane",
+            "assignedTo": "Przypisano do",
+            "reportedContent": "Zgłoszona treść",
+            "onAd": "w ogłoszeniu {{adId}}",
+            "descriptionPreview": "Powód"
+          },
           "filters": {
             "search": "Szukaj zgłoszeń...",
             "status": "Status",

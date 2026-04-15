@@ -1,0 +1,212 @@
+@import "../../../styles/uikit-imports";
+
+// ── Left-border status accent ───────────────────────────────────────
+.card {
+  border-left: 4px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.statusOpen {
+  border-left-color: $global-warning-background;
+}
+
+.statusInReview {
+  border-left-color: $global-primary-background;
+}
+
+.statusResolved {
+  border-left-color: $global-success-background;
+}
+
+.statusDismissed {
+  border-left-color: $global-muted-color;
+}
+
+// ── Header row ──────────────────────────────────────────────────────
+.header {
+  display: flex;
+  align-items: center;
+  gap: $global-small-gutter;
+  flex-wrap: wrap;
+}
+
+.typeLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: $global-muted-color;
+  font-size: $global-small-font-size;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.headerRight {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: $global-small-gutter;
+  flex-shrink: 0;
+}
+
+// ── Status dot ──────────────────────────────────────────────────────
+.statusDot {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: $global-small-font-size;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dotOpen {
+  background-color: $global-warning-background;
+}
+
+.dotInReview {
+  background-color: $global-primary-background;
+}
+
+.dotResolved {
+  background-color: $global-success-background;
+}
+
+.dotDismissed {
+  background-color: $global-muted-color;
+}
+
+// ── Sibling count ───────────────────────────────────────────────────
+.siblingBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: $global-warning-background;
+  font-size: $global-small-font-size;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+// ── Content zone ────────────────────────────────────────────────────
+.content {
+  margin-top: $global-small-margin;
+  min-width: 0;
+}
+
+.adContent {
+  display: flex;
+  align-items: flex-start;
+  gap: $global-small-gutter;
+}
+
+.adThumbnail {
+  width: 56px;
+  height: 56px;
+  border-radius: $card-border-radius;
+  overflow: hidden;
+  flex-shrink: 0;
+  background-color: color-mix(in srgb, $global-muted-color, transparent 85%);
+}
+
+.adInfo {
+  min-width: 0;
+  flex: 1;
+}
+
+.adTitle {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.adPrice {
+  font-size: $global-small-font-size;
+  color: $global-muted-color;
+  margin-top: 2px;
+}
+
+.userContent {
+  display: flex;
+  align-items: center;
+  gap: $global-small-gutter;
+}
+
+.userName {
+  font-weight: 600;
+}
+
+.quotedText {
+  font-style: italic;
+  color: $global-muted-color;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &::before {
+    content: "\201C";
+  }
+
+  &::after {
+    content: "\201D";
+  }
+}
+
+.qaContext {
+  font-size: $global-small-font-size;
+  color: $global-muted-color;
+  margin-top: 2px;
+}
+
+.fallbackTitle {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// ── Description preview ─────────────────────────────────────────────
+.descriptionPreview {
+  margin-top: $global-small-margin;
+  font-size: $global-small-font-size;
+  color: $global-muted-color;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// ── Footer ──────────────────────────────────────────────────────────
+.footer {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: $global-small-gutter;
+  margin-top: $global-small-margin;
+  padding-top: $global-small-margin;
+  border-top: 1px solid $global-border;
+  font-size: $global-small-font-size;
+}
+
+.footerRight {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: $global-small-gutter;
+  color: $global-muted-color;
+}
+
+.reporterInfo {
+  color: $global-muted-color;
+  white-space: nowrap;
+}
+
+.assigneeInfo {
+  color: $global-muted-color;
+  white-space: nowrap;
+}
