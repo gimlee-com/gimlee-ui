@@ -261,6 +261,12 @@ const Navbar: React.FC = () => {
                     </Link>
                   </NavItem>
                   <NavItem>
+                    <Link to="/profile/tickets">
+                      <Icon icon="lifesaver" className="uk-margin-small-right" />
+                      {t('navbar.support')}
+                    </Link>
+                  </NavItem>
+                  <NavItem>
                     <Link to="/terms">
                       <Icon icon="info" className="uk-margin-small-right" />
                       {t('navbar.terms')}
@@ -454,6 +460,18 @@ const Navbar: React.FC = () => {
               transition={{ duration: 0.2, delay: 0.25 }}
             >
               <Link to="/profile" uk-toggle="target: #mobile-menu">{t('navbar.profile')}</Link>
+            </MotionNavItem>
+            <MotionNavItem
+              key="support-off"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2, delay: 0.26 }}
+            >
+              <Link to="/profile/tickets" uk-toggle="target: #mobile-menu">
+                <Icon icon="lifesaver" className="uk-margin-small-right" />
+                {t('navbar.support')}
+              </Link>
             </MotionNavItem>
             <MotionNavItem
               key="terms-off"
