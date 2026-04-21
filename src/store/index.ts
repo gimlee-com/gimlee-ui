@@ -4,6 +4,7 @@ import type { TypedUseSelectorHook } from 'react-redux';
 import purchaseReducer from './purchaseSlice';
 import navbarReducer from './navbarSlice';
 import chatReducer from '../chat/store/chatSlice';
+import conversationReducer from '../chat/store/conversationSlice';
 import notificationsReducer from '../notifications/store/notificationSlice';
 
 export const createStore = () => configureStore({
@@ -11,6 +12,7 @@ export const createStore = () => configureStore({
     purchase: purchaseReducer,
     navbar: navbarReducer,
     chat: chatReducer,
+    conversations: conversationReducer,
     notifications: notificationsReducer,
   },
 });

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { expandCollapseProps } from '../animations';
 import { Heading } from './uikit/Heading/Heading';
@@ -13,6 +14,7 @@ import { useAppDispatch, useAppSelector } from '../store';
 import { formatPrice } from '../utils/currencyUtils';
 import { setActivePurchase } from '../store/purchaseSlice';
 import { purchaseService } from '../purchases/services/purchaseService';
+import { conversationService } from '../chat/services/conversationService';
 import type { PurchaseHistoryDto, SalesOrderDto, PurchaseStatus, PurchaseStatusResponseDto } from '../types/api';
 
 interface OrderItemCardProps {
@@ -23,10 +25,13 @@ interface OrderItemCardProps {
 export const OrderItemCard: React.FC<OrderItemCardProps> = ({ order, type }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
   const activePurchase = useAppSelector(state => state.purchase.activePurchase);
   const isPurchase = type === 'purchase';
   const [isExpanded, setIsExpanded] = useState(false);
   const [statusDetails, setStatusDetails] = useState<PurchaseStatusResponseDto | null>(null);
+  const [isLoadingChat, setIsLoadingChat] = useState(false);
 
   const fetchStatus = async () => {
     if (!isPurchase || order.status !== 'AWAITING_PAYMENT') return;
@@ -43,6 +48,21 @@ export const OrderItemCard: React.FC<OrderItemCardProps> = ({ order, type }) => 
     setIsExpanded(nextExpanded);
     if (nextExpanded && !statusDetails) {
       fetchStatus();
+    }
+  };
+
+  const handleOpenChat = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsLoadingChat(true);
+    try {
+      const result = await conversationService.getOrderConversation(order.id);
+      navigate(`/conversations/${result.conversation.id}`, {
+        state: { from: location.pathname + location.search },
+      });
+    } catch (err) {
+      console.error('Failed to load order conversation', err);
+    } finally {
+      setIsLoadingChat(false);
     }
   };
   const counterparty = isPurchase 
@@ -123,11 +143,26 @@ export const OrderItemCard: React.FC<OrderItemCardProps> = ({ order, type }) => 
                 {formatDate(order.createdAt)}
               </span>
             </div>
-            <Icon 
-              icon={isExpanded ? 'chevron-up' : 'chevron-down'} 
-              ratio={1.1} 
-              className="uk-text-muted uk-margin-small-left" 
-            />
+            <div className="uk-flex uk-flex-middle">
+              <Button
+                size="small"
+                variant="text"
+                onClick={handleOpenChat}
+                disabled={isLoadingChat}
+                title={isPurchase ? t('chat.chatWithSeller') : t('chat.chatWithBuyer')}
+                className="uk-margin-small-right"
+              >
+                {isLoadingChat
+                  ? <span uk-spinner="ratio: 0.5"></span>
+                  : <Icon icon="comments" ratio={0.9} />
+                }
+              </Button>
+              <Icon 
+                icon={isExpanded ? 'chevron-up' : 'chevron-down'} 
+                ratio={1.1} 
+                className="uk-text-muted uk-margin-small-left" 
+              />
+            </div>
           </div>
         </div>
 

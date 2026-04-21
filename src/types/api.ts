@@ -558,3 +558,9 @@ export interface AdVisitStatsDto {
   yearly: number;
   total: number;
 }
+
+// Conversations
+export interface ConversationListResponseDto {
+  conversations: import('../chat/types').ConversationDto[];
+  hasMore: boolean;
+}

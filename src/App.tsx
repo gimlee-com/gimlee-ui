@@ -26,6 +26,8 @@ import PurchasesPage from './purchases/pages/PurchasesPage';
 import UserSpacePage from './spaces/pages/UserSpacePage';
 import AdWatchlistPage from './ads/pages/AdWatchlistPage';
 const ProfilePages = lazy(() => import('./profile/pages/ProfilePages'));
+const ConversationsPage = lazy(() => import('./chat/pages/ConversationsPage'));
+const ConversationDetailPage = lazy(() => import('./chat/pages/ConversationDetailPage'));
 const TermsOfServicePage = lazy(() => import('./pages/TermsOfServicePage'));
 const AboutPage = lazy(() => import('./pages/AboutPage'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
@@ -89,6 +91,8 @@ function App() {
             <Route path="/watchlist" element={<AdWatchlistPage />} />
             <Route path="/sales/*" element={<Suspense><SalesPages /></Suspense>} />
             <Route path="/purchases" element={<PurchasesPage />} />
+            <Route path="/conversations" element={<Suspense><ConversationsPage /></Suspense>} />
+            <Route path="/conversations/:conversationId" element={<Suspense><ConversationDetailPage /></Suspense>} />
             <Route path="/notifications" element={<Suspense><NotificationsPage /></Suspense>} />
             <Route path="/profile/*" element={<Suspense><ProfilePages /></Suspense>} />
             <Route path="/u/:userName" element={<UserSpacePage />} />

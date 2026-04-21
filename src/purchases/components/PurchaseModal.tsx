@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback, useRef, forwardRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import UIkit from 'uikit';
 import { spring } from '../../animations';
@@ -27,6 +28,7 @@ import {
 import { formatPrice } from '../../utils/currencyUtils';
 import { Image } from '../../components/Image/Image';
 import { purchaseService } from '../services/purchaseService';
+import { conversationService } from '../../chat/services/conversationService';
 import { currencyService } from '../../payments/services/currencyService';
 import { userService } from '../../profile/services/userService';
 import { useAuth } from '../../context/AuthContext';
@@ -50,6 +52,7 @@ export const PurchaseModal = forwardRef<HTMLDivElement>(
   (_props, ref) => {
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const { preferredCurrency, countryOfResidence } = useAuth();
     const { activePurchase, purchaseIntent, selectedAddress } = useAppSelector(state => state.purchase);
     const { getCountryName } = useCountries();
@@ -65,6 +68,7 @@ export const PurchaseModal = forwardRef<HTMLDivElement>(
     const [isCreatingPurchase, setIsCreatingPurchase] = useState(false);
     const [purchaseError, setPurchaseError] = useState<string | null>(null);
     const [isAddingAddress, setIsAddingAddress] = useState(false);
+    const [isLoadingChat, setIsLoadingChat] = useState(false);
 
     // Payment state (only relevant when step === 'payment')
     const [status, setStatus] = useState<PurchaseStatus>(purchase?.status ?? 'AWAITING_PAYMENT');
@@ -667,16 +671,43 @@ export const PurchaseModal = forwardRef<HTMLDivElement>(
               {step === 'payment' && (
                 <>
                   {status === 'AWAITING_PAYMENT' && (
-                    <div>
-                      <Button 
-                        variant="default" 
-                        className="uk-width-1-1" 
-                        onClick={handleCancel}
-                        disabled={isCancelling}
-                      >
-                        {isCancelling ? <Spinner ratio={0.6} /> : t('purchases.cancelPurchase')}
-                      </Button>
-                    </div>
+                    <>
+                      <div>
+                        <Button
+                          variant="secondary"
+                          className="uk-width-1-1"
+                          disabled={isLoadingChat}
+                          onClick={async () => {
+                            if (!purchase?.purchaseId) return;
+                            setIsLoadingChat(true);
+                            try {
+                              const result = await conversationService.getOrderConversation(purchase.purchaseId);
+                              if (modalInstance) modalInstance.hide();
+                              navigate(`/conversations/${result.conversation.id}`);
+                            } catch (err) {
+                              console.error('Failed to open chat', err);
+                            } finally {
+                              setIsLoadingChat(false);
+                            }
+                          }}
+                        >
+                          {isLoadingChat
+                            ? <Spinner ratio={0.6} />
+                            : <><Icon icon="comments" className="uk-margin-small-right" />{t('chat.chatWithSeller')}</>
+                          }
+                        </Button>
+                      </div>
+                      <div>
+                        <Button 
+                          variant="default" 
+                          className="uk-width-1-1" 
+                          onClick={handleCancel}
+                          disabled={isCancelling}
+                        >
+                          {isCancelling ? <Spinner ratio={0.6} /> : t('purchases.cancelPurchase')}
+                        </Button>
+                      </div>
+                    </>
                   )}
                   <div>
                     <Button variant="primary" className="uk-width-1-1" onClick={handleClose}>

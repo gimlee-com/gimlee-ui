@@ -105,6 +105,10 @@ const Navbar: React.FC = () => {
     setIsScrolled(latest > 60);
   });
 
+  useEffect(() => {
+    document.documentElement.style.setProperty('--navbar-height', isScrolled ? '60px' : '80px');
+  }, [isScrolled]);
+
   const { ref: offcanvasRef, instance: offcanvasInstance } = useUIKit<
     UIkit.UIkitOffcanvasElement,
     HTMLDivElement
@@ -172,6 +176,21 @@ const Navbar: React.FC = () => {
                 transition={{ duration: 0.2, delay: 0.05 }}
               >
                 <Link to="/purchases">{t('navbar.purchases')}</Link>
+              </MotionNavbarItem>
+            )}
+            {mode === 'default' && isAuthenticated && (
+              <MotionNavbarItem
+                key="conversations"
+                className="uk-visible@m"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2, delay: 0.06 }}
+              >
+                <Link to="/conversations">
+                  <Icon icon="comments" className="uk-margin-small-right" ratio={0.85} />
+                  {t('chat.conversations')}
+                </Link>
               </MotionNavbarItem>
             )}
             {isAuthenticated && (
@@ -427,6 +446,18 @@ const Navbar: React.FC = () => {
               transition={{ duration: 0.2, delay: 0.2 }}
             >
               <Link to="/purchases" uk-toggle="target: #mobile-menu">{t('navbar.purchases')}</Link>
+            </MotionNavItem>
+            <MotionNavItem
+              key="conversations-off"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2, delay: 0.205 }}
+            >
+              <Link to="/conversations" uk-toggle="target: #mobile-menu">
+                <Icon icon="comments" className="uk-margin-small-right" />
+                {t('chat.conversations')}
+              </Link>
             </MotionNavItem>
             <MotionNavItem
               key="notifications-off"

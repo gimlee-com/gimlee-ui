@@ -1,0 +1,14 @@
+@import '../../styles/uikit-imports';
+
+.chatWrapper {
+  // Counteract uk-section padding to fill the remaining viewport below the navbar
+  margin-top: -$section-padding-vertical;
+  margin-bottom: -$section-padding-vertical;
+  height: calc(100dvh - var(--navbar-height, 80px));
+  min-height: 300px;
+
+  @media (min-width: $breakpoint-medium) {
+    margin-top: -$section-padding-vertical-m;
+    margin-bottom: -$section-padding-vertical-m;
+  }
+}

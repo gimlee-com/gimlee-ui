@@ -1,8 +1,10 @@
 import React, { memo } from 'react';
 import { Message } from '../Message/Message';
+import { SystemMessage } from '../Message/SystemMessage';
 import { DaysDivider } from '../DaysDivider/DaysDivider';
 
 import type { ChatListItem } from '../../types';
+import { isSystemMessage } from '../../types';
 
 interface ChatRowProps {
   itemsRef: React.RefObject<ChatListItem[]>;
@@ -31,6 +33,10 @@ const ChatRow = (props: ChatRowProps): React.ReactElement | null => {
         style={style} 
       />
     );
+  }
+
+  if (isSystemMessage(chatItem.messageType)) {
+    return <SystemMessage message={chatItem} style={style} />;
   }
 
   return (

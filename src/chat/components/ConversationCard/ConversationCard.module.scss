@@ -1,0 +1,54 @@
+@import '../../../styles/uikit-imports';
+
+.card {
+  cursor: pointer;
+  transition: box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: var(--global-medium-shadow);
+  }
+}
+
+.participantInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.nameBlock {
+  min-width: 0;
+  flex: 1;
+}
+
+.username {
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lastMessage {
+  font-size: 0.85rem;
+  color: $global-muted-color;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 2px;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 6px;
+}
+
+.timestamp {
+  font-size: 0.75rem;
+  color: $global-muted-color;
+}
+
+.statusBadge {
+  flex-shrink: 0;
+}

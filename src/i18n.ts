@@ -403,7 +403,28 @@ const resources = {
         "typingMany": "Several people are typing...",
         "loadMore": "Load more messages",
         "newMessages_one": "{{count}} new message",
-        "newMessages_other": "{{count}} new messages"
+        "newMessages_other": "{{count}} new messages",
+        "conversations": "Conversations",
+        "noConversations": "No conversations yet.",
+        "loadMoreConversations": "Load more",
+        "conversationLocked": "This conversation is locked. You can read messages but cannot send new ones.",
+        "conversationArchived": "This conversation has been archived.",
+        "noMessages": "No messages yet. Say hi!",
+        "chatWithSeller": "Chat with Seller",
+        "chatWithBuyer": "Chat with Buyer",
+        "orderConversation": "Order Conversation",
+        "conversationNotFound": "Conversation not found.",
+        "lastActivity": "Last activity",
+        "participants": "Participants",
+        "systemMessage": {
+          "purchase.created": "Purchase created",
+          "purchase.status.awaiting_payment": "Awaiting payment",
+          "purchase.status.complete": "Payment completed successfully ✓",
+          "purchase.status.cancelled": "Purchase was cancelled",
+          "purchase.status.failed_payment_timeout": "Payment timed out",
+          "purchase.status.failed_payment_underpaid": "Payment was underpaid",
+          "unknown": "System notification"
+        }
       },
       "volatility": {
         "banner": {
@@ -1312,7 +1333,28 @@ const resources = {
         "loadMore": "Załaduj więcej wiadomości",
         "newMessages_one": "{{count}} nowa wiadomość",
         "newMessages_few": "{{count}} nowe wiadomości",
-        "newMessages_many": "{{count}} nowych wiadomości"
+        "newMessages_many": "{{count}} nowych wiadomości",
+        "conversations": "Rozmowy",
+        "noConversations": "Brak rozmów.",
+        "loadMoreConversations": "Załaduj więcej",
+        "conversationLocked": "Ta rozmowa jest zablokowana. Możesz czytać wiadomości, ale nie możesz wysyłać nowych.",
+        "conversationArchived": "Ta rozmowa została zarchiwizowana.",
+        "noMessages": "Brak wiadomości. Przywitaj się!",
+        "chatWithSeller": "Czat ze sprzedawcą",
+        "chatWithBuyer": "Czat z kupującym",
+        "orderConversation": "Rozmowa o zamówieniu",
+        "conversationNotFound": "Nie znaleziono rozmowy.",
+        "lastActivity": "Ostatnia aktywność",
+        "participants": "Uczestnicy",
+        "systemMessage": {
+          "purchase.created": "Utworzono zakup",
+          "purchase.status.awaiting_payment": "Oczekiwanie na płatność",
+          "purchase.status.complete": "Płatność zakończona pomyślnie ✓",
+          "purchase.status.cancelled": "Zakup został anulowany",
+          "purchase.status.failed_payment_timeout": "Upłynął czas na płatność",
+          "purchase.status.failed_payment_underpaid": "Niedopłata za zamówienie",
+          "unknown": "Powiadomienie systemowe"
+        }
       },
       "volatility": {
         "banner": {

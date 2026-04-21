@@ -6,16 +6,18 @@ import { useChat } from '../../hooks/useChat';
 import { useAuth } from '../../../context/AuthContext';
 import { prepareChatListItems } from '../../utils/prepareChatListItems';
 import { measureChatItems } from '../../utils/measureChatItems';
-import type { ChatListItem } from '../../types';
+import type { ChatListItem, ConversationStatus } from '../../types';
 import ChatRow from './ChatRow';
 import { ChatTopBar } from './ChatTopBar';
 import { TypingIndicator } from '../TypingIndicator/TypingIndicator';
 import { TextArea } from '../../../components/uikit/Form/Form';
+import { Icon } from '../../../components/uikit/Icon/Icon';
 import styles from './Chat.module.scss';
 
 interface ChatProps {
   chatId: string;
   className?: string;
+  conversationStatus?: ConversationStatus;
 }
 
 // Interface for react-window VariableSizeList
@@ -28,7 +30,7 @@ interface VariableSizeList {
   }) => void;
 }
 
-export const Chat: React.FC<ChatProps> = ({ chatId, className }) => {
+export const Chat: React.FC<ChatProps> = ({ chatId, className, conversationStatus }) => {
   const { t } = useTranslation();
   const { username } = useAuth();
   const { 
@@ -38,8 +40,12 @@ export const Chat: React.FC<ChatProps> = ({ chatId, className }) => {
     sendMessage, 
     sendTyping, 
     loadMore, 
-    hasMore 
-  } = useChat(chatId);
+    hasMore,
+    isLocked,
+    isArchived,
+  } = useChat(chatId, conversationStatus);
+
+  const canWrite = !isLocked && !isArchived;
 
   const [input, setInput] = useState('');
   const [heights, setHeights] = useState<Record<string, number>>({});
@@ -425,31 +431,47 @@ export const Chat: React.FC<ChatProps> = ({ chatId, className }) => {
       </div>
 
       <div className={`${styles.footer} uk-padding-small uk-padding-remove-top`}>
-        <div className={styles.typingIndicatorContainer}>
-          <TypingIndicator users={typingUsers} />
-        </div>
-        <form onSubmit={handleSend} className="uk-flex">
-          <TextArea
-            ref={textAreaRef}
-            className="uk-margin-small-right"
-            rows={1}
-            placeholder={t('chat.placeholder')}
-            value={input}
-            onChange={(e) => {
-              setInput(e.target.value);
-              sendTyping();
-            }}
-            onKeyDown={handleKeyDown}
-            style={{ resize: 'none' }}
-          />
-          <button 
-            type="submit" 
-            className="uk-button uk-button-primary"
-            disabled={!input.trim()}
-          >
-            {t('chat.send')}
-          </button>
-        </form>
+        {isLocked && (
+          <div className="uk-alert-warning uk-padding-small uk-border-rounded uk-margin-small-bottom uk-flex uk-flex-middle">
+            <Icon icon="lock" ratio={0.8} className="uk-margin-small-right" />
+            <span className="uk-text-small">{t('chat.conversationLocked')}</span>
+          </div>
+        )}
+        {isArchived && (
+          <div className="uk-alert-danger uk-padding-small uk-border-rounded uk-margin-small-bottom uk-flex uk-flex-middle">
+            <Icon icon="ban" ratio={0.8} className="uk-margin-small-right" />
+            <span className="uk-text-small">{t('chat.conversationArchived')}</span>
+          </div>
+        )}
+        {canWrite && (
+          <>
+            <div className={styles.typingIndicatorContainer}>
+              <TypingIndicator users={typingUsers} />
+            </div>
+            <form onSubmit={handleSend} className="uk-flex">
+              <TextArea
+                ref={textAreaRef}
+                className="uk-margin-small-right"
+                rows={1}
+                placeholder={t('chat.placeholder')}
+                value={input}
+                onChange={(e) => {
+                  setInput(e.target.value);
+                  sendTyping();
+                }}
+                onKeyDown={handleKeyDown}
+                style={{ resize: 'none' }}
+              />
+              <button 
+                type="submit" 
+                className="uk-button uk-button-primary"
+                disabled={!input.trim()}
+              >
+                {t('chat.send')}
+              </button>
+            </form>
+          </>
+        )}
       </div>
     </div>
   );

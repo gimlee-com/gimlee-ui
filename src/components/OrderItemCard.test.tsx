@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import { Provider } from 'react-redux';
+import { MemoryRouter } from 'react-router-dom';
 import { store } from '../store';
 import { OrderItemCard } from './OrderItemCard';
 import { I18nextProvider } from 'react-i18next';
@@ -32,11 +33,13 @@ const mockSale: SalesOrderDto = {
 describe('OrderItemCard', () => {
   it('should render purchase details', () => {
     render(
-      <Provider store={store}>
-        <I18nextProvider i18n={i18n}>
-          <OrderItemCard order={mockPurchase} type="purchase" />
-        </I18nextProvider>
-      </Provider>
+      <MemoryRouter>
+        <Provider store={store}>
+          <I18nextProvider i18n={i18n}>
+            <OrderItemCard order={mockPurchase} type="purchase" />
+          </I18nextProvider>
+        </Provider>
+      </MemoryRouter>
     );
     expect(screen.getByText('test-seller')).toBeInTheDocument();
     expect(screen.getByText('Test Product')).toBeInTheDocument();
@@ -44,11 +47,13 @@ describe('OrderItemCard', () => {
 
   it('should render sale details', () => {
     render(
-      <Provider store={store}>
-        <I18nextProvider i18n={i18n}>
-          <OrderItemCard order={mockSale} type="sale" />
-        </I18nextProvider>
-      </Provider>
+      <MemoryRouter>
+        <Provider store={store}>
+          <I18nextProvider i18n={i18n}>
+            <OrderItemCard order={mockSale} type="sale" />
+          </I18nextProvider>
+        </Provider>
+      </MemoryRouter>
     );
     expect(screen.getByText('test-buyer')).toBeInTheDocument();
     expect(screen.getByText('Test Sale Product')).toBeInTheDocument();
