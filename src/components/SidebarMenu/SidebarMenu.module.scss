@@ -1,0 +1,154 @@
+@import "../../styles/uikit-imports.scss";
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: $global-small-margin;
+}
+
+// User identity card at the top
+.userCard {
+  display: flex;
+  align-items: center;
+  gap: $global-small-margin;
+  padding: $global-small-gutter;
+  background: $global-muted-background;
+  border-radius: $border-rounded-border-radius;
+  margin-bottom: $global-small-margin;
+}
+
+.userCardInfo {
+  min-width: 0; // allow text truncation
+}
+
+.userName {
+  font-weight: $base-heading-font-weight;
+  font-size: $global-small-font-size;
+  color: $global-emphasis-color;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.userRoles {
+  font-size: 0.75rem;
+  color: $global-muted-color;
+  text-transform: lowercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 160px;
+}
+
+// Section header with icon
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: $global-muted-color;
+  padding: $global-small-margin 0 4px;
+}
+
+// Override Nav item font size for the sidebar
+.nav {
+  :global(.uk-nav-default > li > a) {
+    font-size: 0.875rem;
+    padding: 6px 0;
+  }
+
+  :global(.uk-nav-header) {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+}
+
+// Notification badge inline
+.notifBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 500px;
+  background: $global-danger-background;
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+// Compact theme switcher row
+.themeSwitcher {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 4px 0;
+}
+
+.themeButton {
+  appearance: none;
+  border: 1px solid $global-border;
+  background: transparent;
+  color: $global-color;
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 500px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  white-space: nowrap;
+
+  &:hover {
+    border-color: $global-primary-background;
+    color: $global-primary-background;
+  }
+}
+
+.themeButtonActive {
+  background: $global-primary-background;
+  color: #fff;
+  border-color: $global-primary-background;
+
+  &:hover {
+    background: $global-primary-background;
+    color: #fff;
+  }
+}
+
+// Logout section
+.logoutButton {
+  appearance: none;
+  background: transparent;
+  border: none;
+  color: $global-danger-background;
+  font-size: 0.875rem;
+  padding: 6px 0;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  transition: opacity 0.15s ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+// Country selector in guest mode
+.countrySection {
+  padding: 4px 0;
+
+  .countryLabel {
+    font-size: 0.75rem;
+    color: $global-muted-color;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+}

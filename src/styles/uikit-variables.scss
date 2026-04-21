@@ -107,3 +107,7 @@ $internal-text-background-color-gradient: var(--global-primary-background);
 $navbar-nav-item-text-transform: none;
 $global-border-radius: var(--global-border-radius);
 $card-border-radius: var(--card-border-radius);
+
+// Offcanvas — use the page background so the sidebar inherits the current theme
+$offcanvas-bar-background: var(--global-background);
+$offcanvas-bar-color-mode: dark;

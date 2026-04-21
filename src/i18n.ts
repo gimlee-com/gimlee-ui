@@ -45,7 +45,14 @@ const resources = {
         "contact": "Contact",
         "faq": "FAQ",
         "country": "Country",
-        "selectCountry": "Select country"
+        "selectCountry": "Select country",
+        "sections": {
+          "marketplace": "Marketplace",
+          "account": "My Account",
+          "settings": "Settings & Support",
+          "appearance": "Appearance",
+          "info": "Info"
+        }
       },
       "home": {
         "featuredAds": "Featured Ads",
@@ -974,7 +981,14 @@ const resources = {
         "contact": "Kontakt",
         "faq": "FAQ",
         "country": "Kraj",
-        "selectCountry": "Wybierz kraj"
+        "selectCountry": "Wybierz kraj",
+        "sections": {
+          "marketplace": "Rynek",
+          "account": "Moje konto",
+          "settings": "Ustawienia i pomoc",
+          "appearance": "Wygląd",
+          "info": "Informacje"
+        }
       },
       "home": {
         "featuredAds": "Wyróżnione ogłoszenia",

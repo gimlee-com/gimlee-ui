@@ -19,7 +19,7 @@ import {
 import { Icon } from '../uikit/Icon/Icon';
 import { Container } from '../uikit/Container/Container';
 import { Offcanvas, OffcanvasBar, OffcanvasClose } from '../uikit/Offcanvas/Offcanvas';
-import { Nav, NavItem, NavHeader, NavDivider, SubNav } from '../uikit/Nav/Nav';
+import { Nav, NavItem, NavHeader, NavDivider } from '../uikit/Nav/Nav';
 import { AvatarWithPresence } from '../AvatarWithPresence';
 import { usePresence } from '../../context/PresenceContext';
 import { useTheme } from '../../context/ThemeContext';
@@ -31,10 +31,10 @@ import { useAppDispatch } from '../../store';
 import { markOneRead as markOneReadAction, markAllReadInState } from '../../notifications/store/notificationSlice';
 import { notificationService } from '../../notifications/services/notificationService';
 import type { NotificationDto } from '../../notifications/types/notification';
+import SidebarMenu from '../SidebarMenu/SidebarMenu';
 import styles from './Navbar.module.scss';
 
 const MotionNavbarItem = motion.create(NavbarItem);
-const MotionNavItem = motion.create(NavItem);
 const MotionLogo = motion.create(Logo);
 
 const Navbar: React.FC = () => {
@@ -148,6 +148,10 @@ const Navbar: React.FC = () => {
     logout();
     navigate('/');
   };
+
+  const handleMenuClose = useCallback(() => {
+    offcanvasInstance?.hide();
+  }, [offcanvasInstance]);
 
   const navLinks = (
     <AnimatePresence mode="wait">
@@ -389,256 +393,6 @@ const Navbar: React.FC = () => {
     </AnimatePresence>
   );
 
-  const offcanvasLinks = (
-    <AnimatePresence mode="wait">
-      {isMenuOpen && (
-        isAuthenticated ? (
-          <React.Fragment key="auth-off">
-            <MotionNavItem
-              key="user-info-off"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2, delay: 0.05 }}
-              className="uk-nav-header"
-            >
-              <div className="uk-flex uk-flex-middle">
-                <AvatarWithPresence 
-                  username={username || ''} 
-                  avatarUrl={userProfile?.avatarUrl} 
-                  size={40} 
-                  status={presence?.status} 
-                  customStatus={presence?.customStatus}
-                  badgeSize={12}
-                />
-                <div className="uk-margin-small-left">
-                  <div className="uk-text-bold uk-text-emphasis">{username}</div>
-                  <div className="uk-text-meta uk-text-lowercase uk-text-truncate" style={{ maxWidth: '150px' }}>
-                    {roles.join(', ')}
-                  </div>
-                </div>
-              </div>
-            </MotionNavItem>
-            <MotionNavItem
-              key="browse-off-auth"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2, delay: 0.1 }}
-            >
-              <Link to="/ads" uk-toggle="target: #mobile-menu">{t('navbar.browseAds')}</Link>
-            </MotionNavItem>
-            <li className="uk-nav-divider"></li>
-            <MotionNavItem
-              key="my-ads-off"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2, delay: 0.15 }}
-            >
-              <Link to="/sales/ads" uk-toggle="target: #mobile-menu">{t('navbar.myAds')}</Link>
-            </MotionNavItem>
-            <MotionNavItem
-              key="purchases-off"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2, delay: 0.2 }}
-            >
-              <Link to="/purchases" uk-toggle="target: #mobile-menu">{t('navbar.purchases')}</Link>
-            </MotionNavItem>
-            <MotionNavItem
-              key="conversations-off"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2, delay: 0.205 }}
-            >
-              <Link to="/conversations" uk-toggle="target: #mobile-menu">
-                <Icon icon="comments" className="uk-margin-small-right" />
-                {t('chat.conversations')}
-              </Link>
-            </MotionNavItem>
-            <MotionNavItem
-              key="notifications-off"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2, delay: 0.21 }}
-            >
-              <Link to="/notifications" uk-toggle="target: #mobile-menu">
-                <Icon icon="bell" className="uk-margin-small-right" />
-                {t('notifications.title')}
-                {notifUnreadCount > 0 && (
-                  <span className="uk-badge uk-margin-small-left">{notifUnreadCount > 99 ? '99+' : notifUnreadCount}</span>
-                )}
-              </Link>
-            </MotionNavItem>
-            <MotionNavItem
-              key="watchlist-off"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2, delay: 0.22 }}
-            >
-              <Link to="/watchlist" uk-toggle="target: #mobile-menu">{t('navbar.watchlist')}</Link>
-            </MotionNavItem>
-            <MotionNavItem
-              key="profile-off"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2, delay: 0.25 }}
-            >
-              <Link to="/profile" uk-toggle="target: #mobile-menu">{t('navbar.profile')}</Link>
-            </MotionNavItem>
-            <MotionNavItem
-              key="support-off"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2, delay: 0.26 }}
-            >
-              <Link to="/profile/tickets" uk-toggle="target: #mobile-menu">
-                <Icon icon="lifesaver" className="uk-margin-small-right" />
-                {t('navbar.support')}
-              </Link>
-            </MotionNavItem>
-            <MotionNavItem
-              key="terms-off"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2, delay: 0.27 }}
-            >
-              <Link to="/terms" uk-toggle="target: #mobile-menu">{t('navbar.terms')}</Link>
-            </MotionNavItem>
-            {(roles.includes('ADMIN') || roles.includes('SUPPORT')) && (
-              <MotionNavItem
-                key="admin-off"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2, delay: 0.29 }}
-              >
-                <Link to="/admin" uk-toggle="target: #mobile-menu">
-                  <Icon icon="cog" className="uk-margin-small-right" />
-                  {t('navbar.admin')}
-                </Link>
-              </MotionNavItem>
-            )}
-            <li className="uk-nav-divider"></li>
-            <MotionNavItem
-              key="theme-off"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2, delay: 0.3 }}
-              parent
-            >
-              <Link to="#">
-                <Icon icon="paint-bucket" className="uk-margin-small-right" />
-                {t('navbar.theme')}: <span className="uk-text-bold">{t(`profile.themes.${theme}`)}</span>
-              </Link>
-              <SubNav>
-                <NavItem active={theme === 'light'}><Link to="#" onClick={(e) => { e.preventDefault(); setTheme('light'); }} uk-toggle="target: #mobile-menu">{t('profile.themes.light')}</Link></NavItem>
-                <NavItem active={theme === 'dark'}><Link to="#" onClick={(e) => { e.preventDefault(); setTheme('dark'); }} uk-toggle="target: #mobile-menu">{t('profile.themes.dark')}</Link></NavItem>
-                <NavItem active={theme === 'dark-unicorn'}><Link to="#" onClick={(e) => { e.preventDefault(); setTheme('dark-unicorn'); }} uk-toggle="target: #mobile-menu">{t('profile.themes.dark-unicorn')}</Link></NavItem>
-                <NavItem active={theme === 'iron-age'}><Link to="#" onClick={(e) => { e.preventDefault(); setTheme('iron-age'); }} uk-toggle="target: #mobile-menu">{t('profile.themes.iron-age')}</Link></NavItem>
-              </SubNav>
-            </MotionNavItem>
-            <MotionNavItem
-              key="logout-off"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2, delay: 0.3 }}
-            >
-              <Link to="#" onClick={handleLogout} uk-toggle="target: #mobile-menu">{t('navbar.logout')}</Link>
-            </MotionNavItem>
-          </React.Fragment>
-        ) : (
-          <React.Fragment key="guest-off">
-            <MotionNavItem
-              key="browse-off-guest"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2, delay: 0.05 }}
-            >
-              <Link to="/ads" uk-toggle="target: #mobile-menu">{t('navbar.browseAds')}</Link>
-            </MotionNavItem>
-            <MotionNavItem
-              key="login-off"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2, delay: 0.1 }}
-            >
-              <Link to="/login" uk-toggle="target: #mobile-menu">{t('navbar.login')}</Link>
-            </MotionNavItem>
-            <MotionNavItem
-              key="register-off"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2, delay: 0.15 }}
-            >
-              <Link to="/register" uk-toggle="target: #mobile-menu">{t('navbar.register')}</Link>
-            </MotionNavItem>
-            <MotionNavItem
-              key="terms-off-guest"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2, delay: 0.17 }}
-            >
-              <Link to="/terms" uk-toggle="target: #mobile-menu">{t('navbar.terms')}</Link>
-            </MotionNavItem>
-            <li className="uk-nav-divider"></li>
-            <MotionNavItem
-              key="theme-off-guest"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2, delay: 0.2 }}
-              parent
-            >
-              <Link to="#">
-                <Icon icon="paint-bucket" className="uk-margin-small-right" />
-                {t('navbar.theme')}: <span className="uk-text-bold">{t(`profile.themes.${theme}`)}</span>
-              </Link>
-              <SubNav>
-                <NavItem active={theme === 'light'}><Link to="#" onClick={(e) => { e.preventDefault(); setTheme('light'); }} uk-toggle="target: #mobile-menu">{t('profile.themes.light')}</Link></NavItem>
-                <NavItem active={theme === 'dark'}><Link to="#" onClick={(e) => { e.preventDefault(); setTheme('dark'); }} uk-toggle="target: #mobile-menu">{t('profile.themes.dark')}</Link></NavItem>
-                <NavItem active={theme === 'dark-unicorn'}><Link to="#" onClick={(e) => { e.preventDefault(); setTheme('dark-unicorn'); }} uk-toggle="target: #mobile-menu">{t('profile.themes.dark-unicorn')}</Link></NavItem>
-                <NavItem active={theme === 'iron-age'}><Link to="#" onClick={(e) => { e.preventDefault(); setTheme('iron-age'); }} uk-toggle="target: #mobile-menu">{t('profile.themes.iron-age')}</Link></NavItem>
-              </SubNav>
-            </MotionNavItem>
-            <MotionNavItem
-              key="country-off-guest"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2, delay: 0.25 }}
-            >
-              <div className="uk-margin-small">
-                <div className="uk-text-small uk-text-muted uk-margin-small-bottom">
-                  <Icon icon="world" className="uk-margin-small-right" />
-                  {t('navbar.country')}
-                </div>
-                <CountrySelector
-                  value={guestCountryCode}
-                  onChange={(code) => setGuestCountryCode(code)}
-                />
-              </div>
-            </MotionNavItem>
-          </React.Fragment>
-        )
-      )}
-    </AnimatePresence>
-  );
-
   return (
     <>
       <div style={{ height: 80 }} />
@@ -760,9 +514,23 @@ const Navbar: React.FC = () => {
       <Offcanvas ref={offcanvasRef} id="mobile-menu" overlay flip>
         <OffcanvasBar>
           <OffcanvasClose />
-          <Nav variant="primary" className="uk-margin-large-top">
-            {offcanvasLinks}
-          </Nav>
+          <div className="uk-margin-large-top">
+            <SidebarMenu
+              isAuthenticated={isAuthenticated}
+              username={username}
+              userProfile={userProfile}
+              roles={roles}
+              presence={presence}
+              theme={theme}
+              setTheme={setTheme}
+              notifUnreadCount={notifUnreadCount}
+              guestCountryCode={guestCountryCode}
+              setGuestCountryCode={setGuestCountryCode}
+              onLogout={handleLogout}
+              onRequestClose={handleMenuClose}
+              isMenuOpen={isMenuOpen}
+            />
+          </div>
         </OffcanvasBar>
       </Offcanvas>
     </>
