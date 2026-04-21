@@ -48,7 +48,7 @@ export interface NotificationDto {
   title: string;
   message: string;
   read: boolean;
-  createdAt: number; // epoch millis
+  createdAt: number; // epoch microseconds
   /** @deprecated use suggestedAction */
   actionUrl?: string;
   suggestedAction?: SuggestedActionDto;

@@ -23,9 +23,9 @@ const SEVERITY_STYLE_MAP: Record<string, string> = {
   danger: styles.severityDanger,
 };
 
-function getRelativeTime(epochMs: number, t: (key: string) => string): string {
+function getRelativeTime(epochMicros: number, t: (key: string) => string): string {
   const now = Date.now();
-  const diffSec = Math.floor((now - epochMs) / 1000);
+  const diffSec = Math.floor((now - epochMicros / 1000) / 1000);
 
   if (diffSec < 60) return t('notifications.justNow');
 
