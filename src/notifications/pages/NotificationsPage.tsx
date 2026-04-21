@@ -86,7 +86,7 @@ const NotificationsPage: React.FC = () => {
       animate="visible"
     >
       <motion.div variants={pageItemVariants}>
-        <div className="uk-flex uk-flex-between uk-flex-middle uk-margin-bottom">
+        <div className="uk-flex uk-flex-column uk-flex-row@s uk-flex-between@s uk-flex-middle uk-margin-bottom">
           <Heading size="h2" className="uk-margin-remove">
             {t('notifications.title')}
           </Heading>
@@ -94,6 +94,7 @@ const NotificationsPage: React.FC = () => {
             <Button
               variant="text"
               size="small"
+              className="uk-margin-small-top uk-margin-remove-top@s"
               onClick={() => markAllRead(activeCategory ?? undefined)}
             >
               {t('notifications.markAllRead')}
