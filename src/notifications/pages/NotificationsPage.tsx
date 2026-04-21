@@ -87,7 +87,7 @@ const NotificationsPage: React.FC = () => {
     >
       <motion.div variants={pageItemVariants}>
         <div className="uk-flex uk-flex-column uk-flex-row@s uk-flex-between@s uk-flex-middle uk-margin-bottom">
-          <Heading size="h2" className="uk-margin-remove">
+          <Heading as="h2" className="uk-margin-remove">
             {t('notifications.title')}
           </Heading>
           {unreadCount > 0 && (

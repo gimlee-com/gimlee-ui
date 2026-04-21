@@ -64,7 +64,7 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({
     let targetUrl: string | null = null;
 
     if (notification.suggestedAction) {
-      targetUrl = mapSuggestedActionToUrl(notification.suggestedAction, notification.category);
+      targetUrl = mapSuggestedActionToUrl(notification.suggestedAction);
     } else if (notification.actionUrl && isSafeActionUrl(notification.actionUrl)) {
       targetUrl = notification.actionUrl;
     }

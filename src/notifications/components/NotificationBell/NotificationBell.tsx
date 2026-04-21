@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Icon } from '../../../components/uikit/Icon/Icon';
 import styles from './NotificationBell.module.scss';

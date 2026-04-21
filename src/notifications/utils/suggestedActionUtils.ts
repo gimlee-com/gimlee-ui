@@ -1,11 +1,10 @@
-import type { SuggestedActionDto, NotificationCategory } from '../types/notification';
+import type { SuggestedActionDto } from '../types/notification';
 
 /**
  * Maps a SuggestedAction from the backend to a front-end route.
  */
 export const mapSuggestedActionToUrl = (
-  suggestedAction: SuggestedActionDto,
-  notificationCategory: NotificationCategory
+  suggestedAction: SuggestedActionDto
 ): string | null => {
   const { type, target } = suggestedAction;
 

@@ -26,14 +26,14 @@ import PurchasesPage from './purchases/pages/PurchasesPage';
 import UserSpacePage from './spaces/pages/UserSpacePage';
 import AdWatchlistPage from './ads/pages/AdWatchlistPage';
 const ProfilePages = lazy(() => import('./profile/pages/ProfilePages'));
-const ConversationsPage = lazy(() => import('./chat/pages/ConversationsPage'));
-const ConversationDetailPage = lazy(() => import('./chat/pages/ConversationDetailPage'));
-const TermsOfServicePage = lazy(() => import('./pages/TermsOfServicePage'));
-const AboutPage = lazy(() => import('./pages/AboutPage'));
-const ContactPage = lazy(() => import('./pages/ContactPage'));
-const FAQPage = lazy(() => import('./pages/FAQPage'));
+import ConversationsPage from './chat/pages/ConversationsPage';
+import ConversationDetailPage from './chat/pages/ConversationDetailPage';
+import TermsOfServicePage from './pages/TermsOfServicePage';
+import AboutPage from './pages/AboutPage';
+import ContactPage from './pages/ContactPage';
+import FAQPage from './pages/FAQPage';
 const AdminPages = lazy(() => import('./admin/pages/AdminPages'));
-const NotificationsPage = lazy(() => import('./notifications/pages/NotificationsPage'));
+import NotificationsPage from './notifications/pages/NotificationsPage';
 
 
 function App() {
@@ -91,15 +91,15 @@ function App() {
             <Route path="/watchlist" element={<AdWatchlistPage />} />
             <Route path="/sales/*" element={<Suspense><SalesPages /></Suspense>} />
             <Route path="/purchases" element={<PurchasesPage />} />
-            <Route path="/conversations" element={<Suspense><ConversationsPage /></Suspense>} />
-            <Route path="/conversations/:conversationId" element={<Suspense><ConversationDetailPage /></Suspense>} />
-            <Route path="/notifications" element={<Suspense><NotificationsPage /></Suspense>} />
+            <Route path="/conversations" element={<ConversationsPage />} />
+            <Route path="/conversations/:conversationId" element={<ConversationDetailPage />} />
+            <Route path="/notifications" element={<NotificationsPage />} />
             <Route path="/profile/*" element={<Suspense><ProfilePages /></Suspense>} />
             <Route path="/u/:userName" element={<UserSpacePage />} />
-            <Route path="/terms" element={<Suspense><TermsOfServicePage /></Suspense>} />
-            <Route path="/about" element={<Suspense><AboutPage /></Suspense>} />
-            <Route path="/contact" element={<Suspense><ContactPage /></Suspense>} />
-            <Route path="/faq" element={<Suspense><FAQPage /></Suspense>} />
+            <Route path="/terms" element={<TermsOfServicePage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/faq" element={<FAQPage />} />
             <Route path="/admin/*" element={<Suspense><AdminPages /></Suspense>} />
           </Routes>
         </div>
