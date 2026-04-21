@@ -32,7 +32,7 @@ export const NotificationBell = forwardRef<HTMLDivElement, NotificationBellProps
           }
         }}
       >
-        <Icon icon="bell" ratio={1.2} />
+        <Icon icon="bell" />
         <AnimatePresence>
           {unreadCount > 0 && (
             <motion.span

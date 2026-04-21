@@ -5,7 +5,7 @@ import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'motion/
 import UIkit from 'uikit';
 import { useAuth } from '../../context/AuthContext';
 import { useUIKit } from '../../hooks/useUIkit';
-import { useAppSelector } from '../../store';
+import { useAppSelector, useAppDispatch } from '../../store';
 import { NAVBAR_PORTAL_ID } from './NavbarPortal';
 import Logo from '../Logo/Logo';
 import {
@@ -19,22 +19,17 @@ import {
 import { Icon } from '../uikit/Icon/Icon';
 import { Container } from '../uikit/Container/Container';
 import { Offcanvas, OffcanvasBar, OffcanvasClose } from '../uikit/Offcanvas/Offcanvas';
-import { Nav, NavItem, NavHeader, NavDivider } from '../uikit/Nav/Nav';
-import { AvatarWithPresence } from '../AvatarWithPresence';
 import { usePresence } from '../../context/PresenceContext';
 import { useTheme } from '../../context/ThemeContext';
 import { useGuestCountry } from '../../hooks/useGuestCountry';
-import { CountrySelector } from '../CountrySelector/CountrySelector';
 import { NotificationBell } from '../../notifications/components/NotificationBell/NotificationBell';
 import { NotificationPanel } from '../../notifications/components/NotificationPanel/NotificationPanel';
-import { useAppDispatch } from '../../store';
 import { markOneRead as markOneReadAction, markAllReadInState } from '../../notifications/store/notificationSlice';
 import { notificationService } from '../../notifications/services/notificationService';
 import type { NotificationDto } from '../../notifications/types/notification';
 import SidebarMenu from '../SidebarMenu/SidebarMenu';
 import styles from './Navbar.module.scss';
 
-const MotionNavbarItem = motion.create(NavbarItem);
 const MotionLogo = motion.create(Logo);
 
 const Navbar: React.FC = () => {
@@ -54,7 +49,6 @@ const Navbar: React.FC = () => {
   const notificationBellRef = useRef<HTMLDivElement>(null);
   const appDispatch = useAppDispatch();
 
-  // Panel always reads from the "all" query — independent of the page's activeCategory
   const notifState = useAppSelector((state) => state.notifications);
   const notifUnreadCount = notifState.unreadCount;
   const notifLoading = notifState.queries.all?.loading ?? false;
@@ -153,246 +147,6 @@ const Navbar: React.FC = () => {
     offcanvasInstance?.hide();
   }, [offcanvasInstance]);
 
-  const navLinks = (
-    <AnimatePresence mode="wait">
-      {isAuthenticated ? (
-        <React.Fragment key="auth">
-          <AnimatePresence>
-            {mode === 'default' && (
-              <MotionNavbarItem
-                key="my-ads"
-                className="uk-visible@m"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <Link to="/sales/ads">{t('navbar.myAds')}</Link>
-              </MotionNavbarItem>
-            )}
-            {mode === 'default' && (
-              <MotionNavbarItem
-                key="purchases"
-                className="uk-visible@m"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2, delay: 0.05 }}
-              >
-                <Link to="/purchases">{t('navbar.purchases')}</Link>
-              </MotionNavbarItem>
-            )}
-            {mode === 'default' && isAuthenticated && (
-              <MotionNavbarItem
-                key="conversations"
-                className="uk-visible@m"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2, delay: 0.06 }}
-              >
-                <Link to="/conversations">
-                  <Icon icon="comments" className="uk-margin-small-right" ratio={0.85} />
-                  {t('chat.conversations')}
-                </Link>
-              </MotionNavbarItem>
-            )}
-            {isAuthenticated && (
-              <MotionNavbarItem
-                key="notifications"
-                className="uk-visible@m"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2, delay: mode === 'default' ? 0.07 : 0 }}
-                style={{ position: 'relative' }}
-              >
-                <NotificationBell
-                  ref={notificationBellRef}
-                  unreadCount={notifUnreadCount}
-                  onClick={toggleNotificationPanel}
-                />
-                <AnimatePresence>
-                  {isNotificationPanelOpen && (
-                    <motion.div
-                      ref={notificationPanelRef}
-                      initial={{ opacity: 0, y: -8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -8 }}
-                      transition={{ type: 'spring', stiffness: 400, damping: 40 }}
-                      style={{ position: 'absolute', top: '100%', right: 0, zIndex: 1020, marginTop: 8 }}
-                    >
-                      <NotificationPanel
-                        notifications={notifItems}
-                        unreadCount={notifUnreadCount}
-                        loading={notifLoading}
-                        onMarkRead={notifMarkRead}
-                        onMarkAllRead={notifMarkAllRead}
-                        onClose={closeNotificationPanel}
-                      />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </MotionNavbarItem>
-            )}
-            <MotionNavbarItem
-              key="user-menu"
-              className="uk-visible@m"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2, delay: mode === 'default' ? 0.1 : 0 }}
-            >
-              <Link to="#">
-                <div className="uk-flex uk-flex-middle">
-                  <AvatarWithPresence 
-                    username={username || ''} 
-                    avatarUrl={userProfile?.avatarUrl} 
-                    size={32} 
-                    status={presence?.status} 
-                    customStatus={presence?.customStatus}
-                    badgeSize={10}
-                  />
-                  <span className="uk-margin-small-left">{username}</span>
-                  <span className="uk-margin-small-left" uk-icon="icon: triangle-down; ratio: 0.8"></span>
-                </div>
-              </Link>
-              <div className="uk-navbar-dropdown" uk-dropdown="mode: click; pos: bottom-right">
-                <Nav variant="dropdown">
-                  <NavItem>
-                    <Link to="/profile">
-                      <Icon icon="user" className="uk-margin-small-right" />
-                      {t('navbar.profile')}
-                    </Link>
-                  </NavItem>
-                  <NavItem>
-                    <Link to="/sales/ads">
-                      <Icon icon="cart" className="uk-margin-small-right" />
-                      {t('navbar.myAds')}
-                    </Link>
-                  </NavItem>
-                  <NavItem>
-                    <Link to="/purchases">
-                      <Icon icon="bag" className="uk-margin-small-right" />
-                      {t('navbar.purchases')}
-                    </Link>
-                  </NavItem>
-                  <NavItem>
-                    <Link to="/watchlist">
-                      <Icon icon="heart" className="uk-margin-small-right" />
-                      {t('navbar.watchlist')}
-                    </Link>
-                  </NavItem>
-                  <NavItem>
-                    <Link to="/profile/tickets">
-                      <Icon icon="lifesaver" className="uk-margin-small-right" />
-                      {t('navbar.support')}
-                    </Link>
-                  </NavItem>
-                  <NavItem>
-                    <Link to="/terms">
-                      <Icon icon="info" className="uk-margin-small-right" />
-                      {t('navbar.terms')}
-                    </Link>
-                  </NavItem>
-                  {(roles.includes('ADMIN') || roles.includes('SUPPORT')) && (
-                    <>
-                      <NavDivider />
-                      <NavItem>
-                        <Link to="/admin">
-                          <Icon icon="cog" className="uk-margin-small-right" />
-                          {t('navbar.admin')}
-                        </Link>
-                      </NavItem>
-                    </>
-                  )}
-                  <NavDivider />
-                  <NavHeader>{t('navbar.theme')}</NavHeader>
-                  <NavItem active={theme === 'light'}>
-                    <Link to="#" onClick={(e) => { e.preventDefault(); setTheme('light'); }}>
-                      <Icon icon="bolt" className="uk-margin-small-right" />
-                      {t('profile.themes.light')}
-                    </Link>
-                  </NavItem>
-                  <NavItem active={theme === 'dark'}>
-                    <Link to="#" onClick={(e) => { e.preventDefault(); setTheme('dark'); }}>
-                      <Icon icon="star" className="uk-margin-small-right" />
-                      {t('profile.themes.dark')}
-                    </Link>
-                  </NavItem>
-                  <NavItem active={theme === 'dark-unicorn'}>
-                    <Link to="#" onClick={(e) => { e.preventDefault(); setTheme('dark-unicorn'); }}>
-                      <Icon icon="heart" className="uk-margin-small-right" />
-                      {t('profile.themes.dark-unicorn')}
-                    </Link>
-                  </NavItem>
-                  <NavItem active={theme === 'iron-age'}>
-                    <Link to="#" onClick={(e) => { e.preventDefault(); setTheme('iron-age'); }}>
-                      <Icon icon="nut" className="uk-margin-small-right" />
-                      {t('profile.themes.iron-age')}
-                    </Link>
-                  </NavItem>
-                  <NavDivider />
-                  <NavItem>
-                    <Link to="#" onClick={handleLogout}>
-                      <Icon icon="sign-out" className="uk-margin-small-right" />
-                      {t('navbar.logout')}
-                    </Link>
-                  </NavItem>
-                </Nav>
-              </div>
-            </MotionNavbarItem>
-          </AnimatePresence>
-        </React.Fragment>
-      ) : (
-        <React.Fragment key="guest">
-          <AnimatePresence>
-            {mode === 'default' && (
-              <MotionNavbarItem
-                key="guest-country"
-                className="uk-visible@m"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <CountrySelector
-                  value={guestCountryCode}
-                  onChange={(code) => setGuestCountryCode(code)}
-                  compact
-                />
-              </MotionNavbarItem>
-            )}
-            {mode === 'default' && (
-              <MotionNavbarItem
-                key="login"
-                className="uk-visible@m"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <Link to="/login">{t('navbar.login')}</Link>
-              </MotionNavbarItem>
-            )}
-            {mode === 'default' && (
-              <MotionNavbarItem
-                key="register"
-                className="uk-visible@m"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2, delay: 0.05 }}
-              >
-                <Link to="/register">{t('navbar.register')}</Link>
-              </MotionNavbarItem>
-            )}
-          </AnimatePresence>
-        </React.Fragment>
-      )}
-    </AnimatePresence>
-  );
-
   return (
     <>
       <div style={{ height: 80 }} />
@@ -473,8 +227,37 @@ const Navbar: React.FC = () => {
               </NavbarLeft>
               <NavbarRight>
                 <NavbarNav>
-                  {navLinks}
-                  <NavbarItem className="uk-hidden@m">
+                  {isAuthenticated && (
+                    <NavbarItem className="uk-visible@m" style={{ position: 'relative' }}>
+                      <NotificationBell
+                        ref={notificationBellRef}
+                        unreadCount={notifUnreadCount}
+                        onClick={toggleNotificationPanel}
+                      />
+                      <AnimatePresence>
+                        {isNotificationPanelOpen && (
+                          <motion.div
+                            ref={notificationPanelRef}
+                            initial={{ opacity: 0, y: -8 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -8 }}
+                            transition={{ type: 'spring' as const, stiffness: 400, damping: 40 }}
+                            style={{ position: 'absolute', top: '100%', right: 0, zIndex: 1020, marginTop: 8 }}
+                          >
+                            <NotificationPanel
+                              notifications={notifItems}
+                              unreadCount={notifUnreadCount}
+                              loading={notifLoading}
+                              onMarkRead={notifMarkRead}
+                              onMarkAllRead={notifMarkAllRead}
+                              onClose={closeNotificationPanel}
+                            />
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </NavbarItem>
+                  )}
+                  <NavbarItem>
                     <NavbarToggle uk-toggle="target: #mobile-menu" className={styles.hamburgerToggle}>
                       <AnimatePresence mode="wait" initial={false}>
                         {isMenuOpen ? (
