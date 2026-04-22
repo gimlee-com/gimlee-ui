@@ -35,7 +35,7 @@ const EditAdPage: React.FC = () => {
   const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { register, handleSubmit, reset, control, watch, setValue, setError: setFieldError, formState: { errors } } = useForm<UpdateAdRequestDto>({
+  const { register, handleSubmit, reset, control, watch, setValue, setError: setFieldError, clearErrors, formState: { errors } } = useForm<UpdateAdRequestDto>({
     mode: 'onBlur'
   });
   const [ad, setAd] = useState<AdDto | null>(null);
@@ -55,6 +55,9 @@ const EditAdPage: React.FC = () => {
   const [priceFocused, setPriceFocused] = useState(false);
   const [stockFocused, setStockFocused] = useState(false);
   const [editingImagePath, setEditingImagePath] = useState<string | null>(null);
+  const [enabledFixedCurrencies, setEnabledFixedCurrencies] = useState<Set<string>>(new Set());
+  const [localFixedPrices, setLocalFixedPrices] = useState<Record<string, number>>({});
+  const [fixedPriceFocused, setFixedPriceFocused] = useState<Record<string, boolean>>({});
 
   const watchPricingMode = watch('pricingMode');
   const watchSettlementCurrencies = watch('settlementCurrencies');
@@ -82,6 +85,14 @@ const EditAdPage: React.FC = () => {
           if (data.categoryId) {
             setSelectedCategoryId(data.categoryId);
           }
+          const fixedPricesMap: Record<string, number> = {};
+          if (data.fixedPrices) {
+            for (const fp of data.fixedPrices) {
+              fixedPricesMap[fp.currency] = fp.amount;
+            }
+          }
+          setLocalFixedPrices(fixedPricesMap);
+          setEnabledFixedCurrencies(new Set(Object.keys(fixedPricesMap)));
           reset({
             title: data.title,
             description: data.description,
@@ -139,16 +150,51 @@ const EditAdPage: React.FC = () => {
 
   const onSubmit = async (data: UpdateAdRequestDto) => {
     if (!id) return;
+    const pricingMode = data.pricingMode;
+
+    if (pricingMode === 'FIXED_CRYPTO') {
+      const hasValidPrice = Array.from(enabledFixedCurrencies).some(
+        c => (localFixedPrices[c] ?? 0) > 0 && isFinite(localFixedPrices[c])
+      );
+      if (!hasValidPrice) {
+        setFieldError('fixedPrices' as keyof UpdateAdRequestDto, { type: 'validate', message: t('pricing.atLeastOneCurrencyRequired') });
+        return;
+      }
+    }
+
     setSaving(true);
     setPageError(null);
     try {
-      const updateData: UpdateAdRequestDto = {
-          ...data,
-          mediaPaths,
-          mainPhotoPath: mainPhotoPath || undefined,
-          location: selectedCity ? { cityId: selectedCity.id } : undefined,
-          categoryId: selectedCategoryId || undefined
+      const common = {
+        title: data.title,
+        description: data.description,
+        pricingMode,
+        volatilityProtection: data.volatilityProtection,
+        mediaPaths,
+        mainPhotoPath: mainPhotoPath || undefined,
+        location: selectedCity ? { cityId: selectedCity.id } : undefined,
+        categoryId: selectedCategoryId || undefined,
+        stock: data.stock
       };
+
+      let updateData: UpdateAdRequestDto;
+      if (pricingMode === 'FIXED_CRYPTO') {
+        const cleanFixedPrices: Record<string, number> = {};
+        for (const [currency, amount] of Object.entries(localFixedPrices)) {
+          if (enabledFixedCurrencies.has(currency) && amount > 0 && isFinite(amount)) {
+            cleanFixedPrices[currency] = amount;
+          }
+        }
+        updateData = { ...common, fixedPrices: cleanFixedPrices };
+      } else {
+        updateData = {
+          ...common,
+          price: data.price,
+          priceCurrency: data.priceCurrency,
+          settlementCurrencies: data.settlementCurrencies
+        };
+      }
+
       await salesService.updateAd(id, updateData);
       UIkit.notification({
         message: t('ads.saveSuccess'),
@@ -165,7 +211,7 @@ const EditAdPage: React.FC = () => {
       if (fieldErrors && fieldErrors.length > 0) {
         const formFields: Array<keyof UpdateAdRequestDto> = [
           'title', 'description', 'pricingMode', 'price', 'priceCurrency',
-          'settlementCurrencies', 'volatilityProtection', 'location',
+          'fixedPrices', 'settlementCurrencies', 'volatilityProtection', 'location',
           'mediaPaths', 'mainPhotoPath', 'stock', 'categoryId'
         ];
         for (const fe of fieldErrors) {
@@ -413,42 +459,7 @@ const EditAdPage: React.FC = () => {
             <CardBody>
               <Heading as="h4" divider>{t('ads.pricingStock')}</Heading>
 
-              {/* Settlement Currencies */}
-              <div className="uk-margin">
-                <label className="uk-form-label">{t('pricing.settlementCurrencies')}</label>
-                <p className="uk-text-meta uk-margin-small-bottom">{t('pricing.settlementCurrenciesHint')}</p>
-                <Controller
-                  control={control}
-                  name="settlementCurrencies"
-                  rules={{ validate: (v) => (v && v.length > 0) || 'At least one settlement currency required' }}
-                  render={({ field }) => (
-                    <div className="uk-flex uk-flex-wrap" style={{ gap: '12px' }}>
-                      {allowedCurrencies.settlementCurrencies.map(c => (
-                        <label key={c.code} className="uk-flex uk-flex-middle" style={{ gap: '6px', cursor: 'pointer' }}>
-                          <input
-                            type="checkbox"
-                            className="uk-checkbox"
-                            checked={field.value?.includes(c.code) || false}
-                            onChange={(e) => {
-                              const current = field.value || [];
-                              const updated = e.target.checked
-                                ? [...current, c.code]
-                                : current.filter(code => code !== c.code);
-                              field.onChange(updated);
-                            }}
-                          />
-                          <span>{c.code} ({c.name})</span>
-                        </label>
-                      ))}
-                    </div>
-                  )}
-                />
-                <AnimatePresence>
-                  {errors.settlementCurrencies?.message && (
-                    <FormMessage>{errors.settlementCurrencies.message}</FormMessage>
-                  )}
-                </AnimatePresence>
-              </div>
+              {/* Pricing Mode */}
               <div className="uk-margin">
                 <label className="uk-form-label">{t('pricing.mode')}</label>
                 <Controller
@@ -463,13 +474,10 @@ const EditAdPage: React.FC = () => {
                           checked={field.value === 'FIXED_CRYPTO'}
                           onChange={() => {
                             field.onChange('FIXED_CRYPTO' as PricingMode);
-                            setValue('volatilityProtection', false);
-                            // Reset price currency to first settlement currency if not compatible
-                            const settlements = watchSettlementCurrencies || [];
-                            const currentPriceCurrency = watch('priceCurrency');
-                            if (currentPriceCurrency && !settlements.includes(currentPriceCurrency)) {
-                              setValue('priceCurrency', settlements[0] || '');
-                            }
+                            setValue('price', undefined);
+                            setValue('priceCurrency', '');
+                            setValue('settlementCurrencies', []);
+                            clearErrors(['price', 'priceCurrency', 'settlementCurrencies']);
                           }}
                         />
                         <div>
@@ -484,12 +492,9 @@ const EditAdPage: React.FC = () => {
                           checked={field.value === 'PEGGED'}
                           onChange={() => {
                             field.onChange('PEGGED' as PricingMode);
-                            // Reset price currency if not valid for PEGGED mode
-                            const references = allowedCurrencies.referenceCurrencies || [];
-                            const currentPriceCurrency = watch('priceCurrency');
-                            if (currentPriceCurrency && !references.some(r => r.code === currentPriceCurrency)) {
-                              setValue('priceCurrency', references[0]?.code || '');
-                            }
+                            setValue('settlementCurrencies', Array.from(enabledFixedCurrencies));
+                            setLocalFixedPrices({});
+                            clearErrors('fixedPrices');
                           }}
                         />
                         <div>
@@ -506,98 +511,224 @@ const EditAdPage: React.FC = () => {
                   )}
                 </AnimatePresence>
               </div>
-              <Grid gap="small">
-                <div className="uk-width-1-2@m">
-                  <label className="uk-form-label">{t('ads.price')}</label>
-                  <Controller
-                    control={control}
-                    name="price"
-                    render={({ field }) => (
-                      <Input
-                        layout={false}
-                        type="number"
-                        step="0.00000001"
-                        value={field.value ?? ''}
-                        status={errors.price && !priceFocused ? 'danger' : undefined}
-                        onChange={(e) => {
-                          const val = e.target.value;
-                          const numVal = parseFloat(val);
-                          field.onChange(val === '' || isNaN(numVal) ? undefined : numVal);
-                        }}
-                        onFocus={() => setPriceFocused(true)}
-                        onBlur={() => {
-                          field.onBlur();
-                          setPriceFocused(false);
-                        }}
-                      />
-                    )}
-                  />
-                  {priceFocused && (
-                    <div className="uk-text-primary uk-text-small uk-margin-small-top">
-                      {t('ads.priceGuidance')}
-                    </div>
-                  )}
-                  <AnimatePresence>
-                    {errors.price?.message && !priceFocused && (
-                      <FormMessage>{errors.price.message}</FormMessage>
-                    )}
-                  </AnimatePresence>
-                </div>
-                <div className="uk-width-1-2@m">
-                  <label className="uk-form-label">{t('pricing.referenceCurrency')}</label>
-                  <Select layout={false} {...register('priceCurrency')}>
-                    {(watchPricingMode === 'FIXED_CRYPTO'
-                      ? allowedCurrencies.settlementCurrencies
-                      : allowedCurrencies.referenceCurrencies
-                    ).map(c => (
-                      <option key={c.code} value={c.code}>{c.code} ({c.name})</option>
-                    ))}
-                  </Select>
-                  <AnimatePresence>
-                    {errors.priceCurrency?.message && (
-                      <FormMessage>{errors.priceCurrency.message}</FormMessage>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </Grid>
 
-              {/* Volatility Protection (PEGGED only) */}
-              <AnimatePresence>
-                {watchPricingMode === 'PEGGED' && (
+              {/* Mode-specific sub-form */}
+              <AnimatePresence mode="wait">
+                {watchPricingMode === 'FIXED_CRYPTO' && (
                   <motion.div
+                    key="fixed-crypto"
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
                     transition={{ type: 'spring', stiffness: 400, damping: 40 }}
-                    className="uk-margin"
                   >
-                    <label className="uk-flex uk-flex-middle" style={{ gap: '8px', cursor: 'pointer' }}>
-                      <input
-                        type="checkbox"
-                        className="uk-checkbox"
-                        {...register('volatilityProtection')}
-                      />
-                      <div>
-                        <span className="uk-text-bold">{t('pricing.volatilityProtection')}</span>
-                        <p className="uk-text-meta uk-margin-remove">{t('pricing.volatilityProtectionDesc')}</p>
+                    <div className="uk-margin">
+                      <label className="uk-form-label">{t('pricing.fixedPricesLabel')}</label>
+                      <p className="uk-text-meta uk-margin-small-bottom">{t('pricing.fixedPricesHint')}</p>
+                      <div className="uk-flex uk-flex-column" style={{ gap: '10px' }}>
+                        {allowedCurrencies.settlementCurrencies.map(c => {
+                          const enabled = enabledFixedCurrencies.has(c.code);
+                          const focused = fixedPriceFocused[c.code] || false;
+                          return (
+                            <div key={c.code} className="uk-flex uk-flex-middle" style={{ gap: '10px' }}>
+                              <label className="uk-flex uk-flex-middle uk-width-expand" style={{ gap: '6px', cursor: 'pointer' }}>
+                                <input
+                                  type="checkbox"
+                                  className="uk-checkbox"
+                                  checked={enabled}
+                                  onChange={(e) => {
+                                    setEnabledFixedCurrencies(prev => {
+                                      const next = new Set(prev);
+                                      if (e.target.checked) {
+                                        next.add(c.code);
+                                      } else {
+                                        next.delete(c.code);
+                                      }
+                                      return next;
+                                    });
+                                    if (!e.target.checked) {
+                                      setLocalFixedPrices(prev => {
+                                        const next = { ...prev };
+                                        delete next[c.code];
+                                        return next;
+                                      });
+                                    }
+                                    clearErrors('fixedPrices');
+                                  }}
+                                />
+                                <span>{c.code} ({c.name})</span>
+                              </label>
+                              <div className="uk-width-1-3@m uk-width-1-2">
+                                <Input
+                                  layout={false}
+                                  type="number"
+                                  step="0.00000001"
+                                  placeholder={t('pricing.priceIn', { currency: c.code })}
+                                  disabled={!enabled}
+                                  value={localFixedPrices[c.code] ?? ''}
+                                  status={!focused && enabled && errors.fixedPrices?.message ? 'danger' : undefined}
+                                  onChange={(e) => {
+                                    const val = e.target.value;
+                                    if (val === '') {
+                                      setLocalFixedPrices(prev => {
+                                        const next = { ...prev };
+                                        delete next[c.code];
+                                        return next;
+                                      });
+                                    } else {
+                                      const numVal = parseFloat(val);
+                                      if (!isNaN(numVal)) {
+                                        setLocalFixedPrices(prev => ({ ...prev, [c.code]: numVal }));
+                                      }
+                                    }
+                                    clearErrors('fixedPrices');
+                                  }}
+                                  onFocus={() => setFixedPriceFocused(prev => ({ ...prev, [c.code]: true }))}
+                                  onBlur={() => setFixedPriceFocused(prev => ({ ...prev, [c.code]: false }))}
+                                />
+                              </div>
+                            </div>
+                          );
+                        })}
                       </div>
-                    </label>
+                      <AnimatePresence>
+                        {errors.fixedPrices?.message && (
+                          <FormMessage>{errors.fixedPrices.message}</FormMessage>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  </motion.div>
+                )}
 
-                    {/* Multi-currency tip */}
-                    {watch('volatilityProtection') && (watchSettlementCurrencies?.length || 0) > 1 && (
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        className="uk-margin-small-top"
-                      >
-                        <Alert variant="primary" className="uk-border-rounded">
-                          <p className="uk-margin-remove uk-text-small">{t('pricing.multiCurrencyTip')}</p>
-                        </Alert>
-                      </motion.div>
-                    )}
+                {watchPricingMode === 'PEGGED' && (
+                  <motion.div
+                    key="pegged"
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 40 }}
+                  >
+                    {/* Settlement Currencies */}
+                    <div className="uk-margin">
+                      <label className="uk-form-label">{t('pricing.settlementCurrencies')}</label>
+                      <p className="uk-text-meta uk-margin-small-bottom">{t('pricing.settlementCurrenciesHint')}</p>
+                      <Controller
+                        control={control}
+                        name="settlementCurrencies"
+                        rules={{ validate: (v) => (v && v.length > 0) || 'At least one settlement currency required' }}
+                        render={({ field }) => (
+                          <div className="uk-flex uk-flex-wrap" style={{ gap: '12px' }}>
+                            {allowedCurrencies.settlementCurrencies.map(c => (
+                              <label key={c.code} className="uk-flex uk-flex-middle" style={{ gap: '6px', cursor: 'pointer' }}>
+                                <input
+                                  type="checkbox"
+                                  className="uk-checkbox"
+                                  checked={field.value?.includes(c.code) || false}
+                                  onChange={(e) => {
+                                    const current = field.value || [];
+                                    const updated = e.target.checked
+                                      ? [...current, c.code]
+                                      : current.filter(code => code !== c.code);
+                                    field.onChange(updated);
+                                  }}
+                                />
+                                <span>{c.code} ({c.name})</span>
+                              </label>
+                            ))}
+                          </div>
+                        )}
+                      />
+                      <AnimatePresence>
+                        {errors.settlementCurrencies?.message && (
+                          <FormMessage>{errors.settlementCurrencies.message}</FormMessage>
+                        )}
+                      </AnimatePresence>
+                    </div>
+
+                    {/* Price + Reference Currency */}
+                    <Grid gap="small">
+                      <div className="uk-width-1-2@m">
+                        <label className="uk-form-label">{t('ads.price')}</label>
+                        <Controller
+                          control={control}
+                          name="price"
+                          render={({ field }) => (
+                            <Input
+                              layout={false}
+                              type="number"
+                              step="0.00000001"
+                              value={field.value ?? ''}
+                              status={errors.price && !priceFocused ? 'danger' : undefined}
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                const numVal = parseFloat(val);
+                                field.onChange(val === '' || isNaN(numVal) ? undefined : numVal);
+                              }}
+                              onFocus={() => setPriceFocused(true)}
+                              onBlur={() => {
+                                field.onBlur();
+                                setPriceFocused(false);
+                              }}
+                            />
+                          )}
+                        />
+                        {priceFocused && (
+                          <div className="uk-text-primary uk-text-small uk-margin-small-top">
+                            {t('ads.priceGuidance')}
+                          </div>
+                        )}
+                        <AnimatePresence>
+                          {errors.price?.message && !priceFocused && (
+                            <FormMessage>{errors.price.message}</FormMessage>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                      <div className="uk-width-1-2@m">
+                        <label className="uk-form-label">{t('pricing.referenceCurrency')}</label>
+                        <Select layout={false} {...register('priceCurrency')}>
+                          {allowedCurrencies.referenceCurrencies.map(c => (
+                            <option key={c.code} value={c.code}>{c.code} ({c.name})</option>
+                          ))}
+                        </Select>
+                        <AnimatePresence>
+                          {errors.priceCurrency?.message && (
+                            <FormMessage>{errors.priceCurrency.message}</FormMessage>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    </Grid>
                   </motion.div>
                 )}
               </AnimatePresence>
+
+              {/* Volatility Protection (both modes) */}
+              <div className="uk-margin">
+                <label className="uk-flex uk-flex-middle" style={{ gap: '8px', cursor: 'pointer' }}>
+                  <input
+                    type="checkbox"
+                    className="uk-checkbox"
+                    {...register('volatilityProtection')}
+                  />
+                  <div>
+                    <span className="uk-text-bold">{t('pricing.volatilityProtection')}</span>
+                    <p className="uk-text-meta uk-margin-remove">{t('pricing.volatilityProtectionDesc')}</p>
+                  </div>
+                </label>
+
+                {/* Multi-currency tip */}
+                {watch('volatilityProtection') &&
+                  ((watchPricingMode === 'FIXED_CRYPTO' ? enabledFixedCurrencies.size : (watchSettlementCurrencies?.length || 0)) > 1) && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="uk-margin-small-top"
+                  >
+                    <Alert variant="primary" className="uk-border-rounded">
+                      <p className="uk-margin-remove uk-text-small">{t('pricing.multiCurrencyTip')}</p>
+                    </Alert>
+                  </motion.div>
+                )}
+              </div>
 
               {/* Stock */}
               <div className="uk-margin">
