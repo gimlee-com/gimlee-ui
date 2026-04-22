@@ -79,7 +79,14 @@ export const SalesAdCard: React.FC<SalesAdCardProps> = ({ ad, onToggleStatus }) 
           </Link>
           
           <div className={styles.price}>
-            {ad.price ? (
+            {ad.pricingMode === 'FIXED_CRYPTO' && ad.fixedPrices && ad.fixedPrices.length > 0 ? (
+              ad.fixedPrices.map((fp, i) => (
+                <span key={fp.currency}>
+                  {i > 0 && <span className="uk-text-muted"> · </span>}
+                  {formatPrice(fp.amount, fp.currency)}
+                </span>
+              ))
+            ) : ad.price ? (
               formatPrice(ad.price.amount, ad.price.currency)
             ) : (
               <span className="uk-text-muted">-</span>

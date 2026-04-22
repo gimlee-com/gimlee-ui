@@ -593,7 +593,7 @@ const EditAdPage: React.FC = () => {
                       </div>
                       <AnimatePresence>
                         {errors.fixedPrices?.message && (
-                          <FormMessage>{errors.fixedPrices.message}</FormMessage>
+                          <FormMessage>{String(errors.fixedPrices.message)}</FormMessage>
                         )}
                       </AnimatePresence>
                     </div>

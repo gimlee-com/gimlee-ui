@@ -418,7 +418,33 @@ const AdDetailsPage: React.FC = () => {
                 
                 {/* Reference price */}
                 <div className="uk-margin-small-bottom">
-                  {ad.preferredPrice && (
+                  {ad.pricingMode === 'FIXED_CRYPTO' && ad.preferredPrices && Object.keys(ad.preferredPrices.prices).length > 0 ? (
+                    <>
+                      {(() => {
+                        const values = Object.values(ad.preferredPrices!.prices);
+                        const currency = ad.preferredPrices!.currency;
+                        const min = Math.min(...values);
+                        const max = Math.max(...values);
+                        const rangeText = min === max
+                          ? `≈ ${formatPrice(min, currency)}`
+                          : `≈ ${formatPrice(min, currency)} – ${formatPrice(max, currency)}`;
+                        return (
+                          <span className="uk-text-large uk-text-primary uk-text-bold">{rangeText}</span>
+                        );
+                      })()}
+                      <span className="uk-flex uk-flex-middle uk-text-small uk-text-muted">
+                        {t('pricing.fixedPrice')}
+                        <span
+                          className={`uk-margin-xsmall-left ${styles.pricingInfo}`}
+                          uk-tooltip={`title: ${t('pricing.fixedExplainer')}; pos: right`}
+                          role="button"
+                          tabIndex={0}
+                        >
+                          <Icon icon="info" ratio={0.75} />
+                        </span>
+                      </span>
+                    </>
+                  ) : ad.preferredPrice ? (
                     <>
                       <span className="uk-text-large uk-text-primary uk-text-bold">
                         {formatPrice(ad.preferredPrice.amount, ad.preferredPrice.currency)}
@@ -436,8 +462,21 @@ const AdDetailsPage: React.FC = () => {
                           </span>
                         </span>
                       )}
+                      {ad.pricingMode === 'FIXED_CRYPTO' && (
+                        <span className="uk-flex uk-flex-middle uk-text-small uk-text-muted">
+                          {t('pricing.fixedPrice')}
+                          <span
+                            className={`uk-margin-xsmall-left ${styles.pricingInfo}`}
+                            uk-tooltip={`title: ${t('pricing.fixedExplainer')}; pos: right`}
+                            role="button"
+                            tabIndex={0}
+                          >
+                            <Icon icon="info" ratio={0.75} />
+                          </span>
+                        </span>
+                      )}
                     </>
-                  )}
+                  ) : null}
                 </div>
 
                 <hr className="uk-margin-small" />
@@ -469,6 +508,7 @@ const AdDetailsPage: React.FC = () => {
                       {ad.settlementPrices.map((sp: CurrencyAmountDto) => {
                         const isFrozen = ad.frozenCurrencies?.includes(sp.currency);
                         const isSelected = selectedCurrency === sp.currency;
+                        const fiatAmount = ad.preferredPrices?.prices?.[sp.currency];
                         return (
                           <motion.div
                             key={sp.currency}
@@ -489,9 +529,16 @@ const AdDetailsPage: React.FC = () => {
                                 />
                                 <span className={`uk-text-bold ${isFrozen ? 'uk-text-muted' : ''}`}>{sp.currency}</span>
                               </div>
-                              <span className={isFrozen ? 'uk-text-muted' : 'uk-text-emphasis'}>
-                                {formatPrice(sp.amount, sp.currency)}
-                              </span>
+                              <div className="uk-text-right">
+                                <span className={isFrozen ? 'uk-text-muted' : 'uk-text-emphasis'}>
+                                  {formatPrice(sp.amount, sp.currency)}
+                                </span>
+                                {fiatAmount != null && (
+                                  <div className="uk-text-xsmall uk-text-muted">
+                                    {t('pricing.fiatEquivalent', { price: formatPrice(fiatAmount, ad.preferredPrices!.currency) })}
+                                  </div>
+                                )}
+                              </div>
                             </div>
                             {isFrozen && (
                               <div className="uk-text-xsmall uk-text-danger uk-margin-xsmall-top">

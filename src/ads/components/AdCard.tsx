@@ -19,6 +19,29 @@ interface AdCardProps {
 
 const API_URL = import.meta.env.VITE_API_URL || '';
 
+function getDisplayPrice(ad: AdDiscoveryPreviewDto): { type: 'range' | 'estimate' | 'exact' | 'none'; text: string } {
+  if (ad.preferredPrices && Object.keys(ad.preferredPrices.prices).length > 0) {
+    const values = Object.values(ad.preferredPrices.prices);
+    const currency = ad.preferredPrices.currency;
+    if (values.length > 1) {
+      const min = Math.min(...values);
+      const max = Math.max(...values);
+      if (min === max) return { type: 'estimate', text: `≈ ${formatPrice(min, currency)}` };
+      return { type: 'range', text: `≈ ${formatPrice(min, currency)} – ${formatPrice(max, currency)}` };
+    }
+    if (ad.pricingMode === 'FIXED_CRYPTO') {
+      return { type: 'estimate', text: `≈ ${formatPrice(values[0], currency)}` };
+    }
+  }
+  if (ad.preferredPrice) return { type: 'exact', text: formatPrice(ad.preferredPrice.amount, ad.preferredPrice.currency) };
+  return { type: 'none', text: '-' };
+}
+
+interface AdCardProps {
+  ad: AdDiscoveryPreviewDto;
+  onWatchToggle?: (adId: string, isWatched: boolean) => void;
+}
+
 export const AdCard: React.FC<AdCardProps> = ({ ad, onWatchToggle }) => {
   const { t } = useTranslation();
   const location = useLocation();
@@ -27,6 +50,7 @@ export const AdCard: React.FC<AdCardProps> = ({ ad, onWatchToggle }) => {
 
   const isOutOfStock = ad.isBuyable === false;
   const isFrozen = (ad.frozenCurrencies?.length || 0) > 0;
+  const displayPrice = getDisplayPrice(ad);
 
   return (
     <motion.div
@@ -69,9 +93,9 @@ export const AdCard: React.FC<AdCardProps> = ({ ad, onWatchToggle }) => {
           </Link>
 
           <div className={styles.priceWrapper}>
-            {ad.preferredPrice ? (
-              <span className={styles.primaryPrice}>
-                {formatPrice(ad.preferredPrice.amount, ad.preferredPrice.currency)}
+            {displayPrice.type !== 'none' ? (
+              <span className={`${styles.primaryPrice} ${displayPrice.type !== 'exact' ? 'uk-text-muted' : ''}`}>
+                {displayPrice.text}
               </span>
             ) : (
               <span className="uk-text-muted">-</span>

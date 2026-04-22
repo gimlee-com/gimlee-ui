@@ -53,6 +53,7 @@ export interface AdDto {
   description?: string;
   pricingMode: PricingMode;
   price?: CurrencyAmountDto;
+  fixedPrices?: CurrencyAmountDto[];
   settlementCurrencies: string[];
   volatilityProtection: boolean;
   frozenCurrencies: string[];
@@ -69,6 +70,11 @@ export interface AdDto {
   updatedAt: string;
 }
 
+export interface PreferredPricesDto {
+  currency: string;
+  prices: Record<string, number>;
+}
+
 // Buyer discovery preview — returned by /ads/ search
 export interface AdDiscoveryPreviewDto {
   id: string;
@@ -78,6 +84,7 @@ export interface AdDiscoveryPreviewDto {
   settlementCurrencies?: string[];
   settlementPrices?: CurrencyAmountDto[];
   preferredPrice?: CurrencyAmountDto;
+  preferredPrices?: PreferredPricesDto;
   mainPhotoPath?: string;
   categoryId?: number;
   categoryPath?: CategoryPathElementDto[];
@@ -150,6 +157,7 @@ export interface AdDiscoveryDetailsDto {
   settlementCurrencies?: string[];
   settlementPrices?: CurrencyAmountDto[];
   preferredPrice?: CurrencyAmountDto;
+  preferredPrices?: PreferredPricesDto;
   categoryId?: number;
   categoryPath?: CategoryPathElementDto[];
   mediaPaths?: string[];
@@ -210,6 +218,7 @@ export interface UpdateAdRequestDto {
   pricingMode?: PricingMode;
   price?: number;
   priceCurrency?: string;
+  fixedPrices?: Record<string, number>;
   settlementCurrencies?: string[];
   volatilityProtection?: boolean;
   location?: LocationDto;
