@@ -99,12 +99,14 @@ const EditAdPage: React.FC = () => {
           }
           setLocalFixedPrices(fixedPricesMap);
           setEnabledFixedCurrencies(new Set(Object.keys(fixedPricesMap)));
+          const defaultPriceCurrency = data.price?.currency
+            || (preferredCurrency && currencies.referenceCurrencies.some(c => c.code === preferredCurrency) ? preferredCurrency : '');
           reset({
             title: data.title,
             description: data.description,
             pricingMode: data.pricingMode || 'FIXED_CRYPTO',
             price: data.price?.amount,
-            priceCurrency: data.price?.currency,
+            priceCurrency: defaultPriceCurrency,
             settlementCurrencies: data.settlementCurrencies || [],
             volatilityProtection: data.volatilityProtection || false,
             mainPhotoPath: data.mainPhotoPath,
