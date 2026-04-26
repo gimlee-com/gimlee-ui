@@ -6,7 +6,10 @@ import { motion, AnimatePresence } from 'motion/react';
 import UIkit from 'uikit';
 import { salesService } from '../services/salesService';
 import { cityService } from '../../ads/services/cityService';
+import { currencyService } from '../../payments/services/currencyService';
 import { apiClient } from '../../services/apiClient';
+import { useAuth } from '../../context/AuthContext';
+import { formatPrice } from '../../utils/currencyUtils';
 import type { AdDto, UpdateAdRequestDto, CitySuggestion, CityDetailsDto, MediaUploadResponseDto, AllowedCurrenciesDto, CategoryPathElementDto, PricingMode, StatusResponseDto } from '../../types/api';
 import { Heading } from '../../components/uikit/Heading/Heading';
 import { Spinner } from '../../components/uikit/Spinner/Spinner';
@@ -58,6 +61,9 @@ const EditAdPage: React.FC = () => {
   const [enabledFixedCurrencies, setEnabledFixedCurrencies] = useState<Set<string>>(new Set());
   const [localFixedPrices, setLocalFixedPrices] = useState<Record<string, number>>({});
   const [fixedPriceFocused, setFixedPriceFocused] = useState<Record<string, boolean>>({});
+  const [fiatEstimates, setFiatEstimates] = useState<Record<string, number | null>>({});
+
+  const { preferredCurrency } = useAuth();
 
   const watchPricingMode = watch('pricingMode');
   const watchSettlementCurrencies = watch('settlementCurrencies');
@@ -147,6 +153,48 @@ const EditAdPage: React.FC = () => {
     fieldOnBlur();
     setDescriptionFocused(false);
   }, []);
+
+  // Debounced fiat estimates for FIXED_CRYPTO prices
+  useEffect(() => {
+    if (!preferredCurrency || watchPricingMode !== 'FIXED_CRYPTO') {
+      setFiatEstimates({});
+      return;
+    }
+
+    let cancelled = false;
+    const timer = setTimeout(async () => {
+      const entries = Object.entries(localFixedPrices).filter(
+        ([code, amount]) => enabledFixedCurrencies.has(code) && amount > 0 && isFinite(amount) && code !== preferredCurrency
+      );
+
+      if (entries.length === 0) {
+        if (!cancelled) setFiatEstimates({});
+        return;
+      }
+
+      const results = await Promise.allSettled(
+        entries.map(([code, amount]) =>
+          currencyService.convertCurrency(amount, code, preferredCurrency)
+            .then(r => ({ code, amount: r.targetAmount }))
+        )
+      );
+
+      if (!cancelled) {
+        const estimates: Record<string, number | null> = {};
+        for (const result of results) {
+          if (result.status === 'fulfilled') {
+            estimates[result.value.code] = result.value.amount;
+          }
+        }
+        setFiatEstimates(estimates);
+      }
+    }, 500);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [localFixedPrices, enabledFixedCurrencies, preferredCurrency, watchPricingMode]);
 
   const onSubmit = async (data: UpdateAdRequestDto) => {
     if (!id) return;
@@ -586,6 +634,19 @@ const EditAdPage: React.FC = () => {
                                   onFocus={() => setFixedPriceFocused(prev => ({ ...prev, [c.code]: true }))}
                                   onBlur={() => setFixedPriceFocused(prev => ({ ...prev, [c.code]: false }))}
                                 />
+                                <AnimatePresence>
+                                  {enabled && fiatEstimates[c.code] != null && preferredCurrency && (
+                                    <motion.div
+                                      initial={{ opacity: 0, height: 0 }}
+                                      animate={{ opacity: 1, height: 'auto' }}
+                                      exit={{ opacity: 0, height: 0 }}
+                                      transition={{ type: 'spring', stiffness: 400, damping: 40 }}
+                                      className="uk-text-xsmall uk-text-muted uk-margin-xsmall-top"
+                                    >
+                                      {t('pricing.fiatEquivalent', { price: formatPrice(fiatEstimates[c.code]!, preferredCurrency) })}
+                                    </motion.div>
+                                  )}
+                                </AnimatePresence>
                               </div>
                             </div>
                           );
