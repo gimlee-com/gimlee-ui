@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { scaleItemVariants } from '../../animations';
-import type { AdDto } from '../../types/api';
+import type { SalesAdDto } from '../../types/api';
 import { Card, CardBody } from '../../components/uikit/Card/Card';
 import { Label } from '../../components/uikit/Label/Label';
 import { Button } from '../../components/uikit/Button/Button';
@@ -14,8 +14,8 @@ import { Image } from '../../components/Image/Image';
 import styles from './SalesAdCard.module.scss';
 
 interface SalesAdCardProps {
-  ad: AdDto;
-  onToggleStatus: (ad: AdDto) => void;
+  ad: SalesAdDto;
+  onToggleStatus: (ad: SalesAdDto) => void;
 }
 
 const API_URL = import.meta.env.VITE_API_URL || '';
@@ -94,6 +94,24 @@ export const SalesAdCard: React.FC<SalesAdCardProps> = ({ ad, onToggleStatus }) 
           </div>
 
           <div className={styles.meta}>
+            {/* Stats */}
+            <div className={styles.metaItem}>
+              <span className={styles.icon}><Icon icon="search" ratio={0.75} /></span>
+              {t('sales.views', { count: ad.viewsCount })}
+            </div>
+            {ad.ordersCount > 0 && (
+              <div className={styles.metaItem}>
+                <span className={styles.icon}><Icon icon="bag" ratio={0.75} /></span>
+                <Link
+                  to={`/sales/orders?adId=${ad.id}`}
+                  className="uk-link-muted"
+                  onClick={e => e.stopPropagation()}
+                  style={{ position: 'relative', zIndex: 2 }}
+                >
+                  {t('sales.ordersCount', { count: ad.ordersCount })}
+                </Link>
+              </div>
+            )}
             {/* Settlement currencies */}
             <div className={styles.metaItem}>
               <span className={styles.icon}><Icon icon="credit-card" ratio={0.75} /></span>

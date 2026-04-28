@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import UIkit from 'uikit';
 import { motion, AnimatePresence } from 'motion/react';
 import { salesService } from '../services/salesService';
 import type { SalesAdsRequestDto } from '../services/salesService';
-import type { AdDto, PageAdDto } from '../../types/api';
+import type { SalesAdDto, PageSalesAdDto } from '../../types/api';
 import { Heading } from '../../components/uikit/Heading/Heading';
 import { Spinner } from '../../components/uikit/Spinner/Spinner';
 import { Button } from '../../components/uikit/Button/Button';
@@ -13,12 +13,13 @@ import { Grid } from '../../components/uikit/Grid/Grid';
 import { Alert } from '../../components/uikit/Alert/Alert';
 import { SalesAdCard } from '../components/SalesAdCard';
 import { SmartPagination } from '../../components/SmartPagination';
+import { SellerDashboardHeader } from '../components/SellerDashboardHeader/SellerDashboardHeader';
 import SalesSubNav from '../components/SalesSubNav';
 import { createPageContainerVariants, pageItemVariants } from '../../animations';
 
 const SalesAdsPage: React.FC = () => {
   const { t } = useTranslation();
-  const [adsPage, setAdsPage] = useState<PageAdDto | null>(null);
+  const [adsPage, setAdsPage] = useState<PageSalesAdDto | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -44,7 +45,7 @@ const SalesAdsPage: React.FC = () => {
     fetchAds();
   }, [fetchAds]);
 
-  const handleToggleStatus = async (ad: AdDto) => {
+  const handleToggleStatus = async (ad: SalesAdDto) => {
     try {
       if (ad.status === 'ACTIVE') {
         await salesService.deactivateAd(ad.id);
@@ -68,6 +69,10 @@ const SalesAdsPage: React.FC = () => {
         <Button variant="primary" onClick={() => navigate('/sales/ads/create')}>
           {t('ads.createNew')}
         </Button>
+      </motion.div>
+
+      <motion.div variants={pageItemVariants}>
+        <SellerDashboardHeader />
       </motion.div>
 
       <motion.div variants={pageItemVariants}>

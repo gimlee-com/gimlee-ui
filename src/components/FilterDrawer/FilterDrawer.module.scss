@@ -1,0 +1,13 @@
+@import "../../styles/uikit-imports.scss";
+
+.drawerClosed {
+  overflow: hidden;
+}
+
+.drawerOpen {
+  overflow: visible;
+}
+
+.drawerContent {
+  padding: $global-small-gutter 0;
+}

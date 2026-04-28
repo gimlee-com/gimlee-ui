@@ -362,7 +362,13 @@ export interface FetchAdsRequestDto {
   p?: number;
 }
 
-export type PurchaseStatus = 'AWAITING_PAYMENT' | 'COMPLETE' | 'FAILED_PAYMENT_TIMEOUT' | 'FAILED_PAYMENT_UNDERPAID' | 'CANCELLED';
+export type PurchaseStatus = 'CREATED' | 'AWAITING_PAYMENT' | 'COMPLETE' | 'FAILED_PAYMENT_TIMEOUT' | 'FAILED_PAYMENT_UNDERPAID' | 'CANCELLED';
+
+export type StatsPeriod = 'DAILY' | 'MONTHLY' | 'YEARLY' | 'ALL_TIME';
+
+export type PurchaseSortField = 'DATE' | 'AMOUNT';
+
+export type SortDirection = 'ASC' | 'DESC';
 
 export interface PurchaseItemRequestDto {
   adId: string;
@@ -401,10 +407,26 @@ export interface PurchaseStatusResponseDto {
   paidAmount?: number;
 }
 
+// --- User summary (replaces BuyerInfoDto / SellerInfoDto) ---
+
+export interface UserSummaryDto {
+  username: string;
+  avatarUrl?: string;
+}
+
+/** @deprecated Use UserSummaryDto */
 export interface SellerInfoDto {
   id: string;
   username: string;
 }
+
+/** @deprecated Use UserSummaryDto */
+export interface BuyerInfoDto {
+  id: string;
+  username: string;
+}
+
+// --- Order item DTOs ---
 
 export interface SalesOrderItemDto {
   adId: string;
@@ -413,20 +435,81 @@ export interface SalesOrderItemDto {
   unitPrice: number;
 }
 
-export interface BuyerInfoDto {
-  id: string;
-  username: string;
+export interface OrderItemDetailDto {
+  adId: string;
+  title: string;
+  thumbnailPath?: string;
+  quantity: number;
+  unitPrice: number;
 }
+
+// --- Status history ---
+
+export interface StatusChangeDto {
+  status: string;
+  timestamp: string;
+}
+
+// --- Payment summary ---
+
+export interface PaymentSummaryDto {
+  amount: number;
+  paidAmount: number;
+  address: string;
+  memo: string;
+  deadline: string;
+  qrCodeUri: string;
+}
+
+// --- Delivery address snapshot ---
+
+export interface DeliveryAddressSnapshotDto {
+  name: string;
+  fullName: string;
+  street: string;
+  city: string;
+  postalCode: string;
+  country: string;
+  phoneNumber: string;
+}
+
+// --- Sales stats ---
+
+export interface SalesStatsDto {
+  revenue: CurrencyAmountDto[];
+  activeOrdersCount: number;
+  completedOrdersCount: number;
+  totalAdsCount: number;
+  activeAdsCount: number;
+  period: StatsPeriod;
+}
+
+// --- Sales ad with stats ---
+
+export interface SalesAdDto extends AdDto {
+  viewsCount: number;
+  ordersCount: number;
+}
+
+export interface PageSalesAdDto {
+  content: SalesAdDto[];
+  page: PageMetadata;
+}
+
+// --- Sales order (list view, enhanced) ---
 
 export interface SalesOrderDto {
   id: string;
   status: PurchaseStatus;
-  paymentStatus: string;
+  paymentStatus?: string;
   createdAt: string;
   totalAmount: number;
   currency: string;
   items: SalesOrderItemDto[];
-  buyer: BuyerInfoDto;
+  buyer: UserSummaryDto;
+  primaryThumbnailPath?: string;
+  itemCount: number;
+  deliveryAddress?: DeliveryAddressSnapshotDto;
 }
 
 export interface PageSalesOrderDto {
@@ -434,20 +517,56 @@ export interface PageSalesOrderDto {
   page: PageMetadata;
 }
 
+// --- Sales order detail ---
+
+export interface SalesOrderDetailDto {
+  id: string;
+  buyer: UserSummaryDto;
+  items: OrderItemDetailDto[];
+  totalAmount: number;
+  currency: string;
+  status: string;
+  paymentStatus?: string;
+  deliveryAddress?: DeliveryAddressSnapshotDto;
+  statusHistory: StatusChangeDto[];
+  createdAt: string;
+}
+
+// --- Purchase history (list view, enhanced) ---
+
 export interface PurchaseHistoryDto {
   id: string;
   status: PurchaseStatus;
-  paymentStatus: string;
+  paymentStatus?: string;
   createdAt: string;
   totalAmount: number;
   currency: string;
   items: SalesOrderItemDto[];
-  seller: SellerInfoDto;
+  seller: UserSummaryDto;
+  primaryThumbnailPath?: string;
+  itemCount: number;
+  deliveryAddress?: DeliveryAddressSnapshotDto;
 }
 
 export interface PagePurchaseHistoryDto {
   content: PurchaseHistoryDto[];
   page: PageMetadata;
+}
+
+// --- Purchase detail ---
+
+export interface PurchaseDetailDto {
+  id: string;
+  seller: UserSummaryDto;
+  items: OrderItemDetailDto[];
+  totalAmount: number;
+  currency: string;
+  status: string;
+  paymentStatus?: string;
+  deliveryAddress?: DeliveryAddressSnapshotDto;
+  payment?: PaymentSummaryDto;
+  statusHistory: StatusChangeDto[];
+  createdAt: string;
 }
 
 export interface UserSpaceDetailsDto {

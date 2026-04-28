@@ -1,0 +1,66 @@
+@import "../../../styles/uikit-imports.scss";
+
+.dashboard {
+  border: 1px solid $global-border;
+  border-radius: $card-border-radius;
+  background: $global-background;
+  margin-bottom: $global-medium-margin;
+}
+
+.body {
+  padding: 16px 20px;
+}
+
+.periodSelector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.periodChip {
+  padding: 4px 14px;
+  border-radius: 20px;
+  border: 1px solid $global-border;
+  background: transparent;
+  color: $global-color;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    border-color: $global-primary-background;
+    color: $global-primary-background;
+  }
+
+  &.active {
+    background: $global-primary-background;
+    border-color: $global-primary-background;
+    color: #fff;
+  }
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+.statBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.statLabel {
+  font-size: 0.8125rem;
+  color: $global-muted-color;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.statValue {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: $global-emphasis-color;
+}

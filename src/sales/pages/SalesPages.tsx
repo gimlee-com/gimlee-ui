@@ -3,6 +3,7 @@ import SalesAdsPage from './SalesAdsPage';
 import CreateAdPage from './CreateAdPage';
 import EditAdPage from './EditAdPage';
 import SalesOrdersPage from './SalesOrdersPage';
+import SalesOrderDetailPage from './SalesOrderDetailPage';
 
 export default function SalesPages() {
   return (
@@ -11,6 +12,7 @@ export default function SalesPages() {
       <Route path="ads/create" element={<CreateAdPage />} />
       <Route path="ads/edit/:id" element={<EditAdPage />} />
       <Route path="orders" element={<SalesOrdersPage />} />
+      <Route path="orders/:id" element={<SalesOrderDetailPage />} />
     </Routes>
   );
 }

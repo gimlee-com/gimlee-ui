@@ -1,12 +1,17 @@
 import { apiClient } from '../../services/apiClient';
 import type { 
   AdDto, 
-  PageAdDto, 
+  PageSalesAdDto,
   CreateAdRequestDto, 
   UpdateAdRequestDto,
   PageSalesOrderDto,
-  SalesOrderDto,
-  AllowedCurrenciesDto
+  SalesOrderDetailDto,
+  SalesStatsDto,
+  AllowedCurrenciesDto,
+  PurchaseStatus,
+  PurchaseSortField,
+  SortDirection,
+  StatsPeriod,
 } from '../../types/api';
 
 export interface SalesAdsRequestDto {
@@ -17,6 +22,30 @@ export interface SalesAdsRequestDto {
   p: number;
 }
 
+export interface SalesOrdersRequestDto {
+  p?: number;
+  status?: PurchaseStatus[];
+  q?: string;
+  adId?: string;
+  from?: string;
+  to?: string;
+  by?: PurchaseSortField;
+  dir?: SortDirection;
+}
+
+const buildOrdersQuery = (params: SalesOrdersRequestDto): string => {
+  const query = new URLSearchParams();
+  if (params.p != null) query.append('p', params.p.toString());
+  if (params.status) params.status.forEach(s => query.append('status', s));
+  if (params.q) query.append('q', params.q);
+  if (params.adId) query.append('adId', params.adId);
+  if (params.from) query.append('from', params.from);
+  if (params.to) query.append('to', params.to);
+  if (params.by) query.append('by', params.by);
+  if (params.dir) query.append('dir', params.dir);
+  return query.toString();
+};
+
 export const salesService = {
   getMyAds: (params: SalesAdsRequestDto) => {
     const query = new URLSearchParams();
@@ -25,7 +54,7 @@ export const salesService = {
     query.append('by', params.by);
     query.append('dir', params.dir);
     query.append('p', params.p.toString());
-    return apiClient.get<PageAdDto>(`/sales/ads/?${query.toString()}`);
+    return apiClient.get<PageSalesAdDto>(`/sales/ads/?${query.toString()}`);
   },
 
   createAd: (data: CreateAdRequestDto) =>
@@ -46,9 +75,12 @@ export const salesService = {
   deactivateAd: (id: string) =>
     apiClient.post<AdDto>(`/sales/ads/${id}/deactivate`),
 
-  getSalesOrders: (page: number = 0) =>
-    apiClient.get<PageSalesOrderDto>(`/sales/orders/?p=${page}`),
+  getSalesOrders: (params: SalesOrdersRequestDto = {}) =>
+    apiClient.get<PageSalesOrderDto>(`/sales/orders/?${buildOrdersQuery(params)}`),
 
   getSalesOrderById: (id: string) =>
-    apiClient.get<SalesOrderDto>(`/sales/orders/${id}`),
+    apiClient.get<SalesOrderDetailDto>(`/sales/orders/${id}`),
+
+  getStats: (period: StatsPeriod = 'ALL_TIME') =>
+    apiClient.get<SalesStatsDto>(`/sales/stats?period=${period}`),
 };

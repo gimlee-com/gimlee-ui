@@ -26,7 +26,25 @@ const resources = {
         "increment": "Increment",
         "decrement": "Decrement",
         "externalLinkWarning": "You are leaving Gimlee. We are not responsible for the content of external websites. Do you want to proceed?",
-        "retry": "Retry"
+        "retry": "Retry",
+        "filters": "Filters",
+        "clearAll": "Clear All",
+        "sortBy": "Sort by",
+        "dateNewest": "Date (newest)",
+        "dateOldest": "Date (oldest)",
+        "amountHighest": "Amount (highest)",
+        "amountLowest": "Amount (lowest)",
+        "today": "Today",
+        "last7Days": "Last 7 days",
+        "last30Days": "Last 30 days",
+        "allTime": "All Time",
+        "dateRange": "Date range",
+        "viewDetails": "View Details",
+        "nMore": "+{{count}} more",
+        "all": "All",
+        "active": "Active",
+        "completed": "Completed",
+        "failed": "Failed"
       },
       "navbar": {
         "browseAds": "Browse Ads",
@@ -206,6 +224,35 @@ const resources = {
           "monthly": "This Month",
           "yearly": "This Year",
           "total": "All Time"
+        },
+        "dashboard": {
+          "revenue": "Revenue",
+          "activeOrders": "Active Orders",
+          "completedOrders": "Completed",
+          "totalAds": "Total Ads",
+          "activeAds": "Active Ads",
+          "noRevenue": "No revenue yet",
+          "period": {
+            "DAILY": "Today",
+            "MONTHLY": "This Month",
+            "YEARLY": "This Year",
+            "ALL_TIME": "All Time"
+          }
+        },
+        "viewOrders": "View Orders",
+        "views": "{{count}} views",
+        "ordersCount": "{{count}} orders",
+        "filterByAd": "Orders for this ad",
+        "searchOrders": "Search by order ID or buyer...",
+        "statusCreated": "Created",
+        "orderDetail": {
+          "title": "Order #{{id}}",
+          "items": "Items",
+          "buyerInfo": "Buyer",
+          "deliveryAddress": "Delivery Address",
+          "paymentInfo": "Payment Info",
+          "statusHistory": "Status History",
+          "chatWithBuyer": "Chat with Buyer"
         }
       },
       "purchases": {
@@ -219,6 +266,7 @@ const resources = {
         "sendAmount": "Please send exactly",
         "toAddress": "to the following address",
         "memo": "Memo (required)",
+        "statusCreated": "Created",
         "statusAwaiting": "Awaiting payment...",
         "statusComplete": "Payment complete!",
         "statusFailedTimeout": "Payment timed out.",
@@ -248,7 +296,23 @@ const resources = {
         "stepOf": "Step {{current}} of {{total}}",
         "addressCountryMismatch": "This address doesn't match your country of residence.",
         "countryOfResidenceRequired": "Please set your country of residence before purchasing.",
-        "loadAddressesError": "Failed to load delivery addresses. Please try again."
+        "loadAddressesError": "Failed to load delivery addresses. Please try again.",
+        "searchPurchases": "Search by order ID or seller...",
+        "detail": {
+          "title": "Purchase #{{id}}",
+          "items": "Items",
+          "sellerInfo": "Seller",
+          "deliveryAddress": "Delivery Address",
+          "paymentInfo": "Payment Info",
+          "statusHistory": "Status History",
+          "chatWithSeller": "Chat with Seller",
+          "paymentAmount": "Amount",
+          "paymentPaid": "Paid",
+          "paymentAddress": "Address",
+          "paymentMemo": "Memo",
+          "paymentDeadline": "Deadline",
+          "openPaymentModal": "View Payment Info"
+        }
       },
       "profile": {
         "title": "Profile & Settings",
@@ -967,7 +1031,25 @@ const resources = {
         "increment": "Zwiększ",
         "decrement": "Zmniejsz",
         "externalLinkWarning": "Opuszczasz Gimlee. Nie ponosimy odpowiedzialności za treści na zewnętrznych stronach. Czy chcesz kontynuować?",
-        "retry": "Ponów"
+        "retry": "Ponów",
+        "filters": "Filtry",
+        "clearAll": "Wyczyść wszystko",
+        "sortBy": "Sortuj wg",
+        "dateNewest": "Data (najnowsze)",
+        "dateOldest": "Data (najstarsze)",
+        "amountHighest": "Kwota (najwyższa)",
+        "amountLowest": "Kwota (najniższa)",
+        "today": "Dzisiaj",
+        "last7Days": "Ostatnie 7 dni",
+        "last30Days": "Ostatnie 30 dni",
+        "allTime": "Ogółem",
+        "dateRange": "Zakres dat",
+        "viewDetails": "Zobacz szczegóły",
+        "nMore": "+{{count}} więcej",
+        "all": "Wszystko",
+        "active": "Aktywne",
+        "completed": "Zakończone",
+        "failed": "Nieudane"
       },
       "navbar": {
         "browseAds": "Przeglądaj ogłoszenia",
@@ -1147,6 +1229,35 @@ const resources = {
           "monthly": "Ten miesiąc",
           "yearly": "Ten rok",
           "total": "Ogółem"
+        },
+        "dashboard": {
+          "revenue": "Przychód",
+          "activeOrders": "Aktywne zamówienia",
+          "completedOrders": "Ukończone",
+          "totalAds": "Wszystkie ogłoszenia",
+          "activeAds": "Aktywne ogłoszenia",
+          "noRevenue": "Brak przychodu",
+          "period": {
+            "DAILY": "Dzisiaj",
+            "MONTHLY": "Ten miesiąc",
+            "YEARLY": "Ten rok",
+            "ALL_TIME": "Ogółem"
+          }
+        },
+        "viewOrders": "Zobacz zamówienia",
+        "views": "{{count}} wyświetleń",
+        "ordersCount": "{{count}} zamówień",
+        "filterByAd": "Zamówienia tego ogłoszenia",
+        "searchOrders": "Szukaj po ID zamówienia lub kupującym...",
+        "statusCreated": "Utworzone",
+        "orderDetail": {
+          "title": "Zamówienie #{{id}}",
+          "items": "Produkty",
+          "buyerInfo": "Kupujący",
+          "deliveryAddress": "Adres dostawy",
+          "paymentInfo": "Informacje o płatności",
+          "statusHistory": "Historia statusów",
+          "chatWithBuyer": "Czat z kupującym"
         }
       },
       "purchases": {
@@ -1160,6 +1271,7 @@ const resources = {
         "sendAmount": "Proszę wyślij dokładnie",
         "toAddress": "na poniższy adres",
         "memo": "Memo (wymagane)",
+        "statusCreated": "Utworzony",
         "statusAwaiting": "Oczekiwanie na płatność...",
         "statusComplete": "Płatność zakończona!",
         "statusFailedTimeout": "Upłynął limit czasu płatności.",
@@ -1189,7 +1301,23 @@ const resources = {
         "stepOf": "Krok {{current}} z {{total}}",
         "addressCountryMismatch": "Ten adres nie pasuje do Twojego kraju zamieszkania.",
         "countryOfResidenceRequired": "Proszę ustawić kraj zamieszkania przed zakupem.",
-        "loadAddressesError": "Nie udało się załadować adresów dostawy. Spróbuj ponownie."
+        "loadAddressesError": "Nie udało się załadować adresów dostawy. Spróbuj ponownie.",
+        "searchPurchases": "Szukaj po ID zamówienia lub sprzedawcy...",
+        "detail": {
+          "title": "Zakup #{{id}}",
+          "items": "Produkty",
+          "sellerInfo": "Sprzedawca",
+          "deliveryAddress": "Adres dostawy",
+          "paymentInfo": "Informacje o płatności",
+          "statusHistory": "Historia statusów",
+          "chatWithSeller": "Czat ze sprzedawcą",
+          "paymentAmount": "Kwota",
+          "paymentPaid": "Zapłacono",
+          "paymentAddress": "Adres",
+          "paymentMemo": "Memo",
+          "paymentDeadline": "Termin",
+          "openPaymentModal": "Pokaż dane do płatności"
+        }
       },
       "profile": {
         "title": "Profil i ustawienia",

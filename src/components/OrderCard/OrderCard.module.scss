@@ -1,0 +1,152 @@
+@import "../../styles/uikit-imports.scss";
+
+.orderCard {
+  border: 1px solid $global-border;
+  border-radius: $card-border-radius;
+  transition: box-shadow 0.2s ease;
+  background: $global-background;
+
+  &:hover {
+    box-shadow: var(--global-medium-shadow, 0 8px 20px rgba(0, 0, 0, 0.06));
+  }
+}
+
+.cardLink {
+  text-decoration: none !important;
+  color: inherit !important;
+  display: block;
+}
+
+.cardBody {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  align-items: flex-start;
+
+  @media (max-width: $breakpoint-small-max) {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+.thumbnailCol {
+  flex-shrink: 0;
+  width: 72px;
+  height: 72px;
+  border-radius: $border-rounded-border-radius;
+  overflow: hidden;
+
+  @media (max-width: $breakpoint-small-max) {
+    width: 100%;
+    height: 120px;
+  }
+}
+
+.thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.thumbnailPlaceholder {
+  width: 100%;
+  height: 100%;
+  background: $global-muted-background;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $global-muted-color;
+}
+
+.infoCol {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.topRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.titleRow {
+  display: flex;
+  align-items: baseline;
+  min-width: 0;
+}
+
+.primaryTitle {
+  font-weight: 700;
+  color: $global-emphasis-color;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.counterpartyRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.avatarWrapper {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.counterpartyLink {
+  font-size: 0.85rem;
+  color: $global-primary-background;
+  text-decoration: none !important;
+  position: relative;
+  z-index: 1;
+
+  &:hover {
+    text-decoration: underline !important;
+  }
+}
+
+.statusCol {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  flex-shrink: 0;
+
+  @media (max-width: $breakpoint-small-max) {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    border-top: 1px solid $global-border;
+    padding-top: 10px;
+  }
+}
+
+.amount {
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: $global-primary-background;
+  white-space: nowrap;
+}
+
+.actions {
+  display: flex;
+  gap: 4px;
+  position: relative;
+  z-index: 1;
+}
