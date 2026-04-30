@@ -38,6 +38,34 @@
   text-overflow: ellipsis;
 }
 
+.orderIdRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.copyButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 6px;
+  border: none;
+  background: none;
+  color: $global-muted-color;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: color 0.2s, background 0.2s;
+
+  &:hover {
+    color: $global-primary-background;
+    background: color-mix(in srgb, $global-primary-background, transparent 90%);
+  }
+}
+
+.copySuccess {
+  color: $global-success-background;
+}
+
 .headerCard {
   border: 1px solid $global-border;
   border-radius: $card-border-radius;

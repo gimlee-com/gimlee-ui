@@ -71,6 +71,15 @@ const PurchaseDetailPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [chatLoading, setChatLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyOrderId = () => {
+    if (!purchase) return;
+    navigator.clipboard.writeText(purchase.id).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
 
   useEffect(() => {
     if (!id) return;
@@ -156,9 +165,19 @@ const PurchaseDetailPage: React.FC = () => {
                 <CardBody className={styles.headerBody}>
                   <div className={styles.headerTop}>
                     <div>
-                      <Heading as="h3" className="uk-margin-remove">
-                        {t('purchases.detail.title', { id: purchase.id })}
-                      </Heading>
+                      <div className={styles.orderIdRow}>
+                        <Heading as="h3" className="uk-margin-remove">
+                          {t('purchases.detail.title', { id: purchase.id })}
+                        </Heading>
+                        <button
+                          className={`${styles.copyButton} ${copied ? styles.copySuccess : ''}`}
+                          onClick={handleCopyOrderId}
+                          title={t('common.copyToClipboard')}
+                          type="button"
+                        >
+                          <Icon icon={copied ? 'check' : 'copy'} ratio={0.8} />
+                        </button>
+                      </div>
                       <span className="uk-text-meta">{new Date(purchase.createdAt).toLocaleString(undefined, { dateStyle: 'long', timeStyle: 'short' })}</span>
                     </div>
                     <div className={styles.headerRight}>
