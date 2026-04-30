@@ -247,30 +247,39 @@ const AdDetailsPage: React.FC = () => {
       animate="visible"
     >
       <NavbarPortal>
-        <div className="uk-flex uk-flex-column uk-width-1-1" style={{ minWidth: 0 }}>
-          <Heading as="h5" className="uk-margin-remove uk-text-truncate">
-            {ad.title}
-          </Heading>
-          {ad.categoryPath && ad.categoryPath.length > 0 && (
-            <div className={styles.breadcrumbWrapper}>
-              <Breadcrumb className="uk-margin-remove">
-                {ad.categoryPath.map((cat) => (
-                  <BreadcrumbItem key={cat.id}>
-                    <a
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        navigate(`/ads?cat=${cat.id}`);
-                      }}
-                      className="uk-text-meta"
-                    >
-                      {cat.name}
-                    </a>
-                  </BreadcrumbItem>
-                ))}
-              </Breadcrumb>
-            </div>
+        <div className={styles.navbarContent}>
+          {images.length > 0 && (
+            <img
+              src={images[0].thumbXs}
+              alt=""
+              className={styles.navbarThumb}
+            />
           )}
+          <div className="uk-flex uk-flex-column uk-width-expand" style={{ minWidth: 0 }}>
+            <Heading as="h5" className="uk-margin-remove uk-text-truncate">
+              {ad.title}
+            </Heading>
+            {ad.categoryPath && ad.categoryPath.length > 0 && (
+              <div className={styles.breadcrumbWrapper}>
+                <Breadcrumb className="uk-margin-remove">
+                  {ad.categoryPath.map((cat) => (
+                    <BreadcrumbItem key={cat.id}>
+                      <a
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          navigate(`/ads?cat=${cat.id}`);
+                        }}
+                        className="uk-text-meta"
+                      >
+                        {cat.name}
+                      </a>
+                    </BreadcrumbItem>
+                  ))}
+                </Breadcrumb>
+              </div>
+            )}
+          </div>
         </div>
       </NavbarPortal>
       <Grid gap="large">

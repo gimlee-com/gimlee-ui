@@ -111,9 +111,27 @@ const PurchaseDetailPage: React.FC = () => {
   return (
     <>
       <NavbarPortal>
-        <span className="uk-text-bold">
-          {purchase ? t('purchases.detail.title', { id: purchase.id.substring(0, 8) }) : t('common.loading')}
-        </span>
+        {purchase ? (
+          <div className={styles.navbarContent}>
+            {purchase.items[0]?.thumbnailPath && (
+              <img
+                src={`${API_URL}/api/media?p=/thumbs-xs${purchase.items[0].thumbnailPath}`}
+                alt=""
+                className={styles.navbarThumb}
+              />
+            )}
+            <div className={styles.navbarText}>
+              <span className={styles.navbarTitle}>
+                {purchase.items[0]?.title || t('purchases.detail.title', { id: purchase.id })}
+              </span>
+              <span className={styles.navbarOrderId}>
+                {purchase.id} · {new Date(purchase.createdAt).toLocaleDateString()}
+              </span>
+            </div>
+          </div>
+        ) : (
+          <span className="uk-text-bold">{t('common.loading')}</span>
+        )}
       </NavbarPortal>
 
       <AnimatePresence mode="wait">
@@ -139,7 +157,7 @@ const PurchaseDetailPage: React.FC = () => {
                   <div className={styles.headerTop}>
                     <div>
                       <Heading as="h3" className="uk-margin-remove">
-                        {t('purchases.detail.title', { id: purchase.id.substring(0, 8) })}
+                        {t('purchases.detail.title', { id: purchase.id })}
                       </Heading>
                       <span className="uk-text-meta">{new Date(purchase.createdAt).toLocaleString(undefined, { dateStyle: 'long', timeStyle: 'short' })}</span>
                     </div>

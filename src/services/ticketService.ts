@@ -18,8 +18,10 @@ export const ticketService = {
     return apiClient.get<PageTicketListItemDto>(`/tickets/mine?${qs.toString()}`);
   },
 
-  getTicketDetail: (ticketId: string) =>
-    apiClient.get<TicketDetailDto>(`/tickets/${ticketId}`),
+  getTicketDetail: async (ticketId: string) => {
+    const res = await apiClient.get<StatusResponseDto & { data: TicketDetailDto }>(`/tickets/${ticketId}`);
+    return res.data;
+  },
 
   replyToTicket: (ticketId: string, dto: ReplyToTicketDto) =>
     apiClient.post<StatusResponseDto>(`/tickets/${ticketId}/reply`, dto),
