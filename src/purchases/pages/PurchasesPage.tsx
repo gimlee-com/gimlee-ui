@@ -59,7 +59,7 @@ const getStatusLabel = (status: PurchaseStatus, t: (key: string) => string): str
 
 const PurchasesPage: React.FC = () => {
   const { t } = useTranslation();
-  const { params, setParam, clearParam, setPage } = useListParams<PurchaseListParams>(paramDefs);
+  const { params, setParam, setMultipleParams, clearParam, setPage } = useListParams<PurchaseListParams>(paramDefs);
   const [purchasesPage, setPurchasesPage] = useState<PagePurchaseHistoryDto | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -182,8 +182,7 @@ const PurchasesPage: React.FC = () => {
               value={`${params.by || 'DATE'}_${params.dir || 'DESC'}`}
               onChange={e => {
                 const [by, dir] = e.target.value.split('_');
-                setParam('by', by);
-                setParam('dir', dir);
+                setMultipleParams({ by, dir });
               }}
             >
               {SORT_OPTIONS.map(opt => (

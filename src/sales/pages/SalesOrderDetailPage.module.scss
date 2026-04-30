@@ -1,5 +1,43 @@
 @import "../../styles/uikit-imports.scss";
 
+.navbarContent {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.navbarThumb {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.navbarText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.2;
+}
+
+.navbarTitle {
+  font-weight: 600;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.navbarOrderId {
+  font-size: 0.72rem;
+  color: $global-muted-color;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .headerCard {
   border: 1px solid $global-border;
   border-radius: $card-border-radius;

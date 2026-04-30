@@ -54,6 +54,27 @@ export function useListParams<T extends ListParams>(defs: ListParamDef[]) {
     }, { replace: true });
   }, [setSearchParams]);
 
+  const setMultipleParams = useCallback((entries: Record<string, string | string[] | number | undefined>) => {
+    setSearchParams(prev => {
+      const next = new URLSearchParams(prev);
+      for (const [key, value] of Object.entries(entries)) {
+        next.delete(key);
+        if (value != null && value !== '' && !(Array.isArray(value) && value.length === 0)) {
+          if (Array.isArray(value)) {
+            value.forEach(v => next.append(key, v));
+          } else {
+            next.set(key, String(value));
+          }
+        }
+      }
+      // Reset page if any non-page key was changed
+      if (!Object.keys(entries).every(k => k === 'p')) {
+        next.delete('p');
+      }
+      return next;
+    }, { replace: true });
+  }, [setSearchParams]);
+
   const clearParam = useCallback((key: string) => {
     setSearchParams(prev => {
       const next = new URLSearchParams(prev);
@@ -79,5 +100,5 @@ export function useListParams<T extends ListParams>(defs: ListParamDef[]) {
     setSearchParams(new URLSearchParams(), { replace: true });
   }, [setSearchParams]);
 
-  return { params, setParam, clearParam, setPage, clearAll };
+  return { params, setParam, setMultipleParams, clearParam, setPage, clearAll };
 }

@@ -58,7 +58,7 @@ interface OrderListParams {
 
 const SalesOrdersPage: React.FC = () => {
   const { t } = useTranslation();
-  const { params, setParam, clearParam, setPage } = useListParams<OrderListParams>(paramDefs);
+  const { params, setParam, setMultipleParams, clearParam, setPage } = useListParams<OrderListParams>(paramDefs);
   const [ordersPage, setOrdersPage] = useState<PageSalesOrderDto | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -217,8 +217,7 @@ const SalesOrdersPage: React.FC = () => {
               value={`${params.by || 'DATE'}_${params.dir || 'DESC'}`}
               onChange={e => {
                 const [by, dir] = e.target.value.split('_');
-                setParam('by', by);
-                setParam('dir', dir);
+                setMultipleParams({ by, dir });
               }}
             >
               {SORT_OPTIONS.map(opt => (
