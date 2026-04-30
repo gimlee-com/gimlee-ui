@@ -10,12 +10,16 @@ export const mapSuggestedActionToUrl = (
 
   switch (type) {
     case 'PURCHASE_LIST':
-    case 'PURCHASE_DETAILS':
       return '/purchases';
 
+    case 'PURCHASE_DETAILS':
+      return target ? `/purchases/${target}` : '/purchases';
+
     case 'SALE_LIST':
-    case 'SALE_DETAILS':
       return '/sales/orders';
+
+    case 'SALE_DETAILS':
+      return target ? `/sales/orders/${target}` : '/sales/orders';
 
     case 'AD_DETAILS':
       return target ? `/ads/${target}` : '/ads';

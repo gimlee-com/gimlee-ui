@@ -8,7 +8,12 @@ describe('mapSuggestedActionToUrl', () => {
     expect(mapSuggestedActionToUrl(action)).toBe('/purchases');
   });
 
-  it('should map PURCHASE_DETAILS to /purchases', () => {
+  it('should map PURCHASE_DETAILS with target to /purchases/:id', () => {
+    const action: SuggestedActionDto = { type: 'PURCHASE_DETAILS', target: 'order-1' };
+    expect(mapSuggestedActionToUrl(action)).toBe('/purchases/order-1');
+  });
+
+  it('should map PURCHASE_DETAILS without target to /purchases', () => {
     const action: SuggestedActionDto = { type: 'PURCHASE_DETAILS' };
     expect(mapSuggestedActionToUrl(action)).toBe('/purchases');
   });
@@ -18,7 +23,12 @@ describe('mapSuggestedActionToUrl', () => {
     expect(mapSuggestedActionToUrl(action)).toBe('/sales/orders');
   });
 
-  it('should map SALE_DETAILS to /sales/orders', () => {
+  it('should map SALE_DETAILS with target to /sales/orders/:id', () => {
+    const action: SuggestedActionDto = { type: 'SALE_DETAILS', target: 'order-1' };
+    expect(mapSuggestedActionToUrl(action)).toBe('/sales/orders/order-1');
+  });
+
+  it('should map SALE_DETAILS without target to /sales/orders', () => {
     const action: SuggestedActionDto = { type: 'SALE_DETAILS' };
     expect(mapSuggestedActionToUrl(action)).toBe('/sales/orders');
   });
