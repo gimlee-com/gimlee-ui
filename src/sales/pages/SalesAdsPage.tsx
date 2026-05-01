@@ -17,7 +17,7 @@ import { SmartPagination } from '../../components/SmartPagination';
 import { ActiveFilterBadges, type FilterBadge } from '../../components/ActiveFilterBadges';
 import { SellerDashboardHeader } from '../components/SellerDashboardHeader/SellerDashboardHeader';
 import SalesSubNav from '../components/SalesSubNav';
-import { useListParams, type ListParamDef } from '../../hooks/useListParams';
+import { useListParams, type ListParamDef, type ListParams } from '../../hooks/useListParams';
 import { createPageContainerVariants, pageItemVariants } from '../../animations';
 
 const paramDefs: ListParamDef[] = [
@@ -25,7 +25,7 @@ const paramDefs: ListParamDef[] = [
   { key: 't', type: 'string' },
 ];
 
-interface AdsListParams {
+interface AdsListParams extends ListParams {
   p?: number;
   t?: string;
 }
