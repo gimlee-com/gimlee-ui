@@ -32,21 +32,23 @@ export const NotificationBell = forwardRef<HTMLDivElement, NotificationBellProps
           }
         }}
       >
-        <Icon icon="bell" />
-        <AnimatePresence>
-          {unreadCount > 0 && (
-            <motion.span
-              key="badge"
-              className={styles.badge}
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0, opacity: 0 }}
-              transition={springTransition}
-            >
-              {formatCount(unreadCount)}
-            </motion.span>
-          )}
-        </AnimatePresence>
+        <span className={styles.iconWrapper}>
+          <Icon icon="bell" />
+          <AnimatePresence>
+            {unreadCount > 0 && (
+              <motion.span
+                key="badge"
+                className={styles.badge}
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0, opacity: 0 }}
+                transition={springTransition}
+              >
+                {formatCount(unreadCount)}
+              </motion.span>
+            )}
+          </AnimatePresence>
+        </span>
       </div>
     );
   }

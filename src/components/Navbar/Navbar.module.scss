@@ -18,13 +18,20 @@
 
 .hamburgerToggle {
   padding: 0 $padding-small-padding !important;
+}
+
+.iconWithDot {
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .notifDot {
   position: absolute;
-  top: 25%;
-  right: 25%;
+  top: 0;
+  right: -2px;
+  transform: translate(25%, -25%);
   width: 8px;
   height: 8px;
   background-color: $global-danger-background;

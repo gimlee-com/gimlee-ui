@@ -259,32 +259,34 @@ const Navbar: React.FC = () => {
                   )}
                   <NavbarItem>
                     <NavbarToggle uk-toggle="target: #mobile-menu" className={styles.hamburgerToggle}>
-                      <AnimatePresence mode="wait" initial={false}>
-                        {isMenuOpen ? (
-                          <motion.span
-                            key="close"
-                            uk-icon="icon: close"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            transition={{ duration: 0.2 }}
-                            style={{ display: 'inline-flex' }}
-                          />
-                        ) : (
-                          <motion.span
-                            key="menu"
-                            uk-navbar-toggle-icon=""
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            transition={{ duration: 0.2 }}
-                            style={{ display: 'inline-flex' }}
-                          />
+                      <span className={styles.iconWithDot}>
+                        <AnimatePresence mode="wait" initial={false}>
+                          {isMenuOpen ? (
+                            <motion.span
+                              key="close"
+                              uk-icon="icon: close"
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              exit={{ opacity: 0 }}
+                              transition={{ duration: 0.2 }}
+                              style={{ display: 'inline-flex' }}
+                            />
+                          ) : (
+                            <motion.span
+                              key="menu"
+                              uk-navbar-toggle-icon=""
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              exit={{ opacity: 0 }}
+                              transition={{ duration: 0.2 }}
+                              style={{ display: 'inline-flex' }}
+                            />
+                          )}
+                        </AnimatePresence>
+                        {isAuthenticated && notifUnreadCount > 0 && !isMenuOpen && (
+                          <span className={styles.notifDot} />
                         )}
-                      </AnimatePresence>
-                      {isAuthenticated && notifUnreadCount > 0 && !isMenuOpen && (
-                        <span className={styles.notifDot} />
-                      )}
+                      </span>
                     </NavbarToggle>
                   </NavbarItem>
                 </NavbarNav>
