@@ -77,23 +77,24 @@
 }
 
 [data-theme='iron-age'] {
-  --global-background: #121415;
-  --global-color: #d4cbb3;
-  --global-muted-color: #7d7565;
-  --global-muted-background: #1c1f20;
-  --global-border: #2c3032;
+  --global-background: #1e2124;
+  --global-color: #e8e0cc;
+  --global-muted-color: #9a9182;
+  --global-muted-background: #282c2f;
+  --global-border: #3a3f42;
   --global-primary-background: #a67c52;
   --global-primary-color: #a67c52;
-  --global-secondary-background: #0a0b0c;
-  --navbar-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
-  --global-medium-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
-  --global-large-shadow: 0 16px 32px rgba(0, 0, 0, 0.8);
+  --global-secondary-background: #14171a;
+  --global-danger-background: #8b4532;
+  --navbar-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  --global-medium-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+  --global-large-shadow: 0 16px 32px rgba(0, 0, 0, 0.6);
   --global-border-radius: 2px;
   --card-border-radius: 2px;
   --global-font-family: "Charter", "Bitstream Charter", "Sitka Text", "Cambria", "Georgia", serif;
-  --global-background-gradient: radial-gradient(circle at center, #1c1f20 0%, #121415 100%);
+  --global-background-gradient: radial-gradient(circle at center, #282c2f 0%, #1e2124 100%);
   --logo-fill: #a67c52;
-  --logo-smoke-fill: #d4cbb3;
+  --logo-smoke-fill: #e8e0cc;
 }
 
 // 1. Your custom variables and variable overwrites.
