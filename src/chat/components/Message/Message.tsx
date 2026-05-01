@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../../context/AuthContext';
 import type { ChatMessageDto } from '../../types';
 import { MessageCard } from './MessageCard';
@@ -26,10 +27,11 @@ export const Message: React.FC<MessageProps> = React.memo(({
   popupContainer
 }) => {
   const { username } = useAuth();
+  const { i18n } = useTranslation();
   const authorUsername = author?.username || 'unknown';
   const isOwn = username === authorUsername;
 
-  const formattedTime = new Date(timestamp).toLocaleTimeString([], { 
+  const formattedTime = new Date(timestamp).toLocaleTimeString(i18n.language, { 
     hour: '2-digit', 
     minute: '2-digit' 
   });

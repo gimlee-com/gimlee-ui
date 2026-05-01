@@ -23,13 +23,13 @@ const SEVERITY_STYLE_MAP: Record<string, string> = {
   danger: styles.severityDanger,
 };
 
-function getRelativeTime(epochMicros: number, t: (key: string) => string): string {
+function getRelativeTime(epochMicros: number, t: (key: string) => string, language: string): string {
   const now = Date.now();
   const diffSec = Math.floor((now - epochMicros / 1000) / 1000);
 
   if (diffSec < 60) return t('notifications.justNow');
 
-  const rtf = new Intl.RelativeTimeFormat(undefined, { numeric: 'auto' });
+  const rtf = new Intl.RelativeTimeFormat(language, { numeric: 'auto' });
 
   if (diffSec < 3600) return rtf.format(-Math.floor(diffSec / 60), 'minute');
   if (diffSec < 86400) return rtf.format(-Math.floor(diffSec / 3600), 'hour');
@@ -49,7 +49,7 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({
   onRead,
   onClose,
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
 
   const iconName = CATEGORY_ICON_MAP[notification.category] ?? 'bell';
@@ -99,7 +99,7 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({
         <p className={styles.title}>{notification.title}</p>
         <p className={styles.message}>{notification.message}</p>
         <span className={styles.timestamp}>
-          {getRelativeTime(notification.createdAt, t)}
+          {getRelativeTime(notification.createdAt, t, i18n.language)}
         </span>
       </div>
     </div>

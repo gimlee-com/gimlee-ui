@@ -21,7 +21,7 @@ interface SalesAdCardProps {
 const API_URL = import.meta.env.VITE_API_URL || '';
 
 export const SalesAdCard: React.FC<SalesAdCardProps> = ({ ad, onToggleStatus }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const location = useLocation();
   const photoUrl = ad.mainPhotoPath 
     ? `${API_URL}/api/media?p=/thumbs-sm${ad.mainPhotoPath}` 
@@ -131,7 +131,7 @@ export const SalesAdCard: React.FC<SalesAdCardProps> = ({ ad, onToggleStatus }) 
             {ad.createdAt && (
               <div className={styles.metaItem}>
                 <span className={styles.icon}><Icon icon="calendar" ratio={0.75} /></span>
-                {new Date(ad.createdAt).toLocaleDateString()}
+                {new Date(ad.createdAt).toLocaleDateString(i18n.language)}
               </div>
             )}
             <div className={styles.metaItem}>

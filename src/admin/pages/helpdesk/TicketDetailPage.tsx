@@ -23,9 +23,11 @@ import { createPageContainerVariants, pageItemVariants } from '../../../animatio
 const TICKET_STATUSES: TicketStatus[] = ['OPEN', 'IN_PROGRESS', 'AWAITING_USER', 'RESOLVED', 'CLOSED'];
 const TICKET_PRIORITIES: TicketPriority[] = ['LOW', 'MEDIUM', 'HIGH', 'URGENT'];
 
+import i18n from '../../../i18n';
+
 const formatMicros = (micros: number | null | undefined): string => {
   if (micros == null) return '—';
-  return new Date(micros / 1000).toLocaleString();
+  return new Date(micros / 1000).toLocaleString(i18n.language);
 };
 
 const TicketDetailPage: React.FC = () => {

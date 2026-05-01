@@ -15,7 +15,7 @@ import { createPageContainerVariants, pageItemVariants, expandCollapseProps } fr
 
 const MyTicketsPage: React.FC = () => {
   useNavbarMode('focused', '/profile');
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { isAuthenticated } = useAuth();
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -122,7 +122,7 @@ const MyTicketsPage: React.FC = () => {
           animate="visible"
         >
           {tickets.map((ticket) => {
-            const createdDate = new Date(ticket.createdAt / 1000).toLocaleDateString();
+            const createdDate = new Date(ticket.createdAt / 1000).toLocaleDateString(i18n.language);
 
             return (
               <motion.div key={ticket.id} variants={pageItemVariants} layout>

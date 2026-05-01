@@ -20,7 +20,7 @@ interface ReportTimelineProps {
 }
 
 const ReportTimeline: React.FC<ReportTimelineProps> = ({ entries }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   if (entries.length === 0) return null;
 
@@ -32,7 +32,7 @@ const ReportTimeline: React.FC<ReportTimelineProps> = ({ entries }) => {
       animate="visible"
     >
       {entries.map((entry) => {
-        const date = new Date(entry.createdAt / 1000).toLocaleString();
+        const date = new Date(entry.createdAt / 1000).toLocaleString(i18n.language);
 
         return (
           <motion.li key={entry.id} className={styles.entry} variants={timelineItemVariants}>

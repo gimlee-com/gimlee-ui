@@ -12,7 +12,7 @@ interface TicketConversationProps {
 }
 
 const TicketConversation: React.FC<TicketConversationProps> = ({ messages }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   if (messages.length === 0) {
     return (
@@ -32,7 +32,7 @@ const TicketConversation: React.FC<TicketConversationProps> = ({ messages }) => 
     >
       {messages.map((msg) => {
         const isSupport = msg.authorRole === 'SUPPORT';
-        const date = new Date(msg.createdAt / 1000).toLocaleString();
+        const date = new Date(msg.createdAt / 1000).toLocaleString(i18n.language);
 
         return (
           <motion.div

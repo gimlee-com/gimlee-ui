@@ -34,7 +34,7 @@ const getStatusLabel = (status: string, t: (key: string) => string): string => {
 };
 
 export const OrderStatusTimeline: React.FC<OrderStatusTimelineProps> = ({ history }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   if (!history || history.length === 0) return null;
 
@@ -60,7 +60,7 @@ export const OrderStatusTimeline: React.FC<OrderStatusTimelineProps> = ({ histor
               {getStatusLabel(entry.status, t)}
             </Label>
             <span className="uk-text-meta uk-margin-small-left">
-              {new Date(entry.timestamp).toLocaleString(undefined, {
+              {new Date(entry.timestamp).toLocaleString(i18n.language, {
                 dateStyle: 'medium',
                 timeStyle: 'short',
               })}

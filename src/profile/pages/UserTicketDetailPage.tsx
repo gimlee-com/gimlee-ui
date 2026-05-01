@@ -13,7 +13,7 @@ import type { TicketDetailDto, ReplyToTicketDto } from '../../admin/types/adminT
 
 const UserTicketDetailPage: React.FC = () => {
   useNavbarMode('focused', '/profile/tickets');
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { isAuthenticated } = useAuth();
   const { ticketId } = useParams<{ ticketId: string }>();
 
@@ -103,7 +103,7 @@ const UserTicketDetailPage: React.FC = () => {
     );
   }
 
-  const createdDate = new Date(ticket.createdAt / 1000).toLocaleString();
+  const createdDate = new Date(ticket.createdAt / 1000).toLocaleString(i18n.language);
   const isClosed = ticket.status === 'CLOSED' || ticket.status === 'RESOLVED';
 
   return (

@@ -26,7 +26,7 @@ const CategoryDetailPanel: React.FC<CategoryDetailPanelProps> = ({
   onToggleHidden,
   onMove,
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [detail, setDetail] = useState<AdminCategoryDetailDto | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -83,7 +83,7 @@ const CategoryDetailPanel: React.FC<CategoryDetailPanelProps> = ({
 
   const formatTimestamp = (ts: number) => {
     const date = new Date(ts / 1000);
-    return date.toLocaleString();
+    return date.toLocaleString(i18n.language);
   };
 
   const languages = Object.keys(detail.name);

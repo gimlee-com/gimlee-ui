@@ -13,9 +13,9 @@ interface AdminUserCardProps {
 }
 
 const AdminUserCard: React.FC<AdminUserCardProps> = ({ user }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const location = useLocation();
-  const registeredDate = new Date(user.registeredAt / 1000).toLocaleDateString();
+  const registeredDate = new Date(user.registeredAt / 1000).toLocaleDateString(i18n.language);
 
   return (
     <motion.div variants={pageItemVariants} layout>

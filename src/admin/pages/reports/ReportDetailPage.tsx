@@ -18,9 +18,11 @@ import { Spinner } from '../../../components/uikit/Spinner/Spinner';
 import { Icon } from '../../../components/uikit/Icon/Icon';
 import { createPageContainerVariants, pageItemVariants } from '../../../animations';
 
+import i18n from '../../../i18n';
+
 const formatMicros = (micros: number | null | undefined): string => {
   if (micros == null) return '—';
-  return new Date(micros / 1000).toLocaleString();
+  return new Date(micros / 1000).toLocaleString(i18n.language);
 };
 
 const ReportDetailPage: React.FC = () => {

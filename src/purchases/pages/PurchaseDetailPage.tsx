@@ -60,7 +60,7 @@ const toPurchaseResponseDto = (detail: PurchaseDetailDto): PurchaseResponseDto |
 
 const PurchaseDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useAppDispatch();
@@ -133,7 +133,7 @@ const PurchaseDetailPage: React.FC = () => {
                 {purchase.items[0]?.title || t('purchases.detail.title', { id: purchase.id })}
               </span>
               <span className={styles.navbarOrderId}>
-                {purchase.id} · {new Date(purchase.createdAt).toLocaleDateString()}
+                {purchase.id} · {new Date(purchase.createdAt).toLocaleDateString(i18n.language)}
               </span>
             </div>
           </div>
@@ -177,7 +177,7 @@ const PurchaseDetailPage: React.FC = () => {
                           <Icon icon={copied ? 'check' : 'copy'} ratio={0.8} />
                         </button>
                       </div>
-                      <span className="uk-text-meta">{new Date(purchase.createdAt).toLocaleString(undefined, { dateStyle: 'long', timeStyle: 'short' })}</span>
+                      <span className="uk-text-meta">{new Date(purchase.createdAt).toLocaleString(i18n.language, { dateStyle: 'long', timeStyle: 'short' })}</span>
                     </div>
                     <div className={styles.headerRight}>
                       <Label variant={getStatusVariant(purchase.status)}>
@@ -271,7 +271,7 @@ const PurchaseDetailPage: React.FC = () => {
                       <div className="uk-text-bold">{formatPrice(purchase.payment.paidAmount, purchase.currency)}</div>
 
                       <div className="uk-text-meta">{t('purchases.detail.paymentDeadline')}</div>
-                      <div>{new Date(purchase.payment.deadline).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })}</div>
+                      <div>{new Date(purchase.payment.deadline).toLocaleString(i18n.language, { dateStyle: 'medium', timeStyle: 'short' })}</div>
                     </div>
                     {purchase.status === 'AWAITING_PAYMENT' && (
                       <div className="uk-margin-top">

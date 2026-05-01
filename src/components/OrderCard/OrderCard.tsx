@@ -46,7 +46,7 @@ const getStatusLabel = (status: PurchaseStatus, t: (key: string) => string): str
 };
 
 export const OrderCard: React.FC<OrderCardProps> = ({ order, type }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const [isLoadingChat, setIsLoadingChat] = useState(false);
@@ -88,7 +88,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({ order, type }) => {
   };
 
   const formatDate = (dateString: string) =>
-    new Date(dateString).toLocaleDateString(undefined, { dateStyle: 'medium' });
+    new Date(dateString).toLocaleDateString(i18n.language, { dateStyle: 'medium' });
 
   return (
     <motion.div

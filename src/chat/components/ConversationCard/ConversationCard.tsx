@@ -8,22 +8,11 @@ import { Avatar } from '../../../components/Avatar/Avatar';
 import { useAuth } from '../../../context/AuthContext';
 import type { ConversationDto } from '../../types';
 import { isConversationActive, isConversationLocked } from '../../types';
+import { formatRelativeTimeFromIso } from '../../../utils/dateUtils';
 import styles from './ConversationCard.module.scss';
 
 interface ConversationCardProps {
   conversation: ConversationDto;
-}
-
-function formatRelativeTime(isoTimestamp: string): string {
-  const ms = new Date(isoTimestamp).getTime();
-  const now = Date.now();
-  const diff = now - ms;
-
-  if (diff < 60_000) return 'just now';
-  if (diff < 3_600_000) return `${Math.floor(diff / 60_000)}m ago`;
-  if (diff < 86_400_000) return `${Math.floor(diff / 3_600_000)}h ago`;
-  if (diff < 604_800_000) return `${Math.floor(diff / 86_400_000)}d ago`;
-  return new Date(ms).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 }
 
 export const ConversationCard: React.FC<ConversationCardProps> = ({ conversation }) => {
@@ -79,7 +68,7 @@ export const ConversationCard: React.FC<ConversationCardProps> = ({ conversation
         <div className={styles.meta}>
           <span className={styles.timestamp}>
             <Icon icon="clock" ratio={0.7} className="uk-margin-small-right" />
-            {formatRelativeTime(conversation.lastActivityAt)}
+            {formatRelativeTimeFromIso(conversation.lastActivityAt)}
           </span>
           {conversation.participants.length > 0 && (
             <span className="uk-text-meta uk-text-small">

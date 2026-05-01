@@ -15,7 +15,7 @@ import { createPageContainerVariants, pageItemVariants } from '../../animations'
 
 const MyReportsPage: React.FC = () => {
   useNavbarMode('focused', '/profile');
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { isAuthenticated } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -92,7 +92,7 @@ const MyReportsPage: React.FC = () => {
           animate="visible"
         >
           {reports.map((report) => {
-            const createdDate = new Date(report.createdAt / 1000).toLocaleDateString();
+            const createdDate = new Date(report.createdAt / 1000).toLocaleDateString(i18n.language);
 
             return (
               <motion.div key={report.id} variants={pageItemVariants} layout>

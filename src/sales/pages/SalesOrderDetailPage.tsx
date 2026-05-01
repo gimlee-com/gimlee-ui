@@ -37,7 +37,7 @@ const getStatusVariant = (status: string): 'success' | 'warning' | 'danger' | 'd
 
 const SalesOrderDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   useNavbarMode('focused', '/sales/orders');
@@ -101,7 +101,7 @@ const SalesOrderDetailPage: React.FC = () => {
                 {order.items[0]?.title || t('sales.orderDetail.title', { id: order.id })}
               </span>
               <span className={styles.navbarOrderId}>
-                {order.id} · {new Date(order.createdAt).toLocaleDateString()}
+                {order.id} · {new Date(order.createdAt).toLocaleDateString(i18n.language)}
               </span>
             </div>
           </div>
@@ -145,7 +145,7 @@ const SalesOrderDetailPage: React.FC = () => {
                           <Icon icon={copied ? 'check' : 'copy'} ratio={0.8} />
                         </button>
                       </div>
-                      <span className="uk-text-meta">{new Date(order.createdAt).toLocaleString(undefined, { dateStyle: 'long', timeStyle: 'short' })}</span>
+                      <span className="uk-text-meta">{new Date(order.createdAt).toLocaleString(i18n.language, { dateStyle: 'long', timeStyle: 'short' })}</span>
                     </div>
                     <div className={styles.headerRight}>
                       <Label variant={getStatusVariant(order.status)}>

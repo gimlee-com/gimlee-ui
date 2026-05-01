@@ -21,9 +21,9 @@ interface ReportSiblingListProps {
 }
 
 const SiblingEntry: React.FC<{ report: ReportListItemDto }> = ({ report }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const location = useLocation();
-  const createdDate = new Date(report.createdAt / 1000).toLocaleDateString();
+  const createdDate = new Date(report.createdAt / 1000).toLocaleDateString(i18n.language);
 
   return (
     <div className={styles.siblingEntry}>

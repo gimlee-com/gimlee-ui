@@ -17,10 +17,12 @@ import { Icon } from '../../../components/uikit/Icon/Icon';
 import { useCountdown } from '../../../hooks/useCountdown';
 import { createPageContainerVariants, pageItemVariants } from '../../../animations';
 
+import i18n from '../../../i18n';
+
 /** Converts epoch microseconds to a localized date string */
 const formatMicros = (micros: number | null | undefined): string => {
   if (micros == null) return '—';
-  return new Date(micros / 1000).toLocaleString();
+  return new Date(micros / 1000).toLocaleString(i18n.language);
 };
 
 const BanCountdownInline: React.FC<{ bannedUntil: number }> = ({ bannedUntil }) => {
