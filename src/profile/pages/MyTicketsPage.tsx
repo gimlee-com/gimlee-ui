@@ -85,10 +85,11 @@ const MyTicketsPage: React.FC = () => {
         {showCreateForm && (
           <motion.div
             {...expandCollapseProps}
-            className="uk-margin-bottom"
           >
-            <div className="uk-card uk-card-default uk-card-body">
-              <CreateTicketForm onSuccess={handleTicketCreated} />
+            <div className="uk-margin-bottom">
+              <div className="uk-card uk-card-default uk-card-body">
+                <CreateTicketForm onSuccess={handleTicketCreated} />
+              </div>
             </div>
           </motion.div>
         )}

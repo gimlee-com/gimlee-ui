@@ -95,13 +95,14 @@ const DeliveryAddressCard: React.FC = () => {
           {showForm && (
             <motion.div
               {...expandCollapseProps}
-              className="uk-margin-bottom"
             >
-              <AddressForm
-                onSubmit={onSubmit}
-                onCancel={() => setShowForm(false)}
-                isSubmitting={isSubmitting}
-              />
+              <div className="uk-margin-bottom">
+                <AddressForm
+                  onSubmit={onSubmit}
+                  onCancel={() => setShowForm(false)}
+                  isSubmitting={isSubmitting}
+                />
+              </div>
             </motion.div>
           )}
         </AnimatePresence>

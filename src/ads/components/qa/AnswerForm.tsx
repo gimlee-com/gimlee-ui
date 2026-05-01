@@ -64,8 +64,8 @@ export const AnswerForm: React.FC<AnswerFormProps> = ({ questionId, onAnswerSubm
     <AnimatePresence>
       <motion.div
         {...expandCollapseProps}
-        className="uk-margin-small-top"
       >
+        <div className="uk-margin-small-top">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="uk-margin-small">
             <textarea
@@ -105,6 +105,7 @@ export const AnswerForm: React.FC<AnswerFormProps> = ({ questionId, onAnswerSubm
             </Button>
           </div>
         </form>
+        </div>
       </motion.div>
     </AnimatePresence>
   );
