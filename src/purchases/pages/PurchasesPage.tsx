@@ -37,6 +37,7 @@ const paramDefs: ListParamDef[] = [
 ];
 
 interface PurchaseListParams {
+  [key: string]: string | string[] | number | undefined;
   p?: number;
   status?: string[];
   q?: string;

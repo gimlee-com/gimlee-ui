@@ -46,6 +46,7 @@ const paramDefs: ListParamDef[] = [
 ];
 
 interface OrderListParams {
+  [key: string]: string | string[] | number | undefined;
   p?: number;
   status?: string[];
   q?: string;
