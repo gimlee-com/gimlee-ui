@@ -31,7 +31,7 @@ const CreateTicketForm: React.FC<CreateTicketFormProps> = ({ onSuccess }) => {
     reset,
     formState: { errors, isValid, isSubmitting },
   } = useForm<CreateTicketFormValues>({
-    mode: 'onBlur',
+    mode: 'onChange',
     defaultValues: { subject: '', category: '', body: '' },
   });
 

@@ -16,7 +16,7 @@ const TicketReplyForm: React.FC<TicketReplyFormProps> = ({ onSubmit, isSubmittin
     reset,
     formState: { errors, isValid },
   } = useForm<ReplyToTicketDto>({
-    mode: 'onBlur',
+    mode: 'onChange',
     defaultValues: { body: '' },
   });
 

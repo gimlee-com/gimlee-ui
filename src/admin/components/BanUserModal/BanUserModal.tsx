@@ -30,7 +30,7 @@ const BanUserModal: React.FC<BanUserModalProps> = ({ username, isOpen, onConfirm
     reset,
     formState: { errors, isValid },
   } = useForm<BanUserFormValues>({
-    mode: 'onBlur',
+    mode: 'onChange',
     defaultValues: {
       reason: '',
       isPermanent: true,

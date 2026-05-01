@@ -35,7 +35,7 @@ const ReportFormModal: React.FC<ReportFormModalProps> = ({ targetType, targetId,
     reset,
     formState: { errors, isValid, isSubmitting },
   } = useForm<ReportFormValues>({
-    mode: 'onBlur',
+    mode: 'onChange',
     defaultValues: { reason: '', description: '' },
   });
 

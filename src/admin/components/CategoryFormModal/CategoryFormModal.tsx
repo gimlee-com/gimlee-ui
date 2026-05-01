@@ -43,7 +43,7 @@ const CategoryFormModal = React.forwardRef<HTMLDivElement, CategoryFormModalProp
       setError,
       formState: { errors, isValid, isSubmitting },
     } = useForm<FormValues>({
-      mode: 'onBlur',
+      mode: 'onChange',
       defaultValues: {
         nameEnUs: '',
         namePlPl: '',

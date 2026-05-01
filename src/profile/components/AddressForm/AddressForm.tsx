@@ -37,7 +37,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({
     control,
     formState: { errors, isValid, isSubmitting: formSubmitting },
   } = useForm<AddDeliveryAddressRequestDto>({
-    mode: 'onBlur',
+    mode: 'onChange',
     defaultValues: {
       name: '',
       fullName: '',

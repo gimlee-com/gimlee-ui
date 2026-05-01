@@ -34,7 +34,7 @@ const ChangePasswordCard: React.FC = () => {
     control,
     formState: { errors, isValid, isSubmitting },
   } = useForm<ChangePasswordFormValues>({
-    mode: 'onBlur',
+    mode: 'onChange',
     defaultValues: {
       oldPassword: '',
       newPassword: '',

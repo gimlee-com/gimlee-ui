@@ -7,6 +7,7 @@ import { cityService } from '../../ads/services/cityService';
 import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
 import { createStore } from '../../store';
+import { AuthProvider } from '../../context/AuthContext';
 import i18n from '../../i18n';
 
 vi.mock('../services/salesService', () => ({
@@ -65,13 +66,15 @@ const mockAd = {
 const renderEditAdPage = () => {
   return render(
     <Provider store={createStore()}>
-      <I18nextProvider i18n={i18n}>
-        <MemoryRouter initialEntries={['/sales/ads/edit/1']}>
-          <Routes>
-            <Route path="/sales/ads/edit/:id" element={<EditAdPage />} />
-          </Routes>
-        </MemoryRouter>
-      </I18nextProvider>
+      <AuthProvider>
+        <I18nextProvider i18n={i18n}>
+          <MemoryRouter initialEntries={['/sales/ads/edit/1']}>
+            <Routes>
+              <Route path="/sales/ads/edit/:id" element={<EditAdPage />} />
+            </Routes>
+          </MemoryRouter>
+        </I18nextProvider>
+      </AuthProvider>
     </Provider>
   );
 };

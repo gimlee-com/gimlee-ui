@@ -194,15 +194,19 @@ const EditorComponent: React.FC<MarkdownEditorProps> = ({ value, onChange, onBlu
     if (value !== undefined && value !== contentRef.current) {
       const editor = getEditor();
       if (editor) {
-        editor.action((ctx) => {
-          const view = ctx.get(editorViewCtx);
-          const parser = ctx.get(parserCtx);
-          const doc = parser(value);
-          if (!doc) return;
-          const state = view.state;
-          view.dispatch(state.tr.replaceWith(0, state.doc.content.size, doc));
-          contentRef.current = value;
-        });
+        try {
+          editor.action((ctx) => {
+            const view = ctx.get(editorViewCtx);
+            const parser = ctx.get(parserCtx);
+            const doc = parser(value);
+            if (!doc) return;
+            const state = view.state;
+            view.dispatch(state.tr.replaceWith(0, state.doc.content.size, doc));
+            contentRef.current = value;
+          });
+        } catch {
+          // Editor context may not be fully available during initialization or teardown
+        }
       }
     }
   }, [value, getEditor]);
