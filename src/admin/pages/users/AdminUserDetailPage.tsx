@@ -46,7 +46,7 @@ const StatItem: React.FC<{ label: string; value: number }> = ({ label, value }) 
 const BanHistoryEntry: React.FC<{ ban: AdminBanDto }> = ({ ban }) => {
   const { t } = useTranslation();
   return (
-    <div className="uk-card uk-card-secondary uk-card-body uk-card-small uk-margin-small-bottom uk-border-rounded">
+    <div className="uk-card uk-card-default uk-card-body uk-card-small uk-margin-small-bottom uk-border-rounded">
       <div className="uk-grid uk-grid-small uk-child-width-1-2@s" uk-grid="">
         <div>
           <span className="uk-text-meta">{t('admin.users.ban.reason')}:</span>
