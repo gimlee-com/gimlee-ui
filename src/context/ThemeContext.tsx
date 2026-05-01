@@ -25,7 +25,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     const metaThemeColor = document.querySelector('meta[name="theme-color"]');
     if (metaThemeColor) {
       const colorMap = {
-        'light': '#ffffff',
+        'light': '#faf8ff',
         'dark': '#1a1a1a',
         'dark-unicorn': '#0f0c29',
         'iron-age': '#121415'

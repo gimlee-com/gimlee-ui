@@ -18,6 +18,29 @@
   --card-border-radius: 5px;
 }
 
+[data-theme='light'] {
+  --global-background: #faf8ff;
+  --global-background-gradient: linear-gradient(to bottom, #faf8ff, #f3eeff, #f8f5ff);
+  --global-color: #1a1035;
+  --global-muted-color: #6b5899;
+  --global-muted-background: rgba(108, 43, 217, 0.04);
+  --global-border: rgba(108, 43, 217, 0.12);
+  --global-primary-background: #6c2bd9;
+  --global-secondary-background: #1a2e1f;
+  --global-success-background: #06d6a0;
+  --global-warning-background: #faa05a;
+  --global-danger-background: #f0506e;
+  --global-primary-color: #6c2bd9;
+  --logo-fill: #6c2bd9;
+  --logo-smoke-fill: #a07070;
+  --navbar-shadow: 0 4px 20px rgba(108, 43, 217, 0.12);
+  --navbar-height: 80px;
+  --global-medium-shadow: 0 12px 24px rgba(108, 43, 217, 0.08);
+  --global-large-shadow: 0 20px 40px rgba(6, 214, 160, 0.1);
+  --global-border-radius: 500px;
+  --card-border-radius: 12px;
+}
+
 [data-theme='dark'] {
   --global-background: #1a1a1a;
   --global-color: #e5e5e5;
@@ -157,6 +180,19 @@ body {
 
   > main {
     flex: 1 0 auto;
+  }
+}
+
+[data-theme='light'] {
+  .uk-card-default {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(108, 43, 217, 0.08);
+  }
+
+  .uk-notification-message {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
   }
 }
 
