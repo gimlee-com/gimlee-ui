@@ -39,6 +39,45 @@
   --global-large-shadow: 0 20px 40px rgba(6, 214, 160, 0.1);
   --global-border-radius: 500px;
   --card-border-radius: 12px;
+
+  // ─── Liquid Crystal Button System ───
+  --btn-glass-bg: rgba(255, 255, 255, 0.65);
+  --btn-glass-bg-hover: rgba(255, 255, 255, 0.82);
+  --btn-glass-bg-active: rgba(255, 255, 255, 0.50);
+  --btn-glass-blur: 2px;
+  --btn-glass-saturate: 180%;
+  --btn-glass-border-top: rgba(255, 255, 255, 0.92);
+  --btn-glass-border-side: rgba(255, 255, 255, 0.75);
+  --btn-glass-border-bottom: rgba(200, 190, 220, 0.45);
+  --btn-specular-opacity: 0.50;
+  --btn-shadow-ambient: 0 6px 20px rgba(108, 43, 217, 0.10);
+  --btn-shadow-direct: 0 2px 5px rgba(0, 0, 0, 0.06);
+  --btn-shadow-glow: 0 0 20px rgba(108, 43, 217, 0.20);
+  --btn-shimmer-color: rgba(255, 255, 255, 0.18);
+  --btn-curvature-top: rgba(255, 255, 255, 0.08);
+  --btn-curvature-mid: rgba(255, 255, 255, 0.02);
+
+  // ─── Liquid Crystal Form System ───
+  --input-glass-bg: rgba(255, 255, 255, 0.45);
+  --input-glass-bg-hover: rgba(255, 255, 255, 0.60);
+  --input-glass-bg-focus: rgba(255, 255, 255, 0.75);
+  --input-glass-blur: 1px;
+  --input-glass-saturate: 120%;
+  --input-border-top: rgba(108, 43, 217, 0.08);
+  --input-border-side: rgba(108, 43, 217, 0.08);
+  --input-border-bottom: rgba(255, 255, 255, 0.40);
+  --input-shadow-inner: inset 0 1px 2px rgba(0, 0, 0, 0.03);
+  --input-shadow-inner-hover: inset 0 1px 2px rgba(0, 0, 0, 0.02);
+  --input-shadow-inner-focus: none;
+  --input-focus-glow: 0 0 0 3px rgba(108, 43, 217, 0.12);
+  --input-focus-border: rgba(108, 43, 217, 0.35);
+  --input-radio-bg: rgba(255, 255, 255, 0.50);
+  --input-radio-border: rgba(108, 43, 217, 0.18);
+  --input-radio-checked-glow: 0 0 8px rgba(108, 43, 217, 0.30);
+  --input-radio-shadow-inner: inset 0 1px 3px rgba(0, 0, 0, 0.08);
+  --input-toggle-track-bg: rgba(108, 43, 217, 0.08);
+  --input-toggle-thumb-bg: rgba(255, 255, 255, 0.95);
+  --input-toggle-thumb-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 }
 
 [data-theme='dark'] {
@@ -55,6 +94,28 @@
   --global-large-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
   --global-border-radius: 5px;
   --card-border-radius: 5px;
+
+  // ─── Liquid Crystal Form System ───
+  --input-glass-bg: rgba(255, 255, 255, 0.04);
+  --input-glass-bg-hover: rgba(255, 255, 255, 0.07);
+  --input-glass-bg-focus: rgba(255, 255, 255, 0.10);
+  --input-glass-blur: 1px;
+  --input-glass-saturate: 120%;
+  --input-border-top: rgba(0, 0, 0, 0.30);
+  --input-border-side: rgba(255, 255, 255, 0.08);
+  --input-border-bottom: rgba(255, 255, 255, 0.12);
+  --input-shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.20);
+  --input-shadow-inner-hover: inset 0 1px 3px rgba(0, 0, 0, 0.15);
+  --input-shadow-inner-focus: inset 0 1px 2px rgba(0, 0, 0, 0.10);
+  --input-focus-glow: 0 0 0 3px rgba(30, 135, 240, 0.20);
+  --input-focus-border: rgba(30, 135, 240, 0.50);
+  --input-radio-bg: rgba(255, 255, 255, 0.06);
+  --input-radio-border: rgba(255, 255, 255, 0.15);
+  --input-radio-checked-glow: 0 0 8px rgba(30, 135, 240, 0.35);
+  --input-radio-shadow-inner: inset 0 1px 3px rgba(0, 0, 0, 0.25);
+  --input-toggle-track-bg: rgba(255, 255, 255, 0.08);
+  --input-toggle-thumb-bg: rgba(255, 255, 255, 0.90);
+  --input-toggle-thumb-shadow: 0 1px 3px rgba(0, 0, 0, 0.30);
 }
 
 [data-theme='dark-unicorn'] {
@@ -74,6 +135,28 @@
   --global-large-shadow: 0 20px 40px rgba(255, 0, 204, 0.2);
   --global-border-radius: 500px;
   --card-border-radius: 12px;
+
+  // ─── Liquid Crystal Form System ───
+  --input-glass-bg: rgba(255, 255, 255, 0.03);
+  --input-glass-bg-hover: rgba(255, 255, 255, 0.05);
+  --input-glass-bg-focus: rgba(255, 255, 255, 0.08);
+  --input-glass-blur: 1px;
+  --input-glass-saturate: 130%;
+  --input-border-top: rgba(255, 255, 255, 0.06);
+  --input-border-side: rgba(255, 255, 255, 0.06);
+  --input-border-bottom: rgba(255, 255, 255, 0.10);
+  --input-shadow-inner: inset 0 1px 2px rgba(0, 0, 0, 0.10);
+  --input-shadow-inner-hover: inset 0 1px 1px rgba(0, 0, 0, 0.06);
+  --input-shadow-inner-focus: none;
+  --input-focus-glow: 0 0 0 3px rgba(255, 0, 204, 0.18);
+  --input-focus-border: rgba(255, 0, 204, 0.40);
+  --input-radio-bg: rgba(255, 255, 255, 0.05);
+  --input-radio-border: rgba(255, 0, 204, 0.20);
+  --input-radio-checked-glow: 0 0 8px rgba(255, 0, 204, 0.40);
+  --input-radio-shadow-inner: inset 0 1px 3px rgba(0, 0, 0, 0.30);
+  --input-toggle-track-bg: rgba(255, 255, 255, 0.06);
+  --input-toggle-thumb-bg: rgba(255, 255, 255, 0.92);
+  --input-toggle-thumb-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
 }
 
 [data-theme='iron-age'] {
@@ -95,6 +178,28 @@
   --global-background-gradient: radial-gradient(circle at center, #282c2f 0%, #1e2124 100%);
   --logo-fill: #a67c52;
   --logo-smoke-fill: #e8e0cc;
+
+  // ─── Liquid Crystal Form System ───
+  --input-glass-bg: rgba(255, 255, 255, 0.03);
+  --input-glass-bg-hover: rgba(255, 255, 255, 0.05);
+  --input-glass-bg-focus: rgba(255, 255, 255, 0.08);
+  --input-glass-blur: 0px;
+  --input-glass-saturate: 100%;
+  --input-border-top: rgba(0, 0, 0, 0.25);
+  --input-border-side: rgba(166, 124, 82, 0.15);
+  --input-border-bottom: rgba(255, 255, 255, 0.08);
+  --input-shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.22);
+  --input-shadow-inner-hover: inset 0 1px 3px rgba(0, 0, 0, 0.18);
+  --input-shadow-inner-focus: inset 0 1px 2px rgba(0, 0, 0, 0.12);
+  --input-focus-glow: 0 0 0 3px rgba(166, 124, 82, 0.20);
+  --input-focus-border: rgba(166, 124, 82, 0.50);
+  --input-radio-bg: rgba(255, 255, 255, 0.04);
+  --input-radio-border: rgba(166, 124, 82, 0.20);
+  --input-radio-checked-glow: 0 0 6px rgba(166, 124, 82, 0.30);
+  --input-radio-shadow-inner: inset 0 1px 3px rgba(0, 0, 0, 0.25);
+  --input-toggle-track-bg: rgba(255, 255, 255, 0.06);
+  --input-toggle-thumb-bg: rgba(232, 224, 204, 0.90);
+  --input-toggle-thumb-shadow: 0 1px 3px rgba(0, 0, 0, 0.30);
 }
 
 // 1. Your custom variables and variable overwrites.
@@ -107,11 +212,266 @@
 // 3. Your custom mixin overwrites.
 @mixin hook-button() {
   border-radius: var(--global-border-radius);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+
+  // Glass fill
+  backdrop-filter: blur(var(--btn-glass-blur, 0px)) saturate(var(--btn-glass-saturate, 100%));
+  -webkit-backdrop-filter: blur(var(--btn-glass-blur, 0px)) saturate(var(--btn-glass-saturate, 100%));
+
+  // Asymmetric border (light catches top/left more)
+  border: 1px solid var(--btn-glass-border-side, transparent);
+  border-top-color: var(--btn-glass-border-top, transparent);
+  border-bottom-color: var(--btn-glass-border-bottom, transparent);
+
+  // Multi-layer shadow stack
+  box-shadow:
+    var(--btn-shadow-ambient, 0 0 0 transparent),
+    var(--btn-shadow-direct, 0 0 0 transparent),
+    inset 0 1px 0 rgba(255, 255, 255, var(--btn-specular-opacity, 0)),
+    inset 0 3px 10px rgba(255, 255, 255, 0.10);
+
+  // GPU compositing
+  will-change: transform;
+  transform: translateY(0px) translateZ(0);
+
+  // Exit timing: slow drift back (gravity)
+  transition:
+    transform 300ms cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 300ms ease-out,
+    background 200ms ease,
+    border-color 200ms ease;
+}
+
+@mixin hook-button-default() {
+  background: var(--btn-glass-bg, transparent);
+  color: var(--global-color);
+}
+
+@mixin hook-button-default-hover() {
+  background: var(--btn-glass-bg-hover, transparent);
 }
 
 @mixin hook-button-primary() {
-  background: var(--global-primary-background);
-  border: none;
+  // Tinted crystal: curvature gradient layered over brand color
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, rgba(0, 0, 0, 0.05) 100%),
+    var(--global-primary-background);
+  color: #fff;
+  border: 1px solid color-mix(in srgb, var(--global-primary-background), white 25%);
+  border-top-color: color-mix(in srgb, var(--global-primary-background), white 35%);
+  border-bottom-color: color-mix(in srgb, var(--global-primary-background), black 15%);
+
+  // Colored ambient glow
+  --btn-shadow-ambient: 0 6px 20px color-mix(in srgb, var(--global-primary-background), transparent 70%);
+  --btn-shadow-glow: 0 0 20px color-mix(in srgb, var(--global-primary-background), transparent 60%);
+}
+
+@mixin hook-button-primary-hover() {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0%, rgba(0, 0, 0, 0.03) 100%),
+    color-mix(in oklch, var(--global-primary-background) 88%, white);
+}
+
+@mixin hook-button-secondary() {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.10) 0%, rgba(0, 0, 0, 0.08) 100%),
+    var(--global-secondary-background);
+  color: #fff;
+  border: 1px solid color-mix(in srgb, var(--global-secondary-background), white 15%);
+  border-top-color: color-mix(in srgb, var(--global-secondary-background), white 22%);
+  border-bottom-color: color-mix(in srgb, var(--global-secondary-background), black 20%);
+
+  --btn-shadow-ambient: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+@mixin hook-button-danger() {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(0, 0, 0, 0.08) 100%),
+    var(--global-danger-background);
+  color: #fff;
+  border: 1px solid color-mix(in srgb, var(--global-danger-background), white 20%);
+  border-top-color: color-mix(in srgb, var(--global-danger-background), white 30%);
+  border-bottom-color: color-mix(in srgb, var(--global-danger-background), black 15%);
+
+  --btn-shadow-ambient: 0 6px 20px color-mix(in srgb, var(--global-danger-background), transparent 70%);
+  --btn-shadow-glow: 0 0 20px color-mix(in srgb, var(--global-danger-background), transparent 65%);
+}
+
+@mixin hook-button-danger-hover() {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, rgba(0, 0, 0, 0.03) 100%),
+    color-mix(in oklch, var(--global-danger-background) 88%, white);
+}
+
+@mixin hook-button-misc() {
+  // ═══════════════════════════════════════════════════
+  // LIQUID CRYSTAL — Interaction States & Pseudo-layers
+  // ═══════════════════════════════════════════════════
+
+  // Specular curvature overlay (convex surface illusion)
+  .uk-button::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+      180deg,
+      var(--btn-curvature-top, rgba(255, 255, 255, 0.12)) 0%,
+      var(--btn-curvature-mid, rgba(255, 255, 255, 0.03)) 35%,
+      rgba(255, 255, 255, 0.00) 60%
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  // Shimmer sweep layer
+  .uk-button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--btn-shimmer-color, rgba(255, 255, 255, 0.10)),
+      transparent
+    );
+    transform: skewX(-15deg);
+    z-index: 2;
+    pointer-events: none;
+    transition: left 0ms;
+  }
+
+  // HOVER: button lifts off surface
+  .uk-button:hover:not(:disabled) {
+    transform: translateY(-2px) translateZ(0);
+    box-shadow:
+      var(--btn-shadow-ambient, 0 0 0 transparent),
+      var(--btn-shadow-direct, 0 0 0 transparent),
+      var(--btn-shadow-glow, 0 0 0 transparent),
+      inset 0 1px 0 rgba(255, 255, 255, 0.95),
+      inset 0 4px 14px rgba(255, 255, 255, 0.30);
+
+    // Enter timing: spring snap with overshoot
+    transition:
+      transform 150ms cubic-bezier(0.34, 1.56, 0.64, 1),
+      box-shadow 150ms ease-out,
+      background 200ms ease,
+      border-color 200ms ease;
+
+    // Fire shimmer once
+    &::after {
+      left: 150%;
+      transition: left 500ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  }
+
+  // ACTIVE: presses into surface
+  .uk-button:active:not(:disabled) {
+    transform: translateY(1px) scale(0.982) translateZ(0);
+    box-shadow:
+      0 2px 5px rgba(0, 0, 0, 0.04),
+      0 1px 2px rgba(0, 0, 0, 0.04),
+      inset 0 2px 6px rgba(0, 0, 0, 0.06),
+      inset 0 1px 0 rgba(255, 255, 255, 0.55);
+
+    // Instant — physical objects respond immediately to force
+    transition:
+      transform 80ms ease-in,
+      box-shadow 80ms ease-in;
+  }
+
+  // DISABLED
+  .uk-button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+    transform: none;
+    &::before, &::after { display: none; }
+  }
+
+  // FOCUS VISIBLE — accessible keyboard focus
+  .uk-button:focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--global-primary-background), transparent 40%);
+    outline-offset: 3px;
+  }
+
+  // Reduced motion: disable transforms and shimmer
+  @media (prefers-reduced-motion: reduce) {
+    .uk-button,
+    .uk-button::before,
+    .uk-button::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      transform: none !important;
+    }
+    .uk-button:hover:not(:disabled),
+    .uk-button:active:not(:disabled) {
+      transform: none !important;
+    }
+    .uk-button:hover::after {
+      transition: none !important;
+      left: -100% !important;
+    }
+  }
+
+  // Fallback: no backdrop-filter support
+  @supports not (backdrop-filter: blur(2px)) {
+    .uk-button-default {
+      background: rgba(255, 255, 255, 0.92);
+    }
+  }
+
+  // Text & Link variants: strip glass effects (they should look minimal)
+  .uk-button-text,
+  .uk-button-link {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    overflow: visible;
+
+    // Exit timing: slow gravity drift back
+    transition:
+      transform 300ms cubic-bezier(0.4, 0, 0.2, 1),
+      color 200ms ease;
+
+    &::before, &::after { display: none; }
+
+    &:hover:not(:disabled) {
+      border: none;
+      box-shadow: none;
+      backdrop-filter: none;
+      // Gentle float + text lights up
+      transform: translateY(-1px);
+      color: var(--global-primary-background);
+      // Enter timing: spring snap
+      transition:
+        transform 150ms cubic-bezier(0.34, 1.56, 0.64, 1),
+        color 150ms ease-out;
+    }
+    &:focus,
+    &:focus-visible {
+      border: none;
+      box-shadow: none;
+      backdrop-filter: none;
+      background: transparent;
+    }
+    &:active:not(:disabled) {
+      border: none;
+      box-shadow: none;
+      backdrop-filter: none;
+      transform: translateY(0px);
+      color: var(--global-primary-background);
+    }
+  }
 }
 
 @mixin hook-card() {
@@ -119,16 +479,240 @@
 }
 
 @mixin hook-form() {
-  border: $form-border-width solid $form-border;
   border-radius: var(--global-border-radius) !important;
-  transition: 0.2s ease-in-out;
-  transition-property: color, background-color, border;
+  position: relative;
+
+  // Glass well fill
+  background: var(--input-glass-bg, transparent);
+  backdrop-filter: blur(var(--input-glass-blur, 0px)) saturate(var(--input-glass-saturate, 100%));
+  -webkit-backdrop-filter: blur(var(--input-glass-blur, 0px)) saturate(var(--input-glass-saturate, 100%));
+
+  // Concave border (inverted from buttons: top darker, bottom lighter)
+  border: 1px solid var(--input-border-side, var(--global-border));
+  border-top-color: var(--input-border-top, var(--global-border));
+  border-bottom-color: var(--input-border-bottom, var(--global-border));
+
+  // Inner depth shadow (recessed illusion)
+  box-shadow: var(--input-shadow-inner, none);
+
+  // Transition: spring physics for state changes
+  transition:
+    background 200ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-color 200ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@mixin hook-form-focus() {
+  background: var(--input-glass-bg-focus, transparent);
+  border-color: var(--input-focus-border, var(--global-primary-background));
+  box-shadow:
+    var(--input-shadow-inner-focus, none),
+    var(--input-focus-glow, 0 0 0 3px rgba(0, 0, 0, 0.1));
 }
 
 @mixin hook-form-misc() {
+  // ═══════════════════════════════════════════════════
+  // LIQUID CRYSTAL FORM — Interaction States & Controls
+  // ═══════════════════════════════════════════════════
+
   // Prevent extreme border-radius on multi-line inputs (e.g. dark-unicorn's 500px pill radius)
   .uk-textarea {
     border-radius: var(--card-border-radius, 8px) !important;
+  }
+
+  // HOVER: well surface brightens
+  .uk-input:hover:not(:disabled):not(:focus),
+  .uk-select:hover:not(:disabled):not(:focus),
+  .uk-textarea:hover:not(:disabled):not(:focus) {
+    background: var(--input-glass-bg-hover, transparent);
+    border-color: var(--input-focus-border, var(--global-primary-background));
+    box-shadow: var(--input-shadow-inner-hover, none);
+    transition:
+      background 150ms cubic-bezier(0.34, 1.56, 0.64, 1),
+      border-color 150ms cubic-bezier(0.34, 1.56, 0.64, 1),
+      box-shadow 150ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  // DISABLED
+  .uk-input:disabled,
+  .uk-select:disabled,
+  .uk-textarea:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+    background: var(--global-muted-background);
+  }
+
+  // SUCCESS state
+  .uk-input.uk-form-success,
+  .uk-select.uk-form-success,
+  .uk-textarea.uk-form-success {
+    border-color: var(--global-success-background);
+    box-shadow:
+      var(--input-shadow-inner-focus, none),
+      0 0 0 2px color-mix(in srgb, var(--global-success-background), transparent 80%);
+  }
+
+  // DANGER state
+  .uk-input.uk-form-danger,
+  .uk-select.uk-form-danger,
+  .uk-textarea.uk-form-danger {
+    border-color: var(--global-danger-background);
+    box-shadow:
+      var(--input-shadow-inner-focus, none),
+      0 0 0 2px color-mix(in srgb, var(--global-danger-background), transparent 80%);
+  }
+
+  // BLANK variant: strip all crystal effects
+  .uk-input.uk-form-blank,
+  .uk-select.uk-form-blank,
+  .uk-textarea.uk-form-blank {
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: none;
+    border-bottom: 1px solid var(--global-border);
+    border-radius: 0 !important;
+    box-shadow: none;
+
+    &:focus {
+      border-bottom-color: var(--input-focus-border, var(--global-primary-background));
+      box-shadow: 0 1px 0 0 var(--input-focus-border, var(--global-primary-background));
+    }
+  }
+
+  // FOCUS VISIBLE — accessible keyboard focus ring
+  .uk-input:focus-visible,
+  .uk-select:focus-visible,
+  .uk-textarea:focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--global-primary-background), transparent 40%);
+    outline-offset: 2px;
+  }
+
+  // ─── Radio & Checkbox: Crystal Gem ───
+
+  .uk-radio,
+  .uk-checkbox {
+    flex-shrink: 0;
+    background: var(--input-radio-bg, transparent);
+    border: 1px solid var(--input-radio-border, var(--global-border));
+    box-shadow: var(--input-radio-shadow-inner, none);
+    transition:
+      background 150ms cubic-bezier(0.34, 1.56, 0.64, 1),
+      border-color 150ms cubic-bezier(0.34, 1.56, 0.64, 1),
+      box-shadow 150ms cubic-bezier(0.34, 1.56, 0.64, 1),
+      transform 150ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .uk-radio:hover:not(:disabled),
+  .uk-checkbox:hover:not(:disabled) {
+    border-color: var(--input-focus-border, var(--global-primary-background));
+    box-shadow:
+      var(--input-radio-shadow-inner, none),
+      0 0 0 2px color-mix(in srgb, var(--global-primary-background), transparent 85%);
+  }
+
+  .uk-radio:checked,
+  .uk-checkbox:checked,
+  .uk-checkbox:indeterminate {
+    background: var(--global-primary-background);
+    border-color: var(--global-primary-background);
+    box-shadow: var(--input-radio-checked-glow, none);
+    // Crystal gem "pop" — spring scale
+    transform: scale(1);
+    animation: crystal-gem-pop 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .uk-radio:focus-visible,
+  .uk-checkbox:focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--global-primary-background), transparent 40%);
+    outline-offset: 2px;
+  }
+
+  .uk-radio:disabled,
+  .uk-checkbox:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  @keyframes crystal-gem-pop {
+    0% { transform: scale(0.85); }
+    60% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+
+  // ─── Range: Crystal Track ───
+
+  .uk-range {
+    &::-webkit-slider-thumb {
+      background: var(--input-toggle-thumb-bg, #fff);
+      box-shadow: var(--input-toggle-thumb-shadow, none);
+      border: 1px solid var(--input-border-side, var(--global-border));
+      transition: box-shadow 150ms ease;
+    }
+
+    &::-moz-range-thumb {
+      background: var(--input-toggle-thumb-bg, #fff);
+      box-shadow: var(--input-toggle-thumb-shadow, none);
+      border: 1px solid var(--input-border-side, var(--global-border));
+      transition: box-shadow 150ms ease;
+    }
+
+    &:hover::-webkit-slider-thumb {
+      box-shadow:
+        var(--input-toggle-thumb-shadow, none),
+        0 0 0 3px color-mix(in srgb, var(--global-primary-background), transparent 80%);
+    }
+
+    &:hover::-moz-range-thumb {
+      box-shadow:
+        var(--input-toggle-thumb-shadow, none),
+        0 0 0 3px color-mix(in srgb, var(--global-primary-background), transparent 80%);
+    }
+
+    &::-webkit-slider-runnable-track {
+      background: var(--input-toggle-track-bg, var(--global-muted-background));
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08);
+      border-radius: var(--global-border-radius);
+    }
+
+    &::-moz-range-track {
+      background: var(--input-toggle-track-bg, var(--global-muted-background));
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08);
+      border-radius: var(--global-border-radius);
+    }
+  }
+
+  // ─── Reduced Motion ───
+
+  @media (prefers-reduced-motion: reduce) {
+    .uk-input,
+    .uk-select,
+    .uk-textarea,
+    .uk-radio,
+    .uk-checkbox {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+    }
+
+    .uk-radio:checked,
+    .uk-checkbox:checked,
+    .uk-checkbox:indeterminate {
+      animation: none;
+    }
+  }
+
+  // ─── Fallback: no backdrop-filter support ───
+
+  @supports not (backdrop-filter: blur(1px)) {
+    .uk-input,
+    .uk-select,
+    .uk-textarea {
+      background: var(--global-muted-background);
+    }
   }
 }
 

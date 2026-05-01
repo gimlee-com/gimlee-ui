@@ -2,6 +2,8 @@
 
 This file serves as a comprehensive guide for AI agents and developers working on the **Gimlee Web UI** project. It summarizes the project's goals, technical stack, and the specific engineering practices and "preached" principles followed during development.
 
+> **📐 Architecture Decision Records:** For detailed, low-level design documentation (e.g., the Liquid Crystal button system, animation models, component architecture rationale), see the `docs/adr/` directory. ADRs provide the full context, alternatives considered, and technical specifications for major design decisions.
+
 ---
 
 ### 1. Project Overview: Gimlee

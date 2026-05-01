@@ -35,15 +35,15 @@ $alert-danger-color: var(--global-danger-background);
 $base-code-color: var(--global-danger-background);
 $base-em-color: var(--global-danger-background);
 
-// Buttons
-$button-default-background: var(--global-muted-background);
+// Buttons — variable overrides complement the Liquid Crystal hooks in main.scss
+$button-default-background: transparent;
 $button-default-color: var(--global-color);
-$button-default-hover-background: var(--global-border);
+$button-default-hover-background: transparent;
 $button-default-hover-color: var(--global-color);
-$button-default-hover-border: var(--global-border);
-$button-default-active-background: var(--global-border);
+$button-default-hover-border: transparent;
+$button-default-active-background: transparent;
 $button-default-active-color: var(--global-color);
-$button-default-active-border: var(--global-border);
+$button-default-active-border: transparent;
 
 $button-primary-background: var(--global-primary-background);
 $button-primary-color: #fff;
@@ -73,15 +73,25 @@ $card-secondary-background: var(--global-secondary-background);
 $card-overlay-background: var(--global-background);
 $card-overlay-hover-background: var(--global-background);
 
-// Forms
-$form-range-track-background: var(--global-muted-background);
-$form-range-track-focus-background: var(--global-muted-background);
-$form-range-thumb-background: var(--global-primary-background);
-$form-range-thumb-border: var(--global-border);
+// Forms — variable overrides complement the Liquid Crystal hooks in main.scss
+$form-background: transparent;
+$form-color: var(--global-color);
+$form-border: var(--global-border);
+$form-border-width: 1px;
+$form-focus-background: transparent;
+$form-focus-color: var(--global-color);
+$form-focus-border: var(--global-primary-background);
 
-$form-radio-focus-background: var(--global-muted-background);
+$form-range-track-background: var(--input-toggle-track-bg, var(--global-muted-background));
+$form-range-track-focus-background: var(--input-toggle-track-bg, var(--global-muted-background));
+$form-range-thumb-background: var(--input-toggle-thumb-bg, #fff);
+$form-range-thumb-border: var(--input-border-side, var(--global-border));
+
+$form-radio-background: var(--input-radio-bg, transparent);
+$form-radio-focus-background: var(--input-radio-bg, var(--global-muted-background));
+$form-radio-checked-background: var(--global-primary-background);
 $form-radio-checked-focus-background: var(--global-primary-background);
-$form-radio-border: var(--global-border);
+$form-radio-border: var(--input-radio-border, var(--global-border));
 
 // Icons
 $icon-link-active-color: var(--global-color);
