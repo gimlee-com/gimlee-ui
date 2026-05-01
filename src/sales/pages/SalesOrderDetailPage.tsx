@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
-import { createPageContainerVariants, pageItemVariants, createCardContainerVariants, cardItemVariants } from '../../animations';
+import { createPageContainerVariants, pageItemVariants } from '../../animations';
 import { useNavbarMode } from '../../hooks/useNavbarMode';
 import NavbarPortal from '../../components/Navbar/NavbarPortal';
 import { Card, CardBody } from '../../components/uikit/Card/Card';

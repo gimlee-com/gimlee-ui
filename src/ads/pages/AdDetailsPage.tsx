@@ -73,11 +73,13 @@ const AdDetailsPage: React.FC = () => {
   }, [activeIndex]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setActiveIndex(0);
     setVisitedIndices([0]);
   }, [id]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setVisitedIndices(prev => {
       if (prev.includes(activeIndex)) return prev;
       return [...prev, activeIndex];
@@ -187,6 +189,7 @@ const AdDetailsPage: React.FC = () => {
   useEffect(() => {
     if (id) {
       const controller = new AbortController();
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLoading(true);
       setError(null);
       adService.getAdById(id, { signal: controller.signal })

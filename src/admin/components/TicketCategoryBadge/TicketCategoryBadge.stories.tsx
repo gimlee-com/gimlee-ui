@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import TicketCategoryBadge from './TicketCategoryBadge';
 import type { TicketCategory } from '../../types/adminTicket';
 

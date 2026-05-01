@@ -5,16 +5,11 @@
   border-radius: $card-border-radius;
   transition: box-shadow 0.2s ease;
   background: $global-background;
+  cursor: pointer;
 
   &:hover {
     box-shadow: var(--global-medium-shadow, 0 8px 20px rgba(0, 0, 0, 0.06));
   }
-}
-
-.cardLink {
-  text-decoration: none !important;
-  color: inherit !important;
-  display: block;
 }
 
 .cardBody {

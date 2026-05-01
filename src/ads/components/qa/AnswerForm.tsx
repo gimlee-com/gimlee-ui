@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { motion, AnimatePresence } from 'motion/react';
 import { expandCollapseProps } from '../../../animations';
 import { qaService } from '../../services/qaService';
@@ -27,11 +27,11 @@ export const AnswerForm: React.FC<AnswerFormProps> = ({ questionId, onAnswerSubm
     register,
     handleSubmit,
     reset,
-    watch,
+    control,
     formState: { errors, isValid, isSubmitting },
   } = useForm<AnswerFormData>({ mode: 'onChange' });
 
-  const textValue = watch('text', '');
+  const textValue = useWatch({ control, name: 'text', defaultValue: '' });
 
   const onSubmit = useCallback(async (data: AnswerFormData) => {
     try {

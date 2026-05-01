@@ -1,5 +1,5 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import UIkit from 'uikit';
 import { motion } from 'motion/react';
@@ -31,7 +31,7 @@ const ChangePasswordCard: React.FC = () => {
     register,
     handleSubmit,
     reset,
-    watch,
+    control,
     formState: { errors, isValid, isSubmitting },
   } = useForm<ChangePasswordFormValues>({
     mode: 'onBlur',
@@ -42,7 +42,7 @@ const ChangePasswordCard: React.FC = () => {
     },
   });
 
-  const newPassword = watch('newPassword');
+  const newPassword = useWatch({ control, name: 'newPassword' });
 
   const onSubmit = async (data: ChangePasswordFormValues) => {
     try {

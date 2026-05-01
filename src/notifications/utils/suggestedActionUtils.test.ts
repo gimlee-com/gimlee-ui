@@ -88,7 +88,7 @@ describe('mapSuggestedActionToUrl', () => {
   });
 
   it('should return null for unknown type', () => {
-    const action = { type: 'UNKNOWN' } as any;
+    const action = { type: 'UNKNOWN' } as unknown as SuggestedActionDto;
     expect(mapSuggestedActionToUrl(action)).toBeNull();
   });
 });

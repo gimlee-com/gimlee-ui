@@ -19,6 +19,7 @@ export const SellerDashboardHeader: React.FC = () => {
 
   useEffect(() => {
     let cancelled = false;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
     salesService.getStats(period).then(data => {
       if (!cancelled) {

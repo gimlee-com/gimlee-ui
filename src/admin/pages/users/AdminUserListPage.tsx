@@ -33,6 +33,7 @@ const AdminUserListPage: React.FC = () => {
   // Fetch data whenever URL params change
   useEffect(() => {
     const controller = new AbortController();
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
     setError(null);
 

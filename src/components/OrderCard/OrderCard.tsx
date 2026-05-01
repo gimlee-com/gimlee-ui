@@ -98,12 +98,10 @@ export const OrderCard: React.FC<OrderCardProps> = ({ order, type }) => {
       animate="visible"
       exit={{ opacity: 0, scale: 0.95 }}
     >
-      <Card className={styles.orderCard}>
-        <Link
-          to={detailPath}
-          state={{ from: location.pathname + location.search }}
-          className={styles.cardLink}
-        >
+      <Card
+        className={styles.orderCard}
+        onClick={() => navigate(detailPath, { state: { from: location.pathname + location.search } })}
+      >
           <CardBody className={styles.cardBody}>
             {/* Thumbnail */}
             <div className={styles.thumbnailCol}>
@@ -180,7 +178,6 @@ export const OrderCard: React.FC<OrderCardProps> = ({ order, type }) => {
               </div>
             </div>
           </CardBody>
-        </Link>
       </Card>
     </motion.div>
   );

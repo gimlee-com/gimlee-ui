@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import TicketFilterBadges from './TicketFilters';
 
 const meta: Meta<typeof TicketFilterBadges> = {

@@ -43,6 +43,7 @@ export function useCountdown(targetMicros: number | null | undefined): Countdown
   useEffect(() => {
     if (targetMicros == null) return;
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setRemaining(computeRemaining());
 
     const interval = setInterval(() => {

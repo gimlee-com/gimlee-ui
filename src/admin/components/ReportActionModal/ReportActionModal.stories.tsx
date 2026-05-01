@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import ReportActionModal from './ReportActionModal';
 
 const meta: Meta<typeof ReportActionModal> = {

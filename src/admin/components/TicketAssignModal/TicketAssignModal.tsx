@@ -62,7 +62,7 @@ const TicketAssignModal: React.FC<TicketAssignModalProps> = ({
     if (!el) return;
     el.addEventListener('hidden', handleHide);
     return () => el.removeEventListener('hidden', handleHide);
-  }, [handleHide]);
+  }, [handleHide, modalRef]);
 
   const onSubmit = (data: AssignFormValues) => {
     onConfirm(data.assigneeUserId);

@@ -122,6 +122,9 @@ const EditAdPage: React.FC = () => {
     };
 
     fetchData();
+    // preferredCurrency is intentionally excluded: it is used only for the initial
+    // form reset and should not cause re-fetching (which would discard unsaved edits).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, reset, t]);
 
   const handleCitySearch = async (val: string) => {

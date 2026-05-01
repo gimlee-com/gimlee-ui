@@ -43,6 +43,7 @@ const ReportFormModal: React.FC<ReportFormModalProps> = ({ targetType, targetId,
   useEffect(() => {
     if (!isOpen) return;
     let cancelled = false;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoadingReasons(true);
     reportService.getReasons(targetType)
       .then((data) => { if (!cancelled) setReasons(data); })

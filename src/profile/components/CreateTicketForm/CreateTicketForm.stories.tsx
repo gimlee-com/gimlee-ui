@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import CreateTicketForm from './CreateTicketForm';
 
 const meta: Meta<typeof CreateTicketForm> = {

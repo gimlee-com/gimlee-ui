@@ -15,7 +15,7 @@ import { FilterDrawer } from '../../components/FilterDrawer/FilterDrawer';
 import { SellerDashboardHeader } from '../components/SellerDashboardHeader/SellerDashboardHeader';
 import SalesSubNav from '../components/SalesSubNav';
 import { useListParams, type ListParamDef } from '../../hooks/useListParams';
-import { createPageContainerVariants, pageItemVariants, scaleItemVariants } from '../../animations';
+import { createPageContainerVariants, pageItemVariants } from '../../animations';
 
 const STATUS_OPTIONS: PurchaseStatus[] = [
   'AWAITING_PAYMENT', 'COMPLETE', 'CANCELLED', 'FAILED_PAYMENT_TIMEOUT', 'FAILED_PAYMENT_UNDERPAID',

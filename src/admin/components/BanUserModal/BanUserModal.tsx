@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useUIKit } from '../../../hooks/useUIkit';
 import { Input } from '../../../components/uikit/Form/Form';
@@ -26,7 +26,7 @@ const BanUserModal: React.FC<BanUserModalProps> = ({ username, isOpen, onConfirm
   const {
     register,
     handleSubmit,
-    watch,
+    control,
     reset,
     formState: { errors, isValid },
   } = useForm<BanUserFormValues>({
@@ -38,7 +38,7 @@ const BanUserModal: React.FC<BanUserModalProps> = ({ username, isOpen, onConfirm
     },
   });
 
-  const isPermanent = watch('isPermanent');
+  const isPermanent = useWatch({ control, name: 'isPermanent' });
 
   const handleHide = useCallback(() => {
     reset();
@@ -59,7 +59,7 @@ const BanUserModal: React.FC<BanUserModalProps> = ({ username, isOpen, onConfirm
     if (!el) return;
     el.addEventListener('hidden', handleHide);
     return () => el.removeEventListener('hidden', handleHide);
-  }, [handleHide]);
+  }, [handleHide, modalRef]);
 
   const onSubmit = (data: BanUserFormValues) => {
     let bannedUntil: number | null = null;

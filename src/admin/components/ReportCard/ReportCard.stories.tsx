@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import ReportCard from './ReportCard';
 import type { ReportListItemDto } from '../../types/adminReport';
 

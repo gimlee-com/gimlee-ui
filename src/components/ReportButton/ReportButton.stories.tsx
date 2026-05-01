@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import ReportButton from './ReportButton';
 
 const meta: Meta<typeof ReportButton> = {

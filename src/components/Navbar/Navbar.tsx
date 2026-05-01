@@ -43,7 +43,7 @@ const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { scrollY } = useScroll();
   const [isScrolled, setIsScrolled] = useState(scrollY.get() > 60);
-  const { guestCountryCode, setGuestCountryCode } = useGuestCountry();
+  const { guestCountryCode, setGuestCountryCode } = useGuestCountry(isAuthenticated);
   const [isNotificationPanelOpen, setIsNotificationPanelOpen] = useState(false);
   const notificationPanelRef = useRef<HTMLDivElement>(null);
   const notificationBellRef = useRef<HTMLDivElement>(null);

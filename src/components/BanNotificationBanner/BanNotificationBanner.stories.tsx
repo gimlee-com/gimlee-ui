@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { BanNotificationBanner } from './BanNotificationBanner';
 import { AuthContext } from '../../context/AuthContext';
 

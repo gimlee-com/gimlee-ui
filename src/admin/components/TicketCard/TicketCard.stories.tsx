@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import TicketCard from './TicketCard';
 import type { TicketListItemDto } from '../../types/adminTicket';
 

@@ -3,7 +3,7 @@ import { locationService } from '../services/locationService';
 
 const STORAGE_KEY = 'guestCountryCode';
 
-export function useGuestCountry() {
+export function useGuestCountry(isAuthenticated = false) {
   const [guestCountryCode, setGuestCountryCodeState] = useState<string | null>(
     () => localStorage.getItem(STORAGE_KEY)
   );
@@ -11,7 +11,7 @@ export function useGuestCountry() {
   const detectAttempted = useRef(false);
 
   useEffect(() => {
-    if (guestCountryCode || detectAttempted.current) return;
+    if (isAuthenticated || guestCountryCode || detectAttempted.current) return;
     detectAttempted.current = true;
 
     const detect = async () => {
@@ -30,7 +30,7 @@ export function useGuestCountry() {
     };
 
     void detect();
-  }, [guestCountryCode]);
+  }, [isAuthenticated, guestCountryCode]);
 
   const setGuestCountryCode = (code: string | null) => {
     if (code) {

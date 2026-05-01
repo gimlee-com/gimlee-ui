@@ -16,7 +16,7 @@ import { GeometricAvatar } from '../../components/GeometricAvatar/GeometricAvata
 import { OrderItemRow } from '../../components/OrderItemRow/OrderItemRow';
 import { OrderStatusTimeline } from '../../components/OrderStatusTimeline/OrderStatusTimeline';
 import { formatPrice } from '../../utils/currencyUtils';
-import { useAppDispatch, useAppSelector } from '../../store';
+import { useAppDispatch } from '../../store';
 import { setActivePurchase } from '../../store/purchaseSlice';
 import { purchaseService } from '../services/purchaseService';
 import { conversationService } from '../../chat/services/conversationService';
@@ -64,7 +64,6 @@ const PurchaseDetailPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useAppDispatch();
-  const activePurchase = useAppSelector(state => state.purchase.activePurchase);
   useNavbarMode('focused', '/purchases');
 
   const [purchase, setPurchase] = useState<PurchaseDetailDto | null>(null);
