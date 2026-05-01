@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import UIkit from 'uikit';
@@ -10,8 +10,11 @@ import { Spinner } from '../../components/uikit/Spinner/Spinner';
 import { Button } from '../../components/uikit/Button/Button';
 import { Grid } from '../../components/uikit/Grid/Grid';
 import { Alert } from '../../components/uikit/Alert/Alert';
+import { Input } from '../../components/Form/Form';
+import { Icon } from '../../components/uikit/Icon/Icon';
 import { SalesAdCard } from '../components/SalesAdCard';
 import { SmartPagination } from '../../components/SmartPagination';
+import { ActiveFilterBadges, type FilterBadge } from '../../components/ActiveFilterBadges';
 import { SellerDashboardHeader } from '../components/SellerDashboardHeader/SellerDashboardHeader';
 import SalesSubNav from '../components/SalesSubNav';
 import { useListParams, type ListParamDef } from '../../hooks/useListParams';
@@ -19,39 +22,75 @@ import { createPageContainerVariants, pageItemVariants } from '../../animations'
 
 const paramDefs: ListParamDef[] = [
   { key: 'p', type: 'number', defaultValue: 0 },
+  { key: 't', type: 'string' },
 ];
 
 interface AdsListParams {
   p?: number;
+  t?: string;
 }
 
 const SalesAdsPage: React.FC = () => {
   const { t } = useTranslation();
-  const { params, setPage } = useListParams<AdsListParams>(paramDefs);
+  const { params, setPage, setParam, clearParam } = useListParams<AdsListParams>(paramDefs);
   const [adsPage, setAdsPage] = useState<PageSalesAdDto | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [refreshKey, setRefreshKey] = useState(0);
   const navigate = useNavigate();
 
-  const fetchAds = useCallback(async () => {
+  const [text, setText] = useState((params.t as string) || '');
+
+  useEffect(() => {
+    setText((params.t as string) || '');
+  }, [params.t]);
+
+  useEffect(() => {
+    const controller = new AbortController();
     setLoading(true);
-    try {
-      const response = await salesService.getMyAds({
+    setError(null);
+    const searchText = (params.t as string) || undefined;
+    salesService.getMyAds(
+      {
         by: 'CREATED_DATE',
         dir: 'DESC',
         p: (params.p as number) || 0,
+        ...(searchText ? { t: searchText } : {}),
+      },
+      { signal: controller.signal },
+    )
+      .then(setAdsPage)
+      .catch(err => {
+        if (err.name !== 'AbortError') {
+          setError((err as Error).message || t('auth.errors.generic'));
+        }
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
       });
-      setAdsPage(response);
-    } catch (err: unknown) {
-      setError((err as Error).message || t('auth.errors.generic'));
-    } finally {
-      setLoading(false);
-    }
-  }, [params, t]);
 
-  useEffect(() => {
-    fetchAds();
-  }, [fetchAds]);
+    return () => controller.abort();
+  }, [params, t, refreshKey]);
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const trimmed = text.trim();
+    setParam('t', trimmed || undefined);
+  };
+
+  const handleRemoveBadge = (key: string) => {
+    if (key === 't') {
+      setText('');
+      clearParam('t');
+    }
+  };
+
+  const badges: FilterBadge[] = [];
+  if (params.t) {
+    badges.push({ key: 't', label: `${t('common.search')}: ${params.t}` });
+  }
 
   const handleToggleStatus = async (ad: SalesAdDto) => {
     try {
@@ -60,7 +99,7 @@ const SalesAdsPage: React.FC = () => {
       } else {
         await salesService.activateAd(ad.id);
       }
-      fetchAds();
+      setRefreshKey(k => k + 1);
     } catch (err: unknown) {
       UIkit.modal.alert((err as Error).message || t('auth.errors.generic'));
     }
@@ -85,6 +124,32 @@ const SalesAdsPage: React.FC = () => {
 
       <motion.div variants={pageItemVariants}>
         <SalesSubNav />
+      </motion.div>
+
+      <motion.div variants={pageItemVariants}>
+        <form onSubmit={handleSearchSubmit} className="uk-margin-bottom">
+          <div className="uk-flex uk-flex-middle">
+            <div className="uk-inline uk-flex-1">
+              <span className="uk-form-icon" uk-icon="icon: search"></span>
+              <Input
+                className="uk-width-1-1"
+                type="text"
+                placeholder={t('ads.searchPlaceholder')}
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+              />
+            </div>
+            <Button
+              type="submit"
+              variant="primary"
+              className="uk-margin-small-left"
+            >
+              <Icon icon="search" className="uk-hidden@m" />
+              <span className="uk-visible@m">{t('common.search')}</span>
+            </Button>
+          </div>
+        </form>
+        <ActiveFilterBadges badges={badges} onRemove={handleRemoveBadge} />
       </motion.div>
 
       <AnimatePresence mode="wait">
@@ -113,7 +178,7 @@ const SalesAdsPage: React.FC = () => {
             variants={pageItemVariants}
             className="uk-text-center uk-text-muted uk-padding-large"
           >
-            {t('ads.noAdsYet')}
+            {params.t ? t('ads.noAdsFound') : t('ads.noAdsYet')}
           </motion.div>
         ) : (
           <motion.div

@@ -47,14 +47,14 @@ const buildOrdersQuery = (params: SalesOrdersRequestDto): string => {
 };
 
 export const salesService = {
-  getMyAds: (params: SalesAdsRequestDto) => {
+  getMyAds: (params: SalesAdsRequestDto, options?: RequestInit) => {
     const query = new URLSearchParams();
     if (params.t) query.append('t', params.t);
     if (params.s) params.s.forEach(status => query.append('s', status));
     query.append('by', params.by);
     query.append('dir', params.dir);
     query.append('p', params.p.toString());
-    return apiClient.get<PageSalesAdDto>(`/sales/ads/?${query.toString()}`);
+    return apiClient.get<PageSalesAdDto>(`/sales/ads/?${query.toString()}`, options);
   },
 
   createAd: (data: CreateAdRequestDto) =>
