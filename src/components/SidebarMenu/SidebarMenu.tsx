@@ -6,6 +6,7 @@ import { AvatarWithPresence } from '../AvatarWithPresence';
 import { Nav, NavItem, NavDivider } from '../uikit/Nav/Nav';
 import { Icon } from '../uikit/Icon/Icon';
 import { CountrySelector } from '../CountrySelector/CountrySelector';
+import { springSnappy } from '../../animations';
 import type { Theme } from '../../context/ThemeContext';
 import type { UserProfileDto, PresenceStatus } from '../../types/api';
 import styles from './SidebarMenu.module.scss';
@@ -30,15 +31,15 @@ interface SidebarMenuProps {
 
 const containerVariants = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.04 } },
+  visible: { transition: { staggerChildren: 0.025 } },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, x: 20 },
+  hidden: { opacity: 0, x: 12 },
   visible: {
     opacity: 1,
     x: 0,
-    transition: { type: 'spring' as const, stiffness: 400, damping: 40 },
+    transition: springSnappy,
   },
 };
 
