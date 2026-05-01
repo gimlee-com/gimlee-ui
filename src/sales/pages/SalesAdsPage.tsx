@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import UIkit from 'uikit';
 import { motion, AnimatePresence } from 'motion/react';
 import { salesService } from '../services/salesService';
-import type { SalesAdsRequestDto } from '../services/salesService';
 import type { SalesAdDto, PageSalesAdDto } from '../../types/api';
 import { Heading } from '../../components/uikit/Heading/Heading';
 import { Spinner } from '../../components/uikit/Spinner/Spinner';
@@ -15,31 +14,40 @@ import { SalesAdCard } from '../components/SalesAdCard';
 import { SmartPagination } from '../../components/SmartPagination';
 import { SellerDashboardHeader } from '../components/SellerDashboardHeader/SellerDashboardHeader';
 import SalesSubNav from '../components/SalesSubNav';
+import { useListParams, type ListParamDef } from '../../hooks/useListParams';
 import { createPageContainerVariants, pageItemVariants } from '../../animations';
+
+const paramDefs: ListParamDef[] = [
+  { key: 'p', type: 'number', defaultValue: 0 },
+];
+
+interface AdsListParams {
+  p?: number;
+}
 
 const SalesAdsPage: React.FC = () => {
   const { t } = useTranslation();
+  const { params, setPage } = useListParams<AdsListParams>(paramDefs);
   const [adsPage, setAdsPage] = useState<PageSalesAdDto | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const fetchAds = useCallback(async (page: number = 0) => {
+  const fetchAds = useCallback(async () => {
     setLoading(true);
     try {
-      const params: SalesAdsRequestDto = {
+      const response = await salesService.getMyAds({
         by: 'CREATED_DATE',
         dir: 'DESC',
-        p: page
-      };
-      const response = await salesService.getMyAds(params);
+        p: (params.p as number) || 0,
+      });
       setAdsPage(response);
     } catch (err: unknown) {
       setError((err as Error).message || t('auth.errors.generic'));
     } finally {
       setLoading(false);
     }
-  }, [t]);
+  }, [params, t]);
 
   useEffect(() => {
     fetchAds();
@@ -52,7 +60,7 @@ const SalesAdsPage: React.FC = () => {
       } else {
         await salesService.activateAd(ad.id);
       }
-      fetchAds(adsPage?.page.number || 0);
+      fetchAds();
     } catch (err: unknown) {
       UIkit.modal.alert((err as Error).message || t('auth.errors.generic'));
     }
@@ -125,20 +133,20 @@ const SalesAdsPage: React.FC = () => {
                 ))}
               </AnimatePresence>
             </Grid>
+
+            {adsPage && adsPage.page.totalPages > 1 && (
+              <motion.div variants={pageItemVariants} className="uk-margin-large-top">
+                <SmartPagination
+                  currentPage={adsPage.page.number}
+                  totalPages={adsPage.page.totalPages}
+                  onPageChange={setPage}
+                  className="uk-flex-center"
+                />
+              </motion.div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
-
-      {adsPage && adsPage.page.totalPages > 1 && (
-        <motion.div variants={pageItemVariants} className="uk-margin-large-top">
-          <SmartPagination 
-            currentPage={adsPage.page.number} 
-            totalPages={adsPage.page.totalPages} 
-            onPageChange={fetchAds}
-            className="uk-flex-center"
-          />
-        </motion.div>
-      )}
     </motion.div>
   );
 };
