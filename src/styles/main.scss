@@ -157,6 +157,9 @@
   --input-toggle-track-bg: rgba(255, 255, 255, 0.06);
   --input-toggle-thumb-bg: rgba(255, 255, 255, 0.92);
   --input-toggle-thumb-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+
+  // Gradient-safe hover: lighten each stop individually since color-mix can't operate on gradients
+  --global-primary-hover-background: linear-gradient(90deg, color-mix(in oklch, #ff00cc 88%, white) 0%, color-mix(in oklch, #3333ff 88%, white) 100%);
 }
 
 [data-theme='iron-age'] {
@@ -271,7 +274,7 @@
 @mixin hook-button-primary-hover() {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0%, rgba(0, 0, 0, 0.03) 100%),
-    color-mix(in oklch, var(--global-primary-background) 88%, white);
+    var(--global-primary-hover-background, color-mix(in oklch, var(--global-primary-background) 88%, white));
 }
 
 @mixin hook-button-secondary() {
