@@ -11,6 +11,8 @@ import type { Theme } from '../../context/ThemeContext';
 import type { UserProfileDto, PresenceStatus } from '../../types/api';
 import styles from './SidebarMenu.module.scss';
 
+const PRESENCE_STATUSES: PresenceStatus[] = ['ONLINE', 'AWAY', 'BUSY'];
+
 const THEMES: Theme[] = ['light', 'dark', 'dark-unicorn', 'iron-age'];
 
 interface SidebarMenuProps {
@@ -19,6 +21,7 @@ interface SidebarMenuProps {
   userProfile: UserProfileDto | null;
   roles: string[];
   presence: { status?: PresenceStatus; customStatus?: string } | null;
+  onPresenceChange: (status: PresenceStatus) => void;
   theme: Theme;
   setTheme: (t: Theme) => void;
   notifUnreadCount: number;
@@ -49,6 +52,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
   userProfile,
   roles,
   presence,
+  onPresenceChange,
   theme,
   setTheme,
   notifUnreadCount,
@@ -91,6 +95,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
               userProfile={userProfile}
               roles={roles}
               presence={presence}
+              onPresenceChange={onPresenceChange}
               theme={theme}
               notifUnreadCount={notifUnreadCount}
               onNav={handleNav}
@@ -121,6 +126,7 @@ interface AuthenticatedMenuProps {
   userProfile: UserProfileDto | null;
   roles: string[];
   presence: { status?: PresenceStatus; customStatus?: string } | null;
+  onPresenceChange: (status: PresenceStatus) => void;
   theme: Theme;
   notifUnreadCount: number;
   onNav: (e?: React.MouseEvent) => void;
@@ -134,6 +140,7 @@ const AuthenticatedMenu: React.FC<AuthenticatedMenuProps> = ({
   userProfile,
   roles,
   presence,
+  onPresenceChange,
   theme,
   notifUnreadCount,
   onNav,
@@ -156,6 +163,15 @@ const AuthenticatedMenu: React.FC<AuthenticatedMenuProps> = ({
         <div className={styles.userName}>{username}</div>
         <div className={styles.userRoles}>{roles.join(', ')}</div>
       </div>
+    </motion.div>
+
+    {/* Presence status switcher */}
+    <motion.div variants={itemVariants}>
+      <PresenceSwitcher
+        currentStatus={presence?.status || 'ONLINE'}
+        onPresenceChange={onPresenceChange}
+        t={t}
+      />
     </motion.div>
 
     {/* Navigation sections */}
@@ -360,6 +376,30 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({ theme, onThemeChange, t }
         onClick={() => onThemeChange(th)}
       >
         {t(`profile.themes.${th}`)}
+      </button>
+    ))}
+  </div>
+);
+
+// --- Presence Switcher ---
+
+interface PresenceSwitcherProps {
+  currentStatus: PresenceStatus;
+  onPresenceChange: (status: PresenceStatus) => void;
+  t: (key: string) => string;
+}
+
+const PresenceSwitcher: React.FC<PresenceSwitcherProps> = ({ currentStatus, onPresenceChange, t }) => (
+  <div className={styles.presenceSwitcher}>
+    {PRESENCE_STATUSES.map((status) => (
+      <button
+        key={status}
+        type="button"
+        className={`${styles.presenceButton} ${styles[`presence${status}`]}${currentStatus === status ? ` ${styles.presenceButtonActive}` : ''}`}
+        onClick={() => onPresenceChange(status)}
+      >
+        <span className={styles.presenceDot} />
+        {t(`presence.${status.toLowerCase()}`)}
       </button>
     ))}
   </div>

@@ -28,6 +28,7 @@ const baseProps = {
   isMenuOpen: true,
   onRequestClose: () => console.log('close'),
   onLogout: () => console.log('logout'),
+  onPresenceChange: (status: string) => console.log('presence:', status),
   setTheme: (t: Theme) => console.log('theme:', t),
   setGuestCountryCode: (c: string | null) => console.log('country:', c),
 };

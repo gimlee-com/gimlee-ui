@@ -92,6 +92,60 @@
   padding: 4px 0;
 }
 
+// Presence status switcher
+.presenceSwitcher {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 4px 0;
+}
+
+.presenceButton {
+  appearance: none;
+  border: 1px solid $global-border;
+  background: transparent;
+  color: $global-color;
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 500px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.presenceDot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: currentColor;
+}
+
+.presenceONLINE .presenceDot {
+  color: $global-success-background;
+}
+
+.presenceAWAY .presenceDot {
+  color: $global-warning-background;
+}
+
+.presenceBUSY .presenceDot {
+  color: $global-danger-background;
+}
+
+.presenceButton:hover {
+  border-color: $global-primary-background;
+}
+
+.presenceButtonActive {
+  background: $global-muted-background;
+  border-color: $global-primary-background;
+  font-weight: 600;
+}
+
 .themeButton {
   appearance: none;
   border: 1px solid $global-border;

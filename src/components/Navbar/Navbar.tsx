@@ -36,7 +36,7 @@ const Navbar: React.FC = () => {
   const { t } = useTranslation();
   const { theme, setTheme } = useTheme();
   const { isAuthenticated, logout, userProfile, username, roles } = useAuth();
-  const { presence } = usePresence();
+  const { presence, updatePresence } = usePresence();
   const navigate = useNavigate();
   const location = useLocation();
   const { mode, backLink } = useAppSelector(state => state.navbar);
@@ -146,6 +146,14 @@ const Navbar: React.FC = () => {
   const handleMenuClose = useCallback(() => {
     offcanvasInstance?.hide();
   }, [offcanvasInstance]);
+
+  const handlePresenceChange = useCallback(async (status: Parameters<typeof updatePresence>[0]) => {
+    try {
+      await updatePresence(status);
+    } catch {
+      // Error already logged in PresenceContext
+    }
+  }, [updatePresence]);
 
   return (
     <>
@@ -306,6 +314,7 @@ const Navbar: React.FC = () => {
               userProfile={userProfile}
               roles={roles}
               presence={presence}
+              onPresenceChange={handlePresenceChange}
               theme={theme}
               setTheme={setTheme}
               notifUnreadCount={notifUnreadCount}
