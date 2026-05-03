@@ -37,10 +37,10 @@ export const CitySelector: React.FC<CitySelectorProps> = ({
   const searchTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Mobile modal state (draft — only committed on explicit selection)
   const [modalSearch, setModalSearch] = useState('');
   const [modalSuggestions, setModalSuggestions] = useState<CitySuggestionDto[]>([]);
   const modalSearchTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const modalInputRef = useRef<HTMLInputElement>(null);
 
   const { ref: modalRef, instance: modalInstance } = useUIKit<UIkit.UIkitModalElement, HTMLDivElement>('modal', {
     container: false,
@@ -67,7 +67,7 @@ export const CitySelector: React.FC<CitySelectorProps> = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isMobile]);
 
-  // Reset modal draft state when modal is closed
+  // Reset modal draft state when modal is closed, pre-fill on open, focus input
   useEffect(() => {
     const el = modalRef.current;
     if (!el || !modalInstance) return;
@@ -76,20 +76,19 @@ export const CitySelector: React.FC<CitySelectorProps> = ({
       setModalSuggestions([]);
       if (modalSearchTimeout.current) clearTimeout(modalSearchTimeout.current);
     };
-    UIkit.util.on(el, 'hidden', onHidden);
-    return () => { UIkit.util.off(el, 'hidden', onHidden); };
-  }, [modalInstance, modalRef]);
-
-  // Pre-fill modal search on open
-  useEffect(() => {
-    const el = modalRef.current;
-    if (!el || !modalInstance) return;
     const onBeforeShow = () => {
       setModalSearch(initialValue?.name ?? '');
       setModalSuggestions([]);
     };
+    const onShown = () => modalInputRef.current?.focus();
+    UIkit.util.on(el, 'hidden', onHidden);
     UIkit.util.on(el, 'beforeshow', onBeforeShow);
-    return () => { UIkit.util.off(el, 'beforeshow', onBeforeShow); };
+    UIkit.util.on(el, 'shown', onShown);
+    return () => {
+      UIkit.util.off(el, 'hidden', onHidden);
+      UIkit.util.off(el, 'beforeshow', onBeforeShow);
+      UIkit.util.off(el, 'shown', onShown);
+    };
   }, [modalInstance, modalRef, initialValue]);
 
   const handleCitySearch = (val: string) => {
@@ -197,12 +196,12 @@ export const CitySelector: React.FC<CitySelectorProps> = ({
           <div className="uk-inline uk-width-1-1 uk-margin-small-bottom">
             <span className="uk-form-icon" uk-icon="icon: location"></span>
             <Input
+              ref={modalInputRef}
               type="text"
               placeholder={placeholder || t('ads.cityPlaceholder')}
               value={modalSearch}
               onChange={(e) => handleModalSearch(e.target.value)}
               className="uk-width-1-1"
-              autoFocus
             />
           </div>
           {modalSuggestions.length > 0 && suggestionList(modalSuggestions, selectCityFromModal)}

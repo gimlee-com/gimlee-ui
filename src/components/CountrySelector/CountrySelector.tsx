@@ -34,9 +34,11 @@ export const CountrySelector = forwardRef<HTMLDivElement, CountrySelectorProps>(
     const containerRef = useRef<HTMLDivElement>(null);
     const mergedRef = useMergeRefs(containerRef, ref);
     const isMobile = useIsMobile();
+    const modalInputRef = useRef<HTMLInputElement>(null);
 
     const { ref: modalRef, instance: modalInstance } = useUIKit<UIkit.UIkitModalElement, HTMLDivElement>('modal', {
       container: false,
+      stack: true,
     });
 
     const filteredCountries = useMemo(() => {
@@ -72,8 +74,13 @@ export const CountrySelector = forwardRef<HTMLDivElement, CountrySelectorProps>(
       const el = modalRef.current;
       if (!el || !modalInstance) return;
       const onHidden = () => setSearch('');
+      const onShown = () => modalInputRef.current?.focus();
       UIkit.util.on(el, 'hidden', onHidden);
-      return () => { UIkit.util.off(el, 'hidden', onHidden); };
+      UIkit.util.on(el, 'shown', onShown);
+      return () => {
+        UIkit.util.off(el, 'hidden', onHidden);
+        UIkit.util.off(el, 'shown', onShown);
+      };
     }, [modalInstance, modalRef]);
 
     const displayName = value ? getCountryName(value) : null;
@@ -120,11 +127,11 @@ export const CountrySelector = forwardRef<HTMLDivElement, CountrySelectorProps>(
             <div className="uk-inline uk-width-1-1 uk-margin-small-bottom">
               <span className="uk-form-icon" uk-icon="icon: search"></span>
               <Input
+                ref={modalInputRef}
                 className="uk-width-1-1"
                 placeholder={searchPlaceholder}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                autoFocus
               />
             </div>
             {countryList}
