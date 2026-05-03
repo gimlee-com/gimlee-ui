@@ -83,7 +83,7 @@
   align-items: center;
   gap: $global-small-margin;
   width: 100%;
-  padding: 0 10px 0 $global-control-height;
+  padding: 0 $global-small-gutter;
   height: $global-control-height;
   border: 1px solid $global-border;
   border-radius: $global-border-radius;

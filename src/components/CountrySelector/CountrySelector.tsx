@@ -144,10 +144,9 @@ export const CountrySelector = forwardRef<HTMLDivElement, CountrySelectorProps>(
               disabled={disabled}
               onClick={() => modalInstance?.show()}
             >
-              <span className="uk-form-icon" uk-icon="icon: search" style={{ pointerEvents: 'none' }}></span>
               {displayFlag && <span className={styles.countryFlag}>{displayFlag}</span>}
               {displayName ? (
-                <span className={styles.countryName}>{compact ? value : `${displayFlag} ${displayName} (${value})`}</span>
+                <span className={styles.countryName}>{compact ? value : `${displayName} (${value})`}</span>
               ) : (
                 <span className={styles.placeholder}>{compact ? t('navbar.selectCountry') : searchPlaceholder}</span>
               )}

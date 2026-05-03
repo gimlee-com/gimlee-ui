@@ -5,12 +5,11 @@ import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import UIkit from 'uikit';
 import { salesService } from '../services/salesService';
-import { cityService } from '../../ads/services/cityService';
 import { currencyService } from '../../payments/services/currencyService';
 import { apiClient } from '../../services/apiClient';
 import { useAuth } from '../../context/AuthContext';
 import { formatPrice } from '../../utils/currencyUtils';
-import type { AdDto, UpdateAdRequestDto, CitySuggestionDto, CityDetailsDto, MediaUploadResponseDto, AllowedCurrenciesDto, CategoryPathElementDto, PricingMode, StatusResponseDto } from '../../types/api';
+import type { AdDto, UpdateAdRequestDto, CityDetailsDto, MediaUploadResponseDto, AllowedCurrenciesDto, CategoryPathElementDto, PricingMode, StatusResponseDto } from '../../types/api';
 import { Heading } from '../../components/uikit/Heading/Heading';
 import { Spinner } from '../../components/uikit/Spinner/Spinner';
 import { Button } from '../../components/uikit/Button/Button';
@@ -22,6 +21,7 @@ import { Card, CardBody } from '../../components/uikit/Card/Card';
 import { Upload } from '../../components/uikit/Upload/Upload';
 import { Lightbox, LightboxItem } from '../../components/uikit/Lightbox/Lightbox';
 import { CategorySelector } from '../../ads/components/CategorySelector/CategorySelector';
+import { CitySelector } from '../../ads/components/CitySelector/CitySelector';
 import { CategoryBreadcrumbs } from '../../ads/components/CategoryBreadcrumbs/CategoryBreadcrumbs';
 import { useNavbarMode } from '../../hooks/useNavbarMode';
 import NavbarPortal from '../../components/Navbar/NavbarPortal';
@@ -29,7 +29,6 @@ import { MediaEditor } from '../components/MediaEditor/MediaEditor';
 import { Image } from '../../components/Image/Image';
 import { MarkdownEditor } from '../../components/Markdown/MarkdownEditor';
 import AdVisitStatsCard from '../../profile/components/AdVisitStatsCard/AdVisitStatsCard';
-import { formatAdminArea } from '../../utils/cityUtils';
 import styles from './EditAdPage.module.scss';
 import { createPageContainerVariants, pageItemVariants } from '../../animations';
 
@@ -48,8 +47,6 @@ const EditAdPage: React.FC = () => {
   const [pageError, setPageError] = useState<string | null>(null);
   const [mediaPaths, setMediaPaths] = useState<string[]>([]);
   const [mainPhotoPath, setMainPhotoPath] = useState<string | null>(null);
-  const [citySearch, setCitySearch] = useState('');
-  const [citySuggestions, setCitySuggestions] = useState<CitySuggestionDto[]>([]);
   const [selectedCity, setSelectedCity] = useState<CityDetailsDto | null>(null);
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
   const [selectedCategoryPath, setSelectedCategoryPath] = useState<CategoryPathElementDto[]>([]);
@@ -85,8 +82,6 @@ const EditAdPage: React.FC = () => {
           setMainPhotoPath(data.mainPhotoPath || null);
           if (data.location?.city) {
             setSelectedCity(data.location.city);
-            const city = data.location.city;
-            setCitySearch(city.name);
           }
           if (data.categoryId) {
             setSelectedCategoryId(data.categoryId);
@@ -126,36 +121,6 @@ const EditAdPage: React.FC = () => {
     // form reset and should not cause re-fetching (which would discard unsaved edits).
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, reset, t]);
-
-  const handleCitySearch = async (val: string) => {
-    setCitySearch(val);
-    if (val.length > 2) {
-      try {
-        const suggestions = await cityService.getSuggestions({
-          query: val,
-          cc: countryOfResidence,
-        });
-        setCitySuggestions(suggestions);
-      } catch (err) {
-        console.error('Failed to fetch city suggestions', err);
-      }
-    } else {
-      setCitySuggestions([]);
-    }
-  };
-
-  const selectCity = (suggestion: CitySuggestionDto) => {
-    const city: CityDetailsDto = {
-      id: suggestion.id,
-      name: suggestion.name,
-      countryCode: suggestion.countryCode,
-      region: suggestion.region,
-      district: suggestion.district,
-    };
-    setSelectedCity(city);
-    setCitySearch(city.name);
-    setCitySuggestions([]);
-  };
 
   const handleCategorySelect = (id: number, path: CategoryPathElementDto[]) => {
     setSelectedCategoryId(id);
@@ -458,44 +423,10 @@ const EditAdPage: React.FC = () => {
               <Heading as="h4" divider>{t('ads.classificationLocation')}</Heading>
               <div className="uk-margin">
                 <label className="uk-form-label">{t('ads.city')}</label>
-                <div className="uk-inline uk-width-1-1">
-                  <Input
-                    layout={false}
-                    type="text"
-                    placeholder={t('ads.cityPlaceholder')}
-                    value={citySearch}
-                    onChange={(e) => handleCitySearch(e.target.value)}
-                  />
-                  <AnimatePresence>
-                    {citySuggestions.length > 0 && (
-                      <motion.div 
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        className="uk-dropdown uk-show uk-width-1-1" 
-                        style={{ position: 'absolute', zIndex: 1000 }}
-                      >
-                        <ul className={styles.suggestionList}>
-                          {citySuggestions.map(suggestion => {
-                            const adminArea = formatAdminArea(suggestion);
-                            return (
-                              <li
-                                key={suggestion.id}
-                                className={styles.suggestionItem}
-                                onClick={() => selectCity(suggestion)}
-                              >
-                                <div className={styles.cityName}>{suggestion.name}, {suggestion.countryCode}</div>
-                                {adminArea && (
-                                  <div className={styles.adminArea}>{adminArea}</div>
-                                )}
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
+                <CitySelector
+                  initialValue={selectedCity}
+                  onSelect={(city) => setSelectedCity(city)}
+                />
               </div>
 
               <div className="uk-margin">
