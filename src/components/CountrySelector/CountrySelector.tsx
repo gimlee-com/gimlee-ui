@@ -1,5 +1,6 @@
 import { forwardRef, useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import UIkit from 'uikit';
 import { useCountries } from '../../hooks/useCountries';
 import { getCountryFlag } from '../../utils/countryUtils';
 import { useMergeRefs } from '../../hooks/useMergeRefs';
@@ -41,6 +42,9 @@ export const CountrySelector = forwardRef<HTMLDivElement, CountrySelectorProps>(
     const handleSelect = useCallback((code: string) => {
       onChange(code);
       setSearch('');
+      if (dropdownRef.current) {
+        UIkit.dropdown(dropdownRef.current).hide(false);
+      }
     }, [onChange]);
 
     // Reset search when UIkit hides the dropdown

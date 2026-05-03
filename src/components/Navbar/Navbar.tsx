@@ -120,20 +120,31 @@ const Navbar: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 
-  // Sync isMenuOpen state with UIkit offcanvas events
+  // Sync isMenuOpen state with UIkit offcanvas visibility.
+  // We use a hybrid approach: a 'show' event listener for immediate content mount,
+  // and a MutationObserver on the 'uk-open' class for authoritative close detection.
+  // This avoids false triggers from UIkit 'hide' events that bubble up from child
+  // components (e.g., Dropdown inside CountrySelector).
   useEffect(() => {
     const el = offcanvasRef.current;
     if (!el) return;
 
-    const handleShow = () => setIsMenuOpen(true);
-    const handleHide = () => setIsMenuOpen(false);
+    setIsMenuOpen(el.classList.contains('uk-open'));
 
+    const handleShow = () => setIsMenuOpen(true);
     el.addEventListener('show', handleShow);
-    el.addEventListener('hide', handleHide);
+
+    const observer = new MutationObserver(() => {
+      const isOpen = el.classList.contains('uk-open');
+      if (!isOpen) {
+        setIsMenuOpen(false);
+      }
+    });
+    observer.observe(el, { attributes: true, attributeFilter: ['class'] });
 
     return () => {
       el.removeEventListener('show', handleShow);
-      el.removeEventListener('hide', handleHide);
+      observer.disconnect();
     };
   }, [offcanvasRef]);
 
