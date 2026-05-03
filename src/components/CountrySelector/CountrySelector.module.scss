@@ -76,3 +76,37 @@
 .placeholder {
   color: $global-muted-color;
 }
+
+// Mobile modal trigger — mimics the standard input appearance
+.mobileTrigger {
+  display: flex;
+  align-items: center;
+  gap: $global-small-margin;
+  width: 100%;
+  padding: 0 10px 0 $global-control-height;
+  height: $global-control-height;
+  border: 1px solid $global-border;
+  border-radius: $global-border-radius;
+  background: $global-background;
+  color: $global-color;
+  text-align: left;
+  cursor: pointer;
+  position: relative;
+  font-size: $global-font-size;
+  transition: border-color 0.2s;
+
+  &:hover {
+    border-color: $global-primary-background;
+  }
+}
+
+// Mobile full-screen modal
+.mobileModal {
+  .dropdownNav {
+    max-height: none;
+  }
+}
+
+.mobileModalDialog {
+  min-height: 100vh;
+}

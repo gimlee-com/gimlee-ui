@@ -8,6 +8,7 @@ import { Input } from '../../../components/uikit/Form/Form';
 import { Spinner } from '../../../components/uikit/Spinner/Spinner';
 import { categoryService } from '../../services/categoryService';
 import { useUIKit } from '../../../hooks/useUIkit';
+import { useIsMobile } from '../../../hooks/useIsMobile';
 import { useMergeRefs } from '../../../hooks/useMergeRefs';
 import type { CategoryTreeDto, CategorySuggestionDto, CategoryPathElementDto } from '../../../types/api';
 import styles from './CategorySelector.module.scss';
@@ -26,7 +27,7 @@ export const CategorySelector = forwardRef<HTMLDivElement, CategorySelectorProps
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState<CategorySuggestionDto[]>([]);
   const [searching, setSearching] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 960); // UIKit medium breakpoint is 960px
+  const isMobile = useIsMobile();
 
   const { ref: modalRef, instance: modalInstance } = useUIKit<UIkit.UIkitModalElement, HTMLDivElement>('modal', {
     stack: true,
@@ -35,12 +36,6 @@ export const CategorySelector = forwardRef<HTMLDivElement, CategorySelectorProps
   const mergedRef = useMergeRefs(modalRef, ref);
 
   const searchTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 960);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   const fetchRoots = useCallback(async () => {
     setLoading(true);

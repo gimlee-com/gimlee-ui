@@ -1,11 +1,15 @@
 import { forwardRef, useState, useMemo, useCallback, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import UIkit from 'uikit';
 import { useCountries } from '../../hooks/useCountries';
 import { getCountryFlag } from '../../utils/countryUtils';
 import { useMergeRefs } from '../../hooks/useMergeRefs';
+import { useIsMobile } from '../../hooks/useIsMobile';
+import { useUIKit } from '../../hooks/useUIkit';
 import { Input } from '../Form/Form';
 import { Dropdown } from '../uikit/Dropdown/Dropdown';
+import { ModalDialog, ModalHeader, ModalBody, ModalTitle, ModalCloseDefault } from '../uikit/Modal/Modal';
 import { Nav, NavItem } from '../uikit/Nav/Nav';
 import { Spinner } from '../uikit/Spinner/Spinner';
 import styles from './CountrySelector.module.scss';
@@ -29,6 +33,11 @@ export const CountrySelector = forwardRef<HTMLDivElement, CountrySelectorProps>(
     const inputRef = useRef<HTMLInputElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const mergedRef = useMergeRefs(containerRef, ref);
+    const isMobile = useIsMobile();
+
+    const { ref: modalRef, instance: modalInstance } = useUIKit<UIkit.UIkitModalElement, HTMLDivElement>('modal', {
+      container: false,
+    });
 
     const filteredCountries = useMemo(() => {
       if (!countries?.length) return [];
@@ -42,19 +51,30 @@ export const CountrySelector = forwardRef<HTMLDivElement, CountrySelectorProps>(
     const handleSelect = useCallback((code: string) => {
       onChange(code);
       setSearch('');
-      if (dropdownRef.current) {
+      if (isMobile) {
+        modalInstance?.hide();
+      } else if (dropdownRef.current) {
         UIkit.dropdown(dropdownRef.current).hide(false);
       }
-    }, [onChange]);
+    }, [onChange, isMobile, modalInstance]);
 
-    // Reset search when UIkit hides the dropdown
+    // Reset search when UIkit hides the dropdown (desktop)
     useEffect(() => {
       const el = dropdownRef.current;
-      if (!el) return;
+      if (!el || isMobile) return;
       const onHide = () => setSearch('');
       el.addEventListener('hidden', onHide);
       return () => el.removeEventListener('hidden', onHide);
-    }, []);
+    }, [isMobile]);
+
+    // Reset search when modal is closed (mobile)
+    useEffect(() => {
+      const el = modalRef.current;
+      if (!el || !modalInstance) return;
+      const onHidden = () => setSearch('');
+      UIkit.util.on(el, 'hidden', onHidden);
+      return () => { UIkit.util.off(el, 'hidden', onHidden); };
+    }, [modalInstance, modalRef]);
 
     const displayName = value ? getCountryName(value) : null;
     const displayFlag = value ? getCountryFlag(value) : null;
@@ -62,6 +82,80 @@ export const CountrySelector = forwardRef<HTMLDivElement, CountrySelectorProps>(
 
     if (loading && !countries.length) {
       return <Spinner ratio={0.5} />;
+    }
+
+    const countryList = (
+      <Nav variant="dropdown" className={styles.dropdownNav}>
+        {filteredCountries.map(c => (
+          <NavItem
+            key={c.code}
+            onClick={() => handleSelect(c.code)}
+            active={c.code === value}
+          >
+            <a href="#" onClick={(e) => e.preventDefault()}>
+              <span className={styles.countryItem}>
+                <span className={styles.countryFlag}>{getCountryFlag(c.code)}</span>
+                <span className={styles.countryName}>{c.name}</span>
+                <span className={styles.countryCode}>{c.code}</span>
+              </span>
+            </a>
+          </NavItem>
+        ))}
+        {filteredCountries.length === 0 && (
+          <NavItem disabled>
+            <span className="uk-text-muted">{t('ads.noAdsFound')}</span>
+          </NavItem>
+        )}
+      </Nav>
+    );
+
+    const mobileModal = createPortal(
+      <div ref={modalRef} className={`uk-modal uk-modal-full ${styles.mobileModal}`} uk-modal="container: false">
+        <ModalDialog className={styles.mobileModalDialog}>
+          <ModalCloseDefault />
+          <ModalHeader>
+            <ModalTitle>{t('profile.searchCountry')}</ModalTitle>
+          </ModalHeader>
+          <ModalBody>
+            <div className="uk-inline uk-width-1-1 uk-margin-small-bottom">
+              <span className="uk-form-icon" uk-icon="icon: search"></span>
+              <Input
+                className="uk-width-1-1"
+                placeholder={searchPlaceholder}
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                autoFocus
+              />
+            </div>
+            {countryList}
+          </ModalBody>
+        </ModalDialog>
+      </div>,
+      document.getElementById('root') || document.body
+    );
+
+    if (isMobile) {
+      return (
+        <div ref={mergedRef} className={`${styles.countrySelector} ${compact ? styles.compactWrapper : ''} ${className ?? ''}`}>
+          <div className="uk-inline uk-width-1-1">
+            <button
+              type="button"
+              className={compact ? styles.compactDisplay : styles.mobileTrigger}
+              disabled={disabled}
+              onClick={() => modalInstance?.show()}
+            >
+              <span className="uk-form-icon" uk-icon="icon: search" style={{ pointerEvents: 'none' }}></span>
+              {displayFlag && <span className={styles.countryFlag}>{displayFlag}</span>}
+              {displayName ? (
+                <span className={styles.countryName}>{compact ? value : `${displayFlag} ${displayName} (${value})`}</span>
+              ) : (
+                <span className={styles.placeholder}>{compact ? t('navbar.selectCountry') : searchPlaceholder}</span>
+              )}
+            </button>
+          </div>
+          {mobileModal}
+        </div>
+      );
     }
 
     return (
@@ -111,28 +205,7 @@ export const CountrySelector = forwardRef<HTMLDivElement, CountrySelectorProps>(
                 />
               </div>
             )}
-            <Nav variant="dropdown" className={styles.dropdownNav}>
-              {filteredCountries.map(c => (
-                <NavItem
-                  key={c.code}
-                  onClick={() => handleSelect(c.code)}
-                  active={c.code === value}
-                >
-                  <a href="#" onClick={(e) => e.preventDefault()}>
-                    <span className={styles.countryItem}>
-                      <span className={styles.countryFlag}>{getCountryFlag(c.code)}</span>
-                      <span className={styles.countryName}>{c.name}</span>
-                      <span className={styles.countryCode}>{c.code}</span>
-                    </span>
-                  </a>
-                </NavItem>
-              ))}
-              {filteredCountries.length === 0 && (
-                <NavItem disabled>
-                  <span className="uk-text-muted">{t('ads.noAdsFound')}</span>
-                </NavItem>
-              )}
-            </Nav>
+            {countryList}
           </Dropdown>
         </div>
       </div>

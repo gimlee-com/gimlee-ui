@@ -13,6 +13,14 @@ const meta: Meta<typeof CountrySelector> = {
       </div>
     ),
   ],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'Country selector with search filtering. On mobile (< 960px), opens in a full-screen modal. Resize the browser below 960px to preview the mobile variant.',
+      },
+    },
+  },
 };
 export default meta;
 type Story = StoryObj<typeof CountrySelector>;

@@ -37,3 +37,41 @@
     line-height: 1.3;
     margin-top: 2px;
 }
+
+// Mobile trigger — mimics the standard input appearance
+.mobileTrigger {
+    display: flex;
+    align-items: center;
+    gap: $global-small-margin;
+    width: 100%;
+    padding: 0 $global-small-gutter 0 $global-control-height;
+    height: $global-control-height;
+    border: 1px solid $global-border;
+    border-radius: $global-border-radius;
+    background: $global-background;
+    color: $global-color;
+    text-align: left;
+    cursor: pointer;
+    position: relative;
+    font-size: $global-font-size;
+    transition: border-color 0.2s;
+
+    &:hover {
+        border-color: $global-primary-background;
+    }
+}
+
+.mobilePlaceholder {
+    color: $global-muted-color;
+}
+
+// Mobile full-screen modal
+.mobileModal {
+    .suggestionList {
+        max-height: none;
+    }
+}
+
+.mobileModalDialog {
+    min-height: 100vh;
+}
