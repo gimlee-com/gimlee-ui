@@ -452,7 +452,7 @@ const EditAdPage: React.FC = () => {
           </Card>
         </motion.div>
 
-        <motion.div variants={pageItemVariants} className="uk-margin-medium-bottom">
+        <motion.div variants={pageItemVariants} className="uk-margin-medium-bottom" style={{ position: 'relative', zIndex: 1 }}>
           <Card>
             <CardBody>
               <Heading as="h4" divider>{t('ads.classificationLocation')}</Heading>
