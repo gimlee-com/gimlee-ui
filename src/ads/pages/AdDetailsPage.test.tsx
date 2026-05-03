@@ -39,7 +39,7 @@ const mockAd: AdDiscoveryDetailsDto = {
   isBuyable: true,
   userCanPurchase: true,
   mediaPaths: ['image1.jpg', 'image2.jpg'],
-  location: { city: { id: 'c1', name: 'Test City', country: 'Test Country' } },
+  location: { city: { id: 'c1', name: 'Test City', countryCode: 'TC' } },
   availableStock: 5
 };
 
@@ -76,7 +76,7 @@ describe('AdDetailsPage', () => {
 
     expect(screen.getByText('Test Description')).toBeInTheDocument();
     expect(screen.getAllByText(/ARRR 100\.00/).length).toBeGreaterThan(0);
-    expect(screen.getByText('Test City, Test Country')).toBeInTheDocument();
+    expect(screen.getByText('Test City, TC')).toBeInTheDocument();
   });
 
   it('should change active image when thumbnail is clicked', async () => {

@@ -28,7 +28,7 @@ export const Default: Story = {
       settlementCurrencies: ['ARRR', 'YEC'],
       mainPhotoPath: '',
       location: {
-        city: { id: 'warsaw', name: 'Warsaw', district: 'Mokotów', country: 'Poland' }
+        city: { id: '756135', name: 'Warsaw', countryCode: 'PL', region: 'Masovian Voivodeship', district: 'Warsaw' }
       },
       isBuyable: true,
     },

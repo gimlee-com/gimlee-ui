@@ -3,7 +3,9 @@ import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import { Input } from '../../../components/uikit/Form/Form';
 import { cityService } from '../../services/cityService';
-import type { CityDetailsDto, CitySuggestion } from '../../../types/api';
+import { useAuth } from '../../../context/AuthContext';
+import { formatAdminArea } from '../../../utils/cityUtils';
+import type { CityDetailsDto, CitySuggestionDto } from '../../../types/api';
 import styles from './CitySelector.module.scss';
 
 interface CitySelectorProps {
@@ -20,17 +22,17 @@ export const CitySelector: React.FC<CitySelectorProps> = ({
   className 
 }) => {
   const { t } = useTranslation();
+  const { countryOfResidence } = useAuth();
   const [citySearch, setCitySearch] = useState('');
-  const [citySuggestions, setCitySuggestions] = useState<CitySuggestion[]>([]);
+  const [citySuggestions, setCitySuggestions] = useState<CitySuggestionDto[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const searchTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (initialValue) {
-      const districtSuffix = initialValue.district ? ` (${initialValue.district})` : '';
       // eslint-disable-next-line react-hooks/set-state-in-effect -- syncing local state from prop
-      setCitySearch(`${initialValue.name}${districtSuffix}, ${initialValue.country}`);
+      setCitySearch(initialValue.name);
     } else {
       setCitySearch('');
     }
@@ -53,7 +55,10 @@ export const CitySelector: React.FC<CitySelectorProps> = ({
     if (val.trim().length > 2) {
       searchTimeout.current = setTimeout(async () => {
         try {
-          const suggestions = await cityService.getSuggestions(val);
+          const suggestions = await cityService.getSuggestions({
+            query: val,
+            cc: countryOfResidence,
+          });
           setCitySuggestions(suggestions);
           setShowSuggestions(true);
         } catch (err) {
@@ -69,9 +74,15 @@ export const CitySelector: React.FC<CitySelectorProps> = ({
     }
   };
 
-  const selectCity = (city: CityDetailsDto) => {
-    const districtSuffix = city.district ? ` (${city.district})` : '';
-    setCitySearch(`${city.name}${districtSuffix}, ${city.country}`);
+  const selectCity = (suggestion: CitySuggestionDto) => {
+    const city: CityDetailsDto = {
+      id: suggestion.id,
+      name: suggestion.name,
+      countryCode: suggestion.countryCode,
+      region: suggestion.region,
+      district: suggestion.district,
+    };
+    setCitySearch(city.name);
     setCitySuggestions([]);
     setShowSuggestions(false);
     onSelect(city);
@@ -97,14 +108,22 @@ export const CitySelector: React.FC<CitySelectorProps> = ({
             className={`uk-dropdown uk-show uk-width-1-1 ${styles.dropdown}`}
             style={{ position: 'absolute', zIndex: 1000 }}
           >
-            <ul className="uk-nav uk-dropdown-nav">
-              {citySuggestions.map(suggestion => (
-                <li key={suggestion.city.id}>
-                  <a href="#" onClick={(e) => { e.preventDefault(); selectCity(suggestion.city); }}>
-                    {suggestion.city.name}{suggestion.city.district ? ` (${suggestion.city.district})` : ''}, {suggestion.city.country}
-                  </a>
-                </li>
-              ))}
+            <ul className={styles.suggestionList}>
+              {citySuggestions.map(suggestion => {
+                const adminArea = formatAdminArea(suggestion);
+                return (
+                  <li
+                    key={suggestion.id}
+                    className={styles.suggestionItem}
+                    onClick={() => selectCity(suggestion)}
+                  >
+                    <div className={styles.cityName}>{suggestion.name}, {suggestion.countryCode}</div>
+                    {adminArea && (
+                      <div className={styles.adminArea}>{adminArea}</div>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           </motion.div>
         )}

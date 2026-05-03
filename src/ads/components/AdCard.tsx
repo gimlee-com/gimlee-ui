@@ -117,7 +117,7 @@ export const AdCard: React.FC<AdCardProps> = ({ ad, onWatchToggle }) => {
                 <Icon icon="location" ratio={0.8} />
               </span>
               <span>
-                {ad.location.city.name}{ad.location.city.district ? `, ${ad.location.city.district}` : ''}
+                {ad.location.city.name}{ad.location.city.region ? `, ${ad.location.city.region}` : ''}
               </span>
             </div>
           )}

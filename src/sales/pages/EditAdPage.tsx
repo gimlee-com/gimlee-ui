@@ -10,7 +10,7 @@ import { currencyService } from '../../payments/services/currencyService';
 import { apiClient } from '../../services/apiClient';
 import { useAuth } from '../../context/AuthContext';
 import { formatPrice } from '../../utils/currencyUtils';
-import type { AdDto, UpdateAdRequestDto, CitySuggestion, CityDetailsDto, MediaUploadResponseDto, AllowedCurrenciesDto, CategoryPathElementDto, PricingMode, StatusResponseDto } from '../../types/api';
+import type { AdDto, UpdateAdRequestDto, CitySuggestionDto, CityDetailsDto, MediaUploadResponseDto, AllowedCurrenciesDto, CategoryPathElementDto, PricingMode, StatusResponseDto } from '../../types/api';
 import { Heading } from '../../components/uikit/Heading/Heading';
 import { Spinner } from '../../components/uikit/Spinner/Spinner';
 import { Button } from '../../components/uikit/Button/Button';
@@ -29,6 +29,7 @@ import { MediaEditor } from '../components/MediaEditor/MediaEditor';
 import { Image } from '../../components/Image/Image';
 import { MarkdownEditor } from '../../components/Markdown/MarkdownEditor';
 import AdVisitStatsCard from '../../profile/components/AdVisitStatsCard/AdVisitStatsCard';
+import { formatAdminArea } from '../../utils/cityUtils';
 import styles from './EditAdPage.module.scss';
 import { createPageContainerVariants, pageItemVariants } from '../../animations';
 
@@ -48,7 +49,7 @@ const EditAdPage: React.FC = () => {
   const [mediaPaths, setMediaPaths] = useState<string[]>([]);
   const [mainPhotoPath, setMainPhotoPath] = useState<string | null>(null);
   const [citySearch, setCitySearch] = useState('');
-  const [citySuggestions, setCitySuggestions] = useState<CitySuggestion[]>([]);
+  const [citySuggestions, setCitySuggestions] = useState<CitySuggestionDto[]>([]);
   const [selectedCity, setSelectedCity] = useState<CityDetailsDto | null>(null);
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
   const [selectedCategoryPath, setSelectedCategoryPath] = useState<CategoryPathElementDto[]>([]);
@@ -63,7 +64,7 @@ const EditAdPage: React.FC = () => {
   const [fixedPriceFocused, setFixedPriceFocused] = useState<Record<string, boolean>>({});
   const [fiatEstimates, setFiatEstimates] = useState<Record<string, number | null>>({});
 
-  const { preferredCurrency } = useAuth();
+  const { preferredCurrency, countryOfResidence } = useAuth();
 
   const watchPricingMode = watch('pricingMode');
   const watchSettlementCurrencies = watch('settlementCurrencies');
@@ -85,8 +86,7 @@ const EditAdPage: React.FC = () => {
           if (data.location?.city) {
             setSelectedCity(data.location.city);
             const city = data.location.city;
-            const districtSuffix = city.district ? ` (${city.district})` : '';
-            setCitySearch(`${city.name}${districtSuffix}, ${city.country}`);
+            setCitySearch(city.name);
           }
           if (data.categoryId) {
             setSelectedCategoryId(data.categoryId);
@@ -131,7 +131,10 @@ const EditAdPage: React.FC = () => {
     setCitySearch(val);
     if (val.length > 2) {
       try {
-        const suggestions = await cityService.getSuggestions(val);
+        const suggestions = await cityService.getSuggestions({
+          query: val,
+          cc: countryOfResidence,
+        });
         setCitySuggestions(suggestions);
       } catch (err) {
         console.error('Failed to fetch city suggestions', err);
@@ -141,10 +144,16 @@ const EditAdPage: React.FC = () => {
     }
   };
 
-  const selectCity = (city: CityDetailsDto) => {
+  const selectCity = (suggestion: CitySuggestionDto) => {
+    const city: CityDetailsDto = {
+      id: suggestion.id,
+      name: suggestion.name,
+      countryCode: suggestion.countryCode,
+      region: suggestion.region,
+      district: suggestion.district,
+    };
     setSelectedCity(city);
-    const districtSuffix = city.district ? ` (${city.district})` : '';
-    setCitySearch(`${city.name}${districtSuffix}, ${city.country}`);
+    setCitySearch(city.name);
     setCitySuggestions([]);
   };
 
@@ -466,14 +475,22 @@ const EditAdPage: React.FC = () => {
                         className="uk-dropdown uk-show uk-width-1-1" 
                         style={{ position: 'absolute', zIndex: 1000 }}
                       >
-                        <ul className="uk-nav uk-dropdown-nav">
-                          {citySuggestions.map(suggestion => (
-                            <li key={suggestion.city.id}>
-                              <a href="#" onClick={(e) => { e.preventDefault(); selectCity(suggestion.city); }}>
-                                {suggestion.city.name}{suggestion.city.district ? ` (${suggestion.city.district})` : ''}, {suggestion.city.country}
-                              </a>
-                            </li>
-                          ))}
+                        <ul className={styles.suggestionList}>
+                          {citySuggestions.map(suggestion => {
+                            const adminArea = formatAdminArea(suggestion);
+                            return (
+                              <li
+                                key={suggestion.id}
+                                className={styles.suggestionItem}
+                                onClick={() => selectCity(suggestion)}
+                              >
+                                <div className={styles.cityName}>{suggestion.name}, {suggestion.countryCode}</div>
+                                {adminArea && (
+                                  <div className={styles.adminArea}>{adminArea}</div>
+                                )}
+                              </li>
+                            );
+                          })}
                         </ul>
                       </motion.div>
                     )}

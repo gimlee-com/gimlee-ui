@@ -27,15 +27,15 @@ export interface LocationDto {
 export interface CityDetailsDto {
   id: string;
   name: string;
-  country: string;
+  countryCode: string;
+  adminDivision?: string;
+  region?: string;
   district?: string;
-  adm1?: string;
-  adm2?: string;
 }
 
 export interface LocationWithCityDetailsDto {
   city?: CityDetailsDto;
-  point?: Point;
+  point?: [number, number];
 }
 
 export interface CountryDto {
@@ -279,9 +279,28 @@ export interface MediaUploadResponseDto {
   mdThumbPath: string;
 }
 
-export interface CitySuggestion {
-  city: CityDetailsDto;
-  score: number;
+export interface CitySuggestionDto {
+  id: string;
+  name: string;
+  countryCode: string;
+  region?: string;
+  district?: string;
+  population?: number;
+  latitude?: number;
+  longitude?: number;
+}
+
+export interface CityDto {
+  id: string;
+  name: string;
+  countryCode: string;
+  adminDivision?: string;
+  region?: string;
+  district?: string;
+  population?: number;
+  latitude?: number;
+  longitude?: number;
+  timezone?: string;
 }
 
 export interface PirateChainTransaction {

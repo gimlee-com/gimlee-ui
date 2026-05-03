@@ -11,3 +11,33 @@
     box-shadow: 0 0 10px color-mix(in srgb, $global-primary-background, transparent 80%);
   }
 }
+
+.suggestionList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.suggestionItem {
+  padding: $global-small-margin $global-small-gutter;
+  border-radius: $border-rounded-border-radius;
+  cursor: pointer;
+  transition: background-color 0.1s ease-in-out;
+
+  &:hover {
+    background-color: color-mix(in srgb, $global-muted-background, transparent 30%);
+  }
+}
+
+.cityName {
+  color: $global-color;
+  font-size: $global-font-size;
+  line-height: 1.4;
+}
+
+.adminArea {
+  font-size: $global-small-font-size;
+  color: $global-muted-color;
+  line-height: 1.3;
+  margin-top: 2px;
+}

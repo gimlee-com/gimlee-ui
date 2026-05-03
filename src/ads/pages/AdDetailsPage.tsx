@@ -719,7 +719,7 @@ const AdDetailsPage: React.FC = () => {
                       <Icon icon="location" className="uk-text-primary" />
                     </div>
                     <div className="uk-width-expand">
-                      <span>{ad.location.city.name}{ad.location.city.district ? `, ${ad.location.city.district}` : ''}, {ad.location.city.country}</span>
+                      <span>{ad.location.city.name}{ad.location.city.district ? `, ${ad.location.city.district}` : ''}{ad.location.city.region ? `, ${ad.location.city.region}` : ''}, {ad.location.city.countryCode}</span>
                     </div>
                   </Grid>
                 </CardBody>

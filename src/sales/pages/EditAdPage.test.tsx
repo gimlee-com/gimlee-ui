@@ -49,8 +49,9 @@ const mockAd = {
     city: {
       id: 'city-1',
       name: 'Warszawa',
-      country: 'PL',
-      district: 'Mokotów'
+      countryCode: 'PL',
+      district: 'Mokotów',
+      region: 'Masovian Voivodeship'
     }
   },
   mediaPaths: [],
@@ -100,29 +101,31 @@ describe('EditAdPage City Suggester', () => {
     
     await waitFor(() => {
       const cityInput = screen.getByPlaceholderText(/Search for a city/i) as HTMLInputElement;
-      expect(cityInput.value).toBe('Warszawa (Mokotów), PL');
+      expect(cityInput.value).toBe('Warszawa');
     });
   });
 
   it('should display district in suggestions when searching', async () => {
     const mockSuggestions = [
       {
-        city: {
-          id: 'waw-1',
-          name: 'Warszawa',
-          country: 'PL',
-          district: ''
-        },
-        score: 1
+        id: 'waw-1',
+        name: 'Warszawa',
+        countryCode: 'PL',
+        region: 'Masovian Voivodeship',
+        district: '',
+        population: 1790658,
+        latitude: 52.23,
+        longitude: 21.01
       },
       {
-        city: {
-          id: 'waw-2',
-          name: 'Warszawa',
-          country: 'PL',
-          district: 'Bemowo'
-        },
-        score: 0.9
+        id: 'waw-2',
+        name: 'Warszawa',
+        countryCode: 'PL',
+        region: 'Masovian Voivodeship',
+        district: 'Bemowo',
+        population: 120000,
+        latitude: 52.24,
+        longitude: 20.91
       }
     ];
     vi.mocked(cityService.getSuggestions).mockResolvedValue(mockSuggestions);
@@ -133,21 +136,23 @@ describe('EditAdPage City Suggester', () => {
     fireEvent.change(cityInput, { target: { value: 'Wars' } });
 
     await waitFor(() => {
-      expect(screen.getByText('Warszawa, PL')).toBeInTheDocument();
-      expect(screen.getByText('Warszawa (Bemowo), PL')).toBeInTheDocument();
+      expect(screen.getAllByText('Warszawa, PL')).toHaveLength(2);
+      expect(screen.getByText('Masovian Voivodeship')).toBeInTheDocument();
+      expect(screen.getByText('Bemowo, Masovian Voivodeship')).toBeInTheDocument();
     });
   });
 
   it('should update input value with district when a suggestion is selected', async () => {
      const mockSuggestions = [
       {
-        city: {
-          id: 'waw-2',
-          name: 'Warszawa',
-          country: 'PL',
-          district: 'Bemowo'
-        },
-        score: 1
+        id: 'waw-2',
+        name: 'Warszawa',
+        countryCode: 'PL',
+        region: 'Masovian Voivodeship',
+        district: 'Bemowo',
+        population: 120000,
+        latitude: 52.24,
+        longitude: 20.91
       }
     ];
     vi.mocked(cityService.getSuggestions).mockResolvedValue(mockSuggestions);
@@ -157,9 +162,9 @@ describe('EditAdPage City Suggester', () => {
     const cityInput = await screen.findByPlaceholderText(/Search for a city/i) as HTMLInputElement;
     fireEvent.change(cityInput, { target: { value: 'Wars' } });
 
-    const suggestion = await screen.findByText('Warszawa (Bemowo), PL');
+    const suggestion = await screen.findByText('Warszawa, PL');
     fireEvent.click(suggestion);
 
-    expect(cityInput.value).toBe('Warszawa (Bemowo), PL');
+    expect(cityInput.value).toBe('Warszawa');
   });
 });

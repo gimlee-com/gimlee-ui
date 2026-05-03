@@ -45,7 +45,16 @@ export const AdSearchFilters: React.FC = () => {
 
     const cityId = searchParams.get('cty');
     if (cityId && (!selectedCity || selectedCity.id !== cityId)) {
-        cityService.getCityById(cityId).then(setSelectedCity).catch(() => setSelectedCity(null));
+        cityService.getCityById(cityId).then(dto => {
+          setSelectedCity({
+            id: dto.id,
+            name: dto.name,
+            countryCode: dto.countryCode,
+            adminDivision: dto.adminDivision,
+            region: dto.region,
+            district: dto.district,
+          });
+        }).catch(() => setSelectedCity(null));
     } else if (!cityId) {
         setSelectedCity(null);
     }

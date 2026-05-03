@@ -125,7 +125,7 @@ export const SalesAdCard: React.FC<SalesAdCardProps> = ({ ad, onToggleStatus }) 
             {ad.location?.city && (
               <div className={styles.metaItem}>
                 <span className={styles.icon}><Icon icon="location" ratio={0.75} /></span>
-                {ad.location.city.name}{ad.location.city.district ? `, ${ad.location.city.district}` : ''}
+                {ad.location.city.name}{ad.location.city.region ? `, ${ad.location.city.region}` : ''}
               </div>
             )}
             {ad.createdAt && (
