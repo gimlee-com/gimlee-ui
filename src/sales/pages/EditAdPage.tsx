@@ -61,7 +61,7 @@ const EditAdPage: React.FC = () => {
   const [fixedPriceFocused, setFixedPriceFocused] = useState<Record<string, boolean>>({});
   const [fiatEstimates, setFiatEstimates] = useState<Record<string, number | null>>({});
 
-  const { preferredCurrency, countryOfResidence } = useAuth();
+  const { preferredCurrency } = useAuth();
 
   const watchPricingMode = watch('pricingMode');
   const watchSettlementCurrencies = watch('settlementCurrencies');

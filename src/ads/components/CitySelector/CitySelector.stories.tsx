@@ -42,11 +42,11 @@ export const WithPreselectedCity: Story = {
   name: 'With Pre-selected City',
   render: () => {
     const [city, setCity] = useState<CityDetailsDto | null>({
-      id: 1,
+      id: '1',
       name: 'Warsaw',
       countryCode: 'PL',
       region: 'Masovian',
-      district: null,
+      district: undefined,
     });
     return (
       <CitySelector
