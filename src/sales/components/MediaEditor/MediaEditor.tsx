@@ -48,13 +48,12 @@ export const MediaEditor: React.FC<MediaEditorProps> = ({ id = 'media-editor', i
 
   const { items: history, index: historyIndex } = historyState;
 
-  const { ref: modalRef, instance: modalInstance } = useUIKit<UIkit.UIkitModalElement, HTMLDivElement>('modal', {
+  const { ref: modalRef, element: modalEl, instance: modalInstance } = useUIKit<UIkit.UIkitModalElement, HTMLDivElement>('modal', {
     stack: true,
     container: false
   });
 
   useEffect(() => {
-    const modalEl = modalRef.current;
     if (modalInstance && modalEl) {
       modalInstance.show();
       UIkit.util.on(modalEl, 'hidden', onCancel);
@@ -62,7 +61,7 @@ export const MediaEditor: React.FC<MediaEditorProps> = ({ id = 'media-editor', i
         UIkit.util.off(modalEl, 'hidden', onCancel);
       };
     }
-  }, [modalInstance, onCancel, modalRef]);
+  }, [modalInstance, onCancel, modalEl]);
 
   const onCropComplete = useCallback((_croppedArea: Area, croppedAreaPixels: Area) => {
     setCroppedAreaPixels(croppedAreaPixels);

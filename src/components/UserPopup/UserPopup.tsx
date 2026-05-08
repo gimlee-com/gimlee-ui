@@ -39,7 +39,7 @@ export const UserPopup: React.FC<UserPopupProps> = ({
   const [currentStatus, setCurrentStatus] = useState<PresenceStatus | undefined>(status);
   const [currentCustomStatus, setCurrentCustomStatus] = useState<string | undefined>(customStatus);
   
-  const { ref: modalRef, instance: modalInstance } = useUIKit<UIkit.UIkitModalElement, HTMLDivElement>('modal', {
+  const { ref: modalRef, element: modalEl, instance: modalInstance } = useUIKit<UIkit.UIkitModalElement, HTMLDivElement>('modal', {
     container: false
   });
 
@@ -61,7 +61,7 @@ export const UserPopup: React.FC<UserPopupProps> = ({
   }, [status, customStatus]);
 
   useEffect(() => {
-    const element = modalRef.current;
+    const element = modalEl;
     if (!element) return;
 
     const handleShow = () => {
@@ -79,7 +79,7 @@ export const UserPopup: React.FC<UserPopupProps> = ({
       UIkit.util.off(element, 'show', handleShow);
       UIkit.util.off(element, 'hidden', handleHidden);
     };
-  }, [modalRef, fetchPresence]);
+  }, [modalEl, fetchPresence]);
 
   const dropdownCleanupRef = React.useRef<(() => void) | null>(null);
   const onDropdownRef = useCallback((el: HTMLDivElement | null) => {
@@ -104,7 +104,7 @@ export const UserPopup: React.FC<UserPopupProps> = ({
   }, [isModalOpen, modalInstance]);
 
   useEffect(() => {
-    const element = modalRef.current;
+    const element = modalEl;
     if (!element) return;
 
     const handleHidden = () => {
@@ -115,7 +115,7 @@ export const UserPopup: React.FC<UserPopupProps> = ({
     return () => {
       UIkit.util.off(element, 'hidden', handleHidden);
     };
-  }, [modalRef]);
+  }, [modalEl]);
 
   const handleClick = useCallback((e: React.MouseEvent) => {
     const isMobile = window.innerWidth < 960;

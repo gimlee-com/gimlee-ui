@@ -28,7 +28,7 @@ const TicketAssignModal: React.FC<TicketAssignModalProps> = ({
   staff,
 }) => {
   const { t } = useTranslation();
-  const { ref: modalRef, instance } = useUIKit<
+  const { ref: modalRef, element: modalEl, instance } = useUIKit<
     { show: () => void; hide: () => void },
     HTMLDivElement
   >('modal', { container: false, stack: true });
@@ -58,11 +58,11 @@ const TicketAssignModal: React.FC<TicketAssignModalProps> = ({
   }, [isOpen, instance]);
 
   useEffect(() => {
-    const el = modalRef.current;
+    const el = modalEl;
     if (!el) return;
     el.addEventListener('hidden', handleHide);
     return () => el.removeEventListener('hidden', handleHide);
-  }, [handleHide, modalRef]);
+  }, [handleHide, modalEl]);
 
   const onSubmit = (data: AssignFormValues) => {
     onConfirm(data.assigneeUserId);

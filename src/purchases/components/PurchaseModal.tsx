@@ -77,7 +77,7 @@ export const PurchaseModal = forwardRef<HTMLDivElement>(
     const [secondsLeft, setSecondsLeft] = useState<number | null>(null);
     const [conversion, setConversion] = useState<ConversionResultDto | null>(null);
     
-    const { ref: modalRef, instance: modalInstance } = useUIKit<UIkit.UIkitModalElement, HTMLDivElement>('modal', {
+    const { ref: modalRef, element: modalEl, instance: modalInstance } = useUIKit<UIkit.UIkitModalElement, HTMLDivElement>('modal', {
       escClose: false,
       bgClose: false,
       container: false
@@ -106,7 +106,7 @@ export const PurchaseModal = forwardRef<HTMLDivElement>(
     useEffect(() => { statusRef.current = status; }, [status]);
 
     useEffect(() => {
-      const element = modalRef.current;
+      const element = modalEl;
       if (!element) return;
 
       const handleHidden = () => {
@@ -123,7 +123,7 @@ export const PurchaseModal = forwardRef<HTMLDivElement>(
       return () => {
         UIkit.util.off(element, 'hidden', handleHidden);
       };
-    }, [dispatch, modalRef]);
+    }, [dispatch, modalEl]);
 
     // Fetch delivery addresses for step 1
     const fetchAddresses = useCallback(async () => {

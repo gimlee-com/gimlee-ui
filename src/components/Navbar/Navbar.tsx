@@ -103,7 +103,7 @@ const Navbar: React.FC = () => {
     document.documentElement.style.setProperty('--navbar-height', isScrolled ? '60px' : '80px');
   }, [isScrolled]);
 
-  const { ref: offcanvasRef, instance: offcanvasInstance } = useUIKit<
+  const { ref: offcanvasRef, element: offcanvasEl, instance: offcanvasInstance } = useUIKit<
     UIkit.UIkitOffcanvasElement,
     HTMLDivElement
   >('offcanvas', {
@@ -126,7 +126,7 @@ const Navbar: React.FC = () => {
   // This avoids false triggers from UIkit 'hide' events that bubble up from child
   // components (e.g., Dropdown inside CountrySelector).
   useEffect(() => {
-    const el = offcanvasRef.current;
+    const el = offcanvasEl;
     if (!el) return;
 
     setIsMenuOpen(el.classList.contains('uk-open'));
@@ -146,7 +146,7 @@ const Navbar: React.FC = () => {
       el.removeEventListener('show', handleShow);
       observer.disconnect();
     };
-  }, [offcanvasRef]);
+  }, [offcanvasEl]);
 
   const handleLogout = (e: React.MouseEvent) => {
     e.preventDefault();

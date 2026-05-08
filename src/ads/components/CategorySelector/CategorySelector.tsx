@@ -29,7 +29,7 @@ export const CategorySelector = forwardRef<HTMLDivElement, CategorySelectorProps
   const [searching, setSearching] = useState(false);
   const isMobile = useIsMobile();
 
-  const { ref: modalRef, instance: modalInstance } = useUIKit<UIkit.UIkitModalElement, HTMLDivElement>('modal', {
+  const { ref: modalRef, element: modalEl, instance: modalInstance } = useUIKit<UIkit.UIkitModalElement, HTMLDivElement>('modal', {
     stack: true,
     container: false
   });
@@ -63,14 +63,14 @@ export const CategorySelector = forwardRef<HTMLDivElement, CategorySelectorProps
   }, [columns.length, loading, fetchRoots]);
 
   useEffect(() => {
-    const modalElement = modalRef.current;
+    const modalElement = modalEl;
     if (modalElement && modalInstance) {
       UIkit.util.on(modalElement, 'beforeshow', reset);
       return () => {
         UIkit.util.off(modalElement, 'beforeshow', reset);
       };
     }
-  }, [modalInstance, reset, modalRef]);
+  }, [modalInstance, reset, modalEl]);
 
   const handleCategoryClick = async (category: CategoryTreeDto, columnIndex: number) => {
     const newPath = [...selectedPath.slice(0, columnIndex), category];

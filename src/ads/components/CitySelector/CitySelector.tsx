@@ -42,7 +42,7 @@ export const CitySelector: React.FC<CitySelectorProps> = ({
   const modalSearchTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const modalInputRef = useRef<HTMLInputElement>(null);
 
-  const { ref: modalRef, instance: modalInstance } = useUIKit<UIkit.UIkitModalElement, HTMLDivElement>('modal', {
+  const { ref: modalRef, element: cityModalEl, instance: modalInstance } = useUIKit<UIkit.UIkitModalElement, HTMLDivElement>('modal', {
     container: false,
   });
 
@@ -69,7 +69,7 @@ export const CitySelector: React.FC<CitySelectorProps> = ({
 
   // Reset modal draft state when modal is closed, pre-fill on open, focus input
   useEffect(() => {
-    const el = modalRef.current;
+    const el = cityModalEl;
     if (!el || !modalInstance) return;
     const onHidden = () => {
       setModalSearch('');
@@ -89,7 +89,7 @@ export const CitySelector: React.FC<CitySelectorProps> = ({
       UIkit.util.off(el, 'beforeshow', onBeforeShow);
       UIkit.util.off(el, 'shown', onShown);
     };
-  }, [modalInstance, modalRef, initialValue]);
+  }, [modalInstance, cityModalEl, initialValue]);
 
   const handleCitySearch = (val: string) => {
     setCitySearch(val);

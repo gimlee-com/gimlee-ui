@@ -17,7 +17,7 @@ interface ChatFloatingButtonProps {
 export const ChatFloatingButton: React.FC<ChatFloatingButtonProps> = ({ chatId, visible }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
-  const { ref, instance } = useUIKit<UIkit.UIkitModalElement, HTMLDivElement>('modal', { stack: true, container: false });
+  const { ref, element: modalEl, instance } = useUIKit<UIkit.UIkitModalElement, HTMLDivElement>('modal', { stack: true, container: false });
 
   const toggleModal = () => {
     if (!instance) return;
@@ -29,7 +29,7 @@ export const ChatFloatingButton: React.FC<ChatFloatingButtonProps> = ({ chatId, 
   };
 
   useEffect(() => {
-    const el = ref.current;
+    const el = modalEl;
     if (!el) return;
     
     const handleShow = () => setIsOpen(true);
@@ -42,7 +42,7 @@ export const ChatFloatingButton: React.FC<ChatFloatingButtonProps> = ({ chatId, 
       el.removeEventListener('show', handleShow);
       el.removeEventListener('hidden', handleHide);
     };
-  }, [ref]);
+  }, [modalEl]);
 
   return (
     <>

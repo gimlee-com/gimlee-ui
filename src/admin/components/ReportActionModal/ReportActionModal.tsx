@@ -30,7 +30,7 @@ const DISMISS_RESOLUTIONS: ReportResolution[] = [
 
 const ReportActionModal: React.FC<ReportActionModalProps> = ({ isOpen, onConfirm, onClose }) => {
   const { t } = useTranslation();
-  const { ref: modalRef, instance } = useUIKit<{ show: () => void; hide: () => void }, HTMLDivElement>('modal', { container: false, stack: true });
+  const { ref: modalRef, element: modalEl, instance } = useUIKit<{ show: () => void; hide: () => void }, HTMLDivElement>('modal', { container: false, stack: true });
 
   const {
     register,
@@ -60,11 +60,11 @@ const ReportActionModal: React.FC<ReportActionModalProps> = ({ isOpen, onConfirm
   }, [isOpen, instance]);
 
   useEffect(() => {
-    const el = modalRef.current;
+    const el = modalEl;
     if (!el) return;
     el.addEventListener('hidden', handleHide);
     return () => el.removeEventListener('hidden', handleHide);
-  }, [handleHide, modalRef]);
+  }, [handleHide, modalEl]);
 
   const onSubmit = (data: ReportActionFormValues) => {
     if (!data.resolution) return;

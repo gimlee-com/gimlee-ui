@@ -21,7 +21,7 @@ interface BanUserModalProps {
 
 const BanUserModal: React.FC<BanUserModalProps> = ({ username, isOpen, onConfirm, onClose }) => {
   const { t } = useTranslation();
-  const { ref: modalRef, instance } = useUIKit<{ show: () => void; hide: () => void }, HTMLDivElement>('modal', { container: false, stack: true });
+  const { ref: modalRef, element: modalEl, instance } = useUIKit<{ show: () => void; hide: () => void }, HTMLDivElement>('modal', { container: false, stack: true });
 
   const {
     register,
@@ -55,11 +55,11 @@ const BanUserModal: React.FC<BanUserModalProps> = ({ username, isOpen, onConfirm
   }, [isOpen, instance]);
 
   useEffect(() => {
-    const el = modalRef.current;
+    const el = modalEl;
     if (!el) return;
     el.addEventListener('hidden', handleHide);
     return () => el.removeEventListener('hidden', handleHide);
-  }, [handleHide, modalRef]);
+  }, [handleHide, modalEl]);
 
   const onSubmit = (data: BanUserFormValues) => {
     let bannedUntil: number | null = null;

@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, useMemo } from 'react'
+import { useCallback, useEffect, useState, useMemo } from 'react'
 import UIkit from 'uikit'
 
 // A mapping of component names to their constructor types
@@ -22,9 +22,17 @@ const getStableNodeId = (node: Node): string => {
 /**
  * A generic hook to manage the lifecycle of a UIkit JavaScript component.
  *
+ * It uses a callback ref to track when the target DOM element is attached or
+ * detached. This ensures the UIkit component is correctly (re-)initialised even
+ * when the element appears after the first render (e.g. behind a loading gate
+ * or inside a conditional portal).
+ *
  * @param componentName The name of the UIkit component (e.g., 'tooltip', 'sticky').
  * @param options The options object for the UIkit component.
- * @returns An object containing a ref to attach to the element and the UIkit component instance.
+ * @returns An object containing:
+ *  - `ref`      – a stable callback ref to attach to the DOM element.
+ *  - `element`  – the current DOM element (or `null`), safe for effect deps.
+ *  - `instance` – the live UIkit component instance (or `null`).
  */
 export const useUIKit = <
   C, // C is for the UIkit Component instance type
@@ -33,7 +41,16 @@ export const useUIKit = <
   componentName: UIkitComponent,
   options?: object
 ) => {
-  const elementRef = useRef<E>(null)
+  // State-backed element tracking – drives effect re-runs when the DOM node
+  // appears, disappears, or is swapped (e.g. conditional portals, loading
+  // gates, AnimatePresence).
+  const [element, setElement] = useState<E | null>(null)
+
+  // Stable callback ref that keeps `element` in sync with the DOM.
+  const ref = useCallback((node: E | null) => {
+    setElement(node)
+  }, [])
+
   // We use state to hold the instance so that components re-render when it's available.
   const [instance, setInstance] = useState<C | null>(null)
 
@@ -64,25 +81,27 @@ export const useUIKit = <
   }, [options])
 
   useEffect(() => {
-    const element = elementRef.current
-
     if (element) {
       // @ts-expect-error - We are dynamically accessing the UIkit component constructor.
       const uikitComponent = UIkit[componentName](element, options)
       setInstance(uikitComponent)
 
-      // The crucial cleanup step: destroy the UIkit instance when the React component unmounts.
+      // The crucial cleanup step: destroy the UIkit instance when the React component
+      // unmounts or when the target element / options change.
       return () => {
         if (uikitComponent?.$destroy) {
           uikitComponent.$destroy()
         }
+        setInstance(null)
       }
     }
+
+    setInstance(null)
     // We disable the exhaustive-deps rule because we are intentionally using a stringified
     // version of the options object to prevent infinite re-renders.
     // We use the actual options object in the constructor call to ensure functions are preserved.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [componentName, optionsString]) // We now depend on the stable, stringified options
+  }, [componentName, optionsString, element])
 
-  return { ref: elementRef, instance }
+  return { ref, element, instance }
 }

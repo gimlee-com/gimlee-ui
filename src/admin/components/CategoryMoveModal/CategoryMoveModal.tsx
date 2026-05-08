@@ -27,7 +27,7 @@ const CategoryMoveModal = React.forwardRef<HTMLDivElement, CategoryMoveModalProp
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const { ref: modalRef, instance: modalInstance } = useUIKit<UIkit.UIkitModalElement, HTMLDivElement>('modal', {
+    const { ref: modalRef, element: modalEl, instance: modalInstance } = useUIKit<UIkit.UIkitModalElement, HTMLDivElement>('modal', {
       stack: true,
       container: false,
     });
@@ -59,7 +59,7 @@ const CategoryMoveModal = React.forwardRef<HTMLDivElement, CategoryMoveModalProp
     }, []);
 
     useEffect(() => {
-      const el = modalRef.current;
+      const el = modalEl;
       if (!el || !modalInstance) return;
 
       const handleShow = () => {
@@ -70,7 +70,7 @@ const CategoryMoveModal = React.forwardRef<HTMLDivElement, CategoryMoveModalProp
 
       UIkit.util.on(el, 'beforeshow', handleShow);
       return () => { UIkit.util.off(el, 'beforeshow', handleShow); };
-    }, [modalInstance, modalRef, fetchRoots]);
+    }, [modalInstance, modalEl, fetchRoots]);
 
     const handleCategoryClick = async (cat: AdminCategoryTreeDto, columnIndex: number) => {
       if (isDisabledNode(cat.id)) return;

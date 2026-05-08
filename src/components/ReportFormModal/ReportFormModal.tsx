@@ -24,7 +24,7 @@ const ReportFormModal: React.FC<ReportFormModalProps> = ({ targetType, targetId,
   const { t } = useTranslation();
   const [reasons, setReasons] = useState<ReportReasonDto[]>([]);
   const [loadingReasons, setLoadingReasons] = useState(false);
-  const { ref: modalRef, instance } = useUIKit<{ show: () => void; hide: () => void }, HTMLDivElement>('modal', {
+  const { ref: modalRef, element: modalEl, instance } = useUIKit<{ show: () => void; hide: () => void }, HTMLDivElement>('modal', {
     container: false,
     stack: true,
   });
@@ -67,11 +67,11 @@ const ReportFormModal: React.FC<ReportFormModalProps> = ({ targetType, targetId,
   }, [isOpen, instance]);
 
   useEffect(() => {
-    const el = modalRef.current;
+    const el = modalEl;
     if (!el) return;
     el.addEventListener('hidden', handleHide);
     return () => el.removeEventListener('hidden', handleHide);
-  }, [handleHide, modalRef]);
+  }, [handleHide, modalEl]);
 
   const onSubmit = async (data: ReportFormValues) => {
     try {

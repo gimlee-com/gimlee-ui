@@ -36,7 +36,7 @@ export const CountrySelector = forwardRef<HTMLDivElement, CountrySelectorProps>(
     const isMobile = useIsMobile();
     const modalInputRef = useRef<HTMLInputElement>(null);
 
-    const { ref: modalRef, instance: modalInstance } = useUIKit<UIkit.UIkitModalElement, HTMLDivElement>('modal', {
+    const { ref: modalRef, element: modalEl, instance: modalInstance } = useUIKit<UIkit.UIkitModalElement, HTMLDivElement>('modal', {
       container: false,
       stack: true,
     });
@@ -71,7 +71,7 @@ export const CountrySelector = forwardRef<HTMLDivElement, CountrySelectorProps>(
 
     // Reset search when modal is closed (mobile)
     useEffect(() => {
-      const el = modalRef.current;
+      const el = modalEl;
       if (!el || !modalInstance) return;
       const onHidden = () => setSearch('');
       const onShown = () => modalInputRef.current?.focus();
@@ -81,7 +81,7 @@ export const CountrySelector = forwardRef<HTMLDivElement, CountrySelectorProps>(
         UIkit.util.off(el, 'hidden', onHidden);
         UIkit.util.off(el, 'shown', onShown);
       };
-    }, [modalInstance, modalRef]);
+    }, [modalInstance, modalEl]);
 
     const displayName = value ? getCountryName(value) : null;
     const displayFlag = value ? getCountryFlag(value) : null;
@@ -117,7 +117,7 @@ export const CountrySelector = forwardRef<HTMLDivElement, CountrySelectorProps>(
     );
 
     const mobileModal = createPortal(
-      <div ref={modalRef} className={`uk-modal uk-modal-full ${styles.mobileModal}`} uk-modal="container: false">
+      <div ref={modalRef} className={`uk-modal uk-modal-full ${styles.mobileModal}`}>
         <ModalDialog className={styles.mobileModalDialog}>
           <ModalCloseDefault />
           <ModalHeader>
