@@ -4,14 +4,6 @@
   margin-bottom: $global-medium-margin;
 }
 
-.advancedWrapper {
-  overflow: hidden;
-
-  &.expanded {
-    overflow: visible;
-  }
-}
-
 .activeFilters {
   margin-top: $global-small-margin;
   display: flex;

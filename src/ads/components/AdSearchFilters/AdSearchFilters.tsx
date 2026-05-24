@@ -166,13 +166,13 @@ export const AdSearchFilters: React.FC = () => {
           {showAdvanced && (
             <motion.div
               {...expandCollapseProps}
+              style={{ overflow: isExpanded ? 'visible' : 'hidden' }}
               onAnimationStart={() => {
                 if (!showAdvanced) setIsExpanded(false);
               }}
               onAnimationComplete={() => {
                 if (showAdvanced) setIsExpanded(true);
               }}
-              className={`${styles.advancedWrapper} ${isExpanded ? styles.expanded : ''}`}
             >
               <div className="uk-padding-small uk-background-muted uk-margin-small-top uk-border-rounded">
                 <Grid gap="small">
