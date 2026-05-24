@@ -25,8 +25,8 @@ const VerifyPage: React.FC = () => {
     setError(null);
     try {
       const response = await authService.verifyUser(data);
-      if (response && response.success && response.accessToken) {
-        await login(response.accessToken);
+      if (response && response.success && response.accessToken && response.refreshToken) {
+        await login(response.accessToken, response.refreshToken);
         navigate('/');
       } else {
         setError(response.message || t('auth.errors.generic'));

@@ -17,6 +17,20 @@ vi.mock('../services/adService', () => ({
   },
 }));
 
+vi.mock('../../services/apiClient', () => ({
+  apiClient: {
+    getToken: vi.fn(),
+    setToken: vi.fn(),
+    get: vi.fn().mockResolvedValue({ accessToken: '', userProfile: null }),
+    post: vi.fn().mockResolvedValue({}),
+    getRefreshToken: vi.fn().mockReturnValue(null),
+    setRefreshToken: vi.fn(),
+    clearTokens: vi.fn(),
+    getDeviceId: vi.fn().mockReturnValue('test-device-id'),
+    refreshTokens: vi.fn(),
+  },
+}));
+
 vi.mock('../services/qaService', () => ({
   qaService: {
     getQuestions: vi.fn().mockResolvedValue({ content: [], page: { size: 10, number: 0, totalElements: 0, totalPages: 0 } }),

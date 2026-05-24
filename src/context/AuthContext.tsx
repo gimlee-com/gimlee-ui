@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, type ReactNode, useRef } from 'react';
 import { apiClient } from '../services/apiClient';
+import { authService } from '../auth/services/authService';
 import { userService } from '../profile/services/userService';
 import i18n from '../i18n';
 import type { SessionInitResponseDto, UserProfileDto } from '../types/api';
@@ -20,8 +21,8 @@ interface AuthContextType {
   banReason: string | null;
   bannedAt: number | null;
   bannedUntil: number | null;
-  login: (token: string) => Promise<void>;
-  logout: () => void;
+  login: (accessToken: string, refreshToken: string) => Promise<void>;
+  logout: () => Promise<void>;
   loading: boolean;
   refreshSession: () => Promise<void>;
 }
@@ -64,10 +65,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const initStarted = useRef(false);
 
-  const refreshSession = useCallback(async () => {
-    if (initStarted.current) return;
-    initStarted.current = true;
-
+  const initializeSession = useCallback(async () => {
     try {
       const session = await apiClient.get<SessionInitResponseDto>('/session/init?decorators=accessToken,userProfile,preferredCurrency,countryOfResidence,publicChatId,banStatus');
       
@@ -127,19 +125,43 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   }, []);
 
+  const refreshSession = useCallback(async () => {
+    if (initStarted.current) return;
+    initStarted.current = true;
+
+    // If we have a refresh token, obtain a fresh access token first
+    const storedRefreshToken = apiClient.getRefreshToken();
+    if (storedRefreshToken) {
+      try {
+        await apiClient.refreshTokens();
+      } catch {
+        // Refresh failed — clear tokens and continue as guest
+        apiClient.clearTokens();
+      }
+    }
+
+    await initializeSession();
+  }, [initializeSession]);
+
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     void refreshSession();
   }, [refreshSession]);
 
-  const login = async (token: string) => {
-    apiClient.setToken(token);
+  const login = async (accessToken: string, refreshToken: string) => {
+    apiClient.setToken(accessToken);
+    apiClient.setRefreshToken(refreshToken);
     initStarted.current = false; // Allow re-initialization after login
-    await refreshSession();
+    await initializeSession();
   };
 
-  const logout = () => {
-    apiClient.setToken(null);
+  const logout = async () => {
+    try {
+      await authService.logout();
+    } catch {
+      // Even if the API call fails, still clear local state
+    }
+    apiClient.clearTokens();
     setState({
       isAuthenticated: false,
       userId: null,

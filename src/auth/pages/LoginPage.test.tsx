@@ -13,6 +13,19 @@ vi.mock('../services/authService', () => ({
   },
 }));
 
+vi.mock('../../services/apiClient', () => ({
+  apiClient: {
+    getToken: vi.fn(),
+    setToken: vi.fn(),
+    get: vi.fn().mockResolvedValue({ accessToken: '', userProfile: null }),
+    getRefreshToken: vi.fn().mockReturnValue(null),
+    setRefreshToken: vi.fn(),
+    clearTokens: vi.fn(),
+    getDeviceId: vi.fn().mockReturnValue('test-device-id'),
+    refreshTokens: vi.fn(),
+  },
+}));
+
 const renderLoginPage = (initialEntries = ['/login']) => {
   return render(
     <I18nextProvider i18n={i18n}>
@@ -39,6 +52,7 @@ describe('LoginPage', () => {
     vi.mocked(authService.login).mockResolvedValue({
       success: true,
       accessToken: 'fake.e30.signature',
+      refreshToken: 'fake-refresh-token',
     });
 
     renderLoginPage();
@@ -70,6 +84,7 @@ describe('LoginPage', () => {
     vi.mocked(authService.login).mockResolvedValue({
       success: true,
       accessToken: 'fake.e30.signature',
+      refreshToken: 'fake-refresh-token',
     });
 
     renderLoginPage(['/login?redirect=%2Ftarget']);
@@ -107,6 +122,7 @@ describe('LoginPage', () => {
     vi.mocked(authService.login).mockResolvedValue({
       success: true,
       accessToken: unverifiedToken,
+      refreshToken: 'fake-refresh-token',
     });
 
     renderLoginPage();

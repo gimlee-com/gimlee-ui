@@ -148,9 +148,9 @@ const Navbar: React.FC = () => {
     };
   }, [offcanvasEl]);
 
-  const handleLogout = (e: React.MouseEvent) => {
+  const handleLogout = async (e: React.MouseEvent) => {
     e.preventDefault();
-    logout();
+    await logout();
     navigate('/');
   };
 

@@ -18,6 +18,20 @@ vi.mock('../services/salesService', () => ({
   },
 }));
 
+vi.mock('../../services/apiClient', () => ({
+  apiClient: {
+    getToken: vi.fn(),
+    setToken: vi.fn(),
+    get: vi.fn().mockResolvedValue({ accessToken: '', userProfile: null }),
+    post: vi.fn().mockResolvedValue({}),
+    getRefreshToken: vi.fn().mockReturnValue(null),
+    setRefreshToken: vi.fn(),
+    clearTokens: vi.fn(),
+    getDeviceId: vi.fn().mockReturnValue('test-device-id'),
+    refreshTokens: vi.fn(),
+  },
+}));
+
 vi.mock('../../ads/services/cityService', () => ({
   cityService: {
     getSuggestions: vi.fn(),

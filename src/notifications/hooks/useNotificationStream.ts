@@ -67,7 +67,7 @@ export const useNotificationStream = () => {
 
     fetchEventSource(url, {
       headers: {
-        'Authorization': `Bearer ${token}`,
+        'Authorization': `Bearer ${apiClient.getToken()!}`,
         'Accept': 'text/event-stream',
       },
       signal: controller.signal,
@@ -77,7 +77,16 @@ export const useNotificationStream = () => {
           dispatch(setStreamConnected(true));
           return;
         }
-        if (response.status === 401 || response.status === 403) {
+        if (response.status === 401) {
+          // Token expired — attempt refresh and throw to trigger retry
+          try {
+            await apiClient.refreshTokens();
+          } catch {
+            // Refresh failed — session handling done by apiClient
+          }
+          throw new Error(`Auth error: ${response.status}`);
+        }
+        if (response.status === 403) {
           throw new Error(`Auth error: ${response.status}`);
         }
       },

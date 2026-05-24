@@ -238,10 +238,21 @@ export interface RegisterRequestDto {
 export interface LoginRequestDto {
   username: string;
   password?: string;
+  deviceId?: string;
 }
 
 export interface VerifyUserRequestDto {
   code: string;
+  deviceId?: string;
+}
+
+export interface RefreshTokenRequestDto {
+  refreshToken: string;
+  deviceId: string;
+}
+
+export interface LogoutRequestDto {
+  refreshToken: string;
 }
 
 export interface CurrencyInfoDto {
@@ -353,6 +364,7 @@ export interface IdentityVerificationResponse {
   status?: string;
   message?: string;
   accessToken?: string;
+  refreshToken?: string;
 }
 
 export interface UserPreferencesDto {

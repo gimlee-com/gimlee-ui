@@ -109,7 +109,8 @@ const resources = {
           "passwordRequirements": "Password must be 8-64 characters and include at least one uppercase letter, one lowercase letter, and one digit",
           "passwordsDoNotMatch": "Passwords do not match",
           "usernameTaken": "Username is already taken",
-          "emailTaken": "Email is already taken"
+          "emailTaken": "Email is already taken",
+          "securityAlert": "Your session was terminated for security reasons. If you did not perform this action, please change your password immediately."
         },
         "countryOfResidence": "Country of Residence",
         "countryHint": "Detected from your location. You can change it.",
@@ -1116,7 +1117,8 @@ const resources = {
           "passwordRequirements": "Hasło musi mieć 8-64 znaki i zawierać co najmniej jedną wielką literę, jedną małą literę i jedną cyfrę",
           "passwordsDoNotMatch": "Hasła nie zgadzają się",
           "usernameTaken": "Nazwa użytkownika jest już zajęta",
-          "emailTaken": "Email jest już zajęty"
+          "emailTaken": "Email jest już zajęty",
+          "securityAlert": "Twoja sesja została zakończona ze względów bezpieczeństwa. Jeśli nie wykonałeś tej akcji, natychmiast zmień hasło."
         },
         "countryOfResidence": "Kraj zamieszkania",
         "countryHint": "Wykryty na podstawie Twojej lokalizacji. Możesz zmienić.",

@@ -13,6 +13,19 @@ vi.mock('../services/authService', () => ({
   },
 }));
 
+vi.mock('../../services/apiClient', () => ({
+  apiClient: {
+    getToken: vi.fn(),
+    setToken: vi.fn(),
+    get: vi.fn().mockResolvedValue({ accessToken: '', userProfile: null }),
+    getRefreshToken: vi.fn().mockReturnValue(null),
+    setRefreshToken: vi.fn(),
+    clearTokens: vi.fn(),
+    getDeviceId: vi.fn().mockReturnValue('test-device-id'),
+    refreshTokens: vi.fn(),
+  },
+}));
+
 const renderVerifyPage = () => {
   return render(
     <I18nextProvider i18n={i18n}>
@@ -37,6 +50,7 @@ describe('VerifyPage', () => {
     vi.mocked(authService.verifyUser).mockResolvedValue({
       success: true,
       accessToken: 'new-valid-token',
+      refreshToken: 'new-refresh-token',
     });
 
     renderVerifyPage();

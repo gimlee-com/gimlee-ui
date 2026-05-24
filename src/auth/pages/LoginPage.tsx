@@ -40,8 +40,8 @@ const LoginPage: React.FC = () => {
     setError(null);
     try {
       const response = await authService.login(data);
-      if (response.success && response.accessToken) {
-        await authLogin(response.accessToken);
+      if (response.success && response.accessToken && response.refreshToken) {
+        await authLogin(response.accessToken, response.refreshToken);
         
         if (hasRole(response.accessToken, 'UNVERIFIED')) {
           navigate('/verify');

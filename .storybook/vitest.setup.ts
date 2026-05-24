@@ -19,6 +19,11 @@ vi.mock('../src/services/apiClient', () => ({
   apiClient: {
     getToken: vi.fn().mockReturnValue(null),
     setToken: vi.fn(),
+    getRefreshToken: vi.fn().mockReturnValue(null),
+    setRefreshToken: vi.fn(),
+    clearTokens: vi.fn(),
+    getDeviceId: vi.fn().mockReturnValue('storybook-device-id'),
+    refreshTokens: vi.fn().mockRejectedValue(new Error('No refresh token')),
     get: vi.fn().mockImplementation((url) => {
       if (url.startsWith('/session/init')) {
         return Promise.resolve({ accessToken: '', userProfile: null });

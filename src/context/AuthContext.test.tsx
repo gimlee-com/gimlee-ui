@@ -16,6 +16,11 @@ vi.mock('../services/apiClient', () => ({
     getToken: vi.fn(),
     setToken: vi.fn(),
     get: vi.fn(),
+    getRefreshToken: vi.fn().mockReturnValue(null),
+    setRefreshToken: vi.fn(),
+    clearTokens: vi.fn(),
+    getDeviceId: vi.fn().mockReturnValue('test-device-id'),
+    refreshTokens: vi.fn(),
   },
 }));
 
@@ -90,7 +95,7 @@ describe('AuthContext', () => {
 
     vi.mocked(userService.getUserPreferences).mockResolvedValue({ language: 'en-US', preferredCurrency: 'USD' });
 
-    let loginFn: (token: string) => Promise<void> = async () => {};
+    let loginFn: (token: string, refreshToken: string) => Promise<void> = async () => {};
     const TestLoginComponent = () => {
       const { login } = useAuth();
       loginFn = login; // eslint-disable-line react-hooks/globals -- Capturing hook value for test assertion
@@ -110,7 +115,7 @@ describe('AuthContext', () => {
     expect(userService.getUserPreferences).not.toHaveBeenCalled();
 
     await act(async () => {
-      await loginFn('new-token');
+      await loginFn('new-token', 'new-refresh-token');
     });
 
     await waitFor(() => {

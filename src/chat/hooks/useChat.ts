@@ -36,13 +36,22 @@ export const useChat = (conversationId: string, conversationStatus?: Conversatio
     if (token) {
       fetchEventSource(url, {
         headers: {
-          'Authorization': `Bearer ${token}`,
+          'Authorization': `Bearer ${apiClient.getToken()!}`,
           'Accept': 'text/event-stream',
         },
         signal: abortController.signal,
-        onopen: async (response) => {
+        async onopen(response) {
           if (response.ok && response.headers.get('content-type')?.includes('text/event-stream')) {
             return;
+          }
+          if (response.status === 401) {
+            // Token expired mid-stream — attempt refresh and throw to trigger retry
+            try {
+              await apiClient.refreshTokens();
+            } catch {
+              // Refresh failed — session handling done by apiClient
+            }
+            throw new Error('SSE auth expired');
           }
           console.error('SSE connection failed', response.status, response.statusText);
         },
