@@ -180,7 +180,7 @@ describe('AuthContext', () => {
       userProfile: { userId: '1', avatarUrl: '', updatedAt: 0 }
     });
     vi.mocked(userService.getUserPreferences).mockResolvedValue({ language: 'en-US', preferredCurrency: 'USD' });
-    vi.mocked(authService.logout).mockResolvedValue({ status: 'OK', message: '' });
+    vi.mocked(authService.logout).mockResolvedValue({ success: true, status: 'OK', message: '' });
 
     const { getAuth } = renderWithAuthActions();
 
@@ -225,7 +225,7 @@ describe('AuthContext', () => {
       publicChatId: 'chat-123',
     });
     vi.mocked(userService.getUserPreferences).mockResolvedValue({ language: 'en-US', preferredCurrency: 'BTC' });
-    vi.mocked(authService.logout).mockResolvedValue({ status: 'OK', message: '' });
+    vi.mocked(authService.logout).mockResolvedValue({ success: true, status: 'OK', message: '' });
 
     const { getAuth } = renderWithAuthActions();
 

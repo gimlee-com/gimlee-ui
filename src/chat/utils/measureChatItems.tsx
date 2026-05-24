@@ -35,7 +35,7 @@ export function measureChatItems(items: ChatListItem[], width: number, username?
     bannedUntil: null,
     loading: false,
     login: async () => {},
-    logout: () => {},
+    logout: async () => {},
     refreshSession: async () => {},
     setPreferredCurrency: () => {},
     countryOfResidence: null,

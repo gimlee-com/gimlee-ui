@@ -18,7 +18,7 @@ const mockAuthValue = (overrides: Record<string, unknown>) => ({
   bannedAt: null,
   bannedUntil: null,
   login: async () => {},
-  logout: () => {},
+  logout: async () => {},
   loading: false,
   refreshSession: async () => {},
   ...overrides,
