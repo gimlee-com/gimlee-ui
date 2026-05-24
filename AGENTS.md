@@ -4,6 +4,19 @@ This file serves as a comprehensive guide for AI agents and developers working o
 
 > **📐 Architecture Decision Records:** For detailed, low-level design documentation (e.g., the Liquid Crystal button system, animation models, component architecture rationale), see the `docs/adr/` directory. ADRs provide the full context, alternatives considered, and technical specifications for major design decisions.
 
+> **🌐 Live API Documentation:** Always fetch the current API specification dynamically from the running **gimlee-backend** instance on the developer's machine:
+>
+> 1. **Discover available spec groups** (admin, marketplace, user, etc.):
+>    ```bash
+>    curl http://localhost:12060/api/v3/api-docs/swagger-config
+>    ```
+> 2. **Fetch the spec for a specific group** (use the URLs returned in step 1), e.g.:
+>    ```bash
+>    curl http://localhost:12060/api/v3/api-docs/marketplace
+>    ```
+>
+> ⚠️ **If the backend is not reachable, stop and tell the user:** *"The gimlee-backend application does not appear to be running at `http://localhost:12060`. Please start it before continuing."* Do not attempt to guess or reconstruct the API — always work from the live spec.
+
 ---
 
 ### 1. Project Overview: Gimlee
