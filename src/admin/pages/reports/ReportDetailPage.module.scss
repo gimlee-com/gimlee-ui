@@ -71,7 +71,7 @@
 .classificationSection {
   margin-top: $global-margin;
   padding: $global-small-gutter;
-  border-radius: $global-border-radius;
+  border-radius: $card-border-radius;
   background: color-mix(in srgb, $global-muted-background, transparent 40%);
 }
 
@@ -118,7 +118,7 @@
 .reportedContentSection {
   margin-top: $global-margin;
   padding: $global-gutter;
-  border-radius: $global-border-radius;
+  border-radius: $card-border-radius;
   border: 1px solid $global-border;
   background: color-mix(in srgb, $global-background, transparent 20%);
 }
