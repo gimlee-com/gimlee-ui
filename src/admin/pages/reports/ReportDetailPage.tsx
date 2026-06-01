@@ -4,26 +4,41 @@ import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import UIkit from 'uikit';
 import { adminReportService } from '../../services/adminReportService';
-import type { ReportDetailDto, ResolveReportDto } from '../../types/adminReport';
+import type { ReportDetailDto, ResolveReportDto, ReportStatus } from '../../types/adminReport';
 import NavbarPortal from '../../../components/Navbar/NavbarPortal';
 import { useNavbarMode } from '../../../hooks/useNavbarMode';
-import ReportStatusBadge from '../../components/ReportStatusBadge/ReportStatusBadge';
-import ReportTypeBadge from '../../components/ReportTypeBadge/ReportTypeBadge';
-import ReportReasonBadge from '../../components/ReportReasonBadge/ReportReasonBadge';
 import ReportTimeline from '../../components/ReportTimeline/ReportTimeline';
 import ReportActionModal from '../../components/ReportActionModal/ReportActionModal';
 import ReportSiblingList from '../../components/ReportSiblingList/ReportSiblingList';
+import ReportedContentCard from '../../components/ReportedContentCard/ReportedContentCard';
+import TargetSnapshotRenderer from '../../components/TargetSnapshotRenderer/TargetSnapshotRenderer';
 import AdminUserAssignModal from '../../components/AdminUserAssignModal/AdminUserAssignModal';
 import { Alert } from '../../../components/uikit/Alert/Alert';
 import { Spinner } from '../../../components/uikit/Spinner/Spinner';
 import { Icon } from '../../../components/uikit/Icon/Icon';
+import { reportTargetTypeIcon } from '../../utils/reportTargetTypeIcon';
 import { createPageContainerVariants, pageItemVariants } from '../../../animations';
+import styles from './ReportDetailPage.module.scss';
 
 import i18n from '../../../i18n';
 
 const formatMicros = (micros: number | null | undefined): string => {
   if (micros == null) return '—';
   return new Date(micros / 1000).toLocaleString(i18n.language);
+};
+
+const statusDotClass: Record<ReportStatus, string> = {
+  OPEN: styles.dotOpen,
+  IN_REVIEW: styles.dotInReview,
+  RESOLVED: styles.dotResolved,
+  DISMISSED: styles.dotDismissed,
+};
+
+const statusCardClass: Record<ReportStatus, string> = {
+  OPEN: styles.statusOpen,
+  IN_REVIEW: styles.statusInReview,
+  RESOLVED: styles.statusResolved,
+  DISMISSED: styles.statusDismissed,
 };
 
 const ReportDetailPage: React.FC = () => {
@@ -63,7 +78,7 @@ const ReportDetailPage: React.FC = () => {
     try {
       await adminReportService.assignReport(reportId, { assigneeUserId: userId });
       UIkit.notification({
-        message: t('admin.reports.detail.assignSuccess', 'Report assigned successfully.'),
+        message: t('admin.reports.detail.assignSuccess'),
         status: 'success',
         pos: 'top-center',
       });
@@ -94,7 +109,7 @@ const ReportDetailPage: React.FC = () => {
     try {
       await adminReportService.addNote(reportId, { note: note.trim() });
       UIkit.notification({
-        message: t('admin.reports.detail.noteAdded', 'Note added successfully.'),
+        message: t('admin.reports.detail.noteAdded'),
         status: 'success',
         pos: 'top-center',
       });
@@ -113,7 +128,7 @@ const ReportDetailPage: React.FC = () => {
     try {
       await adminReportService.resolveReport(reportId, dto);
       UIkit.notification({
-        message: t('admin.reports.detail.resolveSuccess', 'Report resolved successfully.'),
+        message: t('admin.reports.detail.resolveSuccess'),
         status: 'success',
         pos: 'top-center',
       });
@@ -142,65 +157,129 @@ const ReportDetailPage: React.FC = () => {
   }
 
   const isTerminal = report.status === 'RESOLVED' || report.status === 'DISMISSED';
+  const shortId = report.id.slice(0, 8);
 
   return (
     <>
       <NavbarPortal>
-        <span className="uk-text-bold">{report.targetTitle || `#${report.id}`}</span>
+        <span className="uk-text-bold">
+          {t('admin.reports.detail.title', { id: shortId })}
+        </span>
       </NavbarPortal>
 
       <motion.div variants={createPageContainerVariants()} initial="hidden" animate="visible">
         {/* Header Card */}
-        <motion.div variants={pageItemVariants} className="uk-card uk-card-default uk-card-body uk-margin-bottom">
-          <div className="uk-flex uk-flex-middle uk-flex-wrap" style={{ gap: '8px' }}>
-            <h2 className="uk-margin-remove">{report.targetTitle}</h2>
-            <ReportTypeBadge targetType={report.targetType} />
-            <ReportStatusBadge status={report.status} />
-            <ReportReasonBadge reason={report.reason} />
+        <motion.div
+          variants={pageItemVariants}
+          className={`uk-card uk-card-default uk-card-body uk-margin-bottom ${styles.headerCard} ${statusCardClass[report.status]}`}
+        >
+          {/* Heading row */}
+          <div className={styles.heading}>
+            <h2 className={styles.headingTitle}>
+              {t('admin.reports.detail.title', { id: shortId })}
+            </h2>
+            <span className={styles.statusIndicator}>
+              <span className={`${styles.statusDot} ${statusDotClass[report.status]}`} />
+              {t(`admin.reports.status.${report.status}`)}
+            </span>
           </div>
 
-          {/* Reporter Info */}
-          <div className="uk-grid uk-grid-small uk-margin-top uk-child-width-1-2@s" uk-grid="">
-            <div>
-              <div className="uk-text-meta">{t('admin.reports.reportedBy')}</div>
-              <div>@{report.reporterUsername}</div>
+          {/* Classification section */}
+          <div className={styles.classificationSection}>
+            <div className={styles.classificationTitle}>
+              {t('admin.reports.detail.classification')}
             </div>
-            <div>
-              <div className="uk-text-meta">{t('admin.reports.detail.dateSubmitted', 'Date Submitted')}</div>
-              <div>{formatMicros(report.createdAt)}</div>
+            <div className={styles.classificationGrid}>
+              <div className={styles.classificationItem}>
+                <span className={styles.classificationLabel}>
+                  {t('admin.reports.detail.type')}
+                </span>
+                <span className={styles.classificationValue}>
+                  <Icon icon={reportTargetTypeIcon[report.targetType]} ratio={0.85} />
+                  {t(`admin.reports.targetType.${report.targetType}`)}
+                </span>
+              </div>
+              <div className={styles.classificationItem}>
+                <span className={styles.classificationLabel}>
+                  {t('admin.reports.detail.reason')}
+                </span>
+                <span className={styles.classificationValue}>
+                  {t(`admin.reports.reason.${report.reason}`)}
+                </span>
+              </div>
+              <div className={styles.classificationItem}>
+                <span className={styles.classificationLabel}>
+                  {t('admin.reports.detail.status')}
+                </span>
+                <span className={styles.classificationValue}>
+                  <span className={`${styles.statusDot} ${statusDotClass[report.status]}`} />
+                  {t(`admin.reports.status.${report.status}`)}
+                </span>
+              </div>
+              <div className={styles.classificationItem}>
+                <span className={styles.classificationLabel}>
+                  {t('admin.reports.detail.resolution')}
+                </span>
+                <span className={styles.classificationValue}>
+                  {report.resolution
+                    ? t(`admin.reports.resolution.${report.resolution}`)
+                    : t('admin.reports.detail.noResolution')}
+                </span>
+              </div>
             </div>
-            <div>
-              <div className="uk-text-meta">{t('admin.helpdesk.assignee', 'Assignee')}</div>
-              <div>
+          </div>
+
+          {/* Reported Content inset */}
+          <div className={styles.reportedContentSection}>
+            <div className={styles.reportedContentTitle}>
+              {t('admin.reports.detail.reportedContent')}
+            </div>
+            <ReportedContentCard
+              targetType={report.targetType}
+              targetId={report.targetId}
+              targetTitle={report.targetTitle}
+              targetSnapshot={report.targetSnapshot}
+            />
+          </div>
+
+          {/* Metadata */}
+          <div className={styles.metadataGrid}>
+            <div className={styles.metadataItem}>
+              <span className={styles.metadataLabel}>{t('admin.reports.reportedBy')}</span>
+              <span className={styles.metadataValue}>@{report.reporterUsername}</span>
+            </div>
+            <div className={styles.metadataItem}>
+              <span className={styles.metadataLabel}>{t('admin.reports.detail.dateSubmitted')}</span>
+              <span className={styles.metadataValue}>{formatMicros(report.createdAt)}</span>
+            </div>
+            <div className={styles.metadataItem}>
+              <span className={styles.metadataLabel}>{t('admin.helpdesk.assignee')}</span>
+              <span className={styles.metadataValue}>
                 {report.assigneeUsername
                   ? `@${report.assigneeUsername}`
-                  : t('admin.helpdesk.unassigned', 'Unassigned')}
-              </div>
+                  : t('admin.helpdesk.unassigned')}
+              </span>
             </div>
-            {report.resolution && (
-              <div>
-                <div className="uk-text-meta">{t('admin.reports.actionModal.resolutionLabel')}</div>
-                <div>{t(`admin.reports.resolution.${report.resolution}`)}</div>
-              </div>
-            )}
             {report.resolvedByUsername && (
-              <div>
-                <div className="uk-text-meta">{t('admin.reports.detail.resolvedBy', 'Resolved by')}</div>
-                <div>@{report.resolvedByUsername} · {formatMicros(report.resolvedAt)}</div>
+              <div className={styles.metadataItem}>
+                <span className={styles.metadataLabel}>{t('admin.reports.detail.resolvedBy')}</span>
+                <span className={styles.metadataValue}>
+                  @{report.resolvedByUsername} · {formatMicros(report.resolvedAt)}
+                </span>
               </div>
             )}
           </div>
 
           {/* Actions */}
           {!isTerminal && (
-            <div className="uk-margin-top uk-flex uk-flex-wrap" style={{ gap: '8px' }}>
+            <div className={styles.actions}>
               <button
                 className="uk-button uk-button-default uk-button-small uk-border-rounded"
                 onClick={() => setIsAssignModalOpen(true)}
                 disabled={actionLoading}
               >
                 <Icon icon="user" className="uk-margin-small-right" ratio={0.8} />
-                {t('admin.reports.detail.assign', 'Assign')}
+                {t('admin.reports.detail.assign')}
               </button>
               <button
                 className="uk-button uk-button-default uk-button-small uk-border-rounded"
@@ -208,7 +287,7 @@ const ReportDetailPage: React.FC = () => {
                 disabled={actionLoading}
               >
                 <Icon icon="comment" className="uk-margin-small-right" ratio={0.8} />
-                {t('admin.reports.detail.addNote', 'Add Note')}
+                {t('admin.reports.detail.addNote')}
               </button>
               <button
                 className="uk-button uk-button-primary uk-button-small uk-border-rounded"
@@ -216,7 +295,7 @@ const ReportDetailPage: React.FC = () => {
                 disabled={actionLoading}
               >
                 <Icon icon="check" className="uk-margin-small-right" ratio={0.8} />
-                {t('admin.reports.detail.resolveOrDismiss', 'Resolve / Dismiss')}
+                {t('admin.reports.detail.resolveOrDismiss')}
               </button>
             </div>
           )}
@@ -224,7 +303,7 @@ const ReportDetailPage: React.FC = () => {
 
         {/* Description Card */}
         <motion.div variants={pageItemVariants} className="uk-card uk-card-default uk-card-body uk-margin-bottom">
-          <h3 className="uk-card-title">{t('admin.reports.detail.description', 'Description')}</h3>
+          <h3 className="uk-card-title">{t('admin.reports.detail.description')}</h3>
           <p>{report.description || '—'}</p>
           {report.internalNotes && (
             <>
@@ -236,10 +315,11 @@ const ReportDetailPage: React.FC = () => {
 
         {/* Target Snapshot Card */}
         <motion.div variants={pageItemVariants} className="uk-card uk-card-default uk-card-body uk-margin-bottom">
-          <h3 className="uk-card-title">{t('admin.reports.detail.targetSnapshot', 'Target Snapshot')}</h3>
-          <pre className="uk-overflow-auto" style={{ maxHeight: '400px' }}>
-            {JSON.stringify(report.targetSnapshot, null, 2)}
-          </pre>
+          <h3 className="uk-card-title">{t('admin.reports.detail.targetSnapshot')}</h3>
+          <TargetSnapshotRenderer
+            targetType={report.targetType}
+            targetSnapshot={report.targetSnapshot}
+          />
         </motion.div>
 
         {/* Sibling Reports */}
@@ -247,7 +327,7 @@ const ReportDetailPage: React.FC = () => {
           {report.siblingCount > 1 && (
             <motion.div variants={pageItemVariants} className="uk-card uk-card-default uk-card-body uk-margin-bottom">
               <h3 className="uk-card-title">
-                {t('admin.reports.detail.siblingReports', 'Sibling Reports')}
+                {t('admin.reports.detail.siblingReports')}
                 <span className="uk-text-meta uk-margin-small-left">
                   ({t('admin.reports.siblingCount', { count: report.siblingCount })})
                 </span>
@@ -267,7 +347,7 @@ const ReportDetailPage: React.FC = () => {
           {report.timeline.length > 0 ? (
             <ReportTimeline entries={report.timeline} />
           ) : (
-            <p className="uk-text-meta">{t('admin.reports.detail.noTimeline', 'No timeline entries.')}</p>
+            <p className="uk-text-meta">{t('admin.reports.detail.noTimeline')}</p>
           )}
         </motion.div>
       </motion.div>

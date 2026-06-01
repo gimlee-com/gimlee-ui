@@ -1,0 +1,32 @@
+@import "../../../styles/uikit-imports";
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $global-small-gutter;
+
+  @media (min-width: $breakpoint-small) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fullWidth {
+  grid-column: 1 / -1;
+}
+
+.label {
+  font-size: $global-small-font-size;
+  color: $global-muted-color;
+  font-weight: 500;
+}
+
+.value {
+  word-break: break-word;
+  line-height: 1.4;
+}

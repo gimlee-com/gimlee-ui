@@ -1,0 +1,83 @@
+@import "../../../styles/uikit-imports";
+
+.container {
+  display: flex;
+  align-items: flex-start;
+  gap: $global-gutter;
+}
+
+// ── AD type ─────────────────────────────────────────────────────────
+.adThumbnail {
+  width: 72px;
+  height: 72px;
+  border-radius: $global-border-radius;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: color-mix(in srgb, $global-muted-color, transparent 85%);
+}
+
+.adInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.adTitle {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+.adMeta {
+  font-size: $global-small-font-size;
+  color: $global-muted-color;
+}
+
+// ── USER type ───────────────────────────────────────────────────────
+.userContent {
+  display: flex;
+  align-items: center;
+  gap: $global-small-gutter;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.userName {
+  font-weight: 600;
+}
+
+.userDisplayName {
+  font-size: $global-small-font-size;
+  color: $global-muted-color;
+}
+
+// ── QUESTION / ANSWER / MESSAGE ─────────────────────────────────────
+.quotedText {
+  font-style: italic;
+  color: $global-muted-color;
+  padding-left: $global-small-gutter;
+  border-left: 3px solid $global-border;
+  line-height: 1.5;
+}
+
+.qaContext {
+  font-size: $global-small-font-size;
+  color: $global-muted-color;
+  margin-top: $global-small-margin;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+// ── Link row ────────────────────────────────────────────────────────
+.linkRow {
+  margin-top: $global-small-margin;
+}
+
+// ── Fallback ────────────────────────────────────────────────────────
+.fallbackTitle {
+  font-weight: 600;
+  font-size: 1rem;
+}

@@ -1,0 +1,201 @@
+@import "../../../styles/uikit-imports";
+
+// ── Status-accent left border ───────────────────────────────────────
+.headerCard {
+  border-left: 4px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.statusOpen {
+  border-left-color: $global-warning-background;
+}
+
+.statusInReview {
+  border-left-color: $global-primary-background;
+}
+
+.statusResolved {
+  border-left-color: $global-success-background;
+}
+
+.statusDismissed {
+  border-left-color: $global-muted-color;
+}
+
+// ── Page heading ────────────────────────────────────────────────────
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: $global-small-gutter;
+}
+
+.headingTitle {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.statusIndicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: $global-small-font-size;
+  font-weight: 600;
+}
+
+.statusDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dotOpen {
+  background-color: $global-warning-background;
+}
+
+.dotInReview {
+  background-color: $global-primary-background;
+}
+
+.dotResolved {
+  background-color: $global-success-background;
+}
+
+.dotDismissed {
+  background-color: $global-muted-color;
+}
+
+// ── Classification section ──────────────────────────────────────────
+.classificationSection {
+  margin-top: $global-margin;
+  padding: $global-small-gutter;
+  border-radius: $global-border-radius;
+  background: color-mix(in srgb, $global-muted-background, transparent 40%);
+}
+
+.classificationTitle {
+  font-size: $global-small-font-size;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: $global-muted-color;
+  margin-bottom: $global-small-margin;
+}
+
+.classificationGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $global-small-gutter;
+
+  @media (min-width: $breakpoint-medium) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.classificationItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.classificationLabel {
+  font-size: $global-small-font-size;
+  color: $global-muted-color;
+  font-weight: 500;
+}
+
+.classificationValue {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+// ── Reported Content inset ──────────────────────────────────────────
+.reportedContentSection {
+  margin-top: $global-margin;
+  padding: $global-gutter;
+  border-radius: $global-border-radius;
+  border: 1px solid $global-border;
+  background: color-mix(in srgb, $global-background, transparent 20%);
+}
+
+.reportedContentTitle {
+  font-size: $global-small-font-size;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: $global-muted-color;
+  margin-bottom: $global-small-margin;
+}
+
+// ── Metadata row ────────────────────────────────────────────────────
+.metadataGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $global-small-gutter;
+  margin-top: $global-margin;
+  padding-top: $global-small-margin;
+  border-top: 1px solid $global-border;
+
+  @media (min-width: $breakpoint-medium) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.metadataItem {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.metadataLabel {
+  font-size: $global-small-font-size;
+  color: $global-muted-color;
+}
+
+.metadataValue {
+  font-weight: 500;
+}
+
+// ── Actions row ─────────────────────────────────────────────────────
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: $global-margin;
+}
+
+// ── Snapshot section ────────────────────────────────────────────────
+.snapshotGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $global-small-gutter;
+
+  @media (min-width: $breakpoint-small) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.snapshotItem {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.snapshotLabel {
+  font-size: $global-small-font-size;
+  color: $global-muted-color;
+  font-weight: 500;
+}
+
+.snapshotValue {
+  word-break: break-word;
+}
+
+.snapshotFull {
+  grid-column: 1 / -1;
+}
