@@ -846,6 +846,12 @@ const resources = {
             "cannotBanAdmin": "Cannot ban an administrator."
           }
         },
+        "assignModal": {
+          "title": "Assign to Staff",
+          "description": "Search for a staff member to assign this item to.",
+          "searchPlaceholder": "Search by username or email...",
+          "noResults": "No staff members found."
+        },
         "helpdesk": {
           "title": "Help Desk",
           "description": "Manage support tickets, respond to users, and resolve issues",
@@ -1856,6 +1862,12 @@ const resources = {
             "unbanSuccess": "Użytkownik został odblokowany.",
             "cannotBanAdmin": "Nie można zablokować administratora."
           }
+        },
+        "assignModal": {
+          "title": "Przypisz do pracownika",
+          "description": "Wyszukaj członka zespołu, do którego chcesz przypisać ten element.",
+          "searchPlaceholder": "Szukaj po nazwie użytkownika lub e-mailu...",
+          "noResults": "Nie znaleziono członków zespołu."
         },
         "helpdesk": {
           "title": "Pomoc Techniczna",

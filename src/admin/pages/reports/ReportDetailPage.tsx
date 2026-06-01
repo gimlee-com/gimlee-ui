@@ -13,6 +13,7 @@ import ReportReasonBadge from '../../components/ReportReasonBadge/ReportReasonBa
 import ReportTimeline from '../../components/ReportTimeline/ReportTimeline';
 import ReportActionModal from '../../components/ReportActionModal/ReportActionModal';
 import ReportSiblingList from '../../components/ReportSiblingList/ReportSiblingList';
+import AdminUserAssignModal from '../../components/AdminUserAssignModal/AdminUserAssignModal';
 import { Alert } from '../../../components/uikit/Alert/Alert';
 import { Spinner } from '../../../components/uikit/Spinner/Spinner';
 import { Icon } from '../../../components/uikit/Icon/Icon';
@@ -34,6 +35,7 @@ const ReportDetailPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isActionModalOpen, setIsActionModalOpen] = useState(false);
+  const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
 
   const fetchData = useCallback(async () => {
@@ -55,27 +57,17 @@ const ReportDetailPage: React.FC = () => {
     void fetchData();
   }, [fetchData]);
 
-  const handleAssign = async () => {
+  const handleAssign = async (userId: string) => {
     if (!reportId) return;
-    let userId: string | null = null;
-    try {
-      userId = await UIkit.modal.prompt(
-        t('admin.reports.detail.assignPrompt', 'Enter assignee User ID:'),
-        '',
-        { stack: true, i18n: { ok: t('common.ok'), cancel: t('common.cancel') } },
-      );
-    } catch {
-      return;
-    }
-    if (!userId?.trim()) return;
     setActionLoading(true);
     try {
-      await adminReportService.assignReport(reportId, { assigneeUserId: userId.trim() });
+      await adminReportService.assignReport(reportId, { assigneeUserId: userId });
       UIkit.notification({
         message: t('admin.reports.detail.assignSuccess', 'Report assigned successfully.'),
         status: 'success',
         pos: 'top-center',
       });
+      setIsAssignModalOpen(false);
       await fetchData();
     } catch (err: unknown) {
       const message = (err as { message?: string })?.message || t('auth.errors.generic');
@@ -204,7 +196,7 @@ const ReportDetailPage: React.FC = () => {
             <div className="uk-margin-top uk-flex uk-flex-wrap" style={{ gap: '8px' }}>
               <button
                 className="uk-button uk-button-default uk-button-small uk-border-rounded"
-                onClick={handleAssign}
+                onClick={() => setIsAssignModalOpen(true)}
                 disabled={actionLoading}
               >
                 <Icon icon="user" className="uk-margin-small-right" ratio={0.8} />
@@ -284,6 +276,12 @@ const ReportDetailPage: React.FC = () => {
         isOpen={isActionModalOpen}
         onConfirm={handleResolve}
         onClose={() => setIsActionModalOpen(false)}
+      />
+
+      <AdminUserAssignModal
+        isOpen={isAssignModalOpen}
+        onConfirm={handleAssign}
+        onClose={() => setIsAssignModalOpen(false)}
       />
     </>
   );

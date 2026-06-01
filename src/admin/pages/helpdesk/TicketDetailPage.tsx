@@ -4,9 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import UIkit from 'uikit';
 import { adminTicketService } from '../../services/adminTicketService';
-import { adminUserService } from '../../services/adminUserService';
 import type { TicketDetailDto, TicketStatus, TicketPriority, ReplyToTicketDto } from '../../types/adminTicket';
-import type { AdminUserListItemDto } from '../../types/adminUser';
 import NavbarPortal from '../../../components/Navbar/NavbarPortal';
 import { useNavbarMode } from '../../../hooks/useNavbarMode';
 import TicketStatusBadge from '../../components/TicketStatusBadge/TicketStatusBadge';
@@ -14,7 +12,7 @@ import TicketPriorityBadge from '../../components/TicketPriorityBadge/TicketPrio
 import TicketCategoryBadge from '../../components/TicketCategoryBadge/TicketCategoryBadge';
 import TicketConversation from '../../components/TicketConversation/TicketConversation';
 import TicketReplyForm from '../../components/TicketReplyForm/TicketReplyForm';
-import TicketAssignModal from '../../components/TicketAssignModal/TicketAssignModal';
+import AdminUserAssignModal from '../../components/AdminUserAssignModal/AdminUserAssignModal';
 import { Alert } from '../../../components/uikit/Alert/Alert';
 import { Spinner } from '../../../components/uikit/Spinner/Spinner';
 import { Icon } from '../../../components/uikit/Icon/Icon';
@@ -42,7 +40,6 @@ const TicketDetailPage: React.FC = () => {
   const [replySubmitting, setReplySubmitting] = useState(false);
 
   const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
-  const [staff, setStaff] = useState<AdminUserListItemDto[]>([]);
 
   const fetchTicket = useCallback(async () => {
     if (!ticketId) return;
@@ -103,16 +100,6 @@ const TicketDetailPage: React.FC = () => {
     }
   };
 
-  const handleOpenAssignModal = async () => {
-    try {
-      const result = await adminUserService.listUsers({ page: 0, size: 100 });
-      setStaff(result.content);
-    } catch {
-      // Fall back to empty staff list — modal will still render
-    }
-    setIsAssignModalOpen(true);
-  };
-
   const handleAssignConfirm = async (assigneeUserId: string) => {
     if (!ticketId) return;
     setActionLoading(true);
@@ -165,12 +152,6 @@ const TicketDetailPage: React.FC = () => {
       <Alert variant="danger">{error || t('auth.errors.generic')}</Alert>
     );
   }
-
-  const staffMembers = staff.map(u => ({
-    userId: u.userId,
-    username: u.username,
-    displayName: u.displayName,
-  }));
 
   return (
     <>
@@ -242,7 +223,7 @@ const TicketDetailPage: React.FC = () => {
             <div className="uk-width-auto uk-flex uk-flex-bottom">
               <button
                 className="uk-button uk-button-default uk-button-small uk-border-rounded"
-                onClick={handleOpenAssignModal}
+                onClick={() => setIsAssignModalOpen(true)}
                 disabled={actionLoading}
               >
                 <Icon icon="user" className="uk-margin-small-right" ratio={0.8} />
@@ -282,11 +263,10 @@ const TicketDetailPage: React.FC = () => {
         </motion.div>
       </motion.div>
 
-      <TicketAssignModal
+      <AdminUserAssignModal
         isOpen={isAssignModalOpen}
         onConfirm={handleAssignConfirm}
         onClose={() => setIsAssignModalOpen(false)}
-        staff={staffMembers}
       />
     </>
   );
