@@ -1024,6 +1024,161 @@ const resources = {
           }
         }
       },
+      "reviews": {
+        "starRating": {
+          "label": "{{score}} out of 5"
+        },
+        "reputation": {
+          "title": "Reputation",
+          "basedOn": "Based on {{count}} reviews",
+          "noReviews": "No reviews yet",
+          "sellerRep": "Seller Reputation",
+          "buyerRep": "Buyer Reputation",
+          "viewAllReviews": "View All Reviews",
+          "scoreBreakdown": "Score Breakdown",
+          "starLabel_one": "1 star",
+          "starLabel_other": "{{count}} stars"
+        },
+        "ratingCard": {
+          "writtenBy": "Written by {{username}}",
+          "forOrder": "Order #{{id}}",
+          "edited": "edited",
+          "response": "Response from {{username}}",
+          "supplement": "Supplement #{{number}}",
+          "helpful": "Helpful",
+          "helpfulCount_one": "{{count}} person found this helpful",
+          "helpfulCount_other": "{{count}} people found this helpful",
+          "viewDetails": "View Details",
+          "report": "Report Review",
+          "hidden": "This review has been hidden by moderators.",
+          "deleted": "This review has been removed.",
+          "photoAlt": "Review Photo",
+          "itemsInTransaction": "Items in Transaction",
+          "supplements_one": "{{count}} supplement",
+          "supplements_other": "{{count}} supplements",
+          "addSupplement": "Add Supplement",
+          "respond": "Respond",
+          "hide": "Hide",
+          "restore": "Restore"
+        },
+        "ratingForm": {
+          "title": "Write a Review",
+          "editTitle": "Edit Review",
+          "score": "Your Rating",
+          "scoreRequired": "Please select a rating",
+          "titleLabel": "Title",
+          "titlePlaceholder": "Summarize your experience (optional)",
+          "bodyLabel": "Review",
+          "bodyPlaceholder": "Share your experience with this transaction...",
+          "bodyHint": "{{count}}/{{max}} characters",
+          "submit": "Submit Review",
+          "submitting": "Submitting...",
+          "editSubmit": "Save Changes",
+          "editDeadline": "Editable until {{time}}",
+          "editExpired": "This review can no longer be edited.",
+          "success": "Review submitted successfully!",
+          "editSuccess": "Review updated successfully!",
+          "titleTooLong": "Title must be 100 characters or less",
+          "bodyTooLong": "Review must be 5000 characters or less"
+        },
+        "supplementForm": {
+          "title": "Add Supplement",
+          "description": "Add additional thoughts or updates to your review.",
+          "bodyLabel": "Details",
+          "bodyRequired": "Please enter supplement details",
+          "bodyTooLong": "Supplement must be 5000 characters or less",
+          "bodyPlaceholder": "Add additional thoughts or updates...",
+          "submit": "Add Supplement",
+          "submitting": "Submitting...",
+          "editDeadline": "Editable until {{time}}",
+          "success": "Supplement added."
+        },
+        "responseForm": {
+          "title": "Respond to Review",
+          "description": "Respond to the review as the other party in this transaction.",
+          "bodyLabel": "Response",
+          "bodyRequired": "Please enter your response",
+          "bodyTooLong": "Response must be 5000 characters or less",
+          "bodyPlaceholder": "Write your response...",
+          "submit": "Submit Response",
+          "submitting": "Submitting...",
+          "success": "Response submitted."
+        },
+        "eligibilityCard": {
+          "title": "Pending Review",
+          "contextId": "Order",
+          "active": "Active",
+          "pending": "Pending",
+          "forOrder": "Order #{{id}}",
+          "availableNow": "Available now",
+          "availableIn": "Available in {{time}}",
+          "expiresIn": "Expires in {{time}}",
+          "expired": "This review opportunity has expired.",
+          "writeReview": "Write Review",
+          "consumed": "Review submitted"
+        },
+        "pendingPage": {
+          "title": "Pending Reviews",
+          "subtitle": "Transactions waiting for your review",
+          "empty": "No pending reviews at the moment.",
+          "emptyHint": "After completing a transaction, you'll be able to leave a review here."
+        },
+        "myReviewsPage": {
+          "title": "My Reviews",
+          "subtitle": "Reviews you've written",
+          "empty": "You haven't written any reviews yet.",
+          "emptyHint": "Complete a transaction and leave a review to see it here.",
+          "confirmDelete": "Are you sure you want to delete this review? This action cannot be undone."
+        },
+        "userReviewsPage": {
+          "title": "{{username}}'s Reviews",
+          "sellerTab": "As Seller",
+          "buyerTab": "As Buyer",
+          "empty": "No reviews yet.",
+          "emptyHint": "This user hasn't received any reviews in this role yet.",
+          "latestReviews": "Latest Reviews",
+          "seeAll": "See All Reviews"
+        },
+        "detailPage": {
+          "title": "Review Details",
+          "notFound": "Review not found.",
+          "snapshot": "Order Snapshot",
+          "supplements": "Supplements",
+          "responseSection": "Response"
+        },
+        "admin": {
+          "title": "Reported Reviews",
+          "empty": "No reported reviews to review.",
+          "hide": "Hide Review",
+          "restore": "Restore Review",
+          "hideConfirm": "Are you sure you want to hide this review? It will no longer be visible to other users.",
+          "restoreConfirm": "Are you sure you want to restore this review? It will become visible again.",
+          "status": {
+            "PUB": "Published",
+            "HID": "Hidden",
+            "DEL": "Deleted"
+          },
+          "reason": "Report Reason",
+          "reportedBy": "Reported By"
+        },
+        "errors": {
+          "RATING_DWELL_NOT_ELAPSED": "You cannot submit a review yet. Please wait for the review period to begin.",
+          "RATING_EDIT_WINDOW_CLOSED": "This review can no longer be edited.",
+          "RATING_BODY_NOT_SANITIZED": "Your review contains disallowed content. Please revise and try again.",
+          "RATING_ALREADY_EXISTS": "You have already submitted a review for this transaction.",
+          "ELIGIBILITY_NOT_FOUND": "This review opportunity no longer exists.",
+          "ELIGIBILITY_EXPIRED": "This review opportunity has expired.",
+          "ELIGIBILITY_ALREADY_CONSUMED": "A review has already been submitted for this transaction.",
+          "RATING_NOT_FOUND": "This review could not be found.",
+          "RATING_NOT_OWNER": "You can only edit your own reviews.",
+          "SUPPLEMENT_NOT_FOUND": "This supplement could not be found.",
+          "SUPPLEMENT_NOT_OWNER": "You can only edit your own supplements.",
+          "SUPPLEMENT_EDIT_WINDOW_CLOSED": "This supplement can no longer be edited.",
+          "RESPONSE_ALREADY_EXISTS": "A response has already been submitted for this review.",
+          "RESPONSE_NOT_OWNER": "You can only respond to reviews about you.",
+          "generic": "Something went wrong. Please try again."
+        }
+      },
       "ban": {
         "banner": {
           "message": "Your account has been restricted.",
@@ -2081,6 +2236,161 @@ const resources = {
               "authorId": "Autor"
             }
           }
+        }
+      },
+      "reviews": {
+        "starRating": {
+          "label": "{{score}} na 5"
+        },
+        "reputation": {
+          "title": "Reputacja",
+          "basedOn": "Na podstawie {{count}} opinii",
+          "noReviews": "Brak opinii",
+          "sellerRep": "Reputacja sprzedawcy",
+          "buyerRep": "Reputacja kupującego",
+          "viewAllReviews": "Zobacz wszystkie opinie",
+          "scoreBreakdown": "Rozkład ocen",
+          "starLabel_one": "1 gwiazdka",
+          "starLabel_other": "{{count}} gwiazdek"
+        },
+        "ratingCard": {
+          "writtenBy": "Napisano przez {{username}}",
+          "forOrder": "Zamówienie #{{id}}",
+          "edited": "edytowano",
+          "response": "Odpowiedź od {{username}}",
+          "supplement": "Uzupełnienie #{{number}}",
+          "helpful": "Pomocna",
+          "helpfulCount_one": "{{count}} osoba uznała to za pomocne",
+          "helpfulCount_other": "{{count}} osób uznało to za pomocne",
+          "viewDetails": "Zobacz szczegóły",
+          "report": "Zgłoś opinię",
+          "hidden": "Ta opinia została ukryta przez moderatorów.",
+          "deleted": "Ta opinia została usunięta.",
+          "photoAlt": "Zdjęcie opinii",
+          "itemsInTransaction": "Przedmioty w transakcji",
+          "supplements_one": "{{count}} uzupełnienie",
+          "supplements_other": "{{count}} uzupełnień",
+          "addSupplement": "Dodaj uzupełnienie",
+          "respond": "Odpowiedz",
+          "hide": "Ukryj",
+          "restore": "Przywróć"
+        },
+        "ratingForm": {
+          "title": "Napisz opinię",
+          "editTitle": "Edytuj opinię",
+          "score": "Twoja ocena",
+          "scoreRequired": "Wybierz ocenę",
+          "titleLabel": "Tytuł",
+          "titlePlaceholder": "Podsumuj swoje doświadczenie (opcjonalnie)",
+          "bodyLabel": "Opinia",
+          "bodyPlaceholder": "Podziel się swoim doświadczeniem z tą transakcją...",
+          "bodyHint": "{{count}}/{{max}} znaków",
+          "submit": "Wyślij opinię",
+          "submitting": "Wysyłanie...",
+          "editSubmit": "Zapisz zmiany",
+          "editDeadline": "Edytowalne do {{time}}",
+          "editExpired": "Ta opinia nie może być już edytowana.",
+          "success": "Opinia została przesłana!",
+          "editSuccess": "Opinia została zaktualizowana!",
+          "titleTooLong": "Tytuł musi mieć 100 znaków lub mniej",
+          "bodyTooLong": "Opinia musi mieć 5000 znaków lub mniej"
+        },
+        "supplementForm": {
+          "title": "Dodaj uzupełnienie",
+          "description": "Dodaj dodatkowe przemyślenia lub aktualizacje do swojej opinii.",
+          "bodyLabel": "Szczegóły",
+          "bodyRequired": "Podaj szczegóły uzupełnienia",
+          "bodyTooLong": "Uzupełnienie musi mieć 5000 znaków lub mniej",
+          "bodyPlaceholder": "Dodaj dodatkowe przemyślenia lub aktualizacje...",
+          "submit": "Dodaj uzupełnienie",
+          "submitting": "Wysyłanie...",
+          "editDeadline": "Edytowalne do {{time}}",
+          "success": "Uzupełnienie dodane."
+        },
+        "responseForm": {
+          "title": "Odpowiedz na opinię",
+          "description": "Odpowiedz na opinię jako druga strona tej transakcji.",
+          "bodyLabel": "Odpowiedź",
+          "bodyRequired": "Wpisz swoją odpowiedź",
+          "bodyTooLong": "Odpowiedź musi mieć 5000 znaków lub mniej",
+          "bodyPlaceholder": "Napisz swoją odpowiedź...",
+          "submit": "Wyślij odpowiedź",
+          "submitting": "Wysyłanie...",
+          "success": "Odpowiedź przesłana."
+        },
+        "eligibilityCard": {
+          "title": "Oczekująca opinia",
+          "contextId": "Zamówienie",
+          "active": "Aktywna",
+          "pending": "Oczekująca",
+          "forOrder": "Zamówienie #{{id}}",
+          "availableNow": "Dostępne teraz",
+          "availableIn": "Dostępne za {{time}}",
+          "expiresIn": "Wygasa za {{time}}",
+          "expired": "Ta możliwość wystawienia opinii wygasła.",
+          "writeReview": "Napisz opinię",
+          "consumed": "Opinia przesłana"
+        },
+        "pendingPage": {
+          "title": "Oczekujące opinie",
+          "subtitle": "Transakcje czekające na Twoją opinię",
+          "empty": "Brak oczekujących opinii.",
+          "emptyHint": "Po zakończeniu transakcji będziesz mógł wystawić opinię tutaj."
+        },
+        "myReviewsPage": {
+          "title": "Moje opinie",
+          "subtitle": "Opinie, które napisałeś",
+          "empty": "Nie napisałeś jeszcze żadnych opinii.",
+          "emptyHint": "Zakończ transakcję i wystaw opinię, aby zobaczyć ją tutaj.",
+          "confirmDelete": "Czy na pewno chcesz usunąć tę opinię? Tej operacji nie można cofnąć."
+        },
+        "userReviewsPage": {
+          "title": "Opinie o {{username}}",
+          "sellerTab": "Jako sprzedawca",
+          "buyerTab": "Jako kupujący",
+          "empty": "Brak opinii.",
+          "emptyHint": "Ten użytkownik nie otrzymał jeszcze opinii w tej roli.",
+          "latestReviews": "Najnowsze opinie",
+          "seeAll": "Zobacz wszystkie opinie"
+        },
+        "detailPage": {
+          "title": "Szczegóły opinii",
+          "notFound": "Nie znaleziono opinii.",
+          "snapshot": "Migawka zamówienia",
+          "supplements": "Uzupełnienia",
+          "responseSection": "Odpowiedź"
+        },
+        "admin": {
+          "title": "Zgłoszone opinie",
+          "empty": "Brak zgłoszonych opinii do sprawdzenia.",
+          "hide": "Ukryj opinię",
+          "restore": "Przywróć opinię",
+          "hideConfirm": "Czy na pewno chcesz ukryć tę opinię? Nie będzie już widoczna dla innych użytkowników.",
+          "restoreConfirm": "Czy na pewno chcesz przywrócić tę opinię? Będzie ponownie widoczna.",
+          "status": {
+            "PUB": "Opublikowana",
+            "HID": "Ukryta",
+            "DEL": "Usunięta"
+          },
+          "reason": "Powód zgłoszenia",
+          "reportedBy": "Zgłoszone przez"
+        },
+        "errors": {
+          "RATING_DWELL_NOT_ELAPSED": "Nie możesz jeszcze wystawić opinii. Poczekaj na rozpoczęcie okresu opiniowania.",
+          "RATING_EDIT_WINDOW_CLOSED": "Ta opinia nie może być już edytowana.",
+          "RATING_BODY_NOT_SANITIZED": "Twoja opinia zawiera niedozwolone treści. Popraw ją i spróbuj ponownie.",
+          "RATING_ALREADY_EXISTS": "Już wystawiłeś opinię dla tej transakcji.",
+          "ELIGIBILITY_NOT_FOUND": "Ta możliwość wystawienia opinii już nie istnieje.",
+          "ELIGIBILITY_EXPIRED": "Ta możliwość wystawienia opinii wygasła.",
+          "ELIGIBILITY_ALREADY_CONSUMED": "Opinia dla tej transakcji została już przesłana.",
+          "RATING_NOT_FOUND": "Nie znaleziono tej opinii.",
+          "RATING_NOT_OWNER": "Możesz edytować tylko własne opinie.",
+          "SUPPLEMENT_NOT_FOUND": "Nie znaleziono tego uzupełnienia.",
+          "SUPPLEMENT_NOT_OWNER": "Możesz edytować tylko własne uzupełnienia.",
+          "SUPPLEMENT_EDIT_WINDOW_CLOSED": "To uzupełnienie nie może być już edytowane.",
+          "RESPONSE_ALREADY_EXISTS": "Odpowiedź dla tej opinii została już przesłana.",
+          "RESPONSE_NOT_OWNER": "Możesz odpowiadać tylko na opinie o sobie.",
+          "generic": "Coś poszło nie tak. Spróbuj ponownie."
         }
       },
       "ban": {

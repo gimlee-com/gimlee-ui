@@ -1,0 +1,108 @@
+@import '../../../styles/uikit-imports';
+
+.summary {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+
+  @media (max-width: $breakpoint-small-max) {
+    flex-direction: column;
+    gap: 16px;
+  }
+}
+
+.scoreSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 120px;
+}
+
+.bigScore {
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1;
+  color: $global-color;
+}
+
+.totalCount {
+  font-size: 0.85rem;
+  color: $global-muted-color;
+}
+
+.histogramSection {
+  flex: 1;
+  min-width: 200px;
+}
+
+.histogramRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+  font-size: 0.85rem;
+}
+
+.starLabel {
+  width: 40px;
+  text-align: right;
+  color: $global-muted-color;
+  white-space: nowrap;
+}
+
+.bar {
+  flex: 1;
+  height: 8px;
+  border-radius: 4px;
+  background: color-mix(in srgb, $global-border, transparent 60%);
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  border-radius: 4px;
+  background: $global-warning-background;
+  transition: width 0.3s ease;
+}
+
+.barCount {
+  width: 24px;
+  text-align: left;
+  color: $global-muted-color;
+  font-size: 0.8rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.tab {
+  padding: 4px 12px;
+  border-radius: $border-rounded-border-radius;
+  border: 1px solid $global-border;
+  background: transparent;
+  color: $global-muted-color;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.15s ease;
+
+  &:hover {
+    color: $global-color;
+  }
+
+  &.active {
+    background: $global-primary-background;
+    color: $button-primary-color;
+    border-color: $global-primary-background;
+  }
+}
+
+.noReviews {
+  color: $global-muted-color;
+  font-style: italic;
+  padding: 8px 0;
+}

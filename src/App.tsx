@@ -27,6 +27,8 @@ const PurchaseDetailPage = lazy(() => import('./purchases/pages/PurchaseDetailPa
 import UserSpacePage from './spaces/pages/UserSpacePage';
 import AdWatchlistPage from './ads/pages/AdWatchlistPage';
 const ProfilePages = lazy(() => import('./profile/pages/ProfilePages'));
+const UserReviewsPage = lazy(() => import('./ratings/pages/UserReviewsPage'));
+const RatingDetailPage = lazy(() => import('./ratings/pages/RatingDetailPage'));
 import ConversationsPage from './chat/pages/ConversationsPage';
 import ConversationDetailPage from './chat/pages/ConversationDetailPage';
 import TermsOfServicePage from './pages/TermsOfServicePage';
@@ -98,6 +100,8 @@ function App() {
             <Route path="/notifications" element={<NotificationsPage />} />
             <Route path="/profile/*" element={<Suspense><ProfilePages /></Suspense>} />
             <Route path="/u/:userName" element={<UserSpacePage />} />
+            <Route path="/u/:userName/reviews" element={<Suspense><UserReviewsPage /></Suspense>} />
+            <Route path="/ratings/:ratingId" element={<Suspense><RatingDetailPage /></Suspense>} />
             <Route path="/terms" element={<TermsOfServicePage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />

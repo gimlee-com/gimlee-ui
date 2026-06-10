@@ -8,7 +8,7 @@
 import type { PageMetadata } from '../../types/api';
 
 /** The type of content being reported */
-export type ReportTargetType = 'AD' | 'USER' | 'MESSAGE' | 'QUESTION' | 'ANSWER';
+export type ReportTargetType = 'AD' | 'USER' | 'MESSAGE' | 'QUESTION' | 'ANSWER' | 'RATING';
 
 /** Why the user is reporting */
 export type ReportReason =

@@ -33,6 +33,10 @@ import { AdCard } from '../components/AdCard';
 import { WatchButton } from '../components/WatchButton/WatchButton';
 import { QuestionsSection } from '../components/qa/QuestionsSection';
 import ReportButton from '../../components/ReportButton/ReportButton';
+import { useReputation } from '../../ratings/hooks/useReputation';
+import ReputationBadge from '../../ratings/components/ReputationBadge/ReputationBadge';
+import { qaService } from '../services/qaService';
+import type { QaStatsDto } from '../types/qa';
 import styles from './AdDetailsPage.module.scss';
 import { createPageContainerVariants, pageItemVariants } from '../../animations';
 
@@ -60,6 +64,8 @@ const AdDetailsPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const [isWatched, setIsWatched] = useState(false);
   const [watchersCount, setWatchersCount] = useState(0);
+  const [qaStats, setQaStats] = useState<QaStatsDto | null>(null);
+  const { aggregate: sellerReputation } = useReputation(ad?.user?.userId, 'SEL');
   const mainSliderRef = useRef<HTMLDivElement>(null);
   const thumbSliderRef = useRef<HTMLDivElement>(null);
 
@@ -67,6 +73,12 @@ const AdDetailsPage: React.FC = () => {
 
   const activeIndexRef = useRef(activeIndex);
   const targetIndexRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (ad?.id) {
+      qaService.getStats(ad.id).then(setQaStats).catch(() => {});
+    }
+  }, [ad?.id]);
 
   useEffect(() => {
     activeIndexRef.current = activeIndex;
@@ -652,12 +664,16 @@ const AdDetailsPage: React.FC = () => {
                         <div className="uk-flex uk-flex-column">
                           <div className="uk-text-bold">{ad.user.username}</div>
                           <Grid gap="small" className="uk-text-meta uk-flex-middle uk-child-width-auto">
-                            <div>
-                              <span className="uk-text-warning"><Icon icon="star" ratio={0.8} /> 4.9</span>
-                            </div>
-                            <div>
-                              <span>(128 {t('adDetails.questions')})</span>
-                            </div>
+                            {sellerReputation && (
+                              <div>
+                                <ReputationBadge aggregate={sellerReputation} size="sm" />
+                              </div>
+                            )}
+                            {qaStats && (
+                              <div>
+                                <span>({qaStats.totalAnswered + qaStats.totalUnanswered} {t('adDetails.questions')})</span>
+                              </div>
+                            )}
                           </Grid>
                         </div>
                       </div>

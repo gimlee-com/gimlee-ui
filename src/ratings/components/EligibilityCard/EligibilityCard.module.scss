@@ -1,0 +1,125 @@
+@import '../../../styles/uikit-imports';
+
+.card {
+  background: $card-default-background;
+  border: 1px solid $global-border;
+  border-radius: $card-border-radius;
+  padding: 16px;
+  margin-bottom: 12px;
+
+  &.expired {
+    opacity: 0.6;
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.rateeInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rateeName {
+  display: block;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: $global-color;
+}
+
+.contextId {
+  display: block;
+  font-size: 0.75rem;
+  color: $global-muted-color;
+  font-family: monospace;
+}
+
+.statusBadge {
+  flex-shrink: 0;
+}
+
+.statusActive {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: $border-rounded-border-radius;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: color-mix(in srgb, $global-success-background, transparent 85%);
+  color: $global-success-background;
+}
+
+.statusPending {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: $border-rounded-border-radius;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: color-mix(in srgb, $global-warning-background, transparent 85%);
+  color: $global-warning-background;
+}
+
+.countdown {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: color-mix(in srgb, $global-primary-background, transparent 92%);
+  border-radius: $border-rounded-border-radius;
+  font-size: 0.85rem;
+  color: $global-primary-background;
+  margin-bottom: 12px;
+}
+
+.clockIcon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.snapshot {
+  margin-bottom: 12px;
+}
+
+.snapshotItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+
+  & + & {
+    border-top: 1px solid color-mix(in srgb, $global-border, transparent 60%);
+  }
+}
+
+.snapshotThumb {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.snapshotName {
+  flex: 1;
+  font-size: 0.85rem;
+  color: $global-color;
+}
+
+.snapshotQty {
+  font-size: 0.8rem;
+  color: $global-muted-color;
+}
+
+.expiredNotice {
+  padding: 8px 12px;
+  background: color-mix(in srgb, $global-danger-background, transparent 90%);
+  color: $global-danger-background;
+  border-radius: $border-rounded-border-radius;
+  font-size: 0.85rem;
+  text-align: center;
+}

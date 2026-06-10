@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import { spacesService } from '../services/spacesService';
@@ -18,6 +18,10 @@ import { PresenceBadge } from '../../profile/components/PresenceBadge';
 import { useNavbarMode } from '../../hooks/useNavbarMode';
 import NavbarPortal from '../../components/Navbar/NavbarPortal';
 import ReportButton from '../../components/ReportButton/ReportButton';
+import ReputationSummary from '../../ratings/components/ReputationSummary/ReputationSummary';
+import RatingCard from '../../ratings/components/RatingCard/RatingCard';
+import { ratingService } from '../../ratings/services/ratingService';
+import type { RatingResponseDto } from '../../ratings/types/ratings';
 import styles from './UserSpacePage.module.scss';
 
 const containerVariants = createPageContainerVariants();
@@ -31,6 +35,7 @@ const UserSpacePage: React.FC = () => {
   const [presence, setPresence] = useState<UserPresenceDto | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [recentReviews, setRecentReviews] = useState<RatingResponseDto[]>([]);
 
   const page = parseInt(searchParams.get('p') || '0', 10);
 
@@ -70,6 +75,13 @@ const UserSpacePage: React.FC = () => {
 
     return () => controller.abort();
   }, [userName, page, t]);
+
+  useEffect(() => {
+    if (!data?.user.userId) return;
+    ratingService.getRatingsReceived(data.user.userId, 'SEL', 0, 3)
+      .then((res) => setRecentReviews(res.content))
+      .catch(() => {});
+  }, [data?.user.userId]);
 
   const handlePageChange = (newPage: number) => {
     setSearchParams({ p: newPage.toString() });
@@ -128,6 +140,31 @@ const UserSpacePage: React.FC = () => {
             <ReportButton targetType="USER" targetId={data.user.userId} className="uk-margin-small-top" />
          </motion.div>
       </div>
+
+      {data.user.userId && (
+        <div className="uk-container uk-margin-large-bottom">
+          <motion.div variants={itemVariants} className="uk-card uk-card-default uk-card-body">
+            <Heading as="h3" className="uk-margin-remove-bottom">{t('reviews.reputation.title')}</Heading>
+            <ReputationSummary userId={data.user.userId} />
+          </motion.div>
+
+          {recentReviews.length > 0 && (
+            <motion.div variants={itemVariants} className="uk-margin-medium-top">
+              <Heading as="h4" className="uk-margin-remove-bottom">{t('reviews.userReviewsPage.latestReviews')}</Heading>
+              {recentReviews.map((review) => (
+                <RatingCard key={review.id} rating={review} viewerRole="public" />
+              ))}
+              <Link
+                to={`/u/${userName}/reviews`}
+                state={{ from: location.pathname + location.search }}
+                className="uk-button uk-button-text"
+              >
+                {t('reviews.userReviewsPage.seeAll')} →
+              </Link>
+            </motion.div>
+          )}
+        </div>
+      )}
 
       <div className="uk-container">
         <AnimatePresence mode="wait">

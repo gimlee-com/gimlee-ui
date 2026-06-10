@@ -1,0 +1,54 @@
+@import '../../../styles/uikit-imports';
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+  border-radius: $border-rounded-border-radius;
+  padding: 2px 8px;
+  white-space: nowrap;
+  line-height: 1.4;
+}
+
+.sizeSm {
+  font-size: 0.8rem;
+
+  .star {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+.sizeMd {
+  font-size: 0.9rem;
+
+  .star {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.star {
+  flex-shrink: 0;
+}
+
+.tierExcellent {
+  color: $global-success-background;
+  background: color-mix(in srgb, $global-success-background, transparent 90%);
+}
+
+.tierGood {
+  color: $global-warning-background;
+  background: color-mix(in srgb, $global-warning-background, transparent 90%);
+}
+
+.tierAverage {
+  color: $global-color;
+  background: color-mix(in srgb, $global-border, transparent 80%);
+}
+
+.tierPoor {
+  color: $global-danger-background;
+  background: color-mix(in srgb, $global-danger-background, transparent 90%);
+}

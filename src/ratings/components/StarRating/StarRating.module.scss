@@ -1,0 +1,66 @@
+@import '../../../styles/uikit-imports';
+
+.starRating {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.star {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--global-border);
+  transition: color 0.15s ease;
+  user-select: none;
+
+  svg {
+    display: block;
+  }
+
+  &.filled {
+    color: $global-warning-background;
+  }
+
+  &.half {
+    position: relative;
+    color: var(--global-border);
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      width: 50%;
+      overflow: hidden;
+      color: $global-warning-background;
+    }
+  }
+}
+
+.interactive {
+  cursor: pointer;
+
+  &:hover .star {
+    color: var(--global-border);
+  }
+
+  .star:hover,
+  .star:hover ~ .star {
+    color: var(--global-border);
+  }
+}
+
+.sizeSm .star svg {
+  width: 14px;
+  height: 14px;
+}
+
+.sizeMd .star svg {
+  width: 20px;
+  height: 20px;
+}
+
+.sizeLg .star svg {
+  width: 28px;
+  height: 28px;
+}

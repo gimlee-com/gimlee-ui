@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { ProtectedRoute } from '../../components/ProtectedRoute';
 import AdminDashboardPage from './AdminDashboardPage';
@@ -8,6 +9,8 @@ import ReportListPage from './reports/ReportListPage';
 import ReportDetailPage from './reports/ReportDetailPage';
 import TicketListPage from './helpdesk/TicketListPage';
 import TicketDetailPage from './helpdesk/TicketDetailPage';
+
+const AdminRatingsPage = lazy(() => import('../../ratings/pages/AdminRatingsPage'));
 
 export default function AdminPages() {
   return (
@@ -23,6 +26,7 @@ export default function AdminPages() {
         <Route path="reports/:reportId" element={<ReportDetailPage />} />
         <Route path="tickets" element={<TicketListPage />} />
         <Route path="tickets/:ticketId" element={<TicketDetailPage />} />
+        <Route path="ratings" element={<Suspense fallback={<div uk-spinner="" />}><AdminRatingsPage /></Suspense>} />
       </Route>
     </Routes>
   );

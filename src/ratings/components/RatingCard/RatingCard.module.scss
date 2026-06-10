@@ -1,0 +1,265 @@
+@import '../../../styles/uikit-imports';
+
+.card {
+  background: $card-default-background;
+  border: 1px solid $global-border;
+  border-radius: $card-border-radius;
+  padding: 16px;
+  margin-bottom: 12px;
+  position: relative;
+
+  &.hidden {
+    opacity: 0.6;
+  }
+}
+
+.hiddenBanner {
+  background: color-mix(in srgb, $global-danger-background, transparent 85%);
+  color: $global-danger-background;
+  padding: 6px 12px;
+  border-radius: $border-rounded-border-radius;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.raterInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.raterName {
+  display: block;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: $global-color;
+}
+
+.date {
+  display: block;
+  font-size: 0.75rem;
+  color: $global-muted-color;
+}
+
+.headerBadges {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.verifiedBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: $global-success-background;
+  background: color-mix(in srgb, $global-success-background, transparent 90%);
+  padding: 2px 8px;
+  border-radius: $border-rounded-border-radius;
+}
+
+.verifiedIcon {
+  width: 14px;
+  height: 14px;
+}
+
+.editedBadge {
+  font-size: 0.75rem;
+  color: $global-muted-color;
+  font-style: italic;
+  padding: 2px 6px;
+}
+
+.scoreRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.scoreValue {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: $global-color;
+}
+
+.title {
+  margin: 0 0 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: $global-color;
+}
+
+.body {
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+  color: $global-color;
+  line-height: 1.5;
+}
+
+.photoGallery {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.photoContainer {
+  width: 100px;
+  height: 100px;
+  border-radius: $border-rounded-border-radius;
+  overflow: hidden;
+}
+
+.snapshot {
+  background: color-mix(in srgb, $global-border, transparent 80%);
+  border-radius: $border-rounded-border-radius;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+}
+
+.snapshotTitle {
+  margin: 0 0 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: $global-muted-color;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.snapshotItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+
+  & + & {
+    border-top: 1px solid color-mix(in srgb, $global-border, transparent 60%);
+  }
+}
+
+.snapshotThumb {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.snapshotName {
+  flex: 1;
+  font-size: 0.85rem;
+  color: $global-color;
+}
+
+.snapshotPrice {
+  font-size: 0.8rem;
+  color: $global-muted-color;
+  white-space: nowrap;
+}
+
+.supplementsSection {
+  margin-bottom: 12px;
+  border-top: 1px solid color-mix(in srgb, $global-border, transparent 50%);
+  padding-top: 10px;
+}
+
+.supplementsToggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: $global-primary-background;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.chevron {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.2s ease;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+.supplementsList {
+  overflow: hidden;
+}
+
+.supplementsInner {
+  padding-top: 8px;
+}
+
+.supplement {
+  padding: 8px 0;
+  font-size: 0.85rem;
+
+  & + .supplement {
+    border-top: 1px dashed color-mix(in srgb, $global-border, transparent 50%);
+  }
+}
+
+.supplementDate {
+  display: block;
+  font-size: 0.75rem;
+  color: $global-muted-color;
+  margin-bottom: 4px;
+}
+
+.responseSection {
+  background: color-mix(in srgb, $global-primary-background, transparent 92%);
+  border-radius: $border-rounded-border-radius;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-left: 3px solid $global-primary-background;
+}
+
+.responseHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.responseLabel {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: $global-color;
+  flex: 1;
+}
+
+.responseDate {
+  font-size: 0.75rem;
+  color: $global-muted-color;
+}
+
+.responseBody {
+  font-size: 0.85rem;
+  color: $global-color;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding-top: 10px;
+  border-top: 1px solid color-mix(in srgb, $global-border, transparent 50%);
+}
