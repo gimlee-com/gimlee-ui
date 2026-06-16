@@ -174,7 +174,7 @@ const UserSpacePage: React.FC = () => {
             animate="visible"
             variants={createPageContainerVariants(0.05)}
           >
-            <Grid gap="medium" match className="uk-child-width-1-2@s uk-child-width-1-3@m uk-child-width-1-4@l">
+            <Grid gap="medium" match className="uk-child-width-1-2@s uk-child-width-1-4@m uk-child-width-1-5@l">
               <AnimatePresence mode="popLayout">
                 {data.ads.content.map(ad => (
                   <AdCard key={ad.id} ad={ad} />
