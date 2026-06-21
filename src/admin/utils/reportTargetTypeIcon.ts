@@ -7,4 +7,5 @@ export const reportTargetTypeIcon: Record<ReportTargetType, string> = {
   MESSAGE: 'comment',
   QUESTION: 'question',
   ANSWER: 'info',
+  RATING: 'star',
 };

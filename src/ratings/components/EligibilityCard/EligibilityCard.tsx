@@ -4,7 +4,7 @@ import { spring } from '../../../animations/springs';
 import { Image } from '../../../components/Image/Image';
 import { GeometricAvatar } from '../../../components/GeometricAvatar/GeometricAvatar';
 import { useUserLookup } from '../../hooks/useUserLookup';
-import { formatCountdown, isElapsed, nowInMicros } from '../../utils/ratingTimeUtils';
+import { formatCountdown, isElapsed } from '../../utils/ratingTimeUtils';
 import type { EligibilityResponseDto } from '../../types/ratings';
 import styles from './EligibilityCard.module.scss';
 
@@ -25,7 +25,7 @@ export default function EligibilityCard({
   const isExpired = !isActive && isElapsed(eligibility.expiresAt);
 
   const timeRemaining = isActive
-    ? formatCountdown(eligibility.expiresAt, nowInMicros())
+    ? formatCountdown(eligibility.expiresAt)
     : null;
 
   return (

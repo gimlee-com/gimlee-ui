@@ -9,7 +9,7 @@ import EligibilityCard from '../components/EligibilityCard/EligibilityCard';
 import RatingForm from '../components/RatingForm/RatingForm';
 import { SmartPagination } from '../../components/SmartPagination';
 import { createPageContainerVariants, pageItemVariants } from '../../animations';
-import type { EligibilityResponseDto, CreateRatingRequestDto } from '../types/ratings';
+import type { EligibilityResponseDto, CreateRatingRequestDto, EditRatingRequestDto } from '../types/ratings';
 import type { PageMetadata } from '../../types/api';
 
 export default function PendingReviewsPage() {
@@ -61,7 +61,7 @@ export default function PendingReviewsPage() {
     setFormOpen(true);
   };
 
-  const handleFormSubmit = async (data: CreateRatingRequestDto) => {
+  const handleFormSubmit = async (data: CreateRatingRequestDto | EditRatingRequestDto) => {
     setIsSubmitting(true);
     try {
       await ratingService.createRating(data as CreateRatingRequestDto);

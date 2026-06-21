@@ -8,6 +8,7 @@ const typeClassMap: Record<ReportTargetType, string> = {
   MESSAGE: 'uk-label',
   QUESTION: 'uk-label',
   ANSWER: 'uk-label',
+  RATING: 'uk-label',
 };
 
 interface ReportTypeBadgeProps {

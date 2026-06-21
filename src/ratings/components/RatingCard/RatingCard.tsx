@@ -44,7 +44,7 @@ export default function RatingCard({
   const { isEditable } = useRatingLifecycle(rating.editableUntil);
 
   const isHidden = rating.status === 'HID';
-  const showActions = viewerRole === 'owner' || viewerRole === 'admin';
+  const showActions = viewerRole === 'owner' || viewerRole === 'admin' || (viewerRole === 'public' && !!onResponse);
 
   return (
     <motion.div
