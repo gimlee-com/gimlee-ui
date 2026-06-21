@@ -669,7 +669,7 @@ const AdDetailsPage: React.FC = () => {
                                 <ReputationBadge aggregate={sellerReputation} size="sm" />
                               </div>
                             )}
-                            {qaStats && (
+                            {qaStats && (qaStats.totalAnswered + qaStats.totalUnanswered) > 0 && (
                               <div>
                                 <span>({qaStats.totalAnswered + qaStats.totalUnanswered} {t('adDetails.questions')})</span>
                               </div>

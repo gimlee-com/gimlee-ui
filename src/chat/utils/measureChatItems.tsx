@@ -3,7 +3,9 @@ import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import type { ChatListItem } from '../types';
+import { isSystemMessage } from '../types';
 import { Message } from '../components/Message/Message';
+import { SystemMessage } from '../components/Message/SystemMessage';
 import { DaysDivider } from '../components/DaysDivider/DaysDivider';
 import { store } from '../../store';
 import { AuthContext } from '../../context/AuthContext';
@@ -71,6 +73,8 @@ export function measureChatItems(items: ChatListItem[], width: number, username?
                 <div key={item.id} className="measure-item">
                   {item.type === 'DAYS-DIVIDER' ? (
                     <DaysDivider date={item.timestamp} />
+                  ) : isSystemMessage(item.messageType) ? (
+                    <SystemMessage message={item} />
                   ) : (
                     <Message {...item} />
                   )}

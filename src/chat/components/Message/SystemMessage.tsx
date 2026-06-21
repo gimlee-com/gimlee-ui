@@ -12,12 +12,16 @@ interface SystemMessageProps {
 export const SystemMessage: React.FC<SystemMessageProps> = React.memo(({ message, style }) => {
   const { t } = useTranslation();
 
-  const code = message.systemCode || 'unknown';
-  const i18nKey = `chat.systemMessage.${code}`;
-  const text = t(i18nKey, {
-    defaultValue: t('chat.systemMessage.unknown'),
-    ...message.systemArgs,
-  });
+  let text = message.message;
+
+  if (!text) {
+    const code = message.systemCode || 'unknown';
+    const i18nKey = `chat.systemMessage.${code}`;
+    text = t(i18nKey, {
+      defaultValue: t('chat.systemMessage.unknown'),
+      ...message.systemArgs,
+    });
+  }
 
   return (
     <div style={style} className={styles.systemMessage}>
