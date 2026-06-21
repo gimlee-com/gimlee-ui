@@ -89,7 +89,7 @@ const AdListingPage: React.FC = () => {
             animate="visible"
             variants={createPageContainerVariants(0.05)}
           >
-            <Grid gap="medium" match className="uk-child-width-1-2@s uk-child-width-1-4@m uk-child-width-1-5@l">
+            <Grid gap="adaptive" match className="uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-4@m uk-child-width-1-5@l">
               <AnimatePresence mode="popLayout">
                 {data?.content.map(ad => (
                   <AdCard key={ad.id} ad={ad} />

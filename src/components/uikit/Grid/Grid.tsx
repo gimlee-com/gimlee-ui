@@ -3,7 +3,7 @@ import { useUIKit } from '../../../hooks/useUIkit'
 import { useMergeRefs } from '../../../hooks/useMergeRefs'
 
 type GridProps = React.PropsWithChildren<{
-  gap?: 'small' | 'medium' | 'large' | 'collapse'
+  gap?: 'small' | 'medium' | 'large' | 'collapse' | 'adaptive'
   divider?: boolean
   match?: boolean
   masonry?: boolean | 'pack' | 'next'

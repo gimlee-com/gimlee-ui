@@ -47,17 +47,17 @@
 }
 
 .content {
-  padding: 16px;
+  padding: var(--density-pad);
   flex-grow: 1;
   display: flex;
   flex-direction: column;
 }
 
 .title {
-  font-size: 1rem;
+  font-size: var(--fluid-text-title);
   font-weight: 600;
   line-height: 1.4;
-  margin-bottom: 8px;
+  margin-bottom: var(--density-stack);
   color: $global-emphasis-color;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -90,7 +90,7 @@
 }
 
 .primaryPrice {
-  font-size: 1.25rem;
+  font-size: var(--fluid-text-price);
   font-weight: 800;
   color: $global-primary-background;
   letter-spacing: -0.02em;
@@ -106,9 +106,9 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  margin-top: 12px;
+  margin-top: var(--density-stack);
   color: $global-muted-color;
-  font-size: 0.8125rem;
+  font-size: var(--fluid-text-meta);
   
   .icon {
     color: $global-muted-color;
@@ -118,12 +118,29 @@
 }
 
 .footer {
-  margin-top: 12px;
-  padding-top: 12px;
+  margin-top: var(--density-stack);
+  padding-top: var(--density-stack);
   border-top: 1px solid $global-border;
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+// ─── Adaptive Density: dense tier (phones) ───
+// Per the ADR-003 progressive-disclosure cascade, decorative ornament is the
+// first to recede when cards are squeezed into a 2-up mobile grid. Essential
+// content (title, price, location label) is preserved.
+@media (max-width: $breakpoint-small-max) {
+  // Step 1 — decorative footer (chevron affordance) is redundant; the whole
+  // card is already a tappable link.
+  .footer {
+    display: none;
+  }
+
+  // Step 2 — secondary meta icons recede; the textual label is kept.
+  .locationWrapper .icon {
+    display: none;
+  }
 }
 
 .stock {

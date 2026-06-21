@@ -86,7 +86,7 @@ const AdWatchlistPage: React.FC = () => {
         </motion.div>
       ) : (
         <AnimatePresence mode="popLayout">
-          <Grid className="uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-4@l" gap="medium">
+          <Grid className="uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-4@m uk-child-width-1-5@l" gap="adaptive">
             {ads.map(ad => (
               <motion.div
                 key={ad.id}

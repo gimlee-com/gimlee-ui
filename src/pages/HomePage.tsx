@@ -59,7 +59,7 @@ const HomePage: React.FC = () => {
             {error}
           </Alert>
         ) : (
-          <Grid gap="medium" match className="uk-child-width-1-2@s uk-child-width-1-4@m uk-child-width-1-5@l">
+          <Grid gap="adaptive" match className="uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-4@m uk-child-width-1-5@l">
             {featuredAds.map(ad => (
               <div key={ad.id}>
                 <AdCard ad={ad} />

@@ -392,7 +392,7 @@ const AdDetailsPage: React.FC = () => {
               <div className="uk-margin">
                 <Grid
                     className="uk-child-width-1-2 uk-child-width-1-4@s"
-                    gap="small"
+                    gap="adaptive"
                 >
                   {ad.otherAds.slice(0, 4).map((otherAd) => (
                     <div key={otherAd.id}>

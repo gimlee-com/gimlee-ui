@@ -252,6 +252,76 @@
 @import 'uikit/src/scss/variables-theme.scss';
 @import 'uikit/src/scss/mixins-theme.scss';
 
+// ─── Liquid Crystal Adaptive Density System (ADR-003) ───
+// Global, token-driven regime governing how content compresses on narrower
+// screens while guaranteeing readability and accessibility floors.
+//
+// Tokens are pure CSS custom properties (theme-agnostic — they govern *space*,
+// not *color*) so any surface inherits the active density automatically.
+//
+// • Fluid typography uses continuous clamp() interpolation between a mobile
+//   floor (~360px) and a desktop ceiling (~1200px) — no breakpoint "jumps".
+//   Floors are non-negotiable accessibility limits (12px readable / 14px
+//   interactive) and are encoded as the lower bound of each clamp().
+// • The grid gap ("breathing room") steps down per viewport tier by mapping
+//   directly onto UIkit's native gutter scale — never raw pixels — so it stays
+//   in lockstep with the rest of the design system:
+//     comfortable (>=960px) → $global-medium-gutter (40px)
+//     compact     (>=640px) → $global-gutter        (30px)
+//     dense       (phones)  → $global-small-gutter   (15px)
+// • The card-interior tokens (--density-pad / --density-stack) are intentionally
+//   tighter than any UIkit spacing step: UIkit's smallest card/grid spacing
+//   (15px) is already too generous for the deliberately-dense 2-up mobile card,
+//   so these remain explicit, purpose-tuned values (see ADR-003).
+:root {
+  // Fluid typography scale (floor @~360px → ceiling @~1200px)
+  --fluid-text-title: clamp(0.875rem, 0.82rem + 0.24vw, 1rem);    // card titles (14→16px)
+  --fluid-text-price: clamp(1.0625rem, 0.98rem + 0.36vw, 1.25rem); // primary price (17→20px)
+  --fluid-text-meta: clamp(0.75rem, 0.72rem + 0.12vw, 0.8125rem);  // secondary meta (12→13px)
+  --fluid-text-body: clamp(0.9375rem, 0.91rem + 0.12vw, 1rem);     // long-form body (15→16px)
+
+  // Accessibility floor: minimum interactive hit area (WCAG 2.5.5 / HIG / Material)
+  --tap-min: 44px;
+
+  // Density (spacing) tokens — "comfortable" defaults (tablet / desktop)
+  --density-pad: 16px;                       // surface inner padding (purpose-tuned)
+  --density-stack: 12px;                     // vertical rhythm between meta rows (purpose-tuned)
+  --density-gap: #{$global-medium-gutter};   // grid gap → 40px (UIkit large-grid gutter)
+}
+
+// Compact tier — phablet / small tablet (< $breakpoint-medium)
+@media (max-width: $breakpoint-medium-max) {
+  :root {
+    --density-pad: 12px;
+    --density-stack: 8px;
+    --density-gap: #{$global-gutter};         // 30px (UIkit default grid gutter)
+  }
+}
+
+// Dense tier — phones (< $breakpoint-small)
+@media (max-width: $breakpoint-small-max) {
+  :root {
+    --density-pad: 10px;
+    --density-stack: 6px;
+    --density-gap: #{$global-small-gutter};   // 15px (UIkit small grid gutter)
+  }
+}
+
+// ─── Adaptive Grid Gap ───
+// Follows the density tokens to provide breathing room on desktop while
+// remaining compact on mobile.
+.uk-grid-adaptive {
+  margin-left: calc(-1 * var(--density-gap)) !important;
+  > * {
+    padding-left: var(--density-gap) !important;
+  }
+  &.uk-grid-stack > .uk-grid-margin,
+  & + .uk-grid-adaptive,
+  * + .uk-grid-margin {
+    margin-top: var(--density-gap) !important;
+  }
+}
+
 // 3. Your custom mixin overwrites.
 @mixin hook-button() {
   border-radius: var(--global-border-radius);
