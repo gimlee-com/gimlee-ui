@@ -40,15 +40,21 @@ const SalesAdsPage: React.FC = () => {
   const navigate = useNavigate();
 
   const [text, setText] = useState((params.t as string) || '');
+  const [prevParams, setPrevParams] = useState(params);
+  const [prevRefreshKey, setPrevRefreshKey] = useState(refreshKey);
 
-  useEffect(() => {
-    setText((params.t as string) || '');
-  }, [params.t]);
+  if (params !== prevParams || refreshKey !== prevRefreshKey) {
+    setPrevParams(params);
+    setPrevRefreshKey(refreshKey);
+    if (params.t !== prevParams.t) {
+      setText((params.t as string) || '');
+    }
+    setLoading(true);
+    setError(null);
+  }
 
   useEffect(() => {
     const controller = new AbortController();
-    setLoading(true);
-    setError(null);
     const searchText = (params.t as string) || undefined;
     salesService.getMyAds(
       {

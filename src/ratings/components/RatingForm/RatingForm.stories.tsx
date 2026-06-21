@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import RatingForm from './RatingForm';
 
 const meta: Meta<typeof RatingForm> = {
@@ -29,7 +29,22 @@ export const Edit: Story = {
       score: 4,
       title: 'Good product',
       body: 'I liked it.',
-      // ... minimal mock needed for form
-    } as any,
+      raterId: 'u1',
+      rateeId: 'u2',
+      contextType: 'ORDER',
+      contextId: 'o1',
+      repKind: 'SEL',
+      status: 'PUB',
+      edited: false,
+      editableUntil: 0,
+      helpfulCount: 0,
+      createdAt: 0,
+      updatedAt: 0,
+      photoPaths: null,
+      snapshot: null,
+      supplements: null,
+      response: null,
+      publishedAt: null,
+    },
   },
 };

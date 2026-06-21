@@ -2,7 +2,7 @@ import { apiClient } from '../../services/apiClient';
 import type {
   CreateRatingRequestDto, EditRatingRequestDto,
   AddSupplementRequestDto, AddRatingResponseRequestDto,
-  RatingResponseDto, EligibilityResponseDto, RatingAggregateResponseDto,
+  RatingResponseDto, RatingAggregateResponseDto,
   PageRatingResponseDto, PageEligibilityResponseDto,
   RepKind,
 } from '../types/ratings';

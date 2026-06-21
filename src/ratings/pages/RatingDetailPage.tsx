@@ -15,10 +15,16 @@ export default function RatingDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!ratingId) return;
+  const [prevRatingId, setPrevRatingId] = useState(ratingId);
+  if (ratingId !== prevRatingId) {
+    setPrevRatingId(ratingId);
     setLoading(true);
     setError(null);
+    setRating(null);
+  }
+
+  useEffect(() => {
+    if (!ratingId) return;
     ratingService.getRating(ratingId)
       .then((res) => {
         setRating(res.data);

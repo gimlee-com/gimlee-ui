@@ -18,15 +18,25 @@ export function useReputation(
   const [error, setError] = useState<string | null>(null);
   const [trigger, setTrigger] = useState(0);
 
+  const [prevUserId, setPrevUserId] = useState(userId);
+  const [prevRepKind, setPrevRepKind] = useState(repKind);
+  const [prevTrigger, setPrevTrigger] = useState(trigger);
+
+  if (userId !== prevUserId || repKind !== prevRepKind || trigger !== prevTrigger) {
+    setPrevUserId(userId);
+    setPrevRepKind(repKind);
+    setPrevTrigger(trigger);
+    setAggregate(userId ? aggregate : null);
+    setLoading(userId ? true : false);
+    setError(null);
+  }
+
   useEffect(() => {
     if (!userId) {
-      setAggregate(null);
       return;
     }
 
     let cancelled = false;
-    setLoading(true);
-    setError(null);
 
     ratingService
       .getUserReputation(userId, repKind)

@@ -117,7 +117,6 @@ export const States: Story = {
 }
 
 export const LiquidCrystal: Story = {
-  name: 'Liquid Crystal',
   render: () => (
     <div className="uk-width-1-1" style={{ maxWidth: 560, margin: '0 auto' }}>
       <h3 className="uk-heading-small uk-margin-medium-bottom">

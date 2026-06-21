@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import AdminUserAssignModal from './AdminUserAssignModal';
 
 const meta: Meta<typeof AdminUserAssignModal> = {

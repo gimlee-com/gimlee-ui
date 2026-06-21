@@ -58,7 +58,6 @@ export const WithPreselectedCity: Story = {
 };
 
 export const CustomPlaceholder: Story = {
-  name: 'Custom Placeholder',
   render: () => {
     const [city, setCity] = useState<CityDetailsDto | null>(null);
     return (

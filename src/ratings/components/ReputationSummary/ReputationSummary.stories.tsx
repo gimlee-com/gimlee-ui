@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import ReputationSummary from './ReputationSummary';
 
 const meta: Meta<typeof ReputationSummary> = {
