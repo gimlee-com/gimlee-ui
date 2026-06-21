@@ -72,9 +72,9 @@ const ConversationDetailPage: React.FC = () => {
           {counterpartyId && <Avatar username={counterpartyId} size={28} />}
           <div style={{ minWidth: 0 }}>
             <span className="uk-text-bold uk-text-truncate uk-display-block">
-              {counterpartyId || t('chat.conversations')}
+              {conversation.title || counterpartyId || t('chat.conversations')}
             </span>
-            <span className="uk-text-meta uk-text-small">{typeLabel}</span>
+            {!conversation.title && <span className="uk-text-meta uk-text-small">{typeLabel}</span>}
           </div>
         </div>
       </NavbarPortal>

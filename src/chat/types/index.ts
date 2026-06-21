@@ -32,6 +32,7 @@ export interface ConversationParticipantDto {
 
 export interface ConversationDto {
   id: string;
+  title: string;
   type: string; // opaque — consumers define semantics (e.g. "ORDER", "PRIVATE")
   participants: ConversationParticipantDto[];
   linkType?: string;

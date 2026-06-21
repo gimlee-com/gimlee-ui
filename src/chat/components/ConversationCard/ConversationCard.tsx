@@ -48,16 +48,18 @@ export const ConversationCard: React.FC<ConversationCardProps> = ({ conversation
         <div className={styles.participantInfo}>
           <Avatar username={counterpartyId} size={40} />
           <div className={styles.nameBlock}>
-            <div className={styles.username}>{counterpartyId}</div>
-            <div className={styles.lastMessage}>
-              {conversation.linkType === 'PRC' && (
-                <>
-                  <Icon icon="cart" ratio={0.7} className="uk-margin-small-right" />
-                  {typeLabel}
-                </>
-              )}
-              {!conversation.linkType && typeLabel}
-            </div>
+            <div className={styles.username}>{conversation.title || counterpartyId}</div>
+            {!conversation.title && (
+              <div className={styles.lastMessage}>
+                {conversation.linkType === 'PRC' && (
+                  <>
+                    <Icon icon="cart" ratio={0.7} className="uk-margin-small-right" />
+                    {typeLabel}
+                  </>
+                )}
+                {!conversation.linkType && typeLabel}
+              </div>
+            )}
           </div>
           <div className={styles.statusBadge}>
             <Label variant={statusVariant} className="uk-text-small">
