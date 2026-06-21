@@ -61,6 +61,7 @@ export interface AdDto {
   status: 'ACTIVE' | 'INACTIVE' | 'DELETED';
   location?: LocationWithCityDetailsDto;
   categoryId?: number;
+  categoryPath?: CategoryPathElementDto[];
   mediaPaths?: string[];
   mainPhotoPath?: string;
   stock: number;

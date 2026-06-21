@@ -86,6 +86,9 @@ const EditAdPage: React.FC = () => {
           if (data.categoryId) {
             setSelectedCategoryId(data.categoryId);
           }
+          if (data.categoryPath) {
+            setSelectedCategoryPath(data.categoryPath);
+          }
           const fixedPricesMap: Record<string, number> = {};
           if (data.fixedPrices) {
             for (const fp of data.fixedPrices) {
