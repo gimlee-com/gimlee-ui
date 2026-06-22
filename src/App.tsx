@@ -6,7 +6,7 @@ import { useAppSelector, useAppDispatch } from './store';
 import { useTheme } from './context/ThemeContext';
 import { useAuth } from './context/AuthContext';
 import { PurchaseModal } from './purchases/components/PurchaseModal';
-import { rehydrateForUser, clearForLogout } from './store/purchaseSlice';
+import { rehydrateForUser, clearForLogout, restorePurchaseIntent } from './store/purchaseSlice';
 import { VolatilityBanner } from './payments/components/VolatilityBanner/VolatilityBanner';
 import { BanNotificationBanner } from './components/BanNotificationBanner/BanNotificationBanner';
 import { useNotificationStream } from './notifications/hooks/useNotificationStream';
@@ -55,6 +55,12 @@ function App() {
       dispatch(clearForLogout());
     }
   }, [isAuthenticated, username, dispatch]);
+
+  useEffect(() => {
+    if (isAuthenticated && username && purchaseIntent && !activePurchase && !isModalOpen) {
+      dispatch(restorePurchaseIntent({ username, intent: purchaseIntent }));
+    }
+  }, [isAuthenticated, username, purchaseIntent, activePurchase, isModalOpen, dispatch]);
 
   useEffect(() => {
     if (Capacitor.isNativePlatform()) {

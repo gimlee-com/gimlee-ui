@@ -151,7 +151,24 @@ const AdDetailsPage: React.FC = () => {
 
 
   const handleBuyNow = () => {
+    if (!ad || !selectedCurrency) return;
+    const settlementPrice = ad.settlementPrices?.find(sp => sp.currency === selectedCurrency);
+    if (!settlementPrice) return;
+
+    const intent = {
+      currency: selectedCurrency,
+      items: [
+        {
+          adId: ad.id,
+          quantity: quantity,
+          unitPrice: settlementPrice.amount
+        }
+      ]
+    };
+
     if (!isAuthenticated) {
+      localStorage.setItem('pendingPurchaseIntent', JSON.stringify(intent));
+
       navigate('/login', { 
         state: { 
           from: `/ads/${id}`, 
@@ -161,21 +178,7 @@ const AdDetailsPage: React.FC = () => {
       return;
     }
 
-    if (!ad || !selectedCurrency) return;
-
-    const settlementPrice = ad.settlementPrices?.find(sp => sp.currency === selectedCurrency);
-    if (!settlementPrice) return;
-
-    dispatch(startPurchaseFlow({
-      currency: selectedCurrency,
-      items: [
-        {
-          adId: ad.id,
-          quantity: quantity,
-          unitPrice: settlementPrice.amount
-        }
-      ]
-    }));
+    dispatch(startPurchaseFlow(intent));
   };
 
   const autoSelectCurrency = (adData: AdDiscoveryDetailsDto) => {
