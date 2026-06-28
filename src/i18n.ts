@@ -17,6 +17,8 @@ const resources = {
         "status": "Status",
         "confirmations": "Confirmations",
         "memo": "Memo",
+        "address": "Address",
+        "viewInExplorer": "View in Explorer",
         "undo": "Undo",
         "redo": "Redo",
         "copyToClipboard": "Copy to clipboard",
@@ -46,7 +48,15 @@ const resources = {
         "all": "All",
         "active": "Active",
         "completed": "Completed",
-        "failed": "Failed"
+        "failed": "Failed",
+        "transactions": {
+          "title": "Transactions",
+          "noTransactions": "No transactions found for this order.",
+          "totalPaid": "Total Paid",
+          "underpaid": "Underpaid",
+          "overpaid": "Overpaid",
+          "fullyPaid": "Fully Paid"
+        }
       },
       "navbar": {
         "browseAds": "Browse Ads",
@@ -1228,6 +1238,8 @@ const resources = {
         "status": "Status",
         "confirmations": "Potwierdzenia",
         "memo": "Memo",
+        "address": "Adres",
+        "viewInExplorer": "Zobacz w eksploratorze",
         "undo": "Cofnij",
         "redo": "Ponów",
         "copyToClipboard": "Kopiuj do schowka",
@@ -1257,7 +1269,15 @@ const resources = {
         "all": "Wszystko",
         "active": "Aktywne",
         "completed": "Zakończone",
-        "failed": "Nieudane"
+        "failed": "Nieudane",
+        "transactions": {
+          "title": "Transakcje",
+          "noTransactions": "Nie znaleziono transakcji dla tego zamówienia.",
+          "totalPaid": "Suma wpłat",
+          "underpaid": "Niedopłata",
+          "overpaid": "Nadpłata",
+          "fullyPaid": "Opłacone"
+        }
       },
       "navbar": {
         "browseAds": "Przeglądaj ogłoszenia",

@@ -15,6 +15,7 @@ import { Icon } from '../../components/uikit/Icon/Icon';
 import { GeometricAvatar } from '../../components/GeometricAvatar/GeometricAvatar';
 import { OrderItemRow } from '../../components/OrderItemRow/OrderItemRow';
 import { OrderStatusTimeline } from '../../components/OrderStatusTimeline/OrderStatusTimeline';
+import { OrderTransactionsSection } from '../../marketplace/components/OrderTransactionsSection/OrderTransactionsSection';
 import { formatPrice } from '../../utils/currencyUtils';
 import { useAppDispatch } from '../../store';
 import { setActivePurchase } from '../../store/purchaseSlice';
@@ -285,6 +286,15 @@ const PurchaseDetailPage: React.FC = () => {
                 </Card>
               </motion.div>
             )}
+
+            {/* Transactions */}
+            <motion.div variants={pageItemVariants}>
+              <OrderTransactionsSection
+                transactions={purchase.cryptoTransactions}
+                totalAmount={purchase.totalAmount}
+                currency={purchase.currency}
+              />
+            </motion.div>
 
             {/* Status history */}
             {purchase.statusHistory.length > 0 && (

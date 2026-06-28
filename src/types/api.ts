@@ -325,6 +325,17 @@ export interface PirateChainTransaction {
 
 export type YCashTransaction = PirateChainTransaction;
 
+export interface CryptoTransactionDto {
+  txid: string;
+  amount: number;
+  confirmations: number;
+  currency: string;
+  timestamp: string;
+  memo?: string;
+  address: string;
+  explorerUrl?: string;
+}
+
 export interface PageMetadata {
   size: number;
   number: number;
@@ -561,6 +572,7 @@ export interface SalesOrderDetailDto {
   paymentStatus?: string;
   deliveryAddress?: DeliveryAddressSnapshotDto;
   statusHistory: StatusChangeDto[];
+  cryptoTransactions: CryptoTransactionDto[];
   createdAt: string;
 }
 
@@ -598,6 +610,7 @@ export interface PurchaseDetailDto {
   deliveryAddress?: DeliveryAddressSnapshotDto;
   payment?: PaymentSummaryDto;
   statusHistory: StatusChangeDto[];
+  cryptoTransactions: CryptoTransactionDto[];
   createdAt: string;
 }
 

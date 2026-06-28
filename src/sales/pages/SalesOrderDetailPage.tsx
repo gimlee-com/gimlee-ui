@@ -15,6 +15,7 @@ import { Icon } from '../../components/uikit/Icon/Icon';
 import { GeometricAvatar } from '../../components/GeometricAvatar/GeometricAvatar';
 import { OrderItemRow } from '../../components/OrderItemRow/OrderItemRow';
 import { OrderStatusTimeline } from '../../components/OrderStatusTimeline/OrderStatusTimeline';
+import { OrderTransactionsSection } from '../../marketplace/components/OrderTransactionsSection/OrderTransactionsSection';
 import { formatPrice } from '../../utils/currencyUtils';
 import { salesService } from '../services/salesService';
 import { conversationService } from '../../chat/services/conversationService';
@@ -239,6 +240,15 @@ const SalesOrderDetailPage: React.FC = () => {
                 </Card>
               </motion.div>
             )}
+
+            {/* Transactions */}
+            <motion.div variants={pageItemVariants}>
+              <OrderTransactionsSection
+                transactions={order.cryptoTransactions}
+                totalAmount={order.totalAmount}
+                currency={order.currency}
+              />
+            </motion.div>
 
             {/* Status history */}
             {order.statusHistory.length > 0 && (

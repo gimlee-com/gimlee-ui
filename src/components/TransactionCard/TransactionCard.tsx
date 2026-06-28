@@ -2,20 +2,19 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import { expandCollapseProps } from '../../animations';
-import { Card, CardBody } from '../../components/uikit/Card/Card';
-import { Label } from '../../components/uikit/Label/Label';
-import { Grid } from '../../components/uikit/Grid/Grid';
-import { Icon } from '../../components/uikit/Icon/Icon';
-import { Divider } from '../../components/uikit/Divider/Divider';
+import { Card, CardBody } from '../uikit/Card/Card';
+import { Label } from '../uikit/Label/Label';
+import { Grid } from '../uikit/Grid/Grid';
+import { Icon } from '../uikit/Icon/Icon';
+import { Divider } from '../uikit/Divider/Divider';
 import { formatPrice } from '../../utils/currencyUtils';
-import type { PirateChainTransaction } from '../../types/api';
+import type { CryptoTransactionDto } from '../../types/api';
 
 interface TransactionCardProps {
-  transaction: PirateChainTransaction;
-  currency: 'ARRR' | 'YEC';
+  transaction: CryptoTransactionDto;
 }
 
-export const TransactionCard: React.FC<TransactionCardProps> = ({ transaction, currency }) => {
+export const TransactionCard: React.FC<TransactionCardProps> = ({ transaction }) => {
   const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -24,6 +23,8 @@ export const TransactionCard: React.FC<TransactionCardProps> = ({ transaction, c
     if (confirmations > 0) return 'warning';
     return 'default';
   };
+
+  const formattedDate = new Date(transaction.timestamp).toLocaleString();
 
   return (
     <Card className="uk-margin-small-bottom uk-border-rounded uk-box-shadow-small uk-box-shadow-hover-medium transition-all">
@@ -45,7 +46,7 @@ export const TransactionCard: React.FC<TransactionCardProps> = ({ transaction, c
               </div>
             </div>
             <div className="uk-text-primary uk-text-bold uk-margin-small-left">
-              {formatPrice(transaction.amount, currency)}
+              {formatPrice(transaction.amount, transaction.currency)}
             </div>
           </div>
           
@@ -53,6 +54,7 @@ export const TransactionCard: React.FC<TransactionCardProps> = ({ transaction, c
             <Label variant={getConfirmationVariant(transaction.confirmations)}>
               {transaction.confirmations} {t('common.confirmations')}
             </Label>
+            <span className="uk-text-meta uk-text-small">{formattedDate}</span>
           </div>
         </div>
 
@@ -74,9 +76,23 @@ export const TransactionCard: React.FC<TransactionCardProps> = ({ transaction, c
                   </div>
                 )}
                 <div>
-                  <span className="uk-text-meta">zAddress:</span>
-                  <div className="uk-text-break uk-text-small">{transaction.zAddress}</div>
+                  <span className="uk-text-meta">{t('common.address')}:</span>
+                  <div className="uk-text-break uk-text-small">{transaction.address}</div>
                 </div>
+                {transaction.explorerUrl && (
+                  <div className="uk-margin-small-top">
+                    <a 
+                      href={transaction.explorerUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="uk-button uk-button-text uk-text-primary"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <Icon icon="world" ratio={0.8} className="uk-margin-small-right" />
+                      {t('common.viewInExplorer')}
+                    </a>
+                  </div>
+                )}
               </Grid>
             </motion.div>
           )}

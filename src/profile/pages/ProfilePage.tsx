@@ -7,7 +7,7 @@ import { userService } from '../services/userService';
 import { useAuth } from '../../context/AuthContext';
 import { usePresence } from '../../context/PresenceContext';
 import { useTheme } from '../../context/ThemeContext';
-import type { PirateChainTransaction, YCashTransaction, CurrencyDto, PresenceStatus } from '../../types/api';
+import type { CurrencyDto, PresenceStatus } from '../../types/api';
 import { Heading } from '../../components/uikit/Heading/Heading';
 import { Button } from '../../components/uikit/Button/Button';
 import { Spinner } from '../../components/uikit/Spinner/Spinner';
@@ -18,12 +18,11 @@ import { Card, CardBody } from '../../components/uikit/Card/Card';
 import { Grid } from '../../components/uikit/Grid/Grid';
 import { Tab, TabItem } from '../../components/uikit/Tab/Tab';
 import { SwitcherContainer } from '../../components/uikit/Switcher/Switcher';
-import { TransactionCard } from '../components/TransactionCard';
 import ChangePasswordCard from '../components/ChangePasswordCard/ChangePasswordCard';
 import AvatarUploadCard from '../components/AvatarUploadCard/AvatarUploadCard';
 import DeliveryAddressCard from '../components/DeliveryAddressCard/DeliveryAddressCard';
 import { CountrySelector } from '../../components/CountrySelector/CountrySelector';
-import { spring, createPageContainerVariants, createCardContainerVariants, cardItemVariants, expandCollapseProps } from '../../animations';
+import { createPageContainerVariants, createCardContainerVariants, cardItemVariants } from '../../animations';
 
 const ProfilePage: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -33,12 +32,8 @@ const ProfilePage: React.FC = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [arrrViewKey, setArrrViewKey] = useState('');
   const [yecViewKey, setYecViewKey] = useState('');
-  const [arrrTransactions, setArrrTransactions] = useState<PirateChainTransaction[]>([]);
-  const [yecTransactions, setYecTransactions] = useState<YCashTransaction[]>([]);
   const [currencies, setCurrencies] = useState<CurrencyDto[]>([]);
   const [currencySearch, setCurrencySearch] = useState('');
-  const [loadingArrr, setLoadingArrr] = useState(true);
-  const [loadingYec, setLoadingYec] = useState(true);
   const [loadingCurrencies, setLoadingCurrencies] = useState(true);
   const [savingArrr, setSavingArrr] = useState(false);
   const [savingYec, setSavingYec] = useState(false);
@@ -77,9 +72,6 @@ const ProfilePage: React.FC = () => {
   const [arrrFocused, setArrrFocused] = useState(false);
   const [yecFocused, setYecFocused] = useState(false);
 
-  const [showArrrTransactions, setShowArrrTransactions] = useState(false);
-  const [showYecTransactions, setShowYecTransactions] = useState(false);
-
   const filteredCurrencies = currencies.filter(c => 
     c.code.toLowerCase().includes(currencySearch.toLowerCase()) || 
     c.name.toLowerCase().includes(currencySearch.toLowerCase())
@@ -90,16 +82,6 @@ const ProfilePage: React.FC = () => {
       .then(setCurrencies)
       .catch(() => {})
       .finally(() => setLoadingCurrencies(false));
-
-    paymentService.getPirateChainTransactions()
-      .then(setArrrTransactions)
-      .catch(() => {}) // Ignore if not set up yet
-      .finally(() => setLoadingArrr(false));
-
-    paymentService.getYCashTransactions()
-      .then(setYecTransactions)
-      .catch(() => {}) // Ignore if not set up yet
-      .finally(() => setLoadingYec(false));
   }, []);
 
   const handleLanguageChange = async (lang: string) => {
@@ -160,9 +142,6 @@ const ProfilePage: React.FC = () => {
       await paymentService.addPirateChainViewKey(arrrViewKey);
       UIkit.notification({ message: t('profile.keyUpdated'), status: 'success', pos: 'top-center', timeout: 3000 });
       setArrrViewKey('');
-      // Refresh transactions
-      const txs = await paymentService.getPirateChainTransactions();
-      setArrrTransactions(txs);
     } catch (err: unknown) {
       setArrrError((err as Error).message || t('auth.errors.generic'));
       setArrrFocused(false);
@@ -179,9 +158,6 @@ const ProfilePage: React.FC = () => {
       await paymentService.addYCashViewKey(yecViewKey);
       UIkit.notification({ message: t('profile.keyUpdated'), status: 'success', pos: 'top-center', timeout: 3000 });
       setYecViewKey('');
-      // Refresh transactions
-      const txs = await paymentService.getYCashTransactions();
-      setYecTransactions(txs);
     } catch (err: unknown) {
       setYecError((err as Error).message || t('auth.errors.generic'));
       setYecFocused(false);
@@ -441,53 +417,6 @@ const ProfilePage: React.FC = () => {
                     </AnimatePresence>
                   </FormControls>
                 </form>
-
-                <div className="uk-margin-large-top">
-                  <div className="uk-flex uk-flex-between@s uk-flex-middle uk-flex-column uk-flex-row@s uk-margin-small-bottom">
-                    <Heading as="h4" className="uk-margin-remove uk-margin-small-bottom uk-margin-remove@s">{t('profile.recentTransactions')}</Heading>
-                    <Button 
-                      size="small" 
-                      variant="link" 
-                      className="uk-width-1-1 uk-width-auto@s"
-                      onClick={() => setShowArrrTransactions(!showArrrTransactions)}
-                    >
-                      {showArrrTransactions ? t('profile.hideTransactions') : t('profile.showTransactions')}
-                      <span className="uk-margin-small-left" uk-icon={showArrrTransactions ? 'chevron-up' : 'chevron-down'}></span>
-                    </Button>
-                  </div>
-                  
-                  <AnimatePresence>
-                    {showArrrTransactions && (
-                      <motion.div
-                        {...expandCollapseProps}
-                      >
-                        {loadingArrr ? (
-                          <div className="uk-flex uk-flex-center uk-padding-small">
-                            <Spinner />
-                          </div>
-                        ) : (
-                          <div>
-                            {arrrTransactions.map((tx, index) => (
-                              <motion.div
-                                key={tx.txid}
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ ...spring, delay: index * 0.05 }}
-                              >
-                                <TransactionCard transaction={tx} currency="ARRR" />
-                              </motion.div>
-                            ))}
-                            {arrrTransactions.length === 0 && (
-                              <div className="uk-text-center uk-text-muted uk-padding-small">
-                                {t('profile.noTransactions')}
-                              </div>
-                            )}
-                          </div>
-                        )}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
               </div>
               <div>
                 <p className="uk-text-meta">{t('profile.paymentDescYec')}</p>
@@ -524,53 +453,6 @@ const ProfilePage: React.FC = () => {
                     </AnimatePresence>
                   </FormControls>
                 </form>
-
-                <div className="uk-margin-large-top">
-                  <div className="uk-flex uk-flex-between@s uk-flex-middle uk-flex-column uk-flex-row@s uk-margin-small-bottom">
-                    <Heading as="h4" className="uk-margin-remove uk-margin-small-bottom uk-margin-remove@s">{t('profile.recentTransactionsYec')}</Heading>
-                    <Button 
-                      size="small" 
-                      variant="link" 
-                      className="uk-width-1-1 uk-width-auto@s"
-                      onClick={() => setShowYecTransactions(!showYecTransactions)}
-                    >
-                      {showYecTransactions ? t('profile.hideTransactions') : t('profile.showTransactions')}
-                      <span className="uk-margin-small-left" uk-icon={showYecTransactions ? 'chevron-up' : 'chevron-down'}></span>
-                    </Button>
-                  </div>
-                  
-                  <AnimatePresence>
-                    {showYecTransactions && (
-                      <motion.div
-                        {...expandCollapseProps}
-                      >
-                        {loadingYec ? (
-                          <div className="uk-flex uk-flex-center uk-padding-small">
-                            <Spinner />
-                          </div>
-                        ) : (
-                          <div>
-                            {yecTransactions.map((tx, index) => (
-                              <motion.div
-                                key={tx.txid}
-                                initial={{ opacity: 0, x: 20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ ...spring, delay: index * 0.05 }}
-                              >
-                                <TransactionCard transaction={tx} currency="YEC" />
-                              </motion.div>
-                            ))}
-                            {yecTransactions.length === 0 && (
-                              <div className="uk-text-center uk-text-muted uk-padding-small">
-                                {t('profile.noTransactions')}
-                              </div>
-                            )}
-                          </div>
-                        )}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
               </div>
             </SwitcherContainer>
             </motion.div>
